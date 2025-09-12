@@ -62,7 +62,7 @@ public class TorusWorld {
         instance.getConnectors().forEach((loc, connector) -> {
             for (Direction direction : Direction.values()) {
                 if (connector.isConnectableFrom(direction)) {
-                    if (loc.getRelative(direction).getStructure() instanceof CableInstance cable) {
+                    if (loc.location().getRelative(direction).getStructure() instanceof CableInstance cable) {
                         Bukkit.broadcastMessage("Machine placed next to a cable. Connector direction: " + connector.getComponent().direction);
                         cable.updateConnections();
                     }
@@ -98,7 +98,7 @@ public class TorusWorld {
         else instance.getConnectors().forEach((loc, connector) -> {
             for (Direction direction : Direction.values()) {
                 if (connector.isConnectableFrom(direction)) {
-                    if (loc.getRelative(direction).getStructure() instanceof CableInstance cable) {
+                    if (loc.location().getRelative(direction).getStructure() instanceof CableInstance cable) {
                         cable.updateConnections();
                     }
                 }
@@ -106,7 +106,10 @@ public class TorusWorld {
         });
 
         // Remove models
-        instance.getComponents().forEach((name, component) -> component.getModel().remove());
+        instance.getComponents().forEach((name, component) -> {
+            if (component.getModel() != null)
+                component.getModel().remove();
+        });
     }
 
 }

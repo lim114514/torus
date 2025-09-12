@@ -2,6 +2,7 @@ package com.github.alantr7.torus.structure.component;
 
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.EnergyCapacitor;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -90,7 +91,7 @@ public class Connector implements Connectable {
                         }
                     }
 
-                    Connector connector = neighbor.getConnectors().get(neighborLoc);
+                    Connector connector = neighbor.getConnectors().get(new ConnectorLocation(neighborLoc, matter));
                     if (connector != null) {
                         structures.add(new Connection(neighbor, connector));
                         closed.add(neighborLoc);

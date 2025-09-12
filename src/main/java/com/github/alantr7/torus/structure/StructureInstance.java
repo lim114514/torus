@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
@@ -21,7 +22,7 @@ public abstract class StructureInstance {
     protected Map<String, StructureComponent> components = new HashMap<>();
 
     @Getter
-    protected Map<BlockLocation, Connector> connectors = new HashMap<>();
+    protected Map<ConnectorLocation, Connector> connectors = new HashMap<>();
 
     public StructureInstance(Structure structure, BlockLocation location, Direction direction) {
         this.structure = structure;

@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.model.engine.display.ItemDisplayModelTemplate;
 import com.github.alantr7.torus.model.engine.display.Model;
@@ -22,7 +23,9 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCap
     @Getter
     protected double storedEnergy;
 
-    protected Connector connector;
+    protected Connector powerConnector;
+
+    protected Connector itemConnector;
 
     public static final double RF_COST = 25;
 
@@ -49,17 +52,22 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCap
         Model connectorModel = CONNECTOR_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
         components.put("power_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), direction, connectorModel));
 
-        connector = new Connector(components.get("power_connector"), direction.getOpposite().mask(), Connector.FlowDirection.IN, Connector.Matter.ENERGY);
-        connectors.put(location.getRelative(0, 0, 0), connector);
+        powerConnector = new Connector(components.get("power_connector"), direction.getOpposite().mask(), Connector.FlowDirection.IN, Connector.Matter.ENERGY);
+        connectors.put(new ConnectorLocation(location.getRelative(0, 0, 0), Connector.Matter.ENERGY), powerConnector);
+
+        components.put("item_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), direction, null));
+
+        itemConnector = new Connector(components.get("item_connector"), Direction.DOWN.mask(), Connector.FlowDirection.OUT, Connector.Matter.ITEM);
+        connectors.put(new ConnectorLocation(location, Connector.Matter.ITEM), itemConnector);
     }
 
     @Override
     public void tick() {
         if (storedEnergy != rfCapacity) {
             // TODO: Perhaps optimize somehow?
-            connector.updateConnections();
-            if (!connector.connectedStructures.isEmpty()) {
-                double taken = connector.consumeEnergy(Math.min(connector.getMaximumInput(), rfCapacity - storedEnergy));
+            powerConnector.updateConnections();
+            if (!powerConnector.connectedStructures.isEmpty()) {
+                double taken = powerConnector.consumeEnergy(Math.min(powerConnector.getMaximumInput(), rfCapacity - storedEnergy));
                 supplyEnergy(taken);
             }
         }

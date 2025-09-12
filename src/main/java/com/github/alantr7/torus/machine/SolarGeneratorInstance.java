@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.model.engine.display.ItemDisplayModelTemplate;
 import com.github.alantr7.torus.model.engine.display.Model;
@@ -50,7 +51,7 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
         components.put("power_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), direction, connectorModel));
 
         Connector connector = new Connector(components.get("power_connector"), direction.getOpposite().mask(), Connector.FlowDirection.OUT, Connector.Matter.ENERGY);
-        connectors.put(location.getRelative(0, 0, 0), connector);
+        connectors.put(new ConnectorLocation(location.getRelative(0, 0, 0), Connector.Matter.ENERGY), connector);
     }
 
     @Override

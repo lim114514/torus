@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.model.engine.display.ItemDisplayModelTemplate;
 import com.github.alantr7.torus.model.engine.display.ModelTemplate;
@@ -77,8 +78,8 @@ public class CableInstance extends StructureInstance implements Connectable {
 
         // Check if this cable connects to a connector
         if (possibleConnection != null) {
-            Connector connector = possibleConnection.getConnectors().get(location.getRelative(direction));
-            if (connector != null && connector.isConnectableFrom(direction.getOpposite()) && connector.getMatter() == type) {
+            Connector connector = possibleConnection.getConnectors().get(new ConnectorLocation(location.getRelative(direction), type));
+            if (connector != null && connector.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
                 shouldUpdateModel = true;
 
