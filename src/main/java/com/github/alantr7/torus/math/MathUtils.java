@@ -1,0 +1,21 @@
+package com.github.alantr7.torus.math;
+
+import org.joml.Vector2f;
+import org.joml.Vector2i;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
+
+public class MathUtils {
+
+    public static final Vector3i V3I_ZERO = new Vector3i(0, 0, 0);
+    public static final Vector3i V3I_ONE = new Vector3i(1, 1, 1);
+
+    public static void applyRotation(Vector3f vector, float angle) {
+        double distance = new Vector2f(vector.x, vector.z).length();
+        vector.x = (float) (Math.sin(Math.toRadians(angle)) * distance);
+        vector.z = (float) (Math.cos(Math.toRadians(angle)) * distance);
+
+        System.out.println();
+    }
+
+}
