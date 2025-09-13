@@ -24,21 +24,25 @@ public class CableInstance extends StructureInstance implements Connectable {
     @Getter
     Connector.Matter type;
 
-    static ItemDisplayModelTemplate MODEL_ENERGY_NOT_CONNECTED = new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ENERGY_CONNECTION_NORTH = new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ENERGY_CONNECTION_SOUTH = new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ENERGY_CONNECTION_EAST = new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ENERGY_CONNECTION_WEST = new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ENERGY_CONNECTION_UP = new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ENERGY_CONNECTION_DOWN = new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f);
+    static ItemDisplayModelTemplate[] MODELS_ENERGY = {
+        new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
+    };
 
-    static ItemDisplayModelTemplate MODEL_ITEM_NOT_CONNECTED = new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ITEM_CONNECTION_NORTH = new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ITEM_CONNECTION_SOUTH = new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ITEM_CONNECTION_EAST = new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ITEM_CONNECTION_WEST = new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ITEM_CONNECTION_UP = new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f);
-    static ItemDisplayModelTemplate MODEL_ITEM_CONNECTION_DOWN = new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f);
+    static ItemDisplayModelTemplate[] MODELS_ITEM = {
+        new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+        new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
+    };
 
     boolean shouldUpdateModel;
 
@@ -50,9 +54,9 @@ public class CableInstance extends StructureInstance implements Connectable {
     @Override
     public void create() {
         ModelTemplate modelDisconnected = new ModelTemplate();
-        modelDisconnected.add(type == Connector.Matter.ENERGY ? MODEL_ENERGY_NOT_CONNECTED : MODEL_ITEM_NOT_CONNECTED);
+        modelDisconnected.add(type == Connector.Matter.ENERGY ? MODELS_ENERGY[6] : MODELS_ITEM[6]);
 
-        StructureComponent base = new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), direction, modelDisconnected.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
+        StructureComponent base = new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), modelDisconnected.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
         components.put("base", base);
 
         updateConnections();
@@ -106,26 +110,15 @@ public class CableInstance extends StructureInstance implements Connectable {
         components.get("base").getModel().remove();
         ModelTemplate model = new ModelTemplate();
         if (connections == 0) {
-            model.add(type == Connector.Matter.ENERGY ? MODEL_ENERGY_NOT_CONNECTED : MODEL_ITEM_NOT_CONNECTED);
+            model.add(type == Connector.Matter.ENERGY ? MODELS_ENERGY[6] : MODELS_ITEM[6]);
         }
-        if (isConnected(Direction.NORTH)) {
-            model.add(type == Connector.Matter.ENERGY ? MODEL_ENERGY_CONNECTION_NORTH : MODEL_ITEM_CONNECTION_NORTH);
+
+        for (Direction direction : Direction.values()) {
+            if (isConnected(direction)) {
+                model.add(type == Connector.Matter.ENERGY ? MODELS_ENERGY[direction.ordinal()] : MODELS_ITEM[direction.ordinal()]);
+            }
         }
-        if (isConnected(Direction.SOUTH)) {
-            model.add(type == Connector.Matter.ENERGY ? MODEL_ENERGY_CONNECTION_SOUTH : MODEL_ITEM_CONNECTION_SOUTH);
-        }
-        if (isConnected(Direction.EAST)) {
-            model.add(type == Connector.Matter.ENERGY ? MODEL_ENERGY_CONNECTION_EAST : MODEL_ITEM_CONNECTION_EAST);
-        }
-        if (isConnected(Direction.WEST)) {
-            model.add(type == Connector.Matter.ENERGY ? MODEL_ENERGY_CONNECTION_WEST : MODEL_ITEM_CONNECTION_WEST);
-        }
-        if (isConnected(Direction.UP)) {
-            model.add(type == Connector.Matter.ENERGY ? MODEL_ENERGY_CONNECTION_UP : MODEL_ITEM_CONNECTION_UP);
-        }
-        if (isConnected(Direction.DOWN)) {
-            model.add(type == Connector.Matter.ENERGY ? MODEL_ENERGY_CONNECTION_DOWN : MODEL_ITEM_CONNECTION_DOWN);
-        }
+
         components.get("base").setModel(model.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
     }
 
