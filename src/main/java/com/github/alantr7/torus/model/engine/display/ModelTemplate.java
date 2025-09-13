@@ -1,13 +1,11 @@
 package com.github.alantr7.torus.model.engine.display;
 
 import com.github.alantr7.torus.math.Direction;
-import com.github.alantr7.torus.math.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
-import org.joml.Vector3i;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +13,8 @@ import java.util.List;
 public class ModelTemplate {
 
     private final List<ItemDisplayModelTemplate> parts = new ArrayList<>();
+
+    public static final ModelTemplate EMPTY = new ModelTemplate();
 
     public void add(ItemDisplayModelTemplate part) {
         parts.add(part);
