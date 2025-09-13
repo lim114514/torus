@@ -6,7 +6,7 @@ import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.model.engine.display.ItemDisplayModelTemplate;
 import com.github.alantr7.torus.model.engine.display.Model;
 import com.github.alantr7.torus.model.engine.display.ModelTemplate;
-import com.github.alantr7.torus.structure.EnergyCapacitor;
+import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -17,7 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
 import org.joml.Vector3f;
 
-public class SolarGeneratorInstance extends StructureInstance implements EnergyCapacitor {
+public class SolarGeneratorInstance extends StructureInstance implements EnergyContainer {
 
     @Getter @Setter
     double energyCapacity = 2000;

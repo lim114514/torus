@@ -3,12 +3,11 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.bukkitplugin.annotations.core.InvokePeriodically;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.machine.CableInstance;
-import com.github.alantr7.torus.machine.SolarGeneratorInstance;
+import com.github.alantr7.torus.machine.InventoryInterfaceInstance;
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
-import com.github.alantr7.torus.structure.EnergyCapacitor;
+import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.Structures;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,7 +39,7 @@ public class TorusWorld {
                 continue;
 
             StructureInstance structure = loaded.get(occupation);
-            if (structure instanceof EnergyCapacitor generator) {
+            if (structure instanceof EnergyContainer generator) {
                 player.sendTitle("", structure.structure.getClass().getSimpleName() + " (" + generator.getStoredEnergy() + " / " + generator.getEnergyCapacity() + " RF)", 0, 25, 0);
             }
         }
@@ -58,6 +57,21 @@ public class TorusWorld {
             occupations.put(relative, instance.location);
         }
 
+        // Update all cables if I'm cable
+        if (instance instanceof CableInstance cable) {
+            for (Direction direction : Direction.values()) {
+                if (cable.isConnectableFrom(direction)) {
+                    // TODO: Replace with an interface like "Updatable" and call its updateConnections() instead
+                    if (instance.location.getRelative(direction).getStructure() instanceof CableInstance cable1) {
+                        cable1.updateConnections();
+                    }
+                    else if (instance.location.getRelative(direction).getStructure() instanceof InventoryInterfaceInstance iii) {
+                        iii.updateConnections();
+                    }
+                }
+            }
+        }
+
         // Update all cables around it
         instance.getConnectors().forEach((loc, connector) -> {
             for (Direction direction : Direction.values()) {
@@ -69,6 +83,10 @@ public class TorusWorld {
                 }
             }
         });
+
+        if (instance instanceof InventoryInterfaceInstance iii) {
+            iii.updateModel();
+        }
     }
 
     public static void removeStructure(StructureInstance instance) {
@@ -89,6 +107,8 @@ public class TorusWorld {
                 if (cable.isConnectableFrom(direction)) {
                     if (instance.location.getRelative(direction).getStructure() instanceof CableInstance cable1) {
                         cable1.updateConnections();
+                    } else if (instance.location.getRelative(direction).getStructure() instanceof InventoryInterfaceInstance iii) {
+                        iii.updateConnections();
                     }
                 }
             }

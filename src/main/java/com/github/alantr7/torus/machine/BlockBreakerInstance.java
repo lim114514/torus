@@ -6,17 +6,20 @@ import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.model.engine.display.ItemDisplayModelTemplate;
 import com.github.alantr7.torus.model.engine.display.Model;
 import com.github.alantr7.torus.model.engine.display.ModelTemplate;
-import com.github.alantr7.torus.structure.EnergyCapacitor;
+import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
+import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.inventory.ItemStack;
 import org.joml.Vector3f;
 
-public class BlockBreakerInstance extends StructureInstance implements EnergyCapacitor {
+public class BlockBreakerInstance extends StructureInstance implements EnergyContainer {
 
     protected double rfCapacity = 50;
 
@@ -26,6 +29,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCap
     protected Connector powerConnector;
 
     protected Connector itemConnector;
+
+    protected StructureInventory inventory;
 
     public static final double RF_COST = 25;
 
@@ -60,6 +65,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCap
         inventory = new CustomStructureInventory(1);
 
         itemConnector = new Connector(components.get("item_connector"), Direction.DOWN.mask(), Connector.FlowDirection.OUT, Connector.Matter.ITEM);
+        itemConnector.linkedInventory = inventory;
         connectors.put(new ConnectorLocation(location, Connector.Matter.ITEM), itemConnector);
     }
 
@@ -79,6 +85,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCap
         }
 
         if (!location.getRelative(direction).getBlock().getType().isAir()) {
+            inventory.addItem(new ItemStack(location.getRelative(direction).getBlock().getType()));
             location.getRelative(direction).getBlock().setType(Material.AIR);
             consumeEnergy(RF_COST);
         }

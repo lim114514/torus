@@ -4,8 +4,9 @@ import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
-import com.github.alantr7.torus.structure.EnergyCapacitor;
+import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,10 +29,12 @@ public class Connector implements Connectable {
     @Getter
     public List<Connection> connectedStructures = Collections.emptyList();
 
-    protected FlowDirection flowDirection;
+    public StructureInventory linkedInventory;
 
     @Getter
-    protected Matter matter;
+    protected FlowDirection flowDirection;
+
+    public final Matter matter;
 
     public enum FlowDirection {
         ALL, NONE, IN, OUT,
@@ -114,7 +117,7 @@ public class Connector implements Connectable {
             if (conn.connector.flowDirection != FlowDirection.OUT && conn.connector.flowDirection != FlowDirection.ALL)
                 continue;
 
-            EnergyCapacitor capacitor = (EnergyCapacitor) conn.structure;
+            EnergyContainer capacitor = (EnergyContainer) conn.structure;
             amount -= capacitor.consumeEnergy(Math.min(amount, conn.connector.maximumOutput));
 
             if (amount == 0)
@@ -126,9 +129,9 @@ public class Connector implements Connectable {
 
     public static class Connection {
 
-        StructureInstance structure;
+        public final StructureInstance structure;
 
-        Connector connector;
+        public final Connector connector;
 
         public Connection(StructureInstance structure, Connector connector) {
             this.structure = structure;

@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.structure;
 
-public interface EnergyCapacitor {
+public interface EnergyContainer {
 
     double getEnergyCapacity();
 

@@ -18,4 +18,12 @@ public class MathUtils {
         System.out.println();
     }
 
+    public static boolean hasFlag(int mask, int flag) {
+        return (mask & flag) != 0;
+    }
+
+    public static int setFlag(int mask, int flag, boolean toggle) {
+        return toggle ? (mask | flag) : (mask & ~flag);
+    }
+
 }
