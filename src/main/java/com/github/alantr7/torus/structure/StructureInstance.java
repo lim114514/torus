@@ -16,7 +16,7 @@ public abstract class StructureInstance {
 
     public final BlockLocation location;
 
-    protected Direction direction;
+    public final Direction direction;
 
     @Getter
     protected Map<String, StructureComponent> components = new HashMap<>();

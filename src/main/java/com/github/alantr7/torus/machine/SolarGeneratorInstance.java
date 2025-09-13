@@ -45,10 +45,10 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
 
     @Override
     public void create() {
-        components.put("base", new StructureComponent(this, location, direction, MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)));
+        components.put("base", new StructureComponent(this, location, MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)));
 
         Model connectorModel = CONNECTOR_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        components.put("power_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), direction, connectorModel));
+        components.put("power_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), connectorModel));
 
         Connector connector = new Connector(components.get("power_connector"), direction.getOpposite().mask(), Connector.FlowDirection.OUT, Connector.Matter.ENERGY);
         connectors.put(new ConnectorLocation(location.getRelative(0, 0, 0), Connector.Matter.ENERGY), connector);

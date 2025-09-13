@@ -20,11 +20,11 @@ public class StructureComponent {
     @Getter @Setter
     protected Model model;
 
-    public StructureComponent(StructureInstance structure, BlockLocation relativeLocation, Direction direction, Model model) {
+    public StructureComponent(StructureInstance structure, BlockLocation relativeLocation, Model model) {
         this.structure = structure;
         this.absoluteLocation = structure.location.getRelative(relativeLocation);
         this.relativeLocation = relativeLocation;
-        this.direction = direction;
+        this.direction = structure.direction;
         this.model = model;
     }
 

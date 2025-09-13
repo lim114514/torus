@@ -47,15 +47,17 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCap
     @Override
     public void create() {
         Model bodyModel = BASE_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        components.put("body", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), direction, bodyModel));
+        components.put("body", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), bodyModel));
 
         Model connectorModel = CONNECTOR_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        components.put("power_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), direction, connectorModel));
+        components.put("power_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), connectorModel));
 
         powerConnector = new Connector(components.get("power_connector"), direction.getOpposite().mask(), Connector.FlowDirection.IN, Connector.Matter.ENERGY);
         connectors.put(new ConnectorLocation(location.getRelative(0, 0, 0), Connector.Matter.ENERGY), powerConnector);
 
-        components.put("item_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), direction, null));
+        components.put("item_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), null));
+
+        inventory = new CustomStructureInventory(1);
 
         itemConnector = new Connector(components.get("item_connector"), Direction.DOWN.mask(), Connector.FlowDirection.OUT, Connector.Matter.ITEM);
         connectors.put(new ConnectorLocation(location, Connector.Matter.ITEM), itemConnector);
