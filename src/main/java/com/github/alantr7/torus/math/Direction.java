@@ -2,10 +2,10 @@ package com.github.alantr7.torus.math;
 
 public enum Direction {
 
-    NORTH(0, 0, -1, 180, 0),
-    EAST(1, 0, 0, 270, 0),
-    SOUTH(0, 0, 1, 0, 0),
-    WEST(-1, 0, 0, 90, 0),
+    NORTH(0, 0, -1, 0, 0),
+    EAST(1, 0, 0, 90, 0),
+    SOUTH(0, 0, 1, 180, 0),
+    WEST(-1, 0, 0, 270, 0),
     UP(0, 1, 0, 0, 90),
     DOWN(0, -1, 0, 0, 180),
     ;

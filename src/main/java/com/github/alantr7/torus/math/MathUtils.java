@@ -12,10 +12,9 @@ public class MathUtils {
 
     public static void applyRotation(Vector3f vector, float angle) {
         double distance = new Vector2f(vector.x, vector.z).length();
-        vector.x = (float) (Math.sin(Math.toRadians(angle)) * distance);
-        vector.z = (float) (Math.cos(Math.toRadians(angle)) * distance);
-
-        System.out.println();
+        double currentAngle = Math.toDegrees(Math.atan2(vector.x, vector.z));
+        vector.x = (float) (Math.sin(Math.toRadians(currentAngle -angle)) * distance);
+        vector.z = (float) (Math.cos(Math.toRadians(currentAngle -angle)) * distance);
     }
 
     public static boolean hasFlag(int mask, int flag) {

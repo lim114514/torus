@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.model.engine.display;
 
 import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.math.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +25,7 @@ public class ModelTemplate {
         List<ItemDisplay> entities = new ArrayList<>();
         for (ItemDisplayModelTemplate part : parts) {
             Vector3f rotatedOffset = new Vector3f(part.offset().x, part.offset().y, part.offset().z);
-//            MathUtils.applyRotation(rotatedOffset, part.rotH() + direction.rotH);
+            MathUtils.applyRotation(rotatedOffset, direction.rotH);
 
             Location partLocation = new Location(
               location.getWorld(),
@@ -35,7 +36,6 @@ public class ModelTemplate {
 
             ItemDisplay entity = location.getWorld().spawn(partLocation, ItemDisplay.class);
             entity.setItemStack(new ItemStack(part.material()));
-//            entity.setItemDisplayTransform(part.transform());
 
             Transformation transformation = entity.getTransformation();
             transformation.getScale().set(part.scale());
