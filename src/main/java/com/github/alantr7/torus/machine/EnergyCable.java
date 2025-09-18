@@ -42,14 +42,19 @@ public class EnergyCable extends Structure {
     }
 
     @Override
+    public StructureInstance place(BlockLocation location, Direction direction) {
+        CableInstance instance = (CableInstance) super.place(location, direction);
+        instance.updateConnections();
+
+        return instance;
+    }
+
+    @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         ModelTemplate modelDisconnected = new ModelTemplate();
         modelDisconnected.add(MODELS_ENERGY[6]);
 
         StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), modelDisconnected.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        CableInstance cable = new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}, new StructureConnectorDef[0]), Connector.Matter.ENERGY);
-        cable.updateConnections();
-
         return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}, new StructureConnectorDef[0]), Connector.Matter.ENERGY);
     }
 

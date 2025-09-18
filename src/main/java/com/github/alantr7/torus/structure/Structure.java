@@ -31,11 +31,11 @@ public abstract class Structure {
     protected void createBounds(IntArrayBuilder builder) {
     }
 
-    public final StructureInstance place(BlockLocation location, Direction direction) {
+    public StructureInstance place(BlockLocation location, Direction direction) {
         StructureInstance instance = instantiate(location, direction);
-        location.world.placeStructure(instance);
-
         instance.setup();
+
+        location.world.placeStructure(instance);
         return instance;
     }
 

@@ -7,6 +7,7 @@ import com.github.alantr7.torus.structure.display.ItemDisplayModelTemplate;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -50,6 +51,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     protected void setup() {
         powerConnector = getConnector("power_connector");
         itemConnector = getConnector("item_container");
+        inventory = new CustomStructureInventory(1);
     }
 
     @Override

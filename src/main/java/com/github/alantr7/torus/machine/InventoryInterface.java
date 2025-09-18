@@ -28,6 +28,14 @@ public class InventoryInterface extends Structure {
     }
 
     @Override
+    public StructureInstance place(BlockLocation location, Direction direction) {
+        InventoryInterfaceInstance instance = (InventoryInterfaceInstance) super.place(location, direction);
+        instance.updateConnections();
+
+        return instance;
+    }
+
+    @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         StructureComponentDef connectorDef = new StructureComponentDef(
           "connector",
@@ -48,11 +56,7 @@ public class InventoryInterface extends Structure {
           }
         );
 
-        InventoryInterfaceInstance instance = new InventoryInterfaceInstance(location, body, direction, Connector.FlowDirection.IN);
-        instance.updateConnections();
-
-        return instance;
-
+        return new InventoryInterfaceInstance(location, body, direction, Connector.FlowDirection.IN);
     }
 
 }
