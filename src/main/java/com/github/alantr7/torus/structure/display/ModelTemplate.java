@@ -1,4 +1,4 @@
-package com.github.alantr7.torus.model.engine.display;
+package com.github.alantr7.torus.structure.display;
 
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.math.MathUtils;
