@@ -49,7 +49,7 @@ public class Connector implements Connectable {
     @Getter
     protected StructureComponent component;
 
-    public Connector(StructureComponent component, int allowedConnections, FlowDirection direction, Matter matter) {
+    public Connector(StructureComponent component, int allowedConnections, Matter matter, FlowDirection direction) {
         this.component = component;
         this.allowedConnections = allowedConnections;
         this.flowDirection = direction;
@@ -94,7 +94,7 @@ public class Connector implements Connectable {
                         }
                     }
 
-                    Connector connector = neighbor.getConnectors().get(new ConnectorLocation(neighborLoc, matter));
+                    Connector connector = neighbor.getConnector(neighborLoc, matter);
                     if (connector != null) {
                         structures.add(new Connection(neighbor, connector));
                         closed.add(neighborLoc);

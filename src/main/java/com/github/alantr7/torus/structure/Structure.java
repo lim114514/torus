@@ -3,16 +3,10 @@ package com.github.alantr7.torus.structure;
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.math.IntArrayBuilder;
-import com.github.alantr7.torus.structure.component.StructureComponent;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public abstract class Structure {
-
-    protected Map<String, StructureComponent> components = new HashMap<>();
 
     @Getter
     protected int[] bounds = { 0, 0, 0 };
@@ -32,6 +26,14 @@ public abstract class Structure {
     protected void createBounds(IntArrayBuilder builder) {
     }
 
-    public abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction);
+    public final StructureInstance place(BlockLocation location, Direction direction) {
+        StructureInstance instance = instantiate(location, direction);
+        location.world.placeStructure(instance);
+
+        instance.setup();
+        return instance;
+    }
+
+    protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction);
 
 }

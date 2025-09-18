@@ -1,18 +1,15 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.math.BlockLocation;
-import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.display.ItemDisplayModelTemplate;
-import com.github.alantr7.torus.structure.display.Model;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.structure.component.StructureComponent;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
@@ -45,28 +42,14 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         CONNECTOR_MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
     }
 
-    public BlockBreakerInstance(BlockLocation location, Direction direction) {
-        super(Structures.BLOCK_BREAKER, location, direction);
+    public BlockBreakerInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
+        super(Structures.BLOCK_BREAKER, location, bodyDef, direction);
     }
 
     @Override
-    public void create() {
-        Model bodyModel = BASE_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        components.put("body", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), bodyModel));
-
-        Model connectorModel = CONNECTOR_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        components.put("power_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), connectorModel));
-
-        powerConnector = new Connector(components.get("power_connector"), direction.getOpposite().mask(), Connector.FlowDirection.IN, Connector.Matter.ENERGY);
-        connectors.put(new ConnectorLocation(location.getRelative(0, 0, 0), Connector.Matter.ENERGY), powerConnector);
-
-        components.put("item_connector", new StructureComponent(this, new BlockLocation(location.world, 0, 0, 0), null));
-
-        inventory = new CustomStructureInventory(1);
-
-        itemConnector = new Connector(components.get("item_connector"), Direction.DOWN.mask(), Connector.FlowDirection.OUT, Connector.Matter.ITEM);
-        itemConnector.linkedInventory = inventory;
-        connectors.put(new ConnectorLocation(location, Connector.Matter.ITEM), itemConnector);
+    protected void setup() {
+        powerConnector = getConnector("power_connector");
+        itemConnector = getConnector("item_container");
     }
 
     @Override

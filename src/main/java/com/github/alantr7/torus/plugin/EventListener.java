@@ -64,10 +64,7 @@ public class EventListener implements Listener {
         BlockLocation location = new BlockLocation(block.getLocation());
         Direction direction = Direction.NORTH;
 
-        StructureInstance instance = structure.instantiate(location, direction);
-        instance.create();
-
-        instance.location.world.placeStructure(instance);
+        structure.place(location, direction);
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
     }
 
@@ -118,10 +115,8 @@ public class EventListener implements Listener {
             return;
         }
 
-        StructureInstance rotated = machine.structure.instantiate(machine.location, right);
-        rotated.create();
+        StructureInstance rotated = machine.structure.place(machine.location, right);
 
-        rotated.location.world.placeStructure(rotated);
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
 
         event.getPlayer().sendMessage("Machine rotated.");
