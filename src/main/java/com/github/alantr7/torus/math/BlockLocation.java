@@ -46,7 +46,7 @@ public class BlockLocation {
     }
 
     public @Nullable StructureInstance getStructure() {
-        return TorusWorld.loaded.get(this);
+        return TorusWorld.getStructure(this);
     }
 
     @Override

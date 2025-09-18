@@ -45,6 +45,11 @@ public class TorusWorld {
         }
     }
 
+    public static StructureInstance getStructure(BlockLocation location) {
+        BlockLocation machineLocation = occupations.get(location);
+        return machineLocation == null ? null : loaded.get(machineLocation);
+    }
+
     public static void placeStructure(StructureInstance instance) {
         loaded.put(instance.location, instance);
 
