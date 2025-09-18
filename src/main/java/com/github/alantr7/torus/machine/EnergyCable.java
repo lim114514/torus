@@ -37,6 +37,10 @@ public class EnergyCable extends Structure {
       new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
     };
 
+    public EnergyCable() {
+        super("torus:energy_cable");
+    }
+
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         ModelTemplate modelDisconnected = new ModelTemplate();

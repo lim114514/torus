@@ -9,9 +9,14 @@ import org.jetbrains.annotations.NotNull;
 public abstract class Structure {
 
     @Getter
+    private final String id;
+
+    @Getter
     protected int[] bounds = { 0, 0, 0 };
 
-    public Structure() {
+    public Structure(String id) {
+        this.id = id;
+
         IntArrayBuilder builder = new IntArrayBuilder();
         createBounds(builder);
 

@@ -33,6 +33,10 @@ public class SolarGenerator extends Structure {
         CONNECTOR_MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
     }
 
+    public SolarGenerator() {
+        super("torus:solar_generator");
+    }
+
     @Override
     public void createBounds(IntArrayBuilder builder) {
         builder.add(0, 0, 0);

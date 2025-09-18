@@ -29,6 +29,10 @@ public class BlockBreaker extends Structure {
         CONNECTOR_MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
     }
 
+    public BlockBreaker() {
+        super("torus:block_breaker");
+    }
+
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         Model bodyModel = BASE_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);

@@ -16,6 +16,10 @@ import static com.github.alantr7.torus.machine.EnergyCable.MODELS_ITEM;
 
 public class ItemCable extends Structure {
 
+    public ItemCable() {
+        super("torus:item_cable");
+    }
+
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         ModelTemplate modelDisconnected = new ModelTemplate();
