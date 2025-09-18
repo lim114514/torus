@@ -86,6 +86,49 @@ public class EventListener implements Listener {
         }
     }
 
+    @EventHandler
+    void onMachineRotate(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
+
+        ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
+        if (item.getType() != Material.DEBUG_STICK)
+            return;
+
+        if (cooldowns.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
+            return;
+
+        StructureInstance machine = new BlockLocation(event.getClickedBlock().getLocation()).getStructure();
+        if (machine == null)
+            return;
+
+        event.setCancelled(true);
+
+        machine.remove();
+
+        Direction right = switch (machine.direction) {
+            case NORTH -> Direction.EAST;
+            case EAST -> Direction.SOUTH;
+            case SOUTH -> Direction.WEST;
+            case WEST -> Direction.NORTH;
+            default -> null;
+        };
+
+        if (right == null) {
+            event.getPlayer().sendMessage("Can not rotate this machine.");
+            return;
+        }
+
+        StructureInstance rotated = machine.structure.instantiate(machine.location, right);
+        rotated.create();
+
+        TorusWorld.placeStructure(rotated);
+
+        cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
+
+        event.getPlayer().sendMessage("Machine rotated.");
+    }
+
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     void registerEvents(@Inject TorusPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
