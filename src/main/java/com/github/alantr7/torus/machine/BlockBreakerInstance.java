@@ -14,6 +14,7 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
@@ -36,8 +37,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     static ModelTemplate BASE_MODEL = new ModelTemplate();
     static {
-        BASE_MODEL.add(new ItemDisplayModelTemplate(Material.STICKY_PISTON, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.0625f), new Vector3f(1f, 0.625f, 1f), 0f, 90f));
-        BASE_MODEL.add(new ItemDisplayModelTemplate(Material.DISPENSER, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, -0.5f + 0.125f), new Vector3f(0.8125f, 0.8125f, 0.25f), 0f, 0f));
+        BASE_MODEL.add(new ItemDisplayModelTemplate(Material.STICKY_PISTON, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.0f), new Vector3f(1f, 0.75f, 1f), 180f, 90f));
+        BASE_MODEL.add(new ItemDisplayModelTemplate(Material.DISPENSER, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, -0.5f + 0.0625f), new Vector3f(0.75f, 0.75f, 0.125f), 180f, 0f));
     }
 
     static ModelTemplate CONNECTOR_MODEL = new ModelTemplate();
