@@ -67,7 +67,7 @@ public class EventListener implements Listener {
         StructureInstance instance = structure.instantiate(location, direction);
         instance.create();
 
-        TorusWorld.placeStructure(instance);
+        instance.location.world.placeStructure(instance);
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
     }
 
@@ -76,13 +76,12 @@ public class EventListener implements Listener {
         if (event.getAction() != Action.LEFT_CLICK_BLOCK)
             return;
 
-        BlockLocation loc = TorusWorld.occupations.get(new BlockLocation(event.getClickedBlock().getLocation()));
-        if (loc == null)
-            return;
+        TorusWorld world = TorusPlugin.getInstance().getWorldManager().getWorld(event.getPlayer().getWorld());
+        BlockLocation loc = new BlockLocation(event.getClickedBlock().getLocation());
 
-        StructureInstance structure = TorusWorld.loaded.get(loc);
+        StructureInstance structure = world.getStructure(loc);
         if (structure != null) {
-            TorusWorld.removeStructure(structure);
+            world.removeStructure(structure);
         }
     }
 
@@ -122,8 +121,7 @@ public class EventListener implements Listener {
         StructureInstance rotated = machine.structure.instantiate(machine.location, right);
         rotated.create();
 
-        TorusWorld.placeStructure(rotated);
-
+        rotated.location.world.placeStructure(rotated);
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
 
         event.getPlayer().sendMessage("Machine rotated.");

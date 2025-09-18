@@ -8,8 +8,10 @@ import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -20,30 +22,16 @@ import java.util.Set;
 @Singleton
 public class TorusWorld {
 
-    public static final Map<BlockLocation, StructureInstance> loaded = new HashMap<>();
+    @Getter
+    private final World bukkit;
 
-    public static final Map<BlockLocation, BlockLocation> occupations = new HashMap<>();
+    @Getter
+    private final Map<BlockLocation, StructureInstance> loaded = new HashMap<>();
 
-    @InvokePeriodically(interval = 20)
-    void tickLoadedStructures() {
-        loaded.forEach((location, instance) -> instance.tick());
+    private static final Map<BlockLocation, BlockLocation> occupations = new HashMap<>();
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Block block = player.getTargetBlockExact(5);
-            if (block == null) {
-                player.resetTitle();
-                continue;
-            }
-
-            BlockLocation occupation = occupations.get(new BlockLocation(block.getLocation()));
-            if (occupation == null)
-                continue;
-
-            StructureInstance structure = loaded.get(occupation);
-            if (structure instanceof EnergyContainer generator) {
-                player.sendTitle("", structure.structure.getClass().getSimpleName() + " (" + generator.getStoredEnergy() + " / " + generator.getEnergyCapacity() + " RF)", 0, 25, 0);
-            }
-        }
+    public TorusWorld(World bukkit) {
+        this.bukkit = bukkit;
     }
 
     static final Set<Material> MINECRAFT_BLOCK_CONTAINER_TYPES = Set.of(
@@ -60,12 +48,12 @@ public class TorusWorld {
         return false;
     }
 
-    public static StructureInstance getStructure(BlockLocation location) {
+    public StructureInstance getStructure(BlockLocation location) {
         BlockLocation machineLocation = occupations.get(location);
         return machineLocation == null ? null : loaded.get(machineLocation);
     }
 
-    public static void placeStructure(StructureInstance instance) {
+    public void placeStructure(StructureInstance instance) {
         loaded.put(instance.location, instance);
 
         // Place bounds
@@ -109,7 +97,7 @@ public class TorusWorld {
         }
     }
 
-    public static void removeStructure(StructureInstance instance) {
+    public void removeStructure(StructureInstance instance) {
         loaded.remove(instance.location);
 
         // Remove bounds

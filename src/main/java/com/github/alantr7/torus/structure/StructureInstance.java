@@ -5,7 +5,6 @@ import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
-import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -36,7 +35,7 @@ public abstract class StructureInstance {
     public abstract void tick();
 
     public void remove() {
-        TorusWorld.removeStructure(this);
+        location.world.removeStructure(this);
     }
 
 }
