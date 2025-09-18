@@ -12,9 +12,10 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
+import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Material;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.joml.Vector3f;
 
@@ -48,8 +49,8 @@ public class InventoryInterfaceInstance extends StructureInstance {
     }
 
     public void updateConnections() {
-        if (location.getRelative(direction).getBlock().getType() == Material.CHEST) {
-            connector.linkedInventory = new BukkitStructureInventory(((Chest) location.getRelative(direction).getBlock().getState()).getBlockInventory());
+        if (TorusWorld.isItemContainer(location.getRelative(direction))) {
+            connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction).getBlock().getState()).getInventory());
         }
 
         boolean shouldUpdateModel = false;

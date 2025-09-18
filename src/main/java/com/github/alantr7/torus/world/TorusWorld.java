@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Singleton
 public class TorusWorld {
@@ -43,6 +44,20 @@ public class TorusWorld {
                 player.sendTitle("", structure.structure.getClass().getSimpleName() + " (" + generator.getStoredEnergy() + " / " + generator.getEnergyCapacity() + " RF)", 0, 25, 0);
             }
         }
+    }
+
+    static final Set<Material> MINECRAFT_BLOCK_CONTAINER_TYPES = Set.of(
+      Material.CHEST, Material.TRAPPED_CHEST, Material.DROPPER, Material.DISPENSER, Material.HOPPER, Material.SHULKER_BOX
+    );
+    public static boolean isItemContainer(BlockLocation location) {
+        Material material = location.getBlock().getType();
+        if (MINECRAFT_BLOCK_CONTAINER_TYPES.contains(material))
+            return true;
+
+        if (material.name().endsWith("_SHULKER_BOX"))
+            return true;
+
+        return false;
     }
 
     public static StructureInstance getStructure(BlockLocation location) {
