@@ -2,6 +2,8 @@ package com.github.alantr7.torus.structure.data;
 
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
@@ -9,24 +11,28 @@ import java.util.Map;
 
 public class DataContainer {
 
+    @Getter @Setter
     boolean isDirty;
 
     private final Map<String, Data<Object>> entries = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public <T> Data<T> persist(String name, Data.Type<T> type) {
-        Data<T> data = new Data<>(this, type);
-        entries.put(name, (Data<Object>) data);
-
-        return data;
+        return persist(name, type, null);
     }
 
     @SuppressWarnings("unchecked")
     public <T> Data<T> persist(String name, Data.Type<T> type, T defaultValue) {
-        Data<T> data = new Data<>(this, type);
-        entries.put(name, (Data<Object>) data);
+        Data data = entries.computeIfAbsent(name, v -> {
+            Data d = new Data(this, type);
+            d.value = defaultValue;
 
-        data.value = defaultValue;
+            return d;
+        });
+
+        if (data.type != type)
+            throw new RuntimeException("Conflicting data types!");
+
         return data;
     }
 

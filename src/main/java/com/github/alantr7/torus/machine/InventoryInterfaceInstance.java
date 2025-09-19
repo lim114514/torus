@@ -25,6 +25,8 @@ public class InventoryInterfaceInstance extends StructureInstance {
     public InventoryInterfaceInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Connector.FlowDirection flowDirection) {
         super(Structures.INVENTORY_INTERFACE, location, bodyDef, direction);
         this.flowDirection = flowDirection;
+
+        flowDirectionData = dataContainer.persist("flow", Data.Type.INT, flowDirection.ordinal());
     }
 
     InventoryInterfaceInstance(LoadContext context) {
@@ -34,7 +36,8 @@ public class InventoryInterfaceInstance extends StructureInstance {
     @Override
     protected void setup() {
         connector = getConnector("connector");
-        flowDirectionData = dataContainer.persist("flow", Data.Type.INT, direction.ordinal());
+        flowDirectionData = dataContainer.persist("flow", Data.Type.INT, Connector.FlowDirection.NONE.ordinal());
+        flowDirection = Connector.FlowDirection.values()[flowDirectionData.get()];
     }
 
     public void updateConnections() {
@@ -63,7 +66,7 @@ public class InventoryInterfaceInstance extends StructureInstance {
             }
 
             // Check if this cable connects to another cable
-            if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.type == Connector.Matter.ITEM) {
+            if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Connector.Matter.ITEM) {
                 hasConnected = true;
                 shouldUpdateModel = true;
 

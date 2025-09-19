@@ -28,7 +28,7 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
 
     @Override
     protected void setup() {
-        storedEnergy = dataContainer.persist("capacity", Data.Type.INT, 0);
+        storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
     }
 
     @Override

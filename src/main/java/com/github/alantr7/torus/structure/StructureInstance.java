@@ -13,6 +13,7 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.structure.display.Model;
 import com.github.alantr7.torus.world.TorusWorld;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ItemDisplay;
 
@@ -27,6 +28,7 @@ public abstract class StructureInstance {
 
     public final Direction direction;
 
+    @Getter
     protected final DataContainer dataContainer;
 
     protected Map<String, StructureComponent> components = new HashMap<>();
@@ -146,6 +148,8 @@ public abstract class StructureInstance {
 
         // Data Container
         buffer.writeBytes(dataContainer.toBytes());
+
+        dataContainer.setDirty(false);
     }
 
     public static StructureInstance fromBytes(TorusWorld world, ByteArrayReader reader) {
