@@ -11,13 +11,12 @@ public abstract class Structure {
     @Getter
     private final String id;
 
-    @Getter
-    private final Class<?> instanceClass;
+    protected final Class<? extends StructureInstance> instanceClass;
 
     @Getter
     protected int[] bounds = { 0, 0, 0 };
 
-    public Structure(String id, Class<?> instanceClass) {
+    public Structure(String id, Class<? extends StructureInstance> instanceClass) {
         this.id = id;
         this.instanceClass = instanceClass;
 

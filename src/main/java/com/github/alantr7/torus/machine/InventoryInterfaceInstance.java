@@ -3,6 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
+import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
@@ -16,6 +17,8 @@ public class InventoryInterfaceInstance extends StructureInstance {
 
     public Connector.FlowDirection flowDirection;
 
+    protected Data<Integer> flowDirectionData;
+
     protected Connector connector;
 
     public InventoryInterfaceInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Connector.FlowDirection flowDirection) {
@@ -26,6 +29,7 @@ public class InventoryInterfaceInstance extends StructureInstance {
     @Override
     protected void setup() {
         connector = getConnector("connector");
+        flowDirectionData = dataContainer.persist("flow", Data.Type.INT, direction.ordinal());
     }
 
     public void updateConnections() {

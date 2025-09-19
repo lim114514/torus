@@ -9,6 +9,8 @@ import lombok.Setter;
 
 public class StructureComponent {
 
+    public final String name;
+
     public final BlockLocation absoluteLocation;
 
     public final BlockLocation relativeLocation;
@@ -18,9 +20,18 @@ public class StructureComponent {
     @Getter @Setter
     protected Model model;
 
-    public StructureComponent(StructureInstance structure, BlockLocation relativeLocation, Model model) {
+    public StructureComponent(String name, BlockLocation absoluteLocation, BlockLocation relativeLocation, Direction direction, Model model) {
+        this.name = name;
+        this.absoluteLocation = absoluteLocation;
+        this.relativeLocation = relativeLocation;
+        this.direction = direction;
+        this.model = model;
+    }
+
+    public StructureComponent(StructureInstance structure, BlockLocation relativeLocation, String name, Model model) {
         this.absoluteLocation = structure.location.getRelative(relativeLocation);
         this.relativeLocation = relativeLocation;
+        this.name = name;
         this.direction = structure.direction;
         this.model = model;
     }

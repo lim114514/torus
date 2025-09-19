@@ -1,25 +1,23 @@
 package com.github.alantr7.torus.world;
 
-import com.github.alantr7.bukkitplugin.annotations.core.InvokePeriodically;
-import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
+import com.github.alantr7.bytils.buffer.ByteArrayReader;
+import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.InventoryInterfaceInstance;
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
-import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@Singleton
 public class TorusWorld {
 
     @Getter
@@ -93,8 +91,11 @@ public class TorusWorld {
         });
 
         if (instance instanceof InventoryInterfaceInstance iii) {
+            iii.updateConnections();
             iii.updateModel();
         }
+
+        save();
     }
 
     public void removeStructure(StructureInstance instance) {
@@ -138,6 +139,54 @@ public class TorusWorld {
             if (component.getModel() != null)
                 component.getModel().remove();
         });
+
+        save();
+    }
+
+    void load() {
+        File file = new File(bukkit.getWorldFolder(), "torus.dat");
+        if (!file.exists())
+            return;
+
+        try {
+            byte[] bytes = Files.readAllBytes(file.toPath());
+            ByteArrayReader reader = new ByteArrayReader(bytes);
+
+            while (reader.hasNext()) {
+                StructureInstance instance = StructureInstance.fromBytes(this, reader);
+                if (instance != null) {
+                    loaded.put(instance.location, instance);
+
+                    // Place bounds
+                    int[] bounds = instance.structure.getBounds();
+                    for (int i = 0; i < bounds.length; i += 3) {
+                        BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]);
+                        occupations.put(relative, instance.location);
+                    }
+
+                    Bukkit.broadcastMessage("Loaded structure at " + instance.location);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save() {
+        ByteArrayWriter writer = new ByteArrayWriter();
+
+        for (StructureInstance structure : loaded.values()) {
+            structure.save(writer);
+        }
+
+        File file = new File(bukkit.getWorldFolder(), "torus.dat");
+        file.delete();
+
+        try {
+            Files.write(file.toPath(), writer.getBuffer());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

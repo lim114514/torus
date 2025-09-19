@@ -22,7 +22,10 @@ public class TorusWorldManager {
 
     public TorusWorldManager() {
         for (World world : Bukkit.getWorlds()) {
-            worlds.put(world.getUID(), new TorusWorld(world));
+            TorusWorld torusWorld = new TorusWorld(world);
+            torusWorld.load();
+
+            worlds.put(world.getUID(), torusWorld);
         }
     }
 
