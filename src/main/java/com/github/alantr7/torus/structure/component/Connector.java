@@ -2,7 +2,6 @@ package com.github.alantr7.torus.structure.component;
 
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.math.BlockLocation;
-import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -42,7 +41,7 @@ public class Connector implements Connectable {
     }
 
     public enum Matter {
-        ITEM, ENERGY, LIQUID,
+        ITEM, ENERGY, FLUID,
         ;
     }
 

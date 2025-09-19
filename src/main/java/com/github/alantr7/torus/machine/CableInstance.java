@@ -11,8 +11,7 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connectable;
 import com.github.alantr7.torus.structure.component.Connector;
 
-import static com.github.alantr7.torus.machine.EnergyCable.MODELS_ENERGY;
-import static com.github.alantr7.torus.machine.EnergyCable.MODELS_ITEM;
+import static com.github.alantr7.torus.machine.EnergyCable.*;
 
 public class CableInstance extends StructureInstance implements Connectable {
 
@@ -23,7 +22,7 @@ public class CableInstance extends StructureInstance implements Connectable {
     boolean shouldUpdateModel;
 
     public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Connector.Matter type) {
-        super(type == Connector.Matter.ENERGY ? Structures.ENERGY_CABLE : Structures.ITEM_CABLE, location, bodyDef, Direction.NORTH);
+        super(type == Connector.Matter.ENERGY ? Structures.ENERGY_CABLE : type == Connector.Matter.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
         this.type.update(type.ordinal());
     }
 
@@ -83,12 +82,12 @@ public class CableInstance extends StructureInstance implements Connectable {
         components.get("base").getModel().remove();
         ModelTemplate model = new ModelTemplate();
         if (connections.get() == 0) {
-            model.add(getType() == Connector.Matter.ENERGY ? MODELS_ENERGY[6] : MODELS_ITEM[6]);
+            model.add(CABLE_MODELS[type.get()][6]);
         }
 
         for (Direction direction : Direction.values()) {
             if (isConnected(direction)) {
-                model.add(getType() == Connector.Matter.ENERGY ? MODELS_ENERGY[direction.ordinal()] : MODELS_ITEM[direction.ordinal()]);
+                model.add(CABLE_MODELS[type.get()][direction.ordinal()]);
             }
         }
 

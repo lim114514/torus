@@ -56,6 +56,9 @@ public class EventListener implements Listener {
         else if (item.getItemMeta().hasEnchant(Enchantment.CHANNELING)) {
             structure = Structures.ITEM_CABLE;
         }
+        else if (item.getItemMeta().hasEnchant(Enchantment.BINDING_CURSE)) {
+            structure = Structures.FLUID_CABLE;
+        }
         else if (item.getItemMeta().hasEnchant(Enchantment.DENSITY)) {
             structure = Structures.INVENTORY_INTERFACE;
         }

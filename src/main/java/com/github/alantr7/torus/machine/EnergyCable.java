@@ -28,6 +28,16 @@ public class EnergyCable extends Structure {
     };
 
     static ItemDisplayModelTemplate[] MODELS_ITEM = {
+      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
+    };
+
+    static ItemDisplayModelTemplate[] MODELS_FLUID = {
       new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
       new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
       new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
@@ -35,6 +45,10 @@ public class EnergyCable extends Structure {
       new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
       new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
       new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
+    };
+
+    static ItemDisplayModelTemplate[][] CABLE_MODELS = {
+      MODELS_ITEM, MODELS_ENERGY, MODELS_FLUID
     };
 
     public EnergyCable() {

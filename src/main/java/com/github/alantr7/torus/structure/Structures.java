@@ -13,6 +13,7 @@ public class Structures {
 
     public static final EnergyCable ENERGY_CABLE = register(new EnergyCable());
     public static final ItemCable ITEM_CABLE = register(new ItemCable());
+    public static final FluidPipe FLUID_CABLE = register(new FluidPipe());
 
     public static final InventoryInterface INVENTORY_INTERFACE = register(new InventoryInterface());
 
