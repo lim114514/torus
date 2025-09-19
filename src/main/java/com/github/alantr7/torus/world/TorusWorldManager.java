@@ -5,6 +5,8 @@ import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -39,7 +41,20 @@ public class TorusWorldManager {
 
     @InvokePeriodically(interval = 20)
     void tickLoadedStructures() {
-        worlds.forEach((id, world) -> world.getLoaded().forEach((location, instance) -> instance.tick()));
+        worlds.forEach((id, world) -> {
+            boolean isDirty = false;
+            for (Map.Entry<BlockLocation, StructureInstance> entry : world.getLoaded().entrySet()) {
+                StructureInstance instance = entry.getValue();
+                if (instance.getDataContainer().isDirty()) {
+                    isDirty = true;
+                }
+                instance.tick();
+            }
+
+            if (isDirty) {
+                world.save();
+            }
+        });
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             Block block = player.getTargetBlockExact(5);
