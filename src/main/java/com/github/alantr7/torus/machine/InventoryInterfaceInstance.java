@@ -16,17 +16,13 @@ import org.bukkit.inventory.ItemStack;
 
 public class InventoryInterfaceInstance extends StructureInstance {
 
-    public Connector.FlowDirection flowDirection;
-
-    protected Data<Integer> flowDirectionData;
+    protected Data<Integer> flowDirectionData = dataContainer.persist("flow", Data.Type.INT);
 
     protected Connector connector;
 
     public InventoryInterfaceInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Connector.FlowDirection flowDirection) {
         super(Structures.INVENTORY_INTERFACE, location, bodyDef, direction);
-        this.flowDirection = flowDirection;
-
-        flowDirectionData = dataContainer.persist("flow", Data.Type.INT, flowDirection.ordinal());
+        flowDirectionData.update(flowDirection.ordinal());
     }
 
     InventoryInterfaceInstance(LoadContext context) {
@@ -36,8 +32,6 @@ public class InventoryInterfaceInstance extends StructureInstance {
     @Override
     protected void setup() {
         connector = getConnector("connector");
-        flowDirectionData = dataContainer.persist("flow", Data.Type.INT, Connector.FlowDirection.NONE.ordinal());
-        flowDirection = Connector.FlowDirection.values()[flowDirectionData.get()];
     }
 
     public void updateConnections() {
@@ -104,8 +98,12 @@ public class InventoryInterfaceInstance extends StructureInstance {
 
     @Override
     public void tick() {
-        if (flowDirection != Connector.FlowDirection.IN && flowDirection != Connector.FlowDirection.ALL)
+        if (getFlowDirection() != Connector.FlowDirection.IN && getFlowDirection() != Connector.FlowDirection.ALL)
             return;
+
+        if (TorusWorld.isItemContainer(location.getRelative(direction))) {
+            connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction).getBlock().getState()).getInventory());
+        }
 
         connector.updateConnections();
         for (Connector.Connection conn : connector.getConnectedStructures()) {
@@ -126,6 +124,10 @@ public class InventoryInterfaceInstance extends StructureInstance {
                 }
             }
         }
+    }
+
+    public Connector.FlowDirection getFlowDirection() {
+        return Connector.FlowDirection.values()[flowDirectionData.get()];
     }
 
 }

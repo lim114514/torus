@@ -39,8 +39,9 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     @Override
     protected void setup() {
         powerConnector = getConnector("power_connector");
-        itemConnector = getConnector("item_container");
+        itemConnector = getConnector("item_connector");
         inventory = new CustomStructureInventory(1);
+        itemConnector.linkedInventory = inventory;
     }
 
     @Override
