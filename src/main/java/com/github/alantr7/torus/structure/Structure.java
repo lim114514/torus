@@ -12,10 +12,14 @@ public abstract class Structure {
     private final String id;
 
     @Getter
+    private final Class<?> instanceClass;
+
+    @Getter
     protected int[] bounds = { 0, 0, 0 };
 
-    public Structure(String id) {
+    public Structure(String id, Class<?> instanceClass) {
         this.id = id;
+        this.instanceClass = instanceClass;
 
         IntArrayBuilder builder = new IntArrayBuilder();
         createBounds(builder);

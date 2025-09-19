@@ -24,7 +24,7 @@ public class InventoryInterface extends Structure {
     }
 
     public InventoryInterface() {
-        super("torus:inventory_interface");
+        super("torus:inventory_interface", InventoryInterfaceInstance.class);
     }
 
     @Override

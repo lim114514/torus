@@ -38,7 +38,7 @@ public class EnergyCable extends Structure {
     };
 
     public EnergyCable() {
-        super("torus:energy_cable");
+        super("torus:energy_cable", CableInstance.class);
     }
 
     @Override

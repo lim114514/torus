@@ -34,7 +34,7 @@ public class SolarGenerator extends Structure {
     }
 
     public SolarGenerator() {
-        super("torus:solar_generator");
+        super("torus:solar_generator", SolarGeneratorInstance.class);
     }
 
     @Override
