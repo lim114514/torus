@@ -8,6 +8,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -65,7 +66,7 @@ public class TorusWorldManager {
 
             StructureInstance structure = worlds.get(player.getWorld().getUID()).getStructure(new BlockLocation(block.getLocation()));
             if (structure instanceof EnergyContainer generator) {
-                player.sendTitle("", structure.structure.getClass().getSimpleName() + " (" + generator.getStoredEnergy() + " / " + generator.getEnergyCapacity() + " RF)", 0, 25, 0);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GOLD + structure.structure.getClass().getSimpleName() + ChatColor.GRAY + " (" + generator.getStoredEnergy() + " / " + generator.getEnergyCapacity() + " RF)"));
             }
         }
     }
