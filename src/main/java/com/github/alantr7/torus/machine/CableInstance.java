@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -27,6 +28,10 @@ public class CableInstance extends StructureInstance implements Connectable {
     public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Connector.Matter type) {
         super(type == Connector.Matter.ENERGY ? Structures.ENERGY_CABLE : Structures.ITEM_CABLE, location, bodyDef, Direction.NORTH);
         this.type = type;
+    }
+
+    CableInstance(LoadContext context) {
+        super(context);
     }
 
     @Override

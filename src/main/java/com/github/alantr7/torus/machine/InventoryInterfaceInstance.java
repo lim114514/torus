@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
@@ -24,6 +25,10 @@ public class InventoryInterfaceInstance extends StructureInstance {
     public InventoryInterfaceInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Connector.FlowDirection flowDirection) {
         super(Structures.INVENTORY_INTERFACE, location, bodyDef, direction);
         this.flowDirection = flowDirection;
+    }
+
+    InventoryInterfaceInstance(LoadContext context) {
+        super(context);
     }
 
     @Override

@@ -22,6 +22,10 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
         super(Structures.SOLAR_GENERATOR, location, bodyDef, direction);
     }
 
+    SolarGeneratorInstance(LoadContext context) {
+        super(context);
+    }
+
     @Override
     protected void setup() {
         storedEnergy = dataContainer.persist("capacity", Data.Type.INT, 0);
