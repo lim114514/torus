@@ -62,6 +62,9 @@ public class EventListener implements Listener {
         else if (item.getItemMeta().hasEnchant(Enchantment.DENSITY)) {
             structure = Structures.INVENTORY_INTERFACE;
         }
+        else if (item.getItemMeta().hasEnchant(Enchantment.BREACH)) {
+            structure = Structures.PUMP;
+        }
         else return;
 
         BlockLocation location = new BlockLocation(block.getLocation());

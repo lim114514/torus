@@ -10,6 +10,7 @@ public class Structures {
     private static final Map<String, Structure> structures = new HashMap<>();
 
     public static final BlockBreaker BLOCK_BREAKER = register(new BlockBreaker());
+    public static final Pump PUMP = register(new Pump());
 
     public static final EnergyCable ENERGY_CABLE = register(new EnergyCable());
     public static final ItemCable ITEM_CABLE = register(new ItemCable());
