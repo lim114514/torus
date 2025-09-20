@@ -1,9 +1,11 @@
 package com.github.alantr7.torus.structure.component;
 
+import com.github.alantr7.torus.Fluid;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
+import com.github.alantr7.torus.structure.FluidContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import lombok.Getter;
@@ -30,7 +32,7 @@ public class Connector implements Connectable {
 
     public StructureInventory linkedInventory;
 
-    @Getter
+    @Getter @Setter
     protected FlowDirection flowDirection;
 
     public final Matter matter;
@@ -118,6 +120,28 @@ public class Connector implements Connectable {
 
             EnergyContainer capacitor = (EnergyContainer) conn.structure;
             amount -= capacitor.consumeEnergy(Math.min(amount, conn.connector.maximumOutput));
+
+            if (amount == 0)
+                break;
+        }
+
+        return original - amount;
+    }
+
+    public int consumeFluid(Fluid fluid, int amount) {
+        int original = amount;
+        for (Connection conn : connectedStructures) {
+            if (conn.connector.matter != Matter.FLUID)
+                continue;
+
+            if (conn.connector.flowDirection != FlowDirection.OUT && conn.connector.flowDirection != FlowDirection.ALL)
+                continue;
+
+            FluidContainer container = (FluidContainer) conn.structure;
+            if (container.getFluid() != fluid)
+                continue;
+
+            amount -= container.consumeFluid(Math.min(amount, conn.connector.maximumOutput));
 
             if (amount == 0)
                 break;
