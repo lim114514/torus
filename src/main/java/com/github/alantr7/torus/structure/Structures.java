@@ -18,6 +18,8 @@ public class Structures {
 
     public static final InventoryInterface INVENTORY_INTERFACE = register(new InventoryInterface());
 
+    public static final FluidTank FLUID_TANK = register(new FluidTank());
+
     public static final SolarGenerator SOLAR_GENERATOR = register(new SolarGenerator());
 
     private static <T extends Structure> T register(T t) {

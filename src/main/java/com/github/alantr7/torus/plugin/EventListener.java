@@ -65,6 +65,9 @@ public class EventListener implements Listener {
         else if (item.getItemMeta().hasEnchant(Enchantment.BREACH)) {
             structure = Structures.PUMP;
         }
+        else if (item.getItemMeta().hasEnchant(Enchantment.BANE_OF_ARTHROPODS)) {
+            structure = Structures.FLUID_TANK;
+        }
         else return;
 
         BlockLocation location = new BlockLocation(block.getLocation());
