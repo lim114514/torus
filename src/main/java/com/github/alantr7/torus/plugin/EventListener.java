@@ -4,6 +4,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Inject;
 import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -35,45 +36,18 @@ public class EventListener implements Listener {
             return;
 
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        if (item.getType() != Material.STICK)
+        if (cooldowns.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
             return;
 
-        if (cooldowns.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
-            return;;
+        TorusItem torusItem = TorusItem.getFromItemStack(item);
+        if (torusItem == null || !torusItem.isPlaceable())
+            return;
 
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
-
-        Structure structure;
-        if (item.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) {
-            structure = Structures.SOLAR_GENERATOR;
-        }
-        else if (item.getItemMeta().hasEnchant(Enchantment.DEPTH_STRIDER)) {
-            structure = Structures.BLOCK_BREAKER;
-        }
-        else if (item.getItemMeta().hasEnchant(Enchantment.AQUA_AFFINITY)) {
-            structure = Structures.ENERGY_CABLE;
-        }
-        else if (item.getItemMeta().hasEnchant(Enchantment.CHANNELING)) {
-            structure = Structures.ITEM_CABLE;
-        }
-        else if (item.getItemMeta().hasEnchant(Enchantment.BINDING_CURSE)) {
-            structure = Structures.FLUID_CABLE;
-        }
-        else if (item.getItemMeta().hasEnchant(Enchantment.DENSITY)) {
-            structure = Structures.INVENTORY_INTERFACE;
-        }
-        else if (item.getItemMeta().hasEnchant(Enchantment.BREACH)) {
-            structure = Structures.PUMP;
-        }
-        else if (item.getItemMeta().hasEnchant(Enchantment.BANE_OF_ARTHROPODS)) {
-            structure = Structures.FLUID_TANK;
-        }
-        else return;
-
         BlockLocation location = new BlockLocation(block.getLocation());
-        Direction direction = Direction.NORTH;
+        Direction direction = Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite();
 
-        structure.place(location, direction);
+        torusItem.getStructure().place(location, direction);
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
     }
 

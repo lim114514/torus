@@ -1,10 +1,10 @@
 package com.github.alantr7.torus;
 
 import com.github.alantr7.bukkitplugin.BukkitPlugin;
-import com.github.alantr7.bukkitplugin.annotations.core.Inject;
 import com.github.alantr7.bukkitplugin.annotations.generative.JavaPlugin;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocate;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocations;
+import com.github.alantr7.torus.item.TorusItemManager;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 
@@ -25,7 +25,10 @@ public class TorusPlugin extends BukkitPlugin {
 
     @Override
     protected void onPluginDisable() {
+    }
 
+    public TorusItemManager getItemManager() {
+        return getSingleton(TorusItemManager.class);
     }
 
     public TorusWorldManager getWorldManager() {
