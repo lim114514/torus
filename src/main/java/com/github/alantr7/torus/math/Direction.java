@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.math;
 
+import org.bukkit.block.BlockFace;
+
 public enum Direction {
 
     NORTH(0, 0, -1, 0, 0),
@@ -38,6 +40,18 @@ public enum Direction {
 
             case NORTH -> SOUTH;
             case SOUTH -> NORTH;
+        };
+    }
+
+    public static Direction fromBlockFace(BlockFace face) {
+        return switch (face) {
+            case NORTH -> NORTH;
+            case EAST -> EAST;
+            case SOUTH -> SOUTH;
+            case WEST -> WEST;
+            case UP -> UP;
+            case DOWN -> DOWN;
+            default -> null;
         };
     }
 
