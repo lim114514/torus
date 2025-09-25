@@ -24,8 +24,10 @@ public class SolarGenerator extends Structure {
         MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE_POWDER, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, 0.125f, 0), new Vector3f(0.75f, 0.25f, 0.75f), 0f, 0f));
         MODEL.add(new ItemDisplayModelTemplate(Material.LIGHT_GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, 1.0625f, 0), new Vector3f(0.125f, 1.625f, 0.125f), 0f, 0f));
 
-        MODEL.add(new ItemDisplayModelTemplate(Material.BLACK_CONCRETE, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, 1.875f, 0), new Vector3f(2.4f, 0.062f, 2.4f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.LAPIS_BLOCK, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, 1.875f, 0), new Vector3f(2.25f, 0.0625f, 2.25f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.BLACK_CONCRETE, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, 1.875f, 0), new Vector3f(2.4f, 0.062f, 2.4f), 0f, -20f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.LAPIS_BLOCK, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, 1.875f, 0), new Vector3f(2.25f, 0.0625f, 2.25f), 0f, -20f));
+
+        System.out.println();
     }
 
     static ModelTemplate CONNECTOR_MODEL = new ModelTemplate();
