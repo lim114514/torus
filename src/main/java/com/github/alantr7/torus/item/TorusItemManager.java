@@ -20,6 +20,8 @@ public class TorusItemManager {
 
     {
         registerItem(new TorusItem("torus:solar_generator", Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:power_bank", Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList(), 0));
+
         registerItem(new TorusItem("torus:block_breaker", Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList(), 0));
         registerItem(new TorusItem("torus:pump", Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList(), 0));
 
