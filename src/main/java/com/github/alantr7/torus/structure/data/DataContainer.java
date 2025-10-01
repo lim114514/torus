@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DataContainer {
@@ -67,8 +66,6 @@ public class DataContainer {
             String key = keys.at(packed & 0xf);
             Data.Type type;
             Object value;
-
-            Bukkit.broadcastMessage("loading key " + key + " at " + (packed & 0xf));
 
             switch (typeId) {
                 // INT
