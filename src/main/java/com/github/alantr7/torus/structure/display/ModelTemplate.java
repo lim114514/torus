@@ -1,10 +1,13 @@
 package com.github.alantr7.torus.structure.display;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.math.MathUtils;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
 
@@ -36,6 +39,7 @@ public class ModelTemplate {
 
             ItemDisplay entity = location.getWorld().spawn(partLocation, ItemDisplay.class);
             entity.setItemStack(new ItemStack(part.material()));
+            entity.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "purpose"), PersistentDataType.STRING, "structure_model");
 
             Transformation transformation = entity.getTransformation();
             transformation.getScale().set(part.scale());
