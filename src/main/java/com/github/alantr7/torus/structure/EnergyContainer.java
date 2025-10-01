@@ -1,6 +1,10 @@
 package com.github.alantr7.torus.structure;
 
-public interface EnergyContainer {
+import com.github.alantr7.torus.world.BlockLocation;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+public interface EnergyContainer extends Inspectable {
 
     double getEnergyCapacity();
 
@@ -26,6 +30,11 @@ public interface EnergyContainer {
         setStoredEnergy(Math.min(starting + amount, getEnergyCapacity()));
 
         return getStoredEnergy() - starting;
+    }
+
+    @Override
+    default String getInspectionText(BlockLocation location, Player player) {
+        return ChatColor.GOLD + getClass().getSimpleName() + ChatColor.RESET + " [" + getStoredEnergy() + " / " + getEnergyCapacity() + " RF]";
     }
 
 }

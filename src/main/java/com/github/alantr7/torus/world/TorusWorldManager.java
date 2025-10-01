@@ -4,12 +4,11 @@ import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.InvokePeriodically;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.structure.EnergyContainer;
+import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.StructureInstance;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -88,9 +87,10 @@ public class TorusWorldManager implements Listener {
                 continue;
             }
 
-            StructureInstance structure = worlds.get(player.getWorld().getUID()).getStructure(new BlockLocation(block.getLocation()));
-            if (structure instanceof EnergyContainer generator) {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GOLD + structure.structure.getClass().getSimpleName() + ChatColor.GRAY + " (" + generator.getStoredEnergy() + " / " + generator.getEnergyCapacity() + " RF)"));
+            BlockLocation blockLocation = new BlockLocation(block.getLocation());
+            StructureInstance structure = worlds.get(player.getWorld().getUID()).getStructure(blockLocation);
+            if (structure instanceof Inspectable generator) {
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(generator.getInspectionText(blockLocation, player)));
             }
         }
     }
