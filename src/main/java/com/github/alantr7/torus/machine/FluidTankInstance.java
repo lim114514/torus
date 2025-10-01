@@ -1,19 +1,17 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.Fluid;
-import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class FluidTankInstance extends StructureInstance implements FluidContainer {

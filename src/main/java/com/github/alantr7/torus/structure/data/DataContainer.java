@@ -2,11 +2,13 @@ package com.github.alantr7.torus.structure.data;
 
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
+import com.github.alantr7.torus.math.StringPool;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataContainer {
@@ -36,13 +38,12 @@ public class DataContainer {
         return data;
     }
 
-    public byte[] toBytes() {
+    public byte[] toBytes(StringPool keys) {
         ByteArrayWriter buffer = new ByteArrayWriter();
         buffer.writeU1(entries.size());
 
         entries.forEach((key, entry) -> {
-            buffer.writeString(key);
-            buffer.writeU1(entry.type.id);
+            buffer.writeU1((entry.type.id << 4) | keys.pool(key));
             switch (entry.type.id) {
                 // INT
                 case 0 -> buffer.writeBytes(ByteArrayWriter.toBytes((int) entry.value, 4));
@@ -56,15 +57,19 @@ public class DataContainer {
         return buffer.getBuffer();
     }
 
-    public static DataContainer fromBytes(ByteArrayReader buffer) {
+    public static DataContainer fromBytes(ByteArrayReader buffer, StringPool keys) {
         int entriesCount = buffer.readU1();
         DataContainer container = new DataContainer();
 
         for (int i = 0; i < entriesCount; i++) {
-            String key = buffer.readString();
-            int typeId = buffer.readU1();
+            int packed = buffer.readU1();
+            int typeId = (packed >> 4) & 0xf;
+            String key = keys.at(packed & 0xf);
             Data.Type type;
             Object value;
+
+            Bukkit.broadcastMessage("loading key " + key + " at " + (packed & 0xf));
+
             switch (typeId) {
                 // INT
                 case 0 -> {

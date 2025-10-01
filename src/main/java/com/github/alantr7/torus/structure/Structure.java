@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.structure;
 
-import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.math.IntArrayBuilder;
 import lombok.Getter;
@@ -8,8 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class Structure {
 
-    @Getter
-    private final String id;
+    public final String id;
+
+    public int numericId;
 
     protected final Class<? extends StructureInstance> instanceClass;
 

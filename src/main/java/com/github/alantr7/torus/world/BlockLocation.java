@@ -1,8 +1,8 @@
-package com.github.alantr7.torus.math;
+package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.Nullable;
@@ -13,20 +13,19 @@ public class BlockLocation {
 
     public TorusWorld world;
 
-    public int x, y, z;
+    public int x, y, z, regionX, regionZ;
 
     public BlockLocation(TorusWorld world, int x, int y, int z) {
         this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
+        this.regionX = x >> 9;
+        this.regionZ = z >> 9;
     }
 
     public BlockLocation(Location location) {
-        this.world = TorusPlugin.getInstance().getWorldManager().getWorld(location.getWorld());
-        this.x = location.getBlockX();
-        this.y = location.getBlockY();
-        this.z = location.getBlockZ();
+        this(TorusPlugin.getInstance().getWorldManager().getWorld(location.getWorld()), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
     public BlockLocation getRelative(BlockLocation location) {
@@ -43,6 +42,10 @@ public class BlockLocation {
 
     public Block getBlock() {
         return world.getBukkit().getBlockAt(x, y, z);
+    }
+
+    public TorusChunk getChunk() {
+        return world.getChunk(this);
     }
 
     public @Nullable StructureInstance getStructure() {

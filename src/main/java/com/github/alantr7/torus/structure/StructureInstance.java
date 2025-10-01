@@ -2,7 +2,8 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
-import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.math.StringPool;
+import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -12,8 +13,8 @@ import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.structure.display.Model;
-import com.github.alantr7.torus.world.TorusWorld;
-import lombok.Getter;
+import com.github.alantr7.torus.world.TorusChunk;
+import com.github.alantr7.torus.world.TorusRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ItemDisplay;
 
@@ -28,8 +29,9 @@ public abstract class StructureInstance {
 
     public final Direction direction;
 
-    @Getter
-    protected final DataContainer dataContainer;
+    public final DataContainer dataContainer;
+
+    public boolean isDirty = false;
 
     protected Map<String, StructureComponent> components = new HashMap<>();
 
@@ -95,17 +97,19 @@ public abstract class StructureInstance {
         location.world.removeStructure(this);
     }
 
-    // TODO: Use Utf8Pool for strings in the entire chunk
-    public void save(ByteArrayWriter buffer) {
+    public void save() {
+        isDirty = true;
+        location.getChunk().isDirty = true;
+    }
+
+    public void save(ByteArrayWriter buffer, StringPool keys) {
         // Structure ID
-        buffer.writeString(structure.getId());
+        buffer.writeU2(structure.numericId);
 
         // Location
-//        buffer.writeBytes(ByteArrayWriter.toBytes(location.x & 0xf, 2));
-        buffer.writeBytes(ByteArrayWriter.toBytes(location.x, 4));
-        buffer.writeBytes(ByteArrayWriter.toBytes(location.y, 3));
-//        buffer.writeBytes(ByteArrayWriter.toBytes(location.z % 0xf, 2));
-        buffer.writeBytes(ByteArrayWriter.toBytes(location.z, 4));
+        buffer.writeBytes(ByteArrayWriter.toBytes(location.x & 0xf, 1));;
+        buffer.writeBytes(ByteArrayWriter.toBytes(location.y, 2));
+        buffer.writeBytes(ByteArrayWriter.toBytes(location.z & 0xf, 1));
 
         // Direction
         buffer.writeU1(direction.ordinal());
@@ -115,18 +119,18 @@ public abstract class StructureInstance {
         // Components
         components.forEach((name, component) -> {
             // Name
-            buffer.writeString(name);
+            buffer.writeU1(keys.pool(name));
 
             // Component offset
-            buffer.writeU1(component.relativeLocation.x);
+            buffer.writeU1(((component.relativeLocation.x) << 4) | component.relativeLocation.z);
             buffer.writeU1(component.relativeLocation.y);
-            buffer.writeU1(component.relativeLocation.z);
 
             // Model
             if (component.getModel() != null) {
                 buffer.writeU1(component.getModel().entities.size());
                 for (ItemDisplay entity : component.getModel().entities) {
-                    buffer.writeString(entity.getUniqueId().toString());
+                    buffer.writeBytes(ByteArrayWriter.toBytes(entity.getUniqueId().getMostSignificantBits(), 8));
+                    buffer.writeBytes(ByteArrayWriter.toBytes(entity.getUniqueId().getLeastSignificantBits(), 8));
                 }
             } else {
                 buffer.writeU1(0);
@@ -136,7 +140,7 @@ public abstract class StructureInstance {
         // Connectors
         connectors.forEach((l, connector) -> {
             // Linked component
-            buffer.writeString(connector.getComponent().name);
+            buffer.writeU1(keys.pool(connector.getComponent().name));
 
             int data = connector.matter.ordinal();
             data = (data << 4) | connector.getFlowDirection().ordinal();
@@ -147,22 +151,28 @@ public abstract class StructureInstance {
         });
 
         // Data Container
-        buffer.writeBytes(dataContainer.toBytes());
+        buffer.writeBytes(dataContainer.toBytes(keys));
 
         dataContainer.setDirty(false);
     }
 
-    public static StructureInstance fromBytes(TorusWorld world, ByteArrayReader reader) {
-        String structureId = reader.readString();
+    public static StructureInstance fromBytes(TorusRegion region, TorusChunk chunk, ByteArrayReader reader) {
+        String structureId = Structures.getStructureByNumericId(ByteArrayReader.toInt(reader.readBytes(2))).id;
 
         // Location
-        int x = ByteArrayReader.toInt(reader.readBytes(4));
-        int y = ByteArrayReader.toInt(reader.readBytes(3));
-        int z = ByteArrayReader.toInt(reader.readBytes(4));
-        BlockLocation location = new BlockLocation(world, x, y, z);
+        int x = ByteArrayReader.toInt(reader.readBytes(1));
+        int y = ByteArrayReader.toInt(reader.readBytes(2));
+        int z = ByteArrayReader.toInt(reader.readBytes(1));
+        // TODO: Same as | x and | z?
+        BlockLocation location = new BlockLocation(chunk.world, (chunk.position.x << 4) + x, y, (chunk.position.y << 4) + z);
+
+        Bukkit.broadcastMessage("Loading structure: " + structureId);
 
         // Direction
         int direction = reader.readU1();
+
+        Bukkit.broadcastMessage(" - Location: " + x + ", " + y + ", " + z);
+        Bukkit.broadcastMessage(" - Direction: " + direction + "\n");
 
         // Components Length + Connectors Length
         int counts = reader.readU1();
@@ -172,35 +182,43 @@ public abstract class StructureInstance {
         Map<String, StructureComponent> components = new HashMap<>(componentsLength);
         Map<ConnectorLocation, Connector> connectors = new HashMap<>(connectorsLength);
 
+        Bukkit.broadcastMessage(" - Connectors: " + connectorsLength + ", Components: " + componentsLength);
+
         for (int i = 0; i < componentsLength; i++) {
             // Name
-            String name = reader.readString();
+            String name = region.strings.at(reader.readU1());
 
             // Component offset
-            int cx = reader.readU1();
+            int packedXZ = reader.readU1();
+            int cx = (packedXZ >> 4) & 0xf;
+            int cz = packedXZ & 0xf;
             int cy = reader.readU1();
-            int cz = reader.readU1();
 
             // Model
             int entitiesLength = reader.readU1();
             List<ItemDisplay> entities = new ArrayList<>();
 
             for (int j = 0; j < entitiesLength; j++) {
-                String uid = reader.readString();
-                entities.add((ItemDisplay) Bukkit.getEntity(UUID.fromString(uid)));
+                byte[] uidmost = reader.readBytes(8);
+                byte[] uidleast = reader.readBytes(8);
 
-                Bukkit.broadcastMessage("Entity: " + uid);
+                UUID uid = new UUID(ByteArrayReader.toLong(uidmost), ByteArrayReader.toLong(uidleast));
+                ItemDisplay entity = (ItemDisplay) Bukkit.getEntity(uid);
+                if (entity != null) {
+                    entities.add(entity);
+                } else {
+                    System.err.println("Broken model for " + structureId + " at " + location);
+                }
             }
 
             Model model = new Model(entities);
-            StructureComponent component = new StructureComponent(name, location.getRelative(cx, cy, cz), new BlockLocation(world, cx, cy, cz), Direction.values()[direction], model);
+            StructureComponent component = new StructureComponent(name, location.getRelative(cx, cy, cz), new BlockLocation(chunk.world, cx, cy, cz), Direction.values()[direction], model);
             components.put(name, component);
         }
 
-        Bukkit.broadcastMessage("Connectors: " + connectorsLength);
         for (int i = 0; i < connectorsLength; i++) {
             // Linked component
-            String linkedComponent = reader.readString();
+            String linkedComponent = region.strings.at(reader.readU1());
             StructureComponent component = components.get(linkedComponent);
 
             int allowedConnections = reader.readU1();
@@ -216,10 +234,7 @@ public abstract class StructureInstance {
         }
 
         // Data Container
-        DataContainer dataContainer = DataContainer.fromBytes(reader);
-
-        System.out.println(" - Location: " + x + ", " + y + ", " + z);
-        System.out.println(" - Direction: " + direction + "\n");
+        DataContainer dataContainer = DataContainer.fromBytes(reader, region.strings);
 
         Structure structure = Structures.getStructureById(structureId);
         if (structure == null) {
@@ -233,7 +248,7 @@ public abstract class StructureInstance {
             Constructor<? extends StructureInstance> constructor = instanceClass.getDeclaredConstructor(LoadContext.class);
             constructor.setAccessible(true);
 
-            StructureInstance instance = constructor.newInstance(new LoadContext(structure, new BlockLocation(world, x, y, z), Direction.values()[direction], dataContainer));
+            StructureInstance instance = constructor.newInstance(new LoadContext(structure, location, Direction.values()[direction], dataContainer));
             instance.components.putAll(components);
             instance.connectors.putAll(connectors);
             connectors.forEach((l, c) -> instance.connectorsByName.put(c.getComponent().name, c));

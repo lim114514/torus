@@ -2,12 +2,13 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.machine.*;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Structures {
 
-    private static final Map<String, Structure> structures = new HashMap<>();
+    private static int nextStructureId = 2;
+    private static final Map<String, Structure> structures = new LinkedHashMap<>();
 
     public static final BlockBreaker BLOCK_BREAKER = register(new BlockBreaker());
     public static final Pump PUMP = register(new Pump());
@@ -23,12 +24,21 @@ public class Structures {
     public static final SolarGenerator SOLAR_GENERATOR = register(new SolarGenerator());
 
     private static <T extends Structure> T register(T t) {
-        structures.put(t.getId(), t);
+        structures.put(t.id, t);
+        t.numericId = nextStructureId++;
         return t;
     }
 
     public static Structure getStructureById(String id) {
         return structures.get(id);
+    }
+
+    public static Structure getStructureByNumericId(int id) {
+        for (Structure structure : structures.values()) {
+            if (structure.numericId == id)
+                return structure;
+        }
+        return null;
     }
 
 }

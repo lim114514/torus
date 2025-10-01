@@ -1,19 +1,19 @@
 package com.github.alantr7.torus.world;
 
-import com.github.alantr7.bytils.buffer.ByteArrayReader;
-import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.InventoryInterfaceInstance;
-import com.github.alantr7.torus.math.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,13 +23,18 @@ public class TorusWorld {
     @Getter
     private final World bukkit;
 
-    @Getter
-    private final Map<BlockLocation, StructureInstance> loaded = new HashMap<>();
+    public final File directory;
 
-    private static final Map<BlockLocation, BlockLocation> occupations = new HashMap<>();
+    public final File regionsDirectory;
+
+    protected final Map<Vector2i, TorusRegion> regions = new HashMap<>();
 
     public TorusWorld(World bukkit) {
         this.bukkit = bukkit;
+        this.directory = new File(bukkit.getWorldFolder(), "torus");
+        this.directory.mkdirs();
+        this.regionsDirectory = new File(this.directory, "regions");
+        this.regionsDirectory.mkdirs();
     }
 
     static final Set<Material> MINECRAFT_BLOCK_CONTAINER_TYPES = Set.of(
@@ -46,13 +51,88 @@ public class TorusWorld {
         return false;
     }
 
+    @Nullable
+    TorusRegion getRegion(BlockLocation location) {
+        return regions.get(new Vector2i(location.regionX, location.regionZ));
+    }
+
+    @NotNull
+    TorusRegion getRegionOrLoad(BlockLocation location) {
+        return regions.computeIfAbsent(new Vector2i(location.regionX, location.regionZ), v -> {
+            TorusRegion region = new TorusRegion(this, v.x, v.y);
+            try {
+                region.load();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return region;
+        });
+    }
+
+    @Nullable
+    TorusChunk getChunk(BlockLocation location) {
+        TorusRegion region = getRegion(location);
+        return region != null ? region.chunks.get(new Vector2i(location.x >> 4, location.z >> 4)) : null;
+    }
+
+    @NotNull
+    TorusChunk getChunkOrLoad(BlockLocation location) {
+        return getRegionOrLoad(location).getOrLoadChunk(location.x >> 4, location.z >> 4);
+    }
+
+    protected void handleChunkLoad(Chunk chunk) {
+        getChunkOrLoad(new BlockLocation(this, chunk.getX() << 4, 0, chunk.getZ() << 4));
+        System.out.println("[Torus] Loaded data for chunk at " + chunk.getX() + ", " + chunk.getZ() + " in " + chunk.getWorld().getName());
+    }
+
+    protected void handleChunkUnload(Chunk chunk) {
+        TorusRegion region = getRegion(new BlockLocation(this, chunk.getX() << 4, 0, chunk.getZ() << 4));
+        if (region == null)
+            return;
+
+        TorusChunk torusChunk = region.chunks.remove(new Vector2i(chunk.getX(), chunk.getZ()));
+        if (torusChunk != null) {
+            if (torusChunk.isDirty) {
+                try {
+                    region.save();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("[Torus] Unloaded chunk at " + chunk.getX() + ", " + chunk.getZ() + " in " + chunk.getWorld().getName());
+
+            if (region.chunks.isEmpty()) {
+                regions.remove(new Vector2i(region.x, region.z));
+                System.out.println("[Torus] Unloaded region " + region.x + ", " + region.z + " in " + chunk.getWorld().getName());
+            }
+        }
+    }
+
+    // TODO: Seems a bit expensive to be called on every block interaction
     public StructureInstance getStructure(BlockLocation location) {
-        BlockLocation machineLocation = occupations.get(location);
-        return machineLocation == null ? null : loaded.get(machineLocation);
+        TorusChunk chunk = getChunk(location);
+        if (chunk == null)
+            return null;
+
+        BlockLocation machineLocation = chunk.occupations.get(location);
+        if (machineLocation == null)
+            return null;
+
+        if (machineLocation.x >> 4 == location.x >> 4 && machineLocation.z >> 4 == location.z >> 4)
+            return chunk.structures.get(machineLocation);
+
+        TorusChunk machineChunk = getChunk(machineLocation);
+        if (machineChunk == null)
+            return null;
+
+        return machineChunk.structures.get(machineLocation);
     }
 
     public void placeStructure(StructureInstance instance) {
-        loaded.put(instance.location, instance);
+        TorusChunk chunk = getChunkOrLoad(instance.location);
+        chunk.structures.put(instance.location, instance);
+        chunk.isDirty = true;
 
         // Place bounds
         int[] bounds = instance.structure.getBounds();
@@ -60,7 +140,9 @@ public class TorusWorld {
             BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i+1], bounds[i+2]);
             relative.getBlock().setType(Material.BARRIER);
 
-            occupations.put(relative, instance.location);
+            TorusChunk occupationChunk = getChunkOrLoad(relative);
+            occupationChunk.occupations.put(relative, instance.location);
+            occupationChunk.isDirty = true;
         }
 
         // Update all cables if I'm cable
@@ -94,12 +176,11 @@ public class TorusWorld {
             iii.updateConnections();
             iii.updateModel();
         }
-
-        save();
     }
 
     public void removeStructure(StructureInstance instance) {
-        loaded.remove(instance.location);
+        TorusChunk chunk0 = getChunkOrLoad(instance.location);
+        chunk0.structures.remove(instance.location);
 
         // Remove bounds
         int[] bounds = instance.structure.getBounds();
@@ -107,7 +188,10 @@ public class TorusWorld {
             BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i+1], bounds[i+2]);
             relative.getBlock().setType(Material.AIR);
 
-            occupations.remove(relative);
+            TorusChunk chunk = getChunkOrLoad(relative);
+            if (chunk.occupations.remove(relative) != null) {
+                chunk.isDirty = true;
+            }
         }
 
         // Update all cables if I'm cable
@@ -139,54 +223,19 @@ public class TorusWorld {
             if (component.getModel() != null)
                 component.getModel().remove();
         });
-
-        save();
     }
 
     void load() {
-        File file = new File(bukkit.getWorldFolder(), "torus.dat");
-        if (!file.exists())
-            return;
-
-        try {
-            byte[] bytes = Files.readAllBytes(file.toPath());
-            ByteArrayReader reader = new ByteArrayReader(bytes);
-
-            while (reader.hasNext()) {
-                StructureInstance instance = StructureInstance.fromBytes(this, reader);
-                if (instance != null) {
-                    loaded.put(instance.location, instance);
-
-                    // Place bounds
-                    int[] bounds = instance.structure.getBounds();
-                    for (int i = 0; i < bounds.length; i += 3) {
-                        BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]);
-                        occupations.put(relative, instance.location);
-                    }
-
-                    Bukkit.broadcastMessage("Loaded structure at " + instance.location);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void save() {
-        ByteArrayWriter writer = new ByteArrayWriter();
-
-        for (StructureInstance structure : loaded.values()) {
-            structure.save(writer);
-        }
-
-        File file = new File(bukkit.getWorldFolder(), "torus.dat");
-        file.delete();
-
-        try {
-            Files.write(file.toPath(), writer.getBuffer());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        regions.forEach((loc, region) -> {
+            try {
+                region.save();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 }

@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.Fluid;
-import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -10,7 +10,6 @@ import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PumpInstance extends StructureInstance implements EnergyContainer, FluidContainer {

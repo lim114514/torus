@@ -5,16 +5,13 @@ import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.TorusItem;
-import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
-import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -47,8 +44,8 @@ public class EventListener implements Listener {
         BlockLocation location = new BlockLocation(block.getLocation());
         Direction direction = Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite();
 
-        torusItem.getStructure().place(location, direction);
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
+        torusItem.getStructure().place(location, direction);
     }
 
     @EventHandler

@@ -1,17 +1,23 @@
 package com.github.alantr7.torus.world;
 
+import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.InvokePeriodically;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
-import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,7 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Singleton
-public class TorusWorldManager {
+public class TorusWorldManager implements Listener {
 
     private final Map<UUID, TorusWorld> worlds = new HashMap<>();
 
@@ -27,6 +33,10 @@ public class TorusWorldManager {
         for (World world : Bukkit.getWorlds()) {
             TorusWorld torusWorld = new TorusWorld(world);
             torusWorld.load();
+
+            for (Chunk chunk : world.getLoadedChunks()) {
+                torusWorld.getChunkOrLoad(new BlockLocation(torusWorld, chunk.getX() << 4, 0, chunk.getZ() << 4));
+            }
 
             worlds.put(world.getUID(), torusWorld);
         }
@@ -40,21 +50,35 @@ public class TorusWorldManager {
         return worlds.values();
     }
 
-    @InvokePeriodically(interval = 20)
-    void tickLoadedStructures() {
-        worlds.forEach((id, world) -> {
-            boolean isDirty = false;
-            for (Map.Entry<BlockLocation, StructureInstance> entry : world.getLoaded().entrySet()) {
-                StructureInstance instance = entry.getValue();
-                if (instance.getDataContainer().isDirty()) {
-                    isDirty = true;
-                }
-                instance.tick();
-            }
+    @EventHandler
+    void handleChunkLoadEvent(ChunkLoadEvent event) {
+        TorusWorld world = worlds.get(event.getWorld().getUID());
+        if (world == null)
+            return;
 
-            if (isDirty) {
-                world.save();
-            }
+        world.handleChunkLoad(event.getChunk());
+    }
+
+    @EventHandler
+    void handleChunkUnloadEvent(ChunkUnloadEvent event) {
+        TorusWorld world = worlds.get(event.getWorld().getUID());
+        if (world == null)
+            return;
+
+        world.handleChunkUnload(event.getChunk());
+    }
+
+    @InvokePeriodically(interval = 20)
+    private void tickLoadedStructures() {
+        worlds.forEach((id, world) -> {
+            world.regions.forEach((pos, region) -> {
+                try {
+                    region.chunks.forEach((pos1, chunk) -> chunk.structures.forEach((loc, inst) -> inst.tick()));
+                    region.save();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         });
 
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -69,6 +93,11 @@ public class TorusWorldManager {
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GOLD + structure.structure.getClass().getSimpleName() + ChatColor.GRAY + " (" + generator.getStoredEnergy() + " / " + generator.getEnergyCapacity() + " RF)"));
             }
         }
+    }
+
+    @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
+    private void registerEvents() {
+        Bukkit.getPluginManager().registerEvents(this, TorusPlugin.getInstance());
     }
 
 }

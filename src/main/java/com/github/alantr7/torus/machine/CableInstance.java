@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.math.BlockLocation;
+import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -92,6 +92,7 @@ public class CableInstance extends StructureInstance implements Connectable {
         }
 
         components.get("base").setModel(model.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
+        save();
     }
 
     @Override
