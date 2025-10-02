@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.math.IntArrayBuilder;
@@ -73,11 +74,14 @@ public class FluidTank extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
+        Vector3f output = new Vector3f(0f, 0f, -1f);
+        MathUtils.applyRotation(output, direction.rotH);
+
         return new FluidTankInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
             new StructureComponentDef("base", new Vector3f(), MODEL_BASE.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
             new StructureComponentDef("input", new Vector3f(0f, 3f, 0f), MODEL_INPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("output", new Vector3f(0f, 0f, -1f), MODEL_OUTPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
+            new StructureComponentDef("output", output, MODEL_OUTPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
             new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f), MODEL_LIQUID.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
           },
           new StructureConnectorDef[]{
