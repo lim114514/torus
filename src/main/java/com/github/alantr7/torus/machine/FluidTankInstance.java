@@ -10,11 +10,12 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
 
-public class FluidTankInstance extends StructureInstance implements FluidContainer {
+public class FluidTankInstance extends StructureInstance implements FluidContainer, Inspectable {
 
     protected StructureComponent liquidComponent;
 
@@ -103,6 +104,11 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
         if (fluid == 0) {
             this.fluid.update(-1);
         }
+    }
+
+    @Override
+    public String getInspectionText(BlockLocation location, Player player) {
+        return "Fluid Tank [" + getStoredFluid() + " / " + getFluidCapacity() + " mb]";
     }
 
 }
