@@ -43,6 +43,11 @@ public abstract class Structure {
         return instance;
     }
 
+    @Override
+    public String toString() {
+        return id;
+    }
+
     protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction);
 
 }

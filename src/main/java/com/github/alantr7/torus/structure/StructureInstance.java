@@ -157,22 +157,18 @@ public abstract class StructureInstance {
     }
 
     public static StructureInstance fromBytes(TorusRegion region, TorusChunk chunk, ByteArrayReader reader) {
-        String structureId = Structures.getStructureByNumericId(ByteArrayReader.toInt(reader.readBytes(2))).id;
+        Structure structure = Structures.getStructureByNumericId(ByteArrayReader.toInt(reader.readBytes(2)));
 
         // Location
         int x = ByteArrayReader.toInt(reader.readBytes(1));
         int y = ByteArrayReader.toInt(reader.readBytes(2));
         int z = ByteArrayReader.toInt(reader.readBytes(1));
-        // TODO: Same as | x and | z?
-        BlockLocation location = new BlockLocation(chunk.world, (chunk.position.x << 4) + x, y, (chunk.position.y << 4) + z);
+        BlockLocation location = new BlockLocation(chunk.world, (chunk.position.x << 4) | x, y, (chunk.position.y << 4) | z);
 
-        Bukkit.broadcastMessage("Loading structure: " + structureId);
+        Bukkit.broadcastMessage("Loading structure: " + structure + " at " + x + ", " + y + ", " + z);
 
         // Direction
         int direction = reader.readU1();
-
-        Bukkit.broadcastMessage(" - Location: " + x + ", " + y + ", " + z);
-        Bukkit.broadcastMessage(" - Direction: " + direction + "\n");
 
         // Components Length + Connectors Length
         int counts = reader.readU1();
@@ -181,8 +177,6 @@ public abstract class StructureInstance {
 
         Map<String, StructureComponent> components = new HashMap<>(componentsLength);
         Map<ConnectorLocation, Connector> connectors = new HashMap<>(connectorsLength);
-
-        Bukkit.broadcastMessage(" - Connectors: " + connectorsLength + ", Components: " + componentsLength);
 
         for (int i = 0; i < componentsLength; i++) {
             // Name
@@ -207,7 +201,7 @@ public abstract class StructureInstance {
                 if (entity != null) {
                     entities.add(entity);
                 } else {
-                    System.err.println("Broken model for " + structureId + " at " + location);
+                    System.err.println("Broken model for " + structure + " at " + location);
                 }
             }
 
@@ -227,16 +221,18 @@ public abstract class StructureInstance {
             int flowDirection = data & 0x0f;
             int matterOrdinal = (data >> 4) & 0x0f;
 
-            // TODO: Error handling
-            Connector connector = new Connector(component, allowedConnections, Connector.Matter.values()[matterOrdinal], Connector.FlowDirection.values()[flowDirection]);
-            connector.setConnections(connections);
-            connectors.put(new ConnectorLocation(component.absoluteLocation, connector.matter), connector);
+            if (matterOrdinal < Connector.Matter.values().length && flowDirection < Connector.FlowDirection.values().length) {
+                Connector connector = new Connector(component, allowedConnections, Connector.Matter.values()[matterOrdinal], Connector.FlowDirection.values()[flowDirection]);
+                connector.setConnections(connections);
+                connectors.put(new ConnectorLocation(component.absoluteLocation, connector.matter), connector);
+            } else {
+                System.err.println("Invalid matter or direction!");
+            }
         }
 
         // Data Container
         DataContainer dataContainer = DataContainer.fromBytes(reader, region.strings);
 
-        Structure structure = Structures.getStructureById(structureId);
         if (structure == null) {
             System.err.println("Invalid structure!");
             return null;
