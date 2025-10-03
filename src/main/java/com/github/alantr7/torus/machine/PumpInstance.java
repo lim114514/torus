@@ -10,6 +10,8 @@ import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.Levelled;
 import org.jetbrains.annotations.Nullable;
 
 public class PumpInstance extends StructureInstance implements EnergyContainer, FluidContainer {
@@ -48,8 +50,13 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
         if (energy.get() < 50 || amount.get() >= 1000)
             return;
 
-        Material liquid = location.getRelative(0, -1, 0).getBlock().getType();
+        Block block = location.getRelative(0, -1, 0).getBlock();
+        Material liquid = block.getType();
         if (liquid != Material.WATER && liquid != Material.LAVA)
+            return;
+
+        Levelled levelled = (Levelled) block.getBlockData();
+        if (levelled.getLevel() != 0)
             return;
 
         Fluid fluid = liquid == Material.WATER ? Fluid.WATER : Fluid.LAVA;
