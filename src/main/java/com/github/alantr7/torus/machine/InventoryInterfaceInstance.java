@@ -94,6 +94,7 @@ public class InventoryInterfaceInstance extends StructureInstance {
         }
 
         components.get("cable").setModel(model.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
+        save();
     }
 
     @Override
