@@ -122,7 +122,7 @@ public abstract class StructureInstance {
             buffer.writeU1(keys.pool(name));
 
             // Component offset
-            buffer.writeU1(((component.relativeLocation.x) << 4) | component.relativeLocation.z);
+            buffer.writeU1(((component.relativeLocation.x + 7) << 4) | (component.relativeLocation.z + 7));
             buffer.writeU1(component.relativeLocation.y);
 
             // Model
@@ -184,8 +184,8 @@ public abstract class StructureInstance {
 
             // Component offset
             int packedXZ = reader.readU1();
-            int cx = (packedXZ >> 4) & 0xf;
-            int cz = packedXZ & 0xf;
+            int cx = ((packedXZ >> 4) & 0xf) - 7;
+            int cz = (packedXZ & 0xf) - 7;
             int cy = reader.readU1();
 
             // Model
