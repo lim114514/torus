@@ -14,7 +14,21 @@ public class CustomStructureInventory implements StructureInventory {
 
     @Override
     public boolean canAdd(ItemStack item) {
-        return false;
+        int total = item.getAmount();
+        for (ItemStack itemStack : items) {
+            if (itemStack == null)
+                return true;
+
+            if (itemStack.isSimilar(item)) {
+                int spaceLeft = itemStack.getMaxStackSize() - itemStack.getAmount();
+                int toAdd = Math.min(spaceLeft, total);
+
+                total -= toAdd;
+                if (total == 0)
+                    return true;
+            }
+        }
+        return total == 0;
     }
 
     @Override
