@@ -43,6 +43,19 @@ public enum Direction {
         };
     }
 
+    public Direction getRight() {
+        return switch (this) {
+            case NORTH -> EAST;
+            case EAST -> SOUTH;
+            case SOUTH -> WEST;
+            default -> NORTH;
+        };
+    }
+
+    public Direction getLeft() {
+        return getRight().getOpposite();
+    }
+
     public static Direction fromBlockFace(BlockFace face) {
         return switch (face) {
             case NORTH -> NORTH;
