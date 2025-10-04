@@ -10,6 +10,7 @@ import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -45,7 +46,12 @@ public class EventListener implements Listener {
         Direction direction = Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite();
 
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
-        torusItem.getStructure().place(location, direction);
+
+        if (torusItem.getStructure().isPlaceableAt(location, direction)) {
+            torusItem.getStructure().place(location, direction);
+        } else {
+            event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to place the structure here.");
+        }
     }
 
     @EventHandler
@@ -80,8 +86,6 @@ public class EventListener implements Listener {
 
         event.setCancelled(true);
 
-        machine.remove();
-
         Direction right = switch (machine.direction) {
             case NORTH -> Direction.EAST;
             case EAST -> Direction.SOUTH;
@@ -95,11 +99,17 @@ public class EventListener implements Listener {
             return;
         }
 
-        StructureInstance rotated = machine.structure.place(machine.location, right);
+        machine.remove();
+        if (!machine.structure.isPlaceableAt(machine.location, right)) {
+            machine.structure.place(machine.location, machine.direction);
+            event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to rotate the machine.");
+            return;
+        }
+
+        machine.structure.place(machine.location, right);
 
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
-
-        event.getPlayer().sendMessage("Machine rotated.");
+        event.getPlayer().sendMessage(ChatColor.YELLOW + "You rotated the machine.");
     }
 
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)

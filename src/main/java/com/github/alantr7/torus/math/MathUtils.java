@@ -25,4 +25,19 @@ public class MathUtils {
         return toggle ? (mask | flag) : (mask & ~flag);
     }
 
+    public static byte[] rotateBounds(byte[] parentBounds, Direction direction) {
+        byte[] bounds = new byte[parentBounds.length];
+
+        for (int i = 0; i < bounds.length; i += 3) {
+            float distance = (float) Math.sqrt(parentBounds[i] * parentBounds[i] + parentBounds[i + 2] * parentBounds[i + 2]);
+            float angle = (float) Math.toRadians(direction.rotH) + (float) Math.atan2(parentBounds[i + 2], parentBounds[i]);
+
+            bounds[i] = (byte) ((float) Math.cos(angle) * distance);
+            bounds[i + 2] = (byte) ((float) Math.sin(angle) * distance);
+            bounds[i + 1] = parentBounds[i + 1];
+        }
+
+        return bounds;
+    }
+
 }

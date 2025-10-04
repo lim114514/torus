@@ -77,19 +77,7 @@ public abstract class StructureInstance {
         if (this.bounds != null)
             return this.bounds;
 
-        byte[] parentBounds = structure.bounds;
-        byte[] bounds = new byte[parentBounds.length];
-
-        for (int i = 0; i < bounds.length; i += 3) {
-            float distance = (float) Math.sqrt(parentBounds[i] * parentBounds[i] + parentBounds[i + 2] * parentBounds[i + 2]);
-            float angle = (float) Math.toRadians(direction.rotH) + (float) Math.atan2(parentBounds[i + 2], parentBounds[i]);
-
-            bounds[i] = (byte) ((float) Math.cos(angle) * distance);
-            bounds[i + 2] = (byte) ((float) Math.sin(angle) * distance);
-            bounds[i + 1] = parentBounds[i + 1];
-        }
-
-        return this.bounds = bounds;
+        return this.bounds = MathUtils.rotateBounds(structure.bounds, direction);
     }
 
     public StructureComponent getComponent(String name) {
