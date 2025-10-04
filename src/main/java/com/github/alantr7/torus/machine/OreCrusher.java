@@ -83,7 +83,7 @@ public class OreCrusher extends Structure {
         INPUT_CRITERIA.materials.add(Material.IRON_ORE);
     }
 
-    public static final int ENERGY_CONSUMPTION_PER_TICK = 2_500;
+    public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
 
     public OreCrusher() {
         super("torus:ore_crusher", OreCrusherInstance.class);

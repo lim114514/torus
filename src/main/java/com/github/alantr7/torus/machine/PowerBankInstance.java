@@ -14,7 +14,7 @@ import org.bukkit.util.Transformation;
 
 public class PowerBankInstance extends StructureInstance implements EnergyContainer {
 
-    @Getter @Setter
+    @Getter
     double energyCapacity = 20_000;
 
     Data<Integer> storedEnergy;

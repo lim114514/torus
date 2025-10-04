@@ -24,7 +24,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     protected Connector energyConnector;
 
-    @Getter @Setter
+    @Getter
     protected double energyCapacity = 500;
 
     PumpInstance(LoadContext context) {

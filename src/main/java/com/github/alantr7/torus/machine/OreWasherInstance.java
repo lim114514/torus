@@ -95,10 +95,6 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     }
 
     @Override
-    public void setEnergyCapacity(double capacity) {
-    }
-
-    @Override
     public double getStoredEnergy() {
         return energy.get();
     }

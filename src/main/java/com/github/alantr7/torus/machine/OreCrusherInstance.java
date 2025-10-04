@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -9,7 +8,6 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -99,10 +97,6 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     @Override
     public double getEnergyCapacity() {
         return 20_000;
-    }
-
-    @Override
-    public void setEnergyCapacity(double capacity) {
     }
 
     @Override

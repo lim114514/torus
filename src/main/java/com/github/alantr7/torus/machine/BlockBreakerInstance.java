@@ -72,11 +72,6 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     }
 
     @Override
-    public void setEnergyCapacity(double capacity) {
-        rfCapacity = capacity;
-    }
-
-    @Override
     public double getStoredEnergy() {
         return (double) storedEnergy.get();
     }

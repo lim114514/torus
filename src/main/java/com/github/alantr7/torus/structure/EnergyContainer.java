@@ -8,8 +8,6 @@ public interface EnergyContainer extends Inspectable {
 
     double getEnergyCapacity();
 
-    void setEnergyCapacity(double capacity);
-
     double getStoredEnergy();
 
     void setStoredEnergy(double energy);

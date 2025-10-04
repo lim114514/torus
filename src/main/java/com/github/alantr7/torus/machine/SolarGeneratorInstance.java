@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class SolarGeneratorInstance extends StructureInstance implements EnergyContainer {
 
-    @Getter @Setter
+    @Getter
     double energyCapacity = 2000;
 
     Data<Integer> storedEnergy;
