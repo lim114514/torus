@@ -60,6 +60,7 @@ public class CableInstance extends StructureInstance implements Connectable {
                 shouldUpdateModel = true;
 
                 connector.setConnected(direction.getOpposite(), true);
+                possibleConnection.save();
             }
         }
 
