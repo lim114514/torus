@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.structure.component;
 
 import com.github.alantr7.torus.Fluid;
+import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
@@ -10,6 +11,8 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -148,6 +151,42 @@ public class Connector implements Connectable {
         }
 
         return original - amount;
+    }
+
+    public List<ItemStack> consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst) {
+        List<ItemStack> result = new ArrayList<>();
+
+        for (Connection conn : connectedStructures) {
+            if (conn.connector.matter != Matter.ITEM)
+                continue;
+
+            if (conn.connector.flowDirection != FlowDirection.OUT && conn.connector.flowDirection != FlowDirection.ALL)
+                continue;
+
+            StructureInventory inventory = conn.connector.linkedInventory;
+            ItemStack[] items = inventory.getItems();
+            for (int i = 0; i < items.length; i++) {
+                ItemStack item = items[i];
+                if (item != null && (criteria == null || criteria.matches(item))) {
+                    int newAmount = Math.max(0, item.getAmount() - amount);
+                    amount -= item.getAmount() - newAmount;
+
+                    ItemStack resultItem = item.clone();
+                    resultItem.setAmount(item.getAmount() - newAmount);
+
+                    item.setAmount(newAmount);
+                    if (newAmount == 0)
+                        items[i] = null;
+
+                    result.add(resultItem);
+
+                    if (onlyFirst)
+                        return result;
+                }
+            }
+        }
+
+        return result;
     }
 
     public static class Connection {
