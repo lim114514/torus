@@ -75,7 +75,6 @@ public class FluidTank extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         Vector3f output = new Vector3f(0f, 0f, -1f);
-        MathUtils.applyRotation(output, direction.rotH);
 
         return new FluidTankInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
