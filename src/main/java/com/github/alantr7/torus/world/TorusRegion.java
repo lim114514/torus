@@ -4,7 +4,6 @@ import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.structure.StructureInstance;
-import org.bukkit.Bukkit;
 import org.joml.Vector2i;
 
 import java.io.File;
@@ -113,35 +112,30 @@ public class TorusRegion {
             if (reader.peek() == 1) {
                 reader.readU1();
 
-                int packedXZ = reader.readU1();
-                int x = (packedXZ >> 4) & 0xf;
-                int z = packedXZ & 0xf;
+                int packedXZ = reader.readU1() & 0xff;
+                int x = (packedXZ >> 4) & 0x0f;
+                int z = packedXZ & 0x0f;
                 int y = ByteArrayReader.toInt(reader.readBytes(2));
 
-                int packedStructureXZ = reader.readU1();
-                int sX = (packedStructureXZ >> 4) & 0xf;
-                if (sX >= 8) sX -= 16;
-                int sZ = packedStructureXZ & 0xf;
-                if (sZ >= 8) sZ -= 16;
+                int packedStructureXZ = reader.readU1() & 0xff;
+                int sX = ((packedStructureXZ >> 4)) - 7;
+                int sZ = (packedStructureXZ & 0x0f) - 7;
                 int sY = ByteArrayReader.toInt(reader.readBytes(2));
 
                 BlockLocation occupation = new BlockLocation(world, x + (chunk.position.x << 4), y, z + (chunk.position.y << 4));
                 BlockLocation structureLocation = occupation.getRelative(sX, sY - y, sZ);
 
                 chunk.occupations.put(occupation, structureLocation);
-
-                Bukkit.broadcastMessage("Loaded non belonging occupation at " + occupation);
-                Bukkit.broadcastMessage(" + machine at " + structureLocation + " (" + sX + ", " + (sY - y) + ", " + sZ + ")");
             }
 
             // Structure
             else {
+                int pointer = reader.getPointer();
                 StructureInstance structure = StructureInstance.fromBytes(this, chunk, reader);
                 if (structure != null) {
-                    Bukkit.broadcastMessage("Fully loaded structure: " + structure.structure.id);
                     chunk._placeStructureWithOccupations(structure);
                 } else {
-                    Bukkit.broadcastMessage("- Could not load structure!");
+                    System.err.println("Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + pointer);
                 }
             }
         }
@@ -188,13 +182,11 @@ public class TorusRegion {
                 continue;
 
             writer.writeU1(1);
-            writer.writeU1(((occupation.x % 16) << 4) | (occupation.z % 16));
+            writer.writeU1(((occupation.x & 15) << 4) | (occupation.z & 15));
             writer.writeU2(occupation.y);
 
-            writer.writeU1(((structureLocation.x - occupation.x) << 4) | (structureLocation.z - occupation.z));
+            writer.writeU1(((structureLocation.x - occupation.x + 7) << 4) | (structureLocation.z - occupation.z + 7));
             writer.writeU2(structureLocation.y);
-
-            Bukkit.broadcastMessage("Saved non belonging occupation: " + (structureLocation.x - occupation.x) + ", " + (structureLocation.z - occupation.z));
         }
 
         raf.write(writer.getBuffer());

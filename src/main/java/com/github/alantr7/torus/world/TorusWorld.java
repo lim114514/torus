@@ -100,7 +100,6 @@ public class TorusWorld {
                     e.printStackTrace();
                 }
             }
-            System.out.println("[Torus] Unloaded chunk at " + chunk.getX() + ", " + chunk.getZ() + " in " + chunk.getWorld().getName());
 
             if (region.chunks.isEmpty()) {
                 regions.remove(new Vector2i(region.x, region.z));
