@@ -104,8 +104,10 @@ public class InventoryInterfaceInstance extends StructureInstance {
         if (getFlowDirection() != Connector.FlowDirection.IN && getFlowDirection() != Connector.FlowDirection.ALL)
             return;
 
-        if (TorusWorld.isItemContainer(location.getRelative(direction))) {
-            connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction).getBlock().getState()).getInventory());
+        if (TorusWorld.isItemContainer(location.getRelative(direction.getOpposite()))) {
+            connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
+        } else {
+            return;
         }
 
         connector.updateConnections();
