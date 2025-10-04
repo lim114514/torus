@@ -164,7 +164,6 @@ public class TorusWorld {
             for (Direction direction : Direction.values()) {
                 if (connector.isConnectableFrom(direction)) {
                     if (connector.getComponent().absoluteLocation.getRelative(direction).getStructure() instanceof CableInstance cable) {
-                        Bukkit.broadcastMessage("Machine placed next to a cable. Connector direction: " + connector.getComponent().direction);
                         cable.updateConnections();
                     }
                 }

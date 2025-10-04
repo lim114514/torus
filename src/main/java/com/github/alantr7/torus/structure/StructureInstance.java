@@ -188,8 +188,6 @@ public abstract class StructureInstance {
         int z = ByteArrayReader.toInt(reader.readBytes(1));
         BlockLocation location = new BlockLocation(chunk.world, (chunk.position.x << 4) | x, y, (chunk.position.y << 4) | z);
 
-        Bukkit.broadcastMessage("Loading structure: " + structure + " at " + x + ", " + y + ", " + z);
-
         // Direction
         int direction = reader.readU1();
 

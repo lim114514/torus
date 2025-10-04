@@ -93,8 +93,6 @@ public class DataContainer {
                 Data data = new Data(container, type);
                 data.value = value;
                 container.entries.put(key, data);
-
-                Bukkit.broadcastMessage("    - DCE " + type.name + " - " + key + ": " + value);
             }
         }
 
