@@ -15,9 +15,10 @@ import org.bukkit.util.Transformation;
 public class PowerBankInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
-    double energyCapacity = 20_000;
+    protected int energyCapacity = 20_000;
 
-    Data<Integer> storedEnergy;
+    @Getter
+    protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     Connector connector;
 
@@ -31,7 +32,6 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
 
     @Override
     protected void setup() {
-        storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
         connector = getConnector("power_connector");
     }
 
@@ -57,14 +57,6 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         transformation.getScale().y = height;
         transformation.getTranslation().y = height / 2f;
         entity.setTransformation(transformation);
-    }
-
-    public double getStoredEnergy() {
-        return storedEnergy.get();
-    }
-
-    public void setStoredEnergy(double energy) {
-        storedEnergy.update((int) energy);
     }
 
 }

@@ -8,6 +8,7 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +28,11 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
     protected int processedTicks;
 
+    @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
+
+    @Getter
+    protected int energyCapacity = 20_000;
 
     public static final int PROCESS_DURATION = 5;
 
@@ -95,23 +100,8 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     }
 
     @Override
-    public double getEnergyCapacity() {
-        return 20_000;
-    }
-
-    @Override
-    public double getStoredEnergy() {
-        return storedEnergy.get();
-    }
-
-    @Override
-    public void setStoredEnergy(double energy) {
-        this.storedEnergy.update((int) energy);
-    }
-
-    @Override
     public String getInspectionText(BlockLocation location, Player player) {
-        return "Ore Crusher " + String.format("[%d / %d RF] [Progress: %.2f]%%", (int) getStoredEnergy(), (int) getEnergyCapacity(), (float) processedTicks / PROCESS_DURATION * 100);
+        return "Ore Crusher " + String.format("[%d / %d RF] [Progress: %.2f]%%", getStoredEnergy().get(), getEnergyCapacity(), (float) processedTicks / PROCESS_DURATION * 100);
     }
 
 }

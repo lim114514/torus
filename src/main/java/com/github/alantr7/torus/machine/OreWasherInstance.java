@@ -9,6 +9,7 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +21,11 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     protected Data<Integer> water = dataContainer.persist("fluid", Data.Type.INT, 0);
 
-    protected Data<Integer> energy = dataContainer.persist("energy", Data.Type.INT, 0);
+    @Getter
+    protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
+
+    @Getter
+    private int energyCapacity = 10_000;
 
     protected Connector powerConnector, itemInConnector, waterInConnector, itemOutConnector;
 
@@ -41,10 +46,10 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Override
     public void tick() {
-        if (energy.get() < getEnergyCapacity()) {
+        if (storedEnergy.get() < getEnergyCapacity()) {
             powerConnector.updateConnections();
             if (!powerConnector.connectedStructures.isEmpty()) {
-                supplyEnergy((int) powerConnector.consumeEnergy(Math.min(getEnergyCapacity() - energy.get(), 500)));
+                supplyEnergy((int) powerConnector.consumeEnergy(Math.min(getEnergyCapacity() - storedEnergy.get(), 500)));
             }
         }
 
@@ -90,23 +95,8 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     }
 
     @Override
-    public double getEnergyCapacity() {
-        return 10_000;
-    }
-
-    @Override
-    public double getStoredEnergy() {
-        return energy.get();
-    }
-
-    @Override
-    public void setStoredEnergy(double energy) {
-        this.energy.update((int) energy);
-    }
-
-    @Override
     public String getInspectionText(BlockLocation location, Player player) {
-        return String.format("Ore Washer [%d / 1000 mb] [%d / %d RF] [Progress: %.0f%%]", water.get(), (int) getStoredEnergy(), (int) getEnergyCapacity(), (float) processedTicks / PROCESS_DURATION * 100);
+        return String.format("Ore Washer [%d / 1000 mb] [%d / %d RF] [Progress: %.0f%%]", water.get(), getStoredEnergy().get(), getEnergyCapacity(), (float) processedTicks / PROCESS_DURATION * 100);
     }
 
     @Override

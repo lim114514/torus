@@ -8,7 +8,6 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
@@ -20,12 +19,13 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     protected Data<Integer> amount = dataContainer.persist("amount", Data.Type.INT, 0);
 
-    protected Data<Integer> energy = dataContainer.persist("energy", Data.Type.INT, 0);
+    @Getter
+    protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     protected Connector energyConnector;
 
     @Getter
-    protected double energyCapacity = 500;
+    protected int energyCapacity = 500;
 
     PumpInstance(LoadContext context) {
         super(context);
@@ -42,12 +42,12 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     @Override
     public void tick() {
-        if (energy.get() < energyCapacity) {
+        if (storedEnergy.get() < energyCapacity) {
             energyConnector.updateConnections();
-            supplyEnergy(energyConnector.consumeEnergy(Math.min(energyCapacity - energy.get(), 25)));
+            supplyEnergy(energyConnector.consumeEnergy(Math.min(energyCapacity - storedEnergy.get(), 25)));
         }
 
-        if (energy.get() < 50 || amount.get() >= 1000)
+        if (storedEnergy.get() < 50 || amount.get() >= 1000)
             return;
 
         Block block = location.getRelative(0, -1, 0).getBlock();
@@ -71,16 +71,6 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
         location.getRelative(0, -1, 0).getBlock().setType(Material.AIR);
         amount.update(amount.get() + 1000);
-    }
-
-    @Override
-    public double getStoredEnergy() {
-        return energy.get();
-    }
-
-    @Override
-    public void setStoredEnergy(double energy) {
-        this.energy.update((int) energy);
     }
 
     @Override

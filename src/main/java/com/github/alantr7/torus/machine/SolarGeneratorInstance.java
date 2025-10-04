@@ -9,15 +9,15 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.entity.Player;
 
 public class SolarGeneratorInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
-    double energyCapacity = 2000;
+    protected int energyCapacity = 2000;
 
-    Data<Integer> storedEnergy;
+    @Getter
+    protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     public SolarGeneratorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.SOLAR_GENERATOR, location, bodyDef, direction);
@@ -29,7 +29,6 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
 
     @Override
     protected void setup() {
-        storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
     }
 
     @Override
@@ -37,14 +36,6 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
         if (storedEnergy.get() < energyCapacity) {
             storedEnergy.update((int) Math.min(storedEnergy.get() + 50 * calculateEfficiency(), energyCapacity));
         }
-    }
-
-    public double getStoredEnergy() {
-        return storedEnergy.get();
-    }
-
-    public void setStoredEnergy(double energy) {
-        storedEnergy.update((int) energy);
     }
 
     static float pi_10th = (float) Math.PI / 10f;

@@ -11,13 +11,16 @@ import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class BlockBreakerInstance extends StructureInstance implements EnergyContainer {
 
-    protected double rfCapacity = 50;
+    @Getter
+    protected int energyCapacity = 50;
 
+    @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     protected Connector powerConnector;
@@ -26,7 +29,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     protected StructureInventory inventory;
 
-    public static final double RF_COST = 25;
+    public static final int RF_COST = 25;
 
     public BlockBreakerInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.BLOCK_BREAKER, location, bodyDef, direction);
@@ -46,11 +49,11 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     @Override
     public void tick() {
-        if (storedEnergy.get() != rfCapacity) {
+        if (storedEnergy.get() != energyCapacity) {
             // TODO: Perhaps optimize somehow?
             powerConnector.updateConnections();
             if (!powerConnector.connectedStructures.isEmpty()) {
-                double taken = powerConnector.consumeEnergy(Math.min(powerConnector.getMaximumInput(), rfCapacity - storedEnergy.get()));
+                int taken = powerConnector.consumeEnergy(Math.min(powerConnector.getMaximumInput(), energyCapacity - storedEnergy.get()));
                 supplyEnergy(taken);
             }
         }
@@ -64,21 +67,6 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
             location.getRelative(direction).getBlock().setType(Material.AIR);
             consumeEnergy(RF_COST);
         }
-    }
-
-    @Override
-    public double getEnergyCapacity() {
-        return rfCapacity;
-    }
-
-    @Override
-    public double getStoredEnergy() {
-        return (double) storedEnergy.get();
-    }
-
-    @Override
-    public void setStoredEnergy(double energy) {
-        storedEnergy.update((int) energy);
     }
 
 }

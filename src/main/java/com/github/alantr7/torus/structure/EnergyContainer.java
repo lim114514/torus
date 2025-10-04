@@ -1,38 +1,37 @@
 package com.github.alantr7.torus.structure;
 
+import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public interface EnergyContainer extends Inspectable {
 
-    double getEnergyCapacity();
+    int getEnergyCapacity();
 
-    double getStoredEnergy();
+    Data<Integer> getStoredEnergy();
 
-    void setStoredEnergy(double energy);
-
-    default boolean hasSufficientEnergy(double amount) {
-        return getStoredEnergy() >= amount;
+    default boolean hasSufficientEnergy(int amount) {
+        return getStoredEnergy().get() >= amount;
     }
 
-    default double consumeEnergy(double amount) {
-        double starting = getStoredEnergy();
-        setStoredEnergy(Math.max(starting - amount, 0));
+    default int consumeEnergy(int amount) {
+        int starting = getStoredEnergy().get();
+        getStoredEnergy().update(Math.max(starting - amount, 0));
 
-        return starting - getStoredEnergy();
+        return starting - getStoredEnergy().get();
     }
 
-    default double supplyEnergy(double amount) {
-        double starting = getStoredEnergy();
-        setStoredEnergy(Math.min(starting + amount, getEnergyCapacity()));
+    default int supplyEnergy(int amount) {
+        int starting = getStoredEnergy().get();
+        getStoredEnergy().update(Math.min(starting + amount, getEnergyCapacity()));
 
-        return getStoredEnergy() - starting;
+        return getStoredEnergy().get() - starting;
     }
 
     @Override
     default String getInspectionText(BlockLocation location, Player player) {
-        return ChatColor.GOLD + getClass().getSimpleName() + ChatColor.RESET + " [" + getStoredEnergy() + " / " + getEnergyCapacity() + " RF]";
+        return ChatColor.GOLD + getClass().getSimpleName() + ChatColor.RESET + " [" + getStoredEnergy().get() + " / " + getEnergyCapacity() + " RF]";
     }
 
 }

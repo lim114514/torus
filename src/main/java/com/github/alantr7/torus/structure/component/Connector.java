@@ -112,8 +112,8 @@ public class Connector implements Connectable {
         this.connectedStructures = structures;
     }
 
-    public double consumeEnergy(double amount) {
-        double original = amount;
+    public int consumeEnergy(int amount) {
+        int original = amount;
         for (Connection conn : connectedStructures) {
             if (conn.connector.matter != Matter.ENERGY)
                 continue;
