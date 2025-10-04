@@ -11,19 +11,19 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryInterfaceInstance extends StructureInstance {
 
-    protected Data<Integer> flowDirectionData = dataContainer.persist("flow", Data.Type.INT);
+    protected Data<Integer> flowDirectionData = dataContainer.persist("flow", Data.Type.INT, 0);
 
     protected Connector connector;
 
     public InventoryInterfaceInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Connector.FlowDirection flowDirection) {
         super(Structures.INVENTORY_INTERFACE, location, bodyDef, direction);
         flowDirectionData.update(flowDirection.ordinal());
+        save();
     }
 
     InventoryInterfaceInstance(LoadContext context) {
