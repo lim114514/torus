@@ -48,7 +48,7 @@ public class InventoryInterfaceInstance extends StructureInstance {
             StructureInstance possibleConnection = location.getRelative(direction).getStructure();
             boolean hasConnected = false;
 
-            // Check if this cable connects to a connector
+            // Check if this interface connects to a connector
             if (possibleConnection != null) {
                 Connector connector = possibleConnection.getConnector(location.getRelative(direction), Connector.Matter.ITEM);
                 if (connector != null && connector.isConnectableFrom(direction.getOpposite())) {
@@ -56,10 +56,11 @@ public class InventoryInterfaceInstance extends StructureInstance {
                     shouldUpdateModel = true;
 
                     connector.setConnected(direction.getOpposite(), true);
+                    possibleConnection.save();
                 }
             }
 
-            // Check if this cable connects to another cable
+            // Check if this interface connects to another cable
             if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Connector.Matter.ITEM) {
                 hasConnected = true;
                 shouldUpdateModel = true;
