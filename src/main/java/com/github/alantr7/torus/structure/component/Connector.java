@@ -3,6 +3,7 @@ package com.github.alantr7.torus.structure.component;
 import com.github.alantr7.torus.Fluid;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.machine.CableInstance;
+import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
@@ -24,11 +25,9 @@ public class Connector implements Connectable {
     @Getter @Setter
     protected int allowedConnections;
 
-    @Getter @Setter
-    protected int maximumInput = 100;
+    public int maximumInput = 100;
 
-    @Getter @Setter
-    protected int maximumOutput = 100;
+    public int maximumOutput = 100;
 
     @Getter
     public List<Connection> connectedStructures = Collections.emptyList();
@@ -129,6 +128,20 @@ public class Connector implements Connectable {
         }
 
         return original - amount;
+    }
+
+    public int maintainEnergy(EnergyContainer container) {
+        if (container.getStoredEnergy().get() == container.getEnergyCapacity())
+            return 0;
+
+        updateConnections();
+
+        if (connectedStructures.isEmpty())
+            return 0;
+
+        return container.supplyEnergy(
+          consumeEnergy(Math.min(maximumInput, container.getEnergyCapacity() - container.getStoredEnergy().get()))
+        );
     }
 
     public int consumeFluid(Fluid fluid, int amount) {

@@ -38,15 +38,12 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     @Override
     protected void setup() {
         energyConnector = getConnector("power_connector");
+        energyConnector.maximumInput = 25;
     }
 
     @Override
     public void tick() {
-        if (storedEnergy.get() < energyCapacity) {
-            energyConnector.updateConnections();
-            supplyEnergy(energyConnector.consumeEnergy(Math.min(energyCapacity - storedEnergy.get(), 25)));
-        }
-
+        energyConnector.maintainEnergy(this);
         if (storedEnergy.get() < 50 || amount.get() >= 1000)
             return;
 

@@ -46,12 +46,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Override
     public void tick() {
-        if (storedEnergy.get() < getEnergyCapacity()) {
-            powerConnector.updateConnections();
-            if (!powerConnector.connectedStructures.isEmpty()) {
-                supplyEnergy((int) powerConnector.consumeEnergy(Math.min(getEnergyCapacity() - storedEnergy.get(), 500)));
-            }
-        }
+        powerConnector.maintainEnergy(this);
 
         if (water.get() < 1_000) {
             waterInConnector.updateConnections();
@@ -88,6 +83,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     @Override
     protected void setup() {
         powerConnector = getConnector("power_connector");
+        powerConnector.maximumInput = 500;
         itemInConnector = getConnector("item_connector");
         waterInConnector = getConnector("fluid_connector");
         itemOutConnector = getConnector("out_connector");

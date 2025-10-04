@@ -46,10 +46,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
     @Override
     public void tick() {
-        if (storedEnergy.get() < getEnergyCapacity()) {
-            energyConnector.updateConnections();
-            supplyEnergy(energyConnector.consumeEnergy(Math.min(getEnergyCapacity() - storedEnergy.get(), 500)));
-        }
+        energyConnector.maintainEnergy(this);
         if (itemInBuffer.getItems()[0] != null) {
             if (!hasSufficientEnergy(OreCrusher.ENERGY_CONSUMPTION_PER_TICK)) {
                 return;
@@ -96,6 +93,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
         (itemInConnector = getConnector("item_connector")).linkedInventory = itemInBuffer;
         energyConnector = getConnector("power_connector");
+        energyConnector.maximumInput = 500;
         getConnector("out_connector").linkedInventory = itemOutBuffer;
     }
 

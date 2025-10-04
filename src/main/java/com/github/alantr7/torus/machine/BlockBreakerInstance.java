@@ -49,15 +49,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     @Override
     public void tick() {
-        if (storedEnergy.get() != energyCapacity) {
-            // TODO: Perhaps optimize somehow?
-            powerConnector.updateConnections();
-            if (!powerConnector.connectedStructures.isEmpty()) {
-                int taken = powerConnector.consumeEnergy(Math.min(powerConnector.getMaximumInput(), energyCapacity - storedEnergy.get()));
-                supplyEnergy(taken);
-            }
-        }
-
+        powerConnector.maintainEnergy(this);
         if (!hasSufficientEnergy(RF_COST) || inventory.getItems()[0] != null) {
             return;
         }

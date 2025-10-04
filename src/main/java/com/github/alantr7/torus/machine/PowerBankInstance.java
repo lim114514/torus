@@ -37,12 +37,8 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
 
     @Override
     public void tick() {
-        if (storedEnergy.get() < energyCapacity) {
-            connector.updateConnections();
-            if (!connector.connectedStructures.isEmpty()) {
-                supplyEnergy((int) connector.consumeEnergy(Math.min(energyCapacity - storedEnergy.get(), 500)));
-                updateModel();
-            }
+        if (connector.maintainEnergy(this) != 0) {
+            updateModel();
         }
     }
 
