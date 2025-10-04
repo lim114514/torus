@@ -55,7 +55,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
             }
         }
 
-        if (!hasSufficientEnergy(RF_COST)) {
+        if (!hasSufficientEnergy(RF_COST) || inventory.getItems()[0] != null) {
             return;
         }
 
