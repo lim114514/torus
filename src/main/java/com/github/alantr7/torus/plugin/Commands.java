@@ -6,6 +6,12 @@ import com.github.alantr7.bukkitplugin.commands.factory.CommandBuilder;
 import com.github.alantr7.bukkitplugin.commands.registry.Command;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.world.BlockLocation;
+import com.github.alantr7.torus.world.TorusWorld;
+import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 @Singleton
@@ -28,6 +34,40 @@ public class Commands {
 
           ((Player) ctx.getExecutor()).getInventory().addItem(item.toItemStack());
           ctx.respond("You received 1 x " + item.namespacedId);
+      });
+
+    @CommandHandler Command inspect = CommandBuilder.using("torus")
+      .parameter("debug")
+      .parameter("inspect_structure")
+      .executes(ctx -> {
+          Player player = (Player) ctx.getExecutor();
+          Block block = player.getTargetBlockExact(5);
+          if (block == null) {
+              ctx.respond("Not looking at any structure.");
+              return;
+          }
+
+          TorusWorld world = TorusPlugin.getInstance().getWorldManager().getWorld(player.getWorld());
+          if (world == null) {
+              ctx.respond("Structures aren't allowed in this world.");
+              return;
+          }
+
+          StructureInstance structure = world.getStructure(new BlockLocation(block.getLocation()));
+          if (structure == null) {
+              ctx.respond("Not looking at any structure.");
+              return;
+          }
+
+          ctx.respond("\n");
+          ctx.respond(ChatColor.GOLD + "Structure ID: " + ChatColor.RESET + structure.structure.id);
+          ctx.respond(ChatColor.GOLD + "Connectors: (" + structure.getConnectors().size() + ")");
+          for (Connector connector : structure.getConnectors()) {
+              ctx.respond("  - " + ChatColor.YELLOW + connector.getComponent().absoluteLocation + ":");
+              ctx.respond("    - Matter: " + ChatColor.GRAY + connector.matter);
+              ctx.respond("    - Flow: " + ChatColor.GRAY + connector.getFlowDirection());
+              ctx.respond("    - Connections: " + ChatColor.GRAY + connector.getConnections());
+          }
       });
 
 }
