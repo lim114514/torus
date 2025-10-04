@@ -20,7 +20,7 @@ public class InventoryInterface extends Structure {
 
     static ModelTemplate CONNECTOR_MODEL = new ModelTemplate();
     static {
-        CONNECTOR_MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, -0.5f + 0.0625f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
+        CONNECTOR_MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
     }
 
     public InventoryInterface() {
@@ -46,13 +46,13 @@ public class InventoryInterface extends Structure {
         StructureComponentDef cableDef = new StructureComponentDef(
           "cable",
           new Vector3f(),
-          ModelTemplate.EMPTY.build(location.getBlock().getLocation().add(.5, 0, .5), direction)
+          ModelTemplate.EMPTY.build(location.getBlock().getLocation().add(.5, 0, .5), Direction.NORTH)
         );
 
         StructureBodyDef body = new StructureBodyDef(
           new StructureComponentDef[]{connectorDef, cableDef},
           new StructureConnectorDef[]{
-            new StructureConnectorDef("connector", Connector.Matter.ITEM, Connector.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.mask(), false))
+            new StructureConnectorDef("connector", Connector.Matter.ITEM, Connector.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false))
           }
         );
 

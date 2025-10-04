@@ -11,6 +11,7 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
@@ -35,8 +36,8 @@ public class InventoryInterfaceInstance extends StructureInstance {
     }
 
     public void updateConnections() {
-        if (TorusWorld.isItemContainer(location.getRelative(direction))) {
-            connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction).getBlock().getState()).getInventory());
+        if (TorusWorld.isItemContainer(location.getRelative(direction.getOpposite()))) {
+            connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
         }
 
         boolean shouldUpdateModel = false;
@@ -91,10 +92,10 @@ public class InventoryInterfaceInstance extends StructureInstance {
 
         // Add a cable that goes into the connected structure (only if there are other cables around)
         if (connector.getConnections() != 0) {
-            model.add(EnergyCable.MODELS_ITEM[direction.ordinal()]);
+            model.add(EnergyCable.MODELS_ITEM[direction.getOpposite().ordinal()]);
         }
 
-        components.get("cable").setModel(model.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
+        components.get("cable").setModel(model.build(location.getBlock().getLocation().add(.5, 0, .5), Direction.NORTH));
         save();
     }
 
