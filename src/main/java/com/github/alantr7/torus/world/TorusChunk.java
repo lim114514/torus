@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.structure.StructureInstance;
-import org.bukkit.Bukkit;
 import org.joml.Vector2i;
 
 import java.util.HashMap;
@@ -27,7 +26,7 @@ public class TorusChunk {
     protected void _placeStructureWithOccupations(StructureInstance structure) {
         structures.put(structure.location, structure);
 
-        int[] bounds = structure.structure.getBounds();
+        byte[] bounds = structure.getBounds();
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = structure.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]);
             if (contains(relative)) {

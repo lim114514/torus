@@ -134,7 +134,7 @@ public class TorusWorld {
         chunk.isDirty = true;
 
         // Place bounds
-        int[] bounds = instance.structure.getBounds();
+        byte[] bounds = instance.getBounds();
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i+1], bounds[i+2]);
             relative.getBlock().setType(Material.BARRIER);
@@ -182,7 +182,7 @@ public class TorusWorld {
         chunk0.structures.remove(instance.location);
 
         // Remove bounds
-        int[] bounds = instance.structure.getBounds();
+        byte[] bounds = instance.getBounds();
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i+1], bounds[i+2]);
             relative.getBlock().setType(Material.AIR);

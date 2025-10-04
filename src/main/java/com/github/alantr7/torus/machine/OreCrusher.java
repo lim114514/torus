@@ -2,7 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.Direction;
-import com.github.alantr7.torus.math.IntArrayBuilder;
+import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -90,7 +90,7 @@ public class OreCrusher extends Structure {
     }
 
     @Override
-    protected void createBounds(IntArrayBuilder builder) {
+    protected void createBounds(ByteArrayBuilder builder) {
         builder.add(0, 0, 0);
         builder.add(0, 1, 0);
         builder.add(0, 2, 0);

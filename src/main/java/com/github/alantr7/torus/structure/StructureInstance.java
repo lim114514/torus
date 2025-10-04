@@ -2,6 +2,7 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
+import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.ConnectorLocation;
@@ -39,6 +40,8 @@ public abstract class StructureInstance {
 
     protected Map<String, Connector> connectorsByName = new HashMap<>();
 
+    private byte[] bounds;
+
     public StructureInstance(LoadContext context) {
         this.structure = context.structure();
         this.location = context.location();
@@ -53,6 +56,7 @@ public abstract class StructureInstance {
         this.dataContainer = new DataContainer();
 
         for (StructureComponentDef componentDef : bodyDef.components()) {
+            MathUtils.applyRotation(componentDef.offset(), direction.rotH);
             StructureComponent component = new StructureComponent(
               this,
               new BlockLocation(location.world, (int) componentDef.offset().x, (int) componentDef.offset().y, (int) componentDef.offset().z),
@@ -67,6 +71,25 @@ public abstract class StructureInstance {
             connectors.put(new ConnectorLocation(components.get(connectorDef.component()).absoluteLocation, connectorDef.matter()), connector);
             connectorsByName.put(connectorDef.component(), connector);
         }
+    }
+
+    public byte[] getBounds() {
+        if (this.bounds != null)
+            return this.bounds;
+
+        byte[] parentBounds = structure.bounds;
+        byte[] bounds = new byte[parentBounds.length];
+
+        for (int i = 0; i < bounds.length; i += 3) {
+            float distance = (float) Math.sqrt(parentBounds[i] * parentBounds[i] + parentBounds[i + 2] * parentBounds[i + 2]);
+            float angle = (float) Math.toRadians(direction.rotH) + (float) Math.atan2(parentBounds[i + 2], parentBounds[i]);
+
+            bounds[i] = (byte) ((float) Math.cos(angle) * distance);
+            bounds[i + 2] = (byte) ((float) Math.sin(angle) * distance);
+            bounds[i + 1] = parentBounds[i + 1];
+        }
+
+        return this.bounds = bounds;
     }
 
     public StructureComponent getComponent(String name) {

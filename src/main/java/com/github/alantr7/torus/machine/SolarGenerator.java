@@ -2,7 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
-import com.github.alantr7.torus.math.IntArrayBuilder;
+import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -40,7 +40,7 @@ public class SolarGenerator extends Structure {
     }
 
     @Override
-    public void createBounds(IntArrayBuilder builder) {
+    public void createBounds(ByteArrayBuilder builder) {
         builder.add(0, 0, 0);
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {

@@ -2,7 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
-import com.github.alantr7.torus.math.IntArrayBuilder;
+import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -41,7 +41,7 @@ public class Pump extends Structure {
     }
 
     @Override
-    protected void createBounds(IntArrayBuilder builder) {
+    protected void createBounds(ByteArrayBuilder builder) {
         builder.add(0, 0, 0);
         builder.add(0, 1, 0);
     }
