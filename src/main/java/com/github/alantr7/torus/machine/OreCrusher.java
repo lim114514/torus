@@ -78,10 +78,6 @@ public class OreCrusher extends Structure {
     }
 
     public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();
-    static {
-        INPUT_CRITERIA.materials.add(Material.COBBLESTONE);
-        INPUT_CRITERIA.materials.add(Material.IRON_ORE);
-    }
 
     public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
 

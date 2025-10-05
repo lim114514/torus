@@ -85,7 +85,7 @@ public class TorusRecipeManager {
         registerCrusherRecipe(new CrusherRecipe("torus:crushed_gold", new RecipeIngredient(Material.GOLD_ORE), new ItemStack(Material.RAW_GOLD, 2), 8));
 
         registerWasherRecipe(new WasherRecipe("torus:iron_dust", new RecipeIngredient(Material.RAW_IRON), TorusItem.getById("torus:iron_dust").toItemStack(), 5));
-        registerWasherRecipe(new WasherRecipe("torus:gold_dust", new RecipeIngredient(Material.RAW_IRON), TorusItem.getById("torus:gold_dust").toItemStack(), 10));
+        registerWasherRecipe(new WasherRecipe("torus:gold_dust", new RecipeIngredient(Material.RAW_GOLD), TorusItem.getById("torus:gold_dust").toItemStack(), 10));
     }
 
 }
