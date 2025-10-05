@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -59,6 +60,28 @@ public class TorusItemManager {
             return null;
 
         return registry.get(itemId);
+    }
+
+    // TODO: Implement item providers system to support other plugins
+    public ItemStack getItemStackByReference(ItemReference reference) {
+        if (reference.providerId.equals("minecraft")) {
+            try {
+                return new ItemStack(Material.valueOf(reference.itemId));
+            } catch (Exception ex) {
+                return null;
+            }
+        }
+        TorusItem item = getItemById("torus:" + reference.itemId.toLowerCase());
+        return item != null ? item.toItemStack().clone() : null;
+    }
+
+    @NotNull
+    public ItemReference createItemReference(@NotNull ItemStack item) {
+        // TODO: Implement item providers system to support other plugins
+        TorusItem torusItem = getItemByItemStack(item);
+        return torusItem != null
+          ? new ItemReference("torus", torusItem.namespacedId.substring("torus:".length()))
+          : new ItemReference("minecraft", item.getType().name());
     }
 
     public Collection<String> getItemIds() {
