@@ -44,12 +44,19 @@ public class DataContainer {
         entries.forEach((key, entry) -> {
             buffer.writeU1((entry.type.id << 4) | keys.pool(key));
             switch (entry.type.id) {
+                // BYTE
+                case 0 -> buffer.writeBytes(new byte[] { (byte) entry.value });
                 // INT
-                case 0 -> buffer.writeBytes(ByteArrayWriter.toBytes((int) entry.value, 4));
+                case 1 -> buffer.writeBytes(ByteArrayWriter.toBytes((int) entry.value, 4));
                 // FLOAT
-                case 1 -> buffer.writeBytes(ByteArrayWriter.toBytes(Float.floatToIntBits((float) entry.value), 4));
+                case 2 -> buffer.writeBytes(ByteArrayWriter.toBytes(Float.floatToIntBits((float) entry.value), 4));
                 // STRING
-                case 2 -> buffer.writeString((String) entry.value);
+                case 3 -> buffer.writeString((String) entry.value);
+                // BYTE[]
+                case 4 -> {
+                    buffer.writeU2(((byte[]) entry.value).length);
+                    buffer.writeBytes((byte[]) entry.value);
+                }
             }
         });
 
@@ -68,20 +75,30 @@ public class DataContainer {
             Object value;
 
             switch (typeId) {
-                // INT
+                // BYTE
                 case 0 -> {
+                    type = Data.Type.BYTE;
+                    value = buffer.readBytes(1)[0];
+                }
+                // INT
+                case 1 -> {
                     type = Data.Type.INT;
                     value = ByteArrayReader.toInt(buffer.readBytes(4));
                 }
                 // FLOAT
-                case 1 -> {
+                case 2 -> {
                     type = Data.Type.INT;
                     value = Float.intBitsToFloat(ByteArrayReader.toInt(buffer.readBytes(4)));
                 }
                 // STRING
-                case 2 -> {
+                case 3 -> {
                     type = Data.Type.STRING;
                     value = buffer.readString();
+                }
+                // BYTE[]
+                case 4 -> {
+                    type = Data.Type.BYTE_ARRAY;
+                    value = buffer.readBytes(ByteArrayReader.toInt(buffer.readBytes(2)));
                 }
                 default -> {
                     type = null;
