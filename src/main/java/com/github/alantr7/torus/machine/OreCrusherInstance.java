@@ -22,7 +22,7 @@ import java.util.List;
 public class OreCrusherInstance extends StructureInstance implements Inspectable, EnergyContainer {
 
     protected StructureComponent leftWheel, rightWheel;
-    protected Connector energyConnector, itemInConnector;
+    protected Connector energyConnector, itemInConnector, itemOutConnector;
 
     protected CustomStructureInventory itemOutBuffer = new CustomStructureInventory(1);
 
@@ -47,6 +47,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     @Override
     public void tick() {
         energyConnector.maintainEnergy(this);
+        itemOutConnector.attemptDirectItemExport();
 
         if (recipe == null) {
             itemInConnector.updateNetwork();
@@ -94,9 +95,10 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         rightWheel = getComponent("wheel_right");
 
         itemInConnector = getConnector("item_connector");
+        itemOutConnector = getConnector("out_connector");
+        itemOutConnector.linkedInventory = itemOutBuffer;
         energyConnector = getConnector("power_connector");
         energyConnector.maximumInput = 500;
-        getConnector("out_connector").linkedInventory = itemOutBuffer;
     }
 
     @Override

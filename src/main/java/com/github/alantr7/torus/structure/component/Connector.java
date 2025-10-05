@@ -12,7 +12,6 @@ import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -73,28 +72,27 @@ public class Connector implements Connectable {
         List<Connection> networkConnections = new ArrayList<>();
 
         for (Direction direction : Direction.values()) {
-            if (isConnectableFrom(direction)) {
-                directionsCount++;
+            if (!isConnected(direction))
+                continue;
 
-                if (isConnected(direction)) {
-                    continue;
-                }
+            directionsCount++;
+            if (isConnected(direction))
+                continue;
 
-                StructureInstance neighbor = component.absoluteLocation.getRelative(direction).getStructure();
-                if (neighbor == null) {
-                    closedDirectionsCount++;
-                    continue;
-                }
+            StructureInstance neighbor = component.absoluteLocation.getRelative(direction).getStructure();
+            if (neighbor == null) {
+                closedDirectionsCount++;
+                continue;
+            }
 
-                if (neighbor instanceof CableInstance) {
-                    continue;
-                }
+            if (neighbor instanceof CableInstance) {
+                continue;
+            }
 
-                Connector neighborConnector = neighbor.getConnector(component.absoluteLocation.getRelative(direction), matter);
-                if (neighborConnector != null) {
-                    networkConnections.add(new Connection(neighbor, neighborConnector));
-                    closedDirectionsCount++;
-                }
+            Connector neighborConnector = neighbor.getConnector(component.absoluteLocation.getRelative(direction), matter);
+            if (neighborConnector != null) {
+                networkConnections.add(new Connection(neighbor, neighborConnector));
+                closedDirectionsCount++;
             }
         }
 
@@ -118,35 +116,34 @@ public class Connector implements Connectable {
             BlockLocation start = open.getFirst();
             CableInstance startCable = (CableInstance) start.getStructure();
             for (Direction direction : Direction.values()) {
-                if (startCable.isConnected(direction)) {
-                    BlockLocation neighborLoc = start.getRelative(direction);
+                if (!startCable.isConnected(direction))
+                    continue;
 
-                    // Skip if already checked
-                    if (closed.contains(neighborLoc))
+                BlockLocation neighborLoc = start.getRelative(direction);
+                if (closed.contains(neighborLoc)) // Skip if already checked
+                    continue;
+
+                StructureInstance neighbor = neighborLoc.getStructure();
+                if (neighbor == null) {
+                    closed.add(neighborLoc);
+                    continue;
+                }
+
+                // Check if it's a cable
+                if (neighbor instanceof CableInstance) {
+                    if (!open.contains(neighborLoc)) {
+                        open.add(neighborLoc);
                         continue;
-
-                    // Check if it's a cable
-                    StructureInstance neighbor = neighborLoc.getStructure();
-                    if (neighbor == null) {
-                        closed.add(neighborLoc);
-                        continue;
                     }
+                }
 
-                    if (neighbor instanceof CableInstance) {
-                        if (!open.contains(neighborLoc)) {
-                            open.add(neighborLoc);
-                            continue;
-                        }
-                    }
+                Connector connector = neighbor.getConnector(neighborLoc, matter);
+                if (connector != null) {
+                    networkConnections.add(new Connection(neighbor, connector));
+                    closed.add(neighborLoc);
 
-                    Connector connector = neighbor.getConnector(neighborLoc, matter);
-                    if (connector != null) {
-                        networkConnections.add(new Connection(neighbor, connector));
-                        closed.add(neighborLoc);
-
-                        connector.networkConnections = networkConnections;
-                        connector.networkUpdateTick = component.absoluteLocation.world.getTicks();
-                    }
+                    connector.networkConnections = networkConnections;
+                    connector.networkUpdateTick = component.absoluteLocation.world.getTicks();
                 }
             }
 
@@ -272,6 +269,30 @@ public class Connector implements Connectable {
             }
         }
         return true;
+    }
+
+    public void attemptDirectItemExport() {
+        if (linkedInventory == null)
+            return;
+
+        for (Direction direction : Direction.values()) {
+            if (isConnectableFrom(direction)) {
+                if (!TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction)))
+                    continue;
+
+                BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
+                ItemStack[] items = linkedInventory.getItems();
+                for (int i = 0; i < items.length; i++) {
+                    ItemStack item = items[i];
+                    if (item != null) {
+                        holder.getInventory().addItem(item.clone());
+                        items[i] = null;
+                    }
+                }
+
+                break;
+            }
+        }
     }
 
     public static class Connection {

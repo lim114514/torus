@@ -50,6 +50,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     @Override
     public void tick() {
         powerConnector.maintainEnergy(this);
+        itemConnector.attemptDirectItemExport();
+
         if (!hasSufficientEnergy(RF_COST) || inventory.getItems()[0] != null) {
             return;
         }

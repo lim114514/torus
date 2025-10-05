@@ -47,6 +47,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     @Override
     public void tick() {
         powerConnector.maintainEnergy(this);
+        itemOutConnector.attemptDirectItemExport();
 
         if (water.get() < 1_000) {
             waterInConnector.updateNetwork();
