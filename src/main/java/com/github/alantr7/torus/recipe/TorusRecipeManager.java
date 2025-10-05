@@ -83,6 +83,13 @@ public class TorusRecipeManager {
         }
     }
 
+    public void registerSmeltingRecipe(FurnaceRecipe recipe) {
+        if (Bukkit.getRecipe(recipe.getKey()) != null)
+            return;
+
+        Bukkit.addRecipe(recipe);
+    }
+
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     private void registerDefaultRecipes() {
         registerCrusherRecipe(new CrusherRecipe("torus:crushed_coal", new RecipeIngredient(Material.COAL_ORE), new ItemStack(Material.COAL, 5), 2));
@@ -94,9 +101,9 @@ public class TorusRecipeManager {
         registerWasherRecipe(new WasherRecipe("torus:copper_dust", new RecipeIngredient(Material.RAW_COPPER), TorusItem.getById("torus:copper_dust").toItemStack(), 8));
         registerWasherRecipe(new WasherRecipe("torus:gold_dust", new RecipeIngredient(Material.RAW_GOLD), TorusItem.getById("torus:gold_dust").toItemStack(), 10));
 
-        Bukkit.addRecipe(new FurnaceRecipe(new NamespacedKey(TorusPlugin.getInstance(), "iron_dust_to_ingot"), new ItemStack(Material.IRON_INGOT), new RecipeChoice.ExactChoice(TorusItem.getById("torus:iron_dust").toItemStack()), 0f, 60));
-        Bukkit.addRecipe(new FurnaceRecipe(new NamespacedKey(TorusPlugin.getInstance(), "copper_dust_to_ingot"), new ItemStack(Material.COPPER_INGOT), new RecipeChoice.ExactChoice(TorusItem.getById("torus:copper_dust").toItemStack()), 0f, 60));
-        Bukkit.addRecipe(new FurnaceRecipe(new NamespacedKey(TorusPlugin.getInstance(), "gold_dust_to_ingot"), new ItemStack(Material.GOLD_INGOT), new RecipeChoice.ExactChoice(TorusItem.getById("torus:gold_dust").toItemStack()), 0f, 60));
+        registerSmeltingRecipe(new FurnaceRecipe(new NamespacedKey(TorusPlugin.getInstance(), "iron_dust_to_ingot"), new ItemStack(Material.IRON_INGOT), new RecipeChoice.ExactChoice(TorusItem.getById("torus:iron_dust").toItemStack()), 0f, 60));
+        registerSmeltingRecipe(new FurnaceRecipe(new NamespacedKey(TorusPlugin.getInstance(), "copper_dust_to_ingot"), new ItemStack(Material.COPPER_INGOT), new RecipeChoice.ExactChoice(TorusItem.getById("torus:copper_dust").toItemStack()), 0f, 60));
+        registerSmeltingRecipe(new FurnaceRecipe(new NamespacedKey(TorusPlugin.getInstance(), "gold_dust_to_ingot"), new ItemStack(Material.GOLD_INGOT), new RecipeChoice.ExactChoice(TorusItem.getById("torus:gold_dust").toItemStack()), 0f, 60));
     }
 
 }
