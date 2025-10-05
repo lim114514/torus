@@ -32,8 +32,8 @@ public class MathUtils {
             float distance = (float) Math.sqrt(parentBounds[i] * parentBounds[i] + parentBounds[i + 2] * parentBounds[i + 2]);
             float angle = (float) Math.toRadians(direction.rotH) + (float) Math.atan2(parentBounds[i + 2], parentBounds[i]);
 
-            bounds[i] = (byte) ((float) Math.cos(angle) * distance);
-            bounds[i + 2] = (byte) ((float) Math.sin(angle) * distance);
+            bounds[i] = (byte) Math.round((float) Math.cos(angle) * distance);
+            bounds[i + 2] = (byte) Math.round((float) Math.sin(angle) * distance);
             bounds[i + 1] = parentBounds[i + 1];
         }
 
