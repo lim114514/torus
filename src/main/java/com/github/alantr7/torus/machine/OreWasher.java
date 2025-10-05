@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -64,6 +65,8 @@ public class OreWasher extends Structure {
     }
 
     public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
+
+    public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
     public OreWasher() {
         super("torus:ore_washer", OreWasherInstance.class);

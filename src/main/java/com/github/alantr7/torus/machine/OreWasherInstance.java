@@ -1,7 +1,9 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.Fluid;
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.recipe.WasherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -34,7 +36,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     protected int processedTicks;
 
-    public static final int PROCESS_DURATION = 3;
+    private WasherRecipe recipe;
 
     public OreWasherInstance(LoadContext context) {
         super(context);
@@ -56,7 +58,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
             }
         }
 
-        if (itemInBuffer.getItems()[0] != null) {
+        if (recipe != null) {
             if (!hasSufficientEnergy(OreWasher.ENERGY_CONSUMPTION_PER_TICK) || water.get() < 100) {
                 return;
             }
@@ -67,15 +69,15 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
         } else {
             itemInConnector.updateConnections();
 
-            List<ItemStack> items = itemInConnector.consumeItems(null, 1, true);
+            List<ItemStack> items = itemInConnector.consumeItems(OreWasher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
-                itemInBuffer.addItem(items.getFirst());
+                recipe = TorusPlugin.getInstance().getRecipeManager().getWasherRecipeByIngredient(items.getFirst());
             }
         }
 
-        if (processedTicks >= PROCESS_DURATION) {
-            itemOutBuffer.addItem(new ItemStack(Material.IRON_INGOT, 2));
-            itemInBuffer.getItems()[0] = null;
+        if (recipe != null && processedTicks >= recipe.washTicks) {
+            itemOutBuffer.addItem(recipe.result.clone());
+            recipe = null;
             processedTicks = 0;
         }
     }
@@ -92,7 +94,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Override
     public String getInspectionText(BlockLocation location, Player player) {
-        return String.format("Ore Washer [%d / 1000 mb] [%d / %d RF] [Progress: %.0f%%]", water.get(), getStoredEnergy().get(), getEnergyCapacity(), (float) processedTicks / PROCESS_DURATION * 100);
+        return String.format("Ore Washer [%d / 1000 mb] [%d / %d RF] [Progress: %.0f%%]", water.get(), getStoredEnergy().get(), getEnergyCapacity(), (float) processedTicks / (recipe == null ? 1 : recipe.washTicks) * 100);
     }
 
     @Override
