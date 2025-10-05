@@ -33,6 +33,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     @Override
     protected void setup() {
         connector = getConnector("power_connector");
+        connector.maximumInput = 500;
     }
 
     @Override
