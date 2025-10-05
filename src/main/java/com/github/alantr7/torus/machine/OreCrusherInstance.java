@@ -11,7 +11,6 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
@@ -50,7 +49,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         energyConnector.maintainEnergy(this);
 
         if (recipe == null) {
-            itemInConnector.updateConnections();
+            itemInConnector.updateNetwork();
             List<ItemStack> items = itemInConnector.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
                 this.recipe = TorusPlugin.getInstance().getRecipeManager().getCrusherRecipeByIngredient(items.getFirst());

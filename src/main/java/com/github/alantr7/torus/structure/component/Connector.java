@@ -3,7 +3,6 @@ package com.github.alantr7.torus.structure.component;
 import com.github.alantr7.torus.Fluid;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.machine.CableInstance;
-import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
@@ -32,8 +31,9 @@ public class Connector implements Connectable {
 
     public int maximumOutput = 100;
 
-    @Getter
-    public List<Connection> connectedStructures = Collections.emptyList();
+    public List<Connection> networkConnections = Collections.emptyList();
+
+    protected int networkUpdateTick = -1;
 
     public StructureInventory linkedInventory;
 
@@ -62,11 +62,15 @@ public class Connector implements Connectable {
         this.matter = matter;
     }
 
-    public void updateConnections() {
+    public void updateNetwork() {
+        // Skip network update if it was already done
+        if (networkUpdateTick == component.absoluteLocation.world.getTicks())
+            return;
+
         // Check if connector is directly connected to another
         int directionsCount = 0;
         int closedDirectionsCount = 0;
-        List<Connection> structures = new ArrayList<>();
+        List<Connection> networkConnections = new ArrayList<>();
 
         for (Direction direction : Direction.values()) {
             if (isConnectableFrom(direction)) {
@@ -88,18 +92,17 @@ public class Connector implements Connectable {
 
                 Connector neighborConnector = neighbor.getConnector(component.absoluteLocation.getRelative(direction), matter);
                 if (neighborConnector != null) {
-                    structures.add(new Connection(neighbor, neighborConnector));
+                    networkConnections.add(new Connection(neighbor, neighborConnector));
                     closedDirectionsCount++;
                 }
             }
         }
 
         if (directionsCount == closedDirectionsCount) {
-            this.connectedStructures = structures;
+            this.networkConnections = networkConnections;
             return;
         }
 
-        // TODO: Implement network logic for below
         List<BlockLocation> open = new LinkedList<>();
         List<BlockLocation> closed = new LinkedList<>();
 
@@ -138,8 +141,11 @@ public class Connector implements Connectable {
 
                     Connector connector = neighbor.getConnector(neighborLoc, matter);
                     if (connector != null) {
-                        structures.add(new Connection(neighbor, connector));
+                        networkConnections.add(new Connection(neighbor, connector));
                         closed.add(neighborLoc);
+
+                        connector.networkConnections = networkConnections;
+                        connector.networkUpdateTick = component.absoluteLocation.world.getTicks();
                     }
                 }
             }
@@ -147,12 +153,16 @@ public class Connector implements Connectable {
             closed.add(open.removeFirst());
         }
 
-        this.connectedStructures = structures;
+        this.networkConnections = networkConnections;
+        this.networkUpdateTick = component.absoluteLocation.world.getTicks();
     }
 
     public int consumeEnergy(int amount) {
         int original = amount;
-        for (Connection conn : connectedStructures) {
+        for (Connection conn : networkConnections) {
+            if (conn.connector == this)
+                continue;
+
             if (conn.connector.matter != Matter.ENERGY)
                 continue;
 
@@ -173,9 +183,9 @@ public class Connector implements Connectable {
         if (container.getStoredEnergy().get() == container.getEnergyCapacity())
             return 0;
 
-        updateConnections();
+        updateNetwork();
 
-        if (connectedStructures.isEmpty())
+        if (networkConnections.isEmpty() || (networkConnections.size() == 1 && networkConnections.getFirst().connector == this))
             return 0;
 
         return container.supplyEnergy(
@@ -185,7 +195,10 @@ public class Connector implements Connectable {
 
     public int consumeFluid(Fluid fluid, int amount) {
         int original = amount;
-        for (Connection conn : connectedStructures) {
+        for (Connection conn : networkConnections) {
+            if (conn.connector == this)
+                continue;
+
             if (conn.connector.matter != Matter.FLUID)
                 continue;
 
@@ -208,7 +221,7 @@ public class Connector implements Connectable {
     public List<ItemStack> consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst) {
         List<ItemStack> result = new ArrayList<>();
 
-        if (connectedStructures.isEmpty()) {
+        if (networkConnections.isEmpty()) {
             for (Direction direction : Direction.values()) {
                 if (isConnectableFrom(direction) && TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction))) {
                     BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
@@ -219,7 +232,10 @@ public class Connector implements Connectable {
             }
         }
 
-        for (Connection conn : connectedStructures) {
+        for (Connection conn : networkConnections) {
+            if (conn.connector == this)
+                continue;
+
             if (conn.connector.matter != Matter.ITEM)
                 continue;
 

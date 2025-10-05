@@ -12,7 +12,6 @@ import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -50,11 +49,9 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
         powerConnector.maintainEnergy(this);
 
         if (water.get() < 1_000) {
-            waterInConnector.updateConnections();
-            if (!waterInConnector.connectedStructures.isEmpty()) {
-                int consumed = waterInConnector.consumeFluid(Fluid.WATER, 1000 - water.get());
-                supplyFluid(consumed);
-            }
+            waterInConnector.updateNetwork();
+            int consumed = waterInConnector.consumeFluid(Fluid.WATER, 1000 - water.get());
+            supplyFluid(consumed);
         }
 
         if (recipe != null) {
@@ -66,7 +63,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
             consumeEnergy(OreWasher.ENERGY_CONSUMPTION_PER_TICK);
             consumeFluid(100);
         } else {
-            itemInConnector.updateConnections();
+            itemInConnector.updateNetwork();
 
             List<ItemStack> items = itemInConnector.consumeItems(OreWasher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {

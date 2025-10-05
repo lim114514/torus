@@ -110,8 +110,8 @@ public class InventoryInterfaceInstance extends StructureInstance {
             return;
         }
 
-        connector.updateConnections();
-        for (Connector.Connection conn : connector.getConnectedStructures()) {
+        connector.updateNetwork();
+        for (Connector.Connection conn : connector.networkConnections) {
             if (conn.connector.getFlowDirection() != Connector.FlowDirection.OUT && conn.connector.getFlowDirection() != Connector.FlowDirection.ALL)
                 continue;
 
