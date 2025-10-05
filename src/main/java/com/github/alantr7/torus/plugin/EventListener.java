@@ -37,7 +37,7 @@ public class EventListener implements Listener {
         if (cooldowns.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
             return;
 
-        TorusItem torusItem = TorusItem.getFromItemStack(item);
+        TorusItem torusItem = TorusItem.getByItemStack(item);
         if (torusItem == null || !torusItem.isPlaceable())
             return;
 

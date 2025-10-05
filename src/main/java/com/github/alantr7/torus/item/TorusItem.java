@@ -69,7 +69,11 @@ public class TorusItem {
         return itemStack;
     }
 
-    public static TorusItem getFromItemStack(ItemStack stack) {
+    public static TorusItem getById(String id) {
+        return TorusPlugin.getInstance().getItemManager().getItemById(id);
+    }
+
+    public static TorusItem getByItemStack(ItemStack stack) {
         return TorusPlugin.getInstance().getItemManager().getItemByItemStack(stack);
     }
 

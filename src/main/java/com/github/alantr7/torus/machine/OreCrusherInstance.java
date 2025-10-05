@@ -1,6 +1,8 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -34,7 +36,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     @Getter
     protected int energyCapacity = 20_000;
 
-    public static final int PROCESS_DURATION = 5;
+    private CrusherRecipe recipe;
 
     OreCrusherInstance(LoadContext context) {
         super(context);
@@ -47,28 +49,40 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     @Override
     public void tick() {
         energyConnector.maintainEnergy(this);
-        if (itemInBuffer.getItems()[0] != null) {
-            if (!hasSufficientEnergy(OreCrusher.ENERGY_CONSUMPTION_PER_TICK)) {
-                return;
+
+        if (recipe == null) {
+
+            // Select recipe based on what item is in the buffer
+            if (itemInBuffer.getItems()[0] != null) {
+                this.recipe = TorusPlugin.getInstance().getRecipeManager().getCrusherRecipeByIngredient(itemInBuffer.getItems()[0]);
+                this.itemInBuffer.getItems()[0] = null;
             }
 
-            processedTicks++;
-            updateModel();
+            // Try to find items that match input criteria (to be able to find recipe later)
+            else {
+                itemInConnector.updateConnections();
+                List<ItemStack> items = itemInConnector.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
+                if (!items.isEmpty()) {
+                    itemInBuffer.addItem(items.getFirst());
+                }
+            }
 
-            consumeEnergy(OreCrusher.ENERGY_CONSUMPTION_PER_TICK);
         } else {
-            itemInConnector.updateConnections();
+            if (processedTicks >= recipe.crushTicks) {
+                itemOutBuffer.addItem(recipe.result.clone());
+                recipe = null;
+                processedTicks = 0;
+            } else {
+                if (!hasSufficientEnergy(OreCrusher.ENERGY_CONSUMPTION_PER_TICK)) {
+                    return;
+                }
 
-            List<ItemStack> items = itemInConnector.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
-            if (!items.isEmpty()) {
-                itemInBuffer.addItem(items.getFirst());
+                processedTicks++;
+                updateModel();
+                consumeEnergy(OreCrusher.ENERGY_CONSUMPTION_PER_TICK);
             }
         }
-        if (processedTicks >= PROCESS_DURATION) {
-            itemOutBuffer.addItem(new ItemStack(Material.ANDESITE));
-            itemInBuffer.getItems()[0] = null;
-            processedTicks = 0;
-        }
+
     }
 
     private void updateModel() {
@@ -99,7 +113,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
     @Override
     public String getInspectionText(BlockLocation location, Player player) {
-        return "Ore Crusher " + String.format("[%d / %d RF] [Progress: %.2f]%%", getStoredEnergy().get(), getEnergyCapacity(), (float) processedTicks / PROCESS_DURATION * 100);
+        return "Ore Crusher " + String.format("[%d / %d RF] [Progress: %.2f]%%", getStoredEnergy().get(), getEnergyCapacity(), (float) processedTicks / (recipe != null ? recipe.crushTicks : 1) * 100);
     }
 
 }

@@ -19,6 +19,7 @@ public class TorusItemManager {
     private final Map<String, TorusItem> registry = new HashMap<>();
 
     {
+        // Structure Items
         registerItem(new TorusItem("torus:solar_generator", Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList(), 0));
         registerItem(new TorusItem("torus:power_bank", Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList(), 0));
 
@@ -33,6 +34,12 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:inventory_interface", Structures.INVENTORY_INTERFACE, Material.PAPER, "Inventory Interface", Collections.emptyList(), 0));
 
         registerItem(new TorusItem("torus:fluid_tank", Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList(), 0));
+
+        // Regular Items
+        registerItem(new TorusItem("torus:coal_dust", null, Material.DRIED_KELP, "Coal Dust", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:iron_dust", null, Material.DEAD_TUBE_CORAL_FAN, "Iron Dust", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:copper_dust", null, Material.GLOWSTONE_DUST, "Copper Dust", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:gold_dust", null, Material.HORN_CORAL_FAN, "Gold Dust", Collections.emptyList(), 0));
     }
 
     public void registerItem(TorusItem item) {
