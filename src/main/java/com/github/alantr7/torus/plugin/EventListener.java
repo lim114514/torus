@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -51,6 +52,21 @@ public class EventListener implements Listener {
             torusItem.getStructure().place(location, direction);
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to place the structure here.");
+        }
+        event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    void onMachineInteract(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
+
+        if (cooldowns.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
+            return;
+
+        StructureInstance structure = new BlockLocation(event.getClickedBlock().getLocation()).getStructure();
+        if (structure != null) {
+            structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
         }
     }
 

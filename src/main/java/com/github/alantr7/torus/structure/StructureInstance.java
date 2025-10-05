@@ -18,6 +18,8 @@ import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -111,6 +113,9 @@ public abstract class StructureInstance {
     public void save() {
         isDirty = true;
         location.getChunk().isDirty = true;
+    }
+
+    public void handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
     }
 
     public void save(ByteArrayWriter buffer, StringPool keys) {
