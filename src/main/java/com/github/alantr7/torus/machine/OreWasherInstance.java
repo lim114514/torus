@@ -31,7 +31,6 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     protected Connector powerConnector, itemInConnector, waterInConnector, itemOutConnector;
 
-    protected StructureInventory itemInBuffer = new CustomStructureInventory(1);
     protected StructureInventory itemOutBuffer = new CustomStructureInventory(1);
 
     protected int processedTicks;

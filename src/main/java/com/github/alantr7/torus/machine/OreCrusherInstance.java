@@ -25,7 +25,6 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     protected StructureComponent leftWheel, rightWheel;
     protected Connector energyConnector, itemInConnector;
 
-    protected CustomStructureInventory itemInBuffer = new CustomStructureInventory(1);
     protected CustomStructureInventory itemOutBuffer = new CustomStructureInventory(1);
 
     protected int processedTicks;
@@ -51,22 +50,11 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         energyConnector.maintainEnergy(this);
 
         if (recipe == null) {
-
-            // Select recipe based on what item is in the buffer
-            if (itemInBuffer.getItems()[0] != null) {
-                this.recipe = TorusPlugin.getInstance().getRecipeManager().getCrusherRecipeByIngredient(itemInBuffer.getItems()[0]);
-                this.itemInBuffer.getItems()[0] = null;
+            itemInConnector.updateConnections();
+            List<ItemStack> items = itemInConnector.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
+            if (!items.isEmpty()) {
+                this.recipe = TorusPlugin.getInstance().getRecipeManager().getCrusherRecipeByIngredient(items.getFirst());
             }
-
-            // Try to find items that match input criteria (to be able to find recipe later)
-            else {
-                itemInConnector.updateConnections();
-                List<ItemStack> items = itemInConnector.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
-                if (!items.isEmpty()) {
-                    itemInBuffer.addItem(items.getFirst());
-                }
-            }
-
         } else {
             if (processedTicks >= recipe.crushTicks) {
                 itemOutBuffer.addItem(recipe.result.clone());
@@ -105,7 +93,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         leftWheel = getComponent("wheel_left");
         rightWheel = getComponent("wheel_right");
 
-        (itemInConnector = getConnector("item_connector")).linkedInventory = itemInBuffer;
+        itemInConnector = getConnector("item_connector");
         energyConnector = getConnector("power_connector");
         energyConnector.maximumInput = 500;
         getConnector("out_connector").linkedInventory = itemOutBuffer;
