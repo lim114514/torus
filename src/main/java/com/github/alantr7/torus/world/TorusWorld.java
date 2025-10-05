@@ -6,6 +6,7 @@ import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -28,6 +29,9 @@ public class TorusWorld {
     public final File regionsDirectory;
 
     protected final Map<Vector2i, TorusRegion> regions = new HashMap<>();
+
+    @Getter
+    private int ticks;
 
     public TorusWorld(World bukkit) {
         this.bukkit = bukkit;
@@ -108,7 +112,6 @@ public class TorusWorld {
         }
     }
 
-    // TODO: Seems a bit expensive to be called on every block interaction
     public StructureInstance getStructure(BlockLocation location) {
         TorusChunk chunk = getChunk(location);
         if (chunk == null)
@@ -126,6 +129,24 @@ public class TorusWorld {
             return null;
 
         return machineChunk.structures.get(machineLocation);
+    }
+
+    public void tick() {
+        regions.values().forEach(region -> {
+            region.chunks.values().forEach(chunk -> chunk.structures.values().forEach(s -> {
+                try {
+                    s.tick();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }));
+            try {
+                region.save();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        ticks++;
     }
 
     public void placeStructure(StructureInstance instance) {

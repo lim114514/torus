@@ -69,16 +69,7 @@ public class TorusWorldManager implements Listener {
 
     @InvokePeriodically(interval = 20)
     private void tickLoadedStructures() {
-        worlds.forEach((id, world) -> {
-            world.regions.forEach((pos, region) -> {
-                try {
-                    region.chunks.forEach((pos1, chunk) -> chunk.structures.forEach((loc, inst) -> inst.tick()));
-                    region.save();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        });
+        worlds.values().forEach(TorusWorld::tick);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             Block block = player.getTargetBlockExact(5);
