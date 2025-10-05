@@ -73,15 +73,16 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     }
 
     private void updateModel() {
+        float angle = (processedTicks * 120) / 180f * (float) Math.PI;
         leftWheel.getModel().entities.forEach(display -> {
             Transformation transformation = display.getTransformation();
-            display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(location.world.getBukkit().getTime() * 0.9f, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
+            display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(angle * 0.9f, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(20);
         });
         rightWheel.getModel().entities.forEach(display -> {
             Transformation transformation = display.getTransformation();
-            display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(location.world.getBukkit().getTime(), 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
+            display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(angle, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(20);
         });
