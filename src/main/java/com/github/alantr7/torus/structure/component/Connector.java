@@ -10,8 +10,10 @@ import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.FluidContainer;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
+import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -169,6 +171,17 @@ public class Connector implements Connectable {
     public List<ItemStack> consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst) {
         List<ItemStack> result = new ArrayList<>();
 
+        if (connectedStructures.isEmpty()) {
+            for (Direction direction : Direction.values()) {
+                if (isConnectableFrom(direction) && TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction))) {
+                    BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
+                    consumeItems(criteria, amount, onlyFirst, holder.getInventory().getContents(), result);
+
+                    return result;
+                }
+            }
+        }
+
         for (Connection conn : connectedStructures) {
             if (conn.connector.matter != Matter.ITEM)
                 continue;
@@ -178,28 +191,34 @@ public class Connector implements Connectable {
 
             StructureInventory inventory = conn.connector.linkedInventory;
             ItemStack[] items = inventory.getItems();
-            for (int i = 0; i < items.length; i++) {
-                ItemStack item = items[i];
-                if (item != null && (criteria == null || criteria.matches(item))) {
-                    int newAmount = Math.max(0, item.getAmount() - amount);
-                    amount -= item.getAmount() - newAmount;
-
-                    ItemStack resultItem = item.clone();
-                    resultItem.setAmount(item.getAmount() - newAmount);
-
-                    item.setAmount(newAmount);
-                    if (newAmount == 0)
-                        items[i] = null;
-
-                    result.add(resultItem);
-
-                    if (onlyFirst)
-                        return result;
-                }
-            }
+            if (!consumeItems(criteria, amount, onlyFirst, items, result))
+                break;
         }
 
         return result;
+    }
+
+    private boolean consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst, ItemStack[] items, List<ItemStack> results) {
+        for (int i = 0; i < items.length; i++) {
+            ItemStack item = items[i];
+            if (item != null && (criteria == null || criteria.matches(item))) {
+                int newAmount = Math.max(0, item.getAmount() - amount);
+                amount -= item.getAmount() - newAmount;
+
+                ItemStack resultItem = item.clone();
+                resultItem.setAmount(item.getAmount() - newAmount);
+
+                item.setAmount(newAmount);
+                if (newAmount == 0)
+                    items[i] = null;
+
+                results.add(resultItem);
+
+                if (onlyFirst)
+                    return false;
+            }
+        }
+        return true;
     }
 
     public static class Connection {
