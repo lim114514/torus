@@ -4,8 +4,8 @@ import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.InventoryInterfaceInstance;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.component.Connector;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -196,10 +196,20 @@ public class TorusWorld {
         if (instance instanceof CableInstance cable) {
             for (Direction direction : Direction.values()) {
                 if (cable.isConnectableFrom(direction)) {
-                    if (instance.location.getRelative(direction).getStructure() instanceof CableInstance cable1) {
+                    StructureInstance neighbor = instance.location.getRelative(direction).getStructure();
+                    if (neighbor == null)
+                        continue;
+
+                    if (neighbor instanceof CableInstance cable1) {
                         cable1.updateConnections();
                     } else if (instance.location.getRelative(direction).getStructure() instanceof InventoryInterfaceInstance iii) {
                         iii.updateConnections();
+                    } else if (cable.isConnected(direction)) {
+                        Connector connector = neighbor.getConnector(instance.location.getRelative(direction), cable.getType());
+                        if (connector != null) {
+                            connector.setConnected(direction.getOpposite(), false);
+                        }
+                        neighbor.save();
                     }
                 }
             }

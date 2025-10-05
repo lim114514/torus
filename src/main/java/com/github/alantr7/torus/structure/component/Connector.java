@@ -13,6 +13,7 @@ import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -62,9 +63,45 @@ public class Connector implements Connectable {
     }
 
     public void updateConnections() {
+        // Check if connector is directly connected to another
+        int directionsCount = 0;
+        int closedDirectionsCount = 0;
+        List<Connection> structures = new ArrayList<>();
+
+        for (Direction direction : Direction.values()) {
+            if (isConnectableFrom(direction)) {
+                directionsCount++;
+
+                if (isConnected(direction)) {
+                    continue;
+                }
+
+                StructureInstance neighbor = component.absoluteLocation.getRelative(direction).getStructure();
+                if (neighbor == null) {
+                    closedDirectionsCount++;
+                    continue;
+                }
+
+                if (neighbor instanceof CableInstance) {
+                    continue;
+                }
+
+                Connector neighborConnector = neighbor.getConnector(component.absoluteLocation.getRelative(direction), matter);
+                if (neighborConnector != null) {
+                    structures.add(new Connection(neighbor, neighborConnector));
+                    closedDirectionsCount++;
+                }
+            }
+        }
+
+        if (directionsCount == closedDirectionsCount) {
+            this.connectedStructures = structures;
+            return;
+        }
+
+        // TODO: Implement network logic for below
         List<BlockLocation> open = new LinkedList<>();
         List<BlockLocation> closed = new LinkedList<>();
-        List<Connection> structures = new ArrayList<>();
 
         closed.add(component.absoluteLocation);
         for (Direction direction : Direction.values()) {
