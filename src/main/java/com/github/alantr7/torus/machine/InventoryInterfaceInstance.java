@@ -155,6 +155,7 @@ public class InventoryInterfaceInstance extends StructureInstance {
         }
         this.filterInternal.update(writer.getBuffer());
         this.updateCriteria(filter);
+        save();
     }
 
     public void updateCriteria(ItemReference[] filter) {
