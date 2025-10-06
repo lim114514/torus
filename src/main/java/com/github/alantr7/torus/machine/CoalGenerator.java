@@ -1,0 +1,110 @@
+package com.github.alantr7.torus.machine;
+
+import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.math.ByteArrayBuilder;
+import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.builder.StructureBodyDef;
+import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
+import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.display.ItemDisplayModelTemplate;
+import com.github.alantr7.torus.structure.display.Model;
+import com.github.alantr7.torus.structure.display.ModelTemplate;
+import com.github.alantr7.torus.world.BlockLocation;
+import org.bukkit.Material;
+import org.bukkit.entity.ItemDisplay;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
+
+public class CoalGenerator extends Structure {
+
+    static ModelTemplate MODEL = new ModelTemplate();
+    static {
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .0625f, 1f), new Vector3f(1.75f, .125f, 2.6875f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, 1.1875f, 2.125f - .5f), new Vector3f(.625f, .125f, .625f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .9375f, .9375f - .5f), new Vector3f(.375f, .1875f, 1.1875f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, 1f), new Vector3f(.25f, .25f, 2.75f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, .375f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, .75f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, 1.125f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, 1.5f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.BLAST_FURNACE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .625f, 2.125f - .5f), new Vector3f(1f, 1f, 1f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .4375f, .9375f - .5f), new Vector3f(.625f, .8125f, 1.375f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.LIGHTNING_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, 1.0625f, .0625f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.LIGHTNING_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, 1.0625f, .4375f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.LIGHTNING_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, 1.0625f, .8125f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
+
+        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(-.125f - .5f, .375f, .0625f), new Vector3f(1f, .5f, 1f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(.125f - .5f, .625f, .0625f), new Vector3f(1f, .5f, 1f), 90f, 90f));
+
+        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(-.125f - .5f, .375f, .4375f), new Vector3f(1f, .5f, 1f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(.125f - .5f, .625f, .4375f), new Vector3f(1f, .5f, 1f), 90f, 90f));
+
+        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(-.125f - .5f, .375f, .8125f), new Vector3f(1f, .5f, 1f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(.125f - .5f, .625f, .8125f), new Vector3f(1f, .5f, 1f), 90f, 90f));
+
+        // Chimney
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(1.125f - .5f, .875f, .8125f - .5f), new Vector3f(.3125f, 1.5f, .3125f), 0f, 0f));
+        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(1.125f - .5f, 2.25f, .8125f - .5f), new Vector3f(.25f, 1.25f, .25f), 0f, 0f));
+    }
+
+    static ModelTemplate MODEL_INPUT_CONNECTOR = new ModelTemplate();
+    static {
+        MODEL_INPUT_CONNECTOR.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, .5f, .0625f - .5f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
+    }
+
+    static ModelTemplate MODEL_OUTPUT_CONNECTOR = new ModelTemplate();
+    static {
+        MODEL_OUTPUT_CONNECTOR.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, .5f, 2.4375f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
+    }
+
+    public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();
+    static {
+        INPUT_CRITERIA.materials.add(Material.COAL);
+        INPUT_CRITERIA.materials.add(Material.CHARCOAL);
+    }
+
+    public CoalGenerator() {
+        super("torus:coal_generator", CoalGeneratorInstance.class);
+    }
+
+    @Override
+    public void createBounds(ByteArrayBuilder builder) {
+        for (int z = 0; z <= 2; z++) {
+            builder.add(0, 0, z);
+        }
+        builder.add(1, 0, 0);
+        builder.add(1, 1, 0);
+        builder.add(1, 2, 0);
+    }
+
+    @Override
+    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
+        StructureComponentDef baseComponent = new StructureComponentDef(
+          "base", new Vector3f(), MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)
+        );
+
+        Model inputConnectorModel = MODEL_INPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
+        StructureComponentDef inputConnectorComponent = new StructureComponentDef(
+          "item_connector", new Vector3f(0, 0, 2), inputConnectorModel
+        );
+
+        Model outputConnectorModel = MODEL_OUTPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
+        StructureComponentDef powerConnectorComponent = new StructureComponentDef(
+          "power_connector", new Vector3f(0, 0, 0), outputConnectorModel
+        );
+
+        StructureConnectorDef inputConnector = new StructureConnectorDef(
+          "item_connector", Connector.Matter.ITEM, Connector.FlowDirection.IN, direction.getOpposite().mask()
+        );
+        StructureConnectorDef outputConnector = new StructureConnectorDef(
+          "power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.mask()
+        );
+
+        StructureBodyDef bodyDef = new StructureBodyDef(new StructureComponentDef[]{ baseComponent, inputConnectorComponent, powerConnectorComponent }, new StructureConnectorDef[]{ inputConnector, outputConnector });
+        return new CoalGeneratorInstance(location, bodyDef, direction);
+    }
+
+}

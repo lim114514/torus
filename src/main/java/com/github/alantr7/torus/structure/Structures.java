@@ -23,6 +23,7 @@ public class Structures {
 
     public static final FluidTank FLUID_TANK = register(new FluidTank());
 
+    public static final CoalGenerator COAL_GENERATOR = register(new CoalGenerator());
     public static final SolarGenerator SOLAR_GENERATOR = register(new SolarGenerator());
     public static final PowerBank POWER_BANK = register(new PowerBank());
 
