@@ -18,7 +18,6 @@ import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.lang.reflect.Constructor;
@@ -33,6 +32,8 @@ public abstract class StructureInstance {
     public final Direction direction;
 
     public final DataContainer dataContainer;
+
+    public boolean isCorrupted;
 
     public boolean isDirty = false;
 
@@ -79,7 +80,7 @@ public abstract class StructureInstance {
         if (this.bounds != null)
             return this.bounds;
 
-        return this.bounds = MathUtils.rotateBounds(structure.bounds, direction);
+        return this.bounds = MathUtils.rotateVectors(structure.bounds, direction);
     }
 
     public StructureComponent getComponent(String name) {

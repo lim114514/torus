@@ -46,7 +46,13 @@ public abstract class Structure {
 
     public StructureInstance place(BlockLocation location, Direction direction) {
         StructureInstance instance = instantiate(location, direction);
-        instance.setup();
+        try {
+            instance.setup();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.err.println("Corrupted structure. It will be loaded but not ticked.");
+            instance.isCorrupted = true;
+        }
 
         location.world.placeStructure(instance);
         return instance;

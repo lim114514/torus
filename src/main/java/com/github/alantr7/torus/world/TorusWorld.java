@@ -6,7 +6,6 @@ import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -134,6 +133,9 @@ public class TorusWorld {
     public void tick() {
         regions.values().forEach(region -> {
             region.chunks.values().forEach(chunk -> chunk.structures.values().forEach(s -> {
+                if (s.isCorrupted)
+                    return;
+
                 try {
                     s.tick();
                 } catch (Exception e) {
