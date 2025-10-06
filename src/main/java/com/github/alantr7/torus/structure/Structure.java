@@ -35,7 +35,7 @@ public abstract class Structure {
     }
 
     public boolean isPlaceableAt(BlockLocation location, Direction direction) {
-        byte[] bounds = MathUtils.rotateBounds(this.bounds, direction);
+        byte[] bounds = MathUtils.rotateVectors(this.bounds, direction);
         for (int i = 0; i < bounds.length; i += 3) {
             if (location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]).getBlock().getType().isSolid()) {
                 return false;
