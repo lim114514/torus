@@ -86,7 +86,6 @@ public class TorusWorld {
 
     protected void handleChunkLoad(Chunk chunk) {
         getChunkOrLoad(new BlockLocation(this, chunk.getX() << 4, 0, chunk.getZ() << 4));
-        System.out.println("[Torus] Loaded data for chunk at " + chunk.getX() + ", " + chunk.getZ() + " in " + chunk.getWorld().getName());
     }
 
     protected void handleChunkUnload(Chunk chunk) {
@@ -106,7 +105,6 @@ public class TorusWorld {
 
             if (region.chunks.isEmpty()) {
                 regions.remove(new Vector2i(region.x, region.z));
-                System.out.println("[Torus] Unloaded region " + region.x + ", " + region.z + " in " + chunk.getWorld().getName());
             }
         }
     }
