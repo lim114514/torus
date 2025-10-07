@@ -39,7 +39,7 @@ public class ConfigPackLoader {
 
     private void handleRecipeFile(File file) {
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (String recipeId : config.getKeys(false)) {
+        recipeLookup: for (String recipeId : config.getKeys(false)) {
             ConfigurationSection section = config.getConfigurationSection(recipeId);
             String rawRecipeType = section.getString("type");
 
@@ -62,6 +62,7 @@ public class ConfigPackLoader {
                     System.err.println("Recipe result item not found.");
                     continue;
                 }
+                result.setAmount(section.getInt("amount", 1));
 
                 if (rawShape.isEmpty()) {
                     System.err.println("Recipe shape can not be empty.");
@@ -82,7 +83,7 @@ public class ConfigPackLoader {
                 for (String row : rawShape) {
                     if (row.length() != size) {
                         System.err.println("Invalid recipe shape size.");
-                        continue;
+                        continue recipeLookup;
                     }
 
                     for (int i = 0; i < row.length(); i++) {
@@ -93,13 +94,13 @@ public class ConfigPackLoader {
                         String rawReference = section.getString("ingredients." + ch);
                         if (rawReference == null) {
                             System.err.println("Ingredient is not set for character: " + ch + ".");
-                            continue;
+                            continue recipeLookup;
                         }
 
                         ItemStack ingredient = ItemReference.parse(rawReference).getItem();
                         if (ingredient == null) {
                             System.err.println("Ingredient item not found.");
-                            continue;
+                            continue recipeLookup;
                         }
 
                         ingredients.put(ch, ingredient);
