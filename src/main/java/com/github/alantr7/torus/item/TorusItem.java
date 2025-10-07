@@ -8,8 +8,10 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -22,7 +24,7 @@ public class TorusItem {
     @Getter
     protected Structure structure;
 
-    public TorusItem(String namespacedId, Structure structure, Material material, String name, List<String> lore, int cmd) {
+    public TorusItem(String namespacedId, Structure structure, Material material, String name, List<String> lore) {
         this.namespacedId = namespacedId;
         this.structure = structure;
         this.itemStack = new ItemStack(material);
@@ -31,7 +33,10 @@ public class TorusItem {
         meta.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING, namespacedId);
         meta.setDisplayName(ChatColor.WHITE + name);
         meta.setLore(lore);
-        meta.setCustomModelData(cmd);
+
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setStrings(Collections.singletonList(namespacedId));
+        meta.setCustomModelDataComponent(component);
         itemStack.setItemMeta(meta);
     }
 

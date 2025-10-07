@@ -21,27 +21,27 @@ public class TorusItemManager {
 
     {
         // Structure Items
-        registerItem(new TorusItem("torus:solar_generator", Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:coal_generator", Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:power_bank", Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:solar_generator", Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
+        registerItem(new TorusItem("torus:coal_generator", Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
+        registerItem(new TorusItem("torus:power_bank", Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList()));
 
-        registerItem(new TorusItem("torus:block_breaker", Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:pump", Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:ore_crusher", Structures.ORE_CRUSHER, Material.PAPER, "Ore Crusher", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:ore_washer", Structures.ORE_WASHER, Material.PAPER, "Ore Washer", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:block_breaker", Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList()));
+        registerItem(new TorusItem("torus:pump", Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList()));
+        registerItem(new TorusItem("torus:ore_crusher", Structures.ORE_CRUSHER, Material.PAPER, "Ore Crusher", Collections.emptyList()));
+        registerItem(new TorusItem("torus:ore_washer", Structures.ORE_WASHER, Material.PAPER, "Ore Washer", Collections.emptyList()));
 
-        registerItem(new TorusItem("torus:energy_cable", Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:fluid_pipe", Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:item_conduit", Structures.ITEM_CABLE, Material.PAPER, "Item Conduit", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:inventory_interface", Structures.INVENTORY_INTERFACE, Material.PAPER, "Inventory Interface", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:energy_cable", Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList()));
+        registerItem(new TorusItem("torus:fluid_pipe", Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
+        registerItem(new TorusItem("torus:item_conduit", Structures.ITEM_CABLE, Material.PAPER, "Item Conduit", Collections.emptyList()));
+        registerItem(new TorusItem("torus:inventory_interface", Structures.INVENTORY_INTERFACE, Material.PAPER, "Inventory Interface", Collections.emptyList()));
 
-        registerItem(new TorusItem("torus:fluid_tank", Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:fluid_tank", Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
 
         // Regular Items
-        registerItem(new TorusItem("torus:coal_dust", null, Material.DRIED_KELP, "Coal Dust", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:iron_dust", null, Material.DEAD_TUBE_CORAL_FAN, "Iron Dust", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:copper_dust", null, Material.GLOWSTONE_DUST, "Copper Dust", Collections.emptyList(), 0));
-        registerItem(new TorusItem("torus:gold_dust", null, Material.HORN_CORAL_FAN, "Gold Dust", Collections.emptyList(), 0));
+        registerItem(new TorusItem("torus:coal_dust", null, Material.DRIED_KELP, "Coal Dust", Collections.emptyList()));
+        registerItem(new TorusItem("torus:iron_dust", null, Material.DEAD_TUBE_CORAL_FAN, "Iron Dust", Collections.emptyList()));
+        registerItem(new TorusItem("torus:copper_dust", null, Material.GLOWSTONE_DUST, "Copper Dust", Collections.emptyList()));
+        registerItem(new TorusItem("torus:gold_dust", null, Material.HORN_CORAL_FAN, "Gold Dust", Collections.emptyList()));
     }
 
     public void registerItem(TorusItem item) {
