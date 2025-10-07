@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.item;
 
-import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structures;
 import org.bukkit.Material;
@@ -14,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-@Singleton
 public class TorusItemManager {
 
     private final Map<String, TorusItem> registry = new HashMap<>();
