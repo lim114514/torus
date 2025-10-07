@@ -38,10 +38,12 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:fluid_tank", Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
 
         // Regular Items
-        registerItem(new TorusItem("torus:coal_dust", null, Material.DRIED_KELP, "Coal Dust", Collections.emptyList()));
         registerItem(new TorusItem("torus:iron_dust", null, Material.DEAD_TUBE_CORAL_FAN, "Iron Dust", Collections.emptyList()));
         registerItem(new TorusItem("torus:copper_dust", null, Material.GLOWSTONE_DUST, "Copper Dust", Collections.emptyList()));
         registerItem(new TorusItem("torus:gold_dust", null, Material.HORN_CORAL_FAN, "Gold Dust", Collections.emptyList()));
+        registerItem(new TorusItem("torus:copper_wire", null, Material.PITCHER_POD, "Copper Wire", Collections.emptyList()));
+        registerItem(new TorusItem("torus:transistor", null, Material.COMPARATOR, "Transistor", Collections.emptyList()));
+        registerItem(new TorusItem("torus:circuit_board", null, Material.PAPER, "Circuit Board", Collections.emptyList()));
     }
 
     public void registerItem(TorusItem item) {
