@@ -18,10 +18,10 @@
 
 ## Items
 - ✔ Iron Dust, Copper Dust, Gold Dust
+- ✔ Copper Coil
+- ✔ Circuit Board
 - Wrench
-- Copper Coil
-- Connector
-- Circuit Board
+- ✔ Connector
 - Photovoltaic Cell
-- Motor
+- ✔ Motor
 - ... and items for placing each machine
