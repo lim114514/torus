@@ -5,6 +5,7 @@ import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -38,6 +39,10 @@ public class BlockLocation {
 
     public BlockLocation getRelative(int x, int y, int z) {
         return new BlockLocation(world, this.x + x, this.y + y, this.z + z);
+    }
+
+    public @NotNull Location toBukkit() {
+        return new Location(world.getBukkit(), x, y, z);
     }
 
     public Block getBlock() {
