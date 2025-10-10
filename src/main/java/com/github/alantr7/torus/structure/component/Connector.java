@@ -36,6 +36,15 @@ public class Connector implements Connectable {
 
     public StructureInventory linkedInventory;
 
+    public int[] linkedInventoryAllowedSlots;
+
+    private static final int[] LINKED_INVENTORY_ALLOWED_SLOTS_FALLBACK_ARRAY = new int[54];
+    static {
+        for (int i = 0; i < 54; i++) {
+            LINKED_INVENTORY_ALLOWED_SLOTS_FALLBACK_ARRAY[i] = i;
+        }
+    }
+
     @Getter @Setter
     protected FlowDirection flowDirection;
 
@@ -222,7 +231,7 @@ public class Connector implements Connectable {
             for (Direction direction : Direction.values()) {
                 if (isConnectableFrom(direction) && TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction))) {
                     BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
-                    consumeItems(criteria, amount, onlyFirst, holder.getInventory().getContents(), result);
+                    consumeItems(criteria, amount, onlyFirst, holder.getInventory().getContents(), null, result);
 
                     return result;
                 }
@@ -241,15 +250,24 @@ public class Connector implements Connectable {
 
             StructureInventory inventory = conn.connector.linkedInventory;
             ItemStack[] items = inventory.getItems();
-            if (!consumeItems(criteria, amount, onlyFirst, items, result))
+            if (!consumeItems(criteria, amount, onlyFirst, items, conn.connector.linkedInventoryAllowedSlots, result))
                 break;
         }
 
         return result;
     }
 
-    private boolean consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst, ItemStack[] items, List<ItemStack> results) {
-        for (int i = 0; i < items.length; i++) {
+    private boolean consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst, ItemStack[] items, int[] slots, List<ItemStack> results) {
+        int len;
+        if (slots == null) {
+            slots = LINKED_INVENTORY_ALLOWED_SLOTS_FALLBACK_ARRAY;
+            len = items.length;
+        } else {
+            len = slots.length;
+        }
+
+        for (int k = 0; k < len; k++) {
+            int i = slots[k];
             ItemStack item = items[i];
             if (item != null && (criteria == null || criteria.matches(item))) {
                 int newAmount = Math.max(0, item.getAmount() - amount);
@@ -282,10 +300,16 @@ public class Connector implements Connectable {
 
                 BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
                 ItemStack[] items = linkedInventory.getItems();
-                for (int i = 0; i < items.length; i++) {
+
+                int[] slots = linkedInventoryAllowedSlots != null ? linkedInventoryAllowedSlots : LINKED_INVENTORY_ALLOWED_SLOTS_FALLBACK_ARRAY;
+                int len = slots == LINKED_INVENTORY_ALLOWED_SLOTS_FALLBACK_ARRAY ? items.length : linkedInventoryAllowedSlots.length;
+
+                for (int k = 0; k < len; k++) {
+                    int i = slots[k];
                     ItemStack item = items[i];
                     if (item != null) {
                         holder.getInventory().addItem(item.clone());
+                        item.setAmount(0);
                         items[i] = null;
                     }
                 }
