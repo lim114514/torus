@@ -5,10 +5,11 @@
 - ✔ Block Breaker
 - ✔ Ore Crusher
 - ✔ Ore Washer
+- ✔ Blast Furnace
 - Biofuel Generator
-- Alloy Smelter
 - Quarry
 - Sprinkler
+- Laser Turret
 
 ## Structures
 - ✔ Energy Cable, Fluid Pipe, Item Conduit 
@@ -18,10 +19,15 @@
 
 ## Items
 - ✔ Iron Dust, Copper Dust, Gold Dust
+- ✔ Steel Ingot
+- ✔ Copper Wire
 - ✔ Copper Coil
 - ✔ Circuit Board
 - Wrench
 - ✔ Connector
 - Photovoltaic Cell
+- ✔ Machine Block
 - ✔ Motor
+- ✔ Generator
+- ✔ Transistor
 - ... and items for placing each machine
