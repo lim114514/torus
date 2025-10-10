@@ -26,6 +26,7 @@ public class Structures {
     public static final CoalGenerator COAL_GENERATOR = register(new CoalGenerator());
     public static final SolarGenerator SOLAR_GENERATOR = register(new SolarGenerator());
     public static final PowerBank POWER_BANK = register(new PowerBank());
+    public static final BlastFurnace BLAST_FURNACE = register(new BlastFurnace());
 
     private static <T extends Structure> T register(T t) {
         structures.put(t.id, t);

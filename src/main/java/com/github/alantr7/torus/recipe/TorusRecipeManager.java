@@ -3,6 +3,7 @@ package com.github.alantr7.torus.recipe;
 import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.machine.OreCrusher;
 import com.github.alantr7.torus.machine.OreWasher;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +24,8 @@ public class TorusRecipeManager {
     private final Map<String, CrusherRecipe> crusherRecipes = new HashMap<>();
 
     private final Map<String, WasherRecipe> washerRecipes = new HashMap<>();
+
+    private final Map<String, BlastFurnaceRecipe> blastFurnaceRecipes = new HashMap<>();
 
     public CrusherRecipe getCrusherRecipeById(String id) {
         return crusherRecipes.get(id);
@@ -90,6 +94,14 @@ public class TorusRecipeManager {
         Bukkit.addRecipe(recipe);
     }
 
+    public void registerBlastFurnaceRecipe(BlastFurnaceRecipe recipe) {
+        blastFurnaceRecipes.put(recipe.id, recipe);
+    }
+
+    public Collection<BlastFurnaceRecipe> getBlastFurnaceRecipes() {
+        return blastFurnaceRecipes.values();
+    }
+
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     private void registerDefaultRecipes() {
         registerCrusherRecipe(new CrusherRecipe("torus:crushed_coal", new RecipeIngredient(Material.COAL_ORE), new ItemStack(Material.COAL, 5), 2));
@@ -100,6 +112,8 @@ public class TorusRecipeManager {
         registerWasherRecipe(new WasherRecipe("torus:iron_dust", new RecipeIngredient(Material.RAW_IRON), TorusItem.getById("torus:iron_dust").toItemStack(), 8));
         registerWasherRecipe(new WasherRecipe("torus:copper_dust", new RecipeIngredient(Material.RAW_COPPER), TorusItem.getById("torus:copper_dust").toItemStack(), 8));
         registerWasherRecipe(new WasherRecipe("torus:gold_dust", new RecipeIngredient(Material.RAW_GOLD), TorusItem.getById("torus:gold_dust").toItemStack(), 10));
+
+        registerBlastFurnaceRecipe(new BlastFurnaceRecipe("torus:steel_ingot", new ItemReference[]{ new ItemReference("minecraft", "COAL"), new ItemReference("minecraft", "IRON_INGOT") }, TorusItem.getById("torus:steel_ingot").toItemStack(), 10));
 
         registerSmeltingRecipe(new FurnaceRecipe(new NamespacedKey(TorusPlugin.getInstance(), "iron_dust_to_ingot"), new ItemStack(Material.IRON_INGOT), new RecipeChoice.ExactChoice(TorusItem.getById("torus:iron_dust").toItemStack()), 0f, 60));
         registerSmeltingRecipe(new FurnaceRecipe(new NamespacedKey(TorusPlugin.getInstance(), "copper_dust_to_ingot"), new ItemStack(Material.COPPER_INGOT), new RecipeChoice.ExactChoice(TorusItem.getById("torus:copper_dust").toItemStack()), 0f, 60));

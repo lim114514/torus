@@ -27,6 +27,7 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:pump", Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList()));
         registerItem(new TorusItem("torus:ore_crusher", Structures.ORE_CRUSHER, Material.PAPER, "Ore Crusher", Collections.emptyList()));
         registerItem(new TorusItem("torus:ore_washer", Structures.ORE_WASHER, Material.PAPER, "Ore Washer", Collections.emptyList()));
+        registerItem(new TorusItem("torus:blast_furnace", Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:energy_cable", Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList()));
         registerItem(new TorusItem("torus:fluid_pipe", Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
