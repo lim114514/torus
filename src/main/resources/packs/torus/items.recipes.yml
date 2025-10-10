@@ -1,0 +1,98 @@
+copper_wire:
+  type: CRAFTING
+  result: "torus:copper_wire"
+  amount: 4
+  shape:
+    - " C "
+    - "CRC"
+    - " C "
+  ingredients:
+    C: "minecraft:copper_ingot"
+    R: "minecraft:redstone"
+
+transistor:
+  type: CRAFTING
+  result: "torus:transistor"
+  amount: 2
+  shape:
+    - " I "
+    - "IQI"
+    - "CCC"
+  ingredients:
+    I: "minecraft:iron_ingot"
+    Q: "minecraft:quartz"
+    C: "torus:copper_wire"
+
+connector:
+  type: CRAFTING
+  result: "torus:connector"
+  shape:
+    - " I "
+    - "IWI"
+    - " I "
+  ingredients:
+    I: "minecraft:iron_ingot"
+    W: "torus:copper_wire"
+
+circuit_board:
+  type: CRAFTING
+  result: "torus:circuit_board"
+  shape:
+    - "W W"
+    - "TRT"
+    - "IGI"
+  ingredients:
+    W: "torus:copper_wire"
+    T: "torus:transistor"
+    R: "minecraft:redstone_torch"
+    I: "minecraft:iron_ingot"
+    G: "minecraft:green_dye"
+
+motor:
+  type: CRAFTING
+  result: "torus:motor"
+  shape:
+    - "SWS"
+    - "WCW"
+    - "SWS"
+  ingredients:
+    S: "torus:steel_ingot"
+    C: "torus:copper_coil"
+    W: "torus:copper_wire"
+
+machine_block:
+  type: CRAFTING
+  result: "torus:machine_block"
+  shape:
+    - "CCC"
+    - "C C"
+    - "CCC"
+  ingredients:
+    C: "torus:steel_ingot"
+
+# Generators
+generator:
+  type: CRAFTING
+  result: "torus:generator"
+  shape:
+    - "SCS"
+    - "CWC"
+    - "SCS"
+  ingredients:
+    S: "torus:steel_ingot"
+    C: "torus:copper_coil"
+    W: "torus:copper_wire"
+
+coal_generator:
+  type: CRAFTING
+  result: "torus:coal_generator"
+  shape:
+    - "KCK"
+    - "IGI"
+    - "BCB"
+  ingredients:
+    K: "torus:copper_coil"
+    G: "torus:generator"
+    I: "minecraft:iron_ingot"
+    C: "torus:connector"
+    B: "torus:machine_block"
