@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Connector implements Connectable {
 
@@ -226,12 +227,13 @@ public class Connector implements Connectable {
 
     public List<ItemStack> consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst) {
         List<ItemStack> result = new ArrayList<>();
+        AtomicInteger amount1 = new AtomicInteger(amount);
 
         if (networkConnections.isEmpty()) {
             for (Direction direction : Direction.values()) {
                 if (isConnectableFrom(direction) && TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction))) {
                     BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
-                    consumeItems(criteria, amount, onlyFirst, holder.getInventory().getContents(), null, result);
+                    consumeItems(criteria, amount1, onlyFirst, holder.getInventory().getContents(), null, result);
 
                     return result;
                 }
@@ -249,15 +251,18 @@ public class Connector implements Connectable {
                 continue;
 
             StructureInventory inventory = conn.connector.linkedInventory;
+            if (inventory == null)
+                continue;
+
             ItemStack[] items = inventory.getItems();
-            if (!consumeItems(criteria, amount, onlyFirst, items, conn.connector.linkedInventoryAllowedSlots, result))
+            if (!consumeItems(criteria, amount1, onlyFirst, items, conn.connector.linkedInventoryAllowedSlots, result))
                 break;
         }
 
         return result;
     }
 
-    private boolean consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst, ItemStack[] items, int[] slots, List<ItemStack> results) {
+    private boolean consumeItems(@Nullable ItemCriteria criteria, AtomicInteger amount, boolean onlyFirst, ItemStack[] items, int[] slots, List<ItemStack> results) {
         int len;
         if (slots == null) {
             slots = LINKED_INVENTORY_ALLOWED_SLOTS_FALLBACK_ARRAY;
@@ -270,8 +275,8 @@ public class Connector implements Connectable {
             int i = slots[k];
             ItemStack item = items[i];
             if (item != null && (criteria == null || criteria.matches(item))) {
-                int newAmount = Math.max(0, item.getAmount() - amount);
-                amount -= item.getAmount() - newAmount;
+                int newAmount = Math.max(0, item.getAmount() - amount.get());
+                amount.addAndGet(-(item.getAmount() - newAmount));
 
                 ItemStack resultItem = item.clone();
                 resultItem.setAmount(item.getAmount() - newAmount);
