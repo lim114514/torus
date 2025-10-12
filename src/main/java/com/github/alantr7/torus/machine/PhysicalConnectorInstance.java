@@ -4,6 +4,7 @@ import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.gui.InventoryInterfaceFilterEditGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
+import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -16,12 +17,13 @@ import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 
 import java.nio.charset.StandardCharsets;
 
-public class PhysicalConnectorInstance extends StructureInstance {
+public class PhysicalConnectorInstance extends StructureInstance implements Inspectable {
 
     protected Data<Integer> flowDirectionData = dataContainer.persist("flow", Data.Type.INT, 0);
 
@@ -180,6 +182,11 @@ public class PhysicalConnectorInstance extends StructureInstance {
 
     public Connector.FlowDirection getFlowDirection() {
         return Connector.FlowDirection.values()[flowDirectionData.get()];
+    }
+
+    @Override
+    public String getInspectionText(BlockLocation location, Player player) {
+        return "Connector [Flow: " + getFlowDirection() + "]";
     }
 
 }
