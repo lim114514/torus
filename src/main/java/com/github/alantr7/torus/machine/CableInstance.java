@@ -80,7 +80,6 @@ public class CableInstance extends StructureInstance implements Connectable {
     }
 
     public void updateModel() {
-        components.get("base").getModel().remove();
         ModelTemplate model = new ModelTemplate();
         if (connections.get() == 0) {
             model.add(CABLE_MODELS[type.get()][6]);
@@ -92,7 +91,7 @@ public class CableInstance extends StructureInstance implements Connectable {
             }
         }
 
-        components.get("base").setModel(model.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
+        components.get("base").setModel(model.recycle(components.get("base").getModel(), location.getBlock().getLocation().add(.5, 0, .5), direction));
         save();
     }
 
