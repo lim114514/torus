@@ -13,7 +13,7 @@ public class Structures {
     public static final ItemCable ITEM_CABLE = new ItemCable();
     public static final FluidPipe FLUID_CABLE = new FluidPipe();
 
-    public static final InventoryInterface INVENTORY_INTERFACE = new InventoryInterface();
+    public static final PhysicalConnector CONNECTOR = new PhysicalConnector();
 
     public static final FluidTank FLUID_TANK = new FluidTank();
 

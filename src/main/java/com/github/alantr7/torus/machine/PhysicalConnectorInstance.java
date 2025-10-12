@@ -21,7 +21,7 @@ import org.bukkit.inventory.BlockInventoryHolder;
 
 import java.nio.charset.StandardCharsets;
 
-public class InventoryInterfaceInstance extends StructureInstance {
+public class PhysicalConnectorInstance extends StructureInstance {
 
     protected Data<Integer> flowDirectionData = dataContainer.persist("flow", Data.Type.INT, 0);
 
@@ -31,13 +31,13 @@ public class InventoryInterfaceInstance extends StructureInstance {
 
     protected ItemCriteria inputCriteria = null;
 
-    public InventoryInterfaceInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Connector.FlowDirection flowDirection) {
-        super(Structures.INVENTORY_INTERFACE, location, bodyDef, direction);
+    public PhysicalConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Connector.FlowDirection flowDirection) {
+        super(Structures.CONNECTOR, location, bodyDef, direction);
         flowDirectionData.update(flowDirection.ordinal());
         save();
     }
 
-    InventoryInterfaceInstance(LoadContext context) {
+    PhysicalConnectorInstance(LoadContext context) {
         super(context);
     }
 

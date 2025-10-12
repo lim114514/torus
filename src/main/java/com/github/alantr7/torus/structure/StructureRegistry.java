@@ -89,7 +89,7 @@ public class StructureRegistry {
         register(Structures.ITEM_CABLE);
         register(Structures.FLUID_CABLE);
 
-        register(Structures.INVENTORY_INTERFACE);
+        register(Structures.CONNECTOR);
 
         register(Structures.FLUID_TANK);
 

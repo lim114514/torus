@@ -16,20 +16,20 @@ import org.bukkit.entity.ItemDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-public class InventoryInterface extends Structure {
+public class PhysicalConnector extends Structure {
 
     static ModelTemplate CONNECTOR_MODEL = new ModelTemplate();
     static {
         CONNECTOR_MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
     }
 
-    public InventoryInterface() {
-        super("torus:inventory_interface", InventoryInterfaceInstance.class);
+    public PhysicalConnector() {
+        super("torus:connector", PhysicalConnectorInstance.class);
     }
 
     @Override
     public StructureInstance place(BlockLocation location, Direction direction) {
-        InventoryInterfaceInstance instance = (InventoryInterfaceInstance) super.place(location, direction);
+        PhysicalConnectorInstance instance = (PhysicalConnectorInstance) super.place(location, direction);
         instance.updateConnections();
 
         return instance;
@@ -56,7 +56,7 @@ public class InventoryInterface extends Structure {
           }
         );
 
-        return new InventoryInterfaceInstance(location, body, direction, Connector.FlowDirection.IN);
+        return new PhysicalConnectorInstance(location, body, direction, Connector.FlowDirection.IN);
     }
 
 }

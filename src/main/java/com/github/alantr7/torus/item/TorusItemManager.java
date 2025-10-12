@@ -32,7 +32,7 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:energy_cable", Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList()));
         registerItem(new TorusItem("torus:fluid_pipe", Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
         registerItem(new TorusItem("torus:item_conduit", Structures.ITEM_CABLE, Material.PAPER, "Item Conduit", Collections.emptyList()));
-        registerItem(new TorusItem("torus:inventory_interface", Structures.INVENTORY_INTERFACE, Material.HOPPER, "Inventory Interface", Collections.emptyList()));
+        registerItem(new TorusItem("torus:connector", Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:fluid_tank", Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
 
@@ -44,7 +44,6 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:machine_block", null, Material.IRON_BLOCK, "Machine Block", Collections.emptyList()));
         registerItem(new TorusItem("torus:copper_wire", null, Material.PITCHER_POD, "Copper Wire", Collections.emptyList()));
         registerItem(new TorusItem("torus:copper_coil", null, Material.PITCHER_POD, "Copper Coil", Collections.emptyList()));
-        registerItem(new TorusItem("torus:connector", null, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
         registerItem(new TorusItem("torus:transistor", null, Material.COMPARATOR, "Transistor", Collections.emptyList()));
         registerItem(new TorusItem("torus:circuit_board", null, Material.PAPER, "Circuit Board", Collections.emptyList()));
         registerItem(new TorusItem("torus:motor", null, Material.HEAVY_CORE, "Motor", Collections.emptyList()));

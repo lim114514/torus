@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.machine.CableInstance;
-import com.github.alantr7.torus.machine.InventoryInterfaceInstance;
+import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -175,7 +175,7 @@ public class TorusWorld {
                             cable1.updateConnections();
                         }
                     }
-                    else if (instance.location.getRelative(direction).getStructure() instanceof InventoryInterfaceInstance iii) {
+                    else if (instance.location.getRelative(direction).getStructure() instanceof PhysicalConnectorInstance iii) {
                         if (cable.getType() == Connector.Matter.ITEM) {
                             iii.updateConnections();
                         }
@@ -195,7 +195,7 @@ public class TorusWorld {
             }
         });
 
-        if (instance instanceof InventoryInterfaceInstance iii) {
+        if (instance instanceof PhysicalConnectorInstance iii) {
             iii.updateConnections();
             iii.updateModel();
         }
@@ -229,7 +229,7 @@ public class TorusWorld {
                         if (cable.getType() == cable1.getType()) {
                             cable1.updateConnections();
                         }
-                    } else if (instance.location.getRelative(direction).getStructure() instanceof InventoryInterfaceInstance iii) {
+                    } else if (instance.location.getRelative(direction).getStructure() instanceof PhysicalConnectorInstance iii) {
                         if (cable.getType() == Connector.Matter.ITEM) {
                             iii.updateConnections();
                         }
