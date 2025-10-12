@@ -4,6 +4,7 @@ import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.gui.InventoryInterfaceFilterEditGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
+import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
@@ -115,14 +116,14 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     @Override
     public void tick() {
-        if (getFlowDirection() != Connector.FlowDirection.IN && getFlowDirection() != Connector.FlowDirection.ALL)
-            return;
-
         if (TorusWorld.isItemContainer(location.getRelative(direction.getOpposite()))) {
             connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
         } else {
             return;
         }
+
+        if (getFlowDirection() != Connector.FlowDirection.IN && getFlowDirection() != Connector.FlowDirection.ALL)
+            return;
 
         connector.updateNetwork();
         connector.consumeItems(inputCriteria, 4, false).forEach(connector.linkedInventory::addItem);
@@ -177,6 +178,13 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     @Override
     public void handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+        TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
+        if (item != null && item.namespacedId.equals("torus:screwdriver")) {
+            flowDirectionData.update(getFlowDirection() == Connector.FlowDirection.IN ? Connector.FlowDirection.OUT.ordinal() : Connector.FlowDirection.IN.ordinal());
+            connector.setFlowDirection(getFlowDirection());
+            return;
+        }
+
         new InventoryInterfaceFilterEditGUI(event.getPlayer(), this).open();
     }
 

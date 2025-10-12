@@ -33,6 +33,7 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:fluid_pipe", Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
         registerItem(new TorusItem("torus:item_conduit", Structures.ITEM_CABLE, Material.PAPER, "Item Conduit", Collections.emptyList()));
         registerItem(new TorusItem("torus:connector", Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
+        registerItem(new TorusItem("torus:screwdriver", null, Material.STICK, "Screwdriver", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:fluid_tank", Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
 

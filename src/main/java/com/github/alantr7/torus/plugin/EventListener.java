@@ -66,6 +66,7 @@ public class EventListener implements Listener {
 
         StructureInstance structure = new BlockLocation(event.getClickedBlock().getLocation()).getStructure();
         if (structure != null) {
+            cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
             structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
         }
     }
