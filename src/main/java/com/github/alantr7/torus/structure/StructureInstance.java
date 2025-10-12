@@ -2,6 +2,7 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -174,7 +175,7 @@ public abstract class StructureInstance {
     }
 
     public static StructureInstance fromBytes(TorusRegion region, TorusChunk chunk, ByteArrayReader reader) {
-        Structure structure = Structures.getStructureByNumericId(ByteArrayReader.toInt(reader.readBytes(2)));
+        Structure structure = TorusPlugin.getInstance().getStructureRegistry().getStructure(ByteArrayReader.toInt(reader.readBytes(2)));
 
         // Location
         int x = ByteArrayReader.toInt(reader.readBytes(1));

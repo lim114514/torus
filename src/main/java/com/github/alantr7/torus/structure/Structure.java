@@ -10,7 +10,7 @@ public abstract class Structure {
 
     public final String id;
 
-    public int numericId;
+    public int numericId = -1;
 
     protected final Class<? extends StructureInstance> instanceClass;
 

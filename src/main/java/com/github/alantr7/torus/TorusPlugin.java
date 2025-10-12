@@ -8,6 +8,7 @@ import com.github.alantr7.torus.config.ConfigManager;
 import com.github.alantr7.torus.config.ConfigPackLoader;
 import com.github.alantr7.torus.item.TorusItemManager;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
+import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 
@@ -36,6 +37,10 @@ public class TorusPlugin extends BukkitPlugin {
 
     @Override
     protected void onPluginDisable() {
+    }
+
+    public StructureRegistry getStructureRegistry() {
+        return getSingleton(StructureRegistry.class);
     }
 
     public TorusRecipeManager getRecipeManager() {

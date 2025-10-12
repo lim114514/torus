@@ -28,7 +28,8 @@ public class TorusWorldManager implements Listener {
 
     private final Map<UUID, TorusWorld> worlds = new HashMap<>();
 
-    public TorusWorldManager() {
+    @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
+    void initialize() {
         for (World world : Bukkit.getWorlds()) {
             TorusWorld torusWorld = new TorusWorld(world);
             torusWorld.load();
