@@ -171,10 +171,14 @@ public class TorusWorld {
                 if (cable.isConnectableFrom(direction)) {
                     // TODO: Replace with an interface like "Updatable" and call its updateConnections() instead
                     if (instance.location.getRelative(direction).getStructure() instanceof CableInstance cable1) {
-                        cable1.updateConnections();
+                        if (cable.getType() == cable1.getType()) {
+                            cable1.updateConnections();
+                        }
                     }
                     else if (instance.location.getRelative(direction).getStructure() instanceof InventoryInterfaceInstance iii) {
-                        iii.updateConnections();
+                        if (cable.getType() == Connector.Matter.ITEM) {
+                            iii.updateConnections();
+                        }
                     }
                 }
             }
@@ -222,9 +226,13 @@ public class TorusWorld {
                         continue;
 
                     if (neighbor instanceof CableInstance cable1) {
-                        cable1.updateConnections();
+                        if (cable.getType() == cable1.getType()) {
+                            cable1.updateConnections();
+                        }
                     } else if (instance.location.getRelative(direction).getStructure() instanceof InventoryInterfaceInstance iii) {
-                        iii.updateConnections();
+                        if (cable.getType() == Connector.Matter.ITEM) {
+                            iii.updateConnections();
+                        }
                     } else if (cable.isConnected(direction)) {
                         Connector connector = neighbor.getConnector(instance.location.getRelative(direction), cable.getType());
                         if (connector != null) {
