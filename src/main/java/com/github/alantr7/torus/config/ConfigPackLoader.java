@@ -2,6 +2,9 @@ package com.github.alantr7.torus.config;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemReference;
+import com.github.alantr7.torus.recipe.CrusherRecipe;
+import com.github.alantr7.torus.recipe.RecipeIngredient;
+import com.github.alantr7.torus.recipe.WasherRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,7 +42,7 @@ public class ConfigPackLoader {
 
     private void handleRecipeFile(File file) {
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        recipeLookup: for (String recipeId : config.getKeys(false)) {
+        for (String recipeId : config.getKeys(false)) {
             ConfigurationSection section = config.getConfigurationSection(recipeId);
             String rawRecipeType = section.getString("type");
 
@@ -48,82 +51,121 @@ public class ConfigPackLoader {
                 continue;
             }
 
-            if (rawRecipeType.equals("CRAFTING")) {
-                String rawResult = section.getString("result");
-                List<String> rawShape = section.getStringList("shape");
+            switch (rawRecipeType) {
+                case "CRAFTING" -> loadCraftingRecipe(section, recipeId);
+                case "CRUSHING" -> loadCrushingRecipe(section, recipeId);
 
-                if (rawResult == null) {
-                    System.err.println("Recipe result can not be null.");
-                    continue;
-                }
-
-                ItemStack result = ItemReference.parse(rawResult).getItem();
-                if (result == null) {
-                    System.err.println("Recipe result item not found.");
-                    continue;
-                }
-                result.setAmount(section.getInt("amount", 1));
-
-                if (rawShape.isEmpty()) {
-                    System.err.println("Recipe shape can not be empty.");
-                    continue;
-                }
-
-                Map<Character, ItemStack> ingredients = new HashMap<>();
-
-                int size = rawShape.getFirst().length();
-                if (size != 2 && size != 3) {
-                    System.err.println("Recipe shape must be 2x2 or 3x3.");
-                    continue;
-                }
-
-                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(TorusPlugin.getInstance(), recipeId), result);
-                recipe.shape(rawShape.toArray(String[]::new));
-
-                for (String row : rawShape) {
-                    if (row.length() != size) {
-                        System.err.println("Invalid recipe shape size.");
-                        continue recipeLookup;
-                    }
-
-                    for (int i = 0; i < row.length(); i++) {
-                        char ch = row.charAt(i);
-                        if (ch == ' ' || ingredients.containsKey(ch))
-                            continue;
-
-                        String rawReference = section.getString("ingredients." + ch);
-                        if (rawReference == null) {
-                            System.err.println("Ingredient is not set for character: " + ch + ".");
-                            continue recipeLookup;
-                        }
-
-                        ItemStack ingredient = ItemReference.parse(rawReference).getItem();
-                        if (ingredient == null) {
-                            System.err.println("Ingredient item not found.");
-                            continue recipeLookup;
-                        }
-
-                        ingredients.put(ch, ingredient);
-                        recipe.setIngredient(ch, new RecipeChoice.ExactChoice(ingredient));
-                    }
-                }
-
-                try {
-                    Bukkit.removeRecipe(recipe.getKey());
-                    Bukkit.addRecipe(recipe);
-                    System.out.println("Loaded recipe: " + recipeId);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            else {
-                System.err.println("Invalid recipe type: " + rawRecipeType);
-                continue;
+                default -> System.err.println("Invalid recipe type: " + rawRecipeType);
             }
 
         }
         System.out.println("Recipes loaded!");
+    }
+
+    private void loadCraftingRecipe(ConfigurationSection section, String recipeId) {
+        String rawResult = section.getString("result");
+        if (rawResult == null) {
+            System.err.println("Recipe result can not be null.");
+            return;
+        }
+
+        ItemStack result = ItemReference.parse(rawResult).getItem();
+        if (result == null) {
+            System.err.println("Recipe result item not found.");
+            return;
+        }
+        result.setAmount(section.getInt("amount", 1));
+
+        List<String> rawShape = section.getStringList("shape");
+        if (rawShape.isEmpty()) {
+            System.err.println("Recipe shape can not be empty.");
+            return;
+        }
+
+        Map<Character, ItemStack> ingredients = new HashMap<>();
+
+        int size = rawShape.getFirst().length();
+        if (size != 2 && size != 3) {
+            System.err.println("Recipe shape must be 2x2 or 3x3.");
+            return;
+        }
+
+        ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(TorusPlugin.getInstance(), recipeId), result);
+        recipe.shape(rawShape.toArray(String[]::new));
+
+        for (String row : rawShape) {
+            if (row.length() != size) {
+                System.err.println("Invalid recipe shape size.");
+                return;
+            }
+
+            for (int i = 0; i < row.length(); i++) {
+                char ch = row.charAt(i);
+                if (ch == ' ' || ingredients.containsKey(ch))
+                    continue;
+
+                String rawReference = section.getString("ingredients." + ch);
+                if (rawReference == null) {
+                    System.err.println("Ingredient is not set for character: " + ch + ".");
+                    return;
+                }
+
+                ItemStack ingredient = ItemReference.parse(rawReference).getItem();
+                if (ingredient == null) {
+                    System.err.println("Ingredient item not found.");
+                    return;
+                }
+
+                ingredients.put(ch, ingredient);
+                recipe.setIngredient(ch, new RecipeChoice.ExactChoice(ingredient));
+            }
+        }
+
+        try {
+            Bukkit.removeRecipe(recipe.getKey());
+            Bukkit.addRecipe(recipe);
+            System.out.println("Loaded recipe: " + recipeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadCrushingRecipe(ConfigurationSection section, String recipeId) {
+        String rawResult = section.getString("result");
+        if (rawResult == null) {
+            System.err.println("Recipe result can not be null.");
+            return;
+        }
+
+        ItemStack result = ItemReference.parse(rawResult).getItem();
+        if (result == null) {
+            System.err.println("Recipe result item not found.");
+            return;
+        }
+        result.setAmount(section.getInt("amount", 1));
+
+        String rawIngredient = section.getString("ingredient");
+        if (rawIngredient == null) {
+            System.err.println("Ingredient can not be null.");
+            return;
+        }
+
+        ItemReference ingredientReference = ItemReference.parse(rawIngredient);
+        ItemStack ingredient = ingredientReference.getItem();
+        if (ingredient == null) {
+            System.err.println("Ingredient item can not be found.");
+            return;
+        }
+
+        TorusPlugin.getInstance().getRecipeManager().registerCrusherRecipe(new CrusherRecipe(
+          recipeId,
+          ingredientReference.providerId.equals("minecraft")
+            ? new RecipeIngredient(ingredientReference.getItem().getType())
+            : new RecipeIngredient(ingredientReference.providerId + ":" + ingredientReference.itemId),
+          result,
+          section.getInt("duration")
+        ));
+        System.out.println("Loaded recipe: " + recipeId);
     }
 
 }

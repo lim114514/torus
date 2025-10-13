@@ -104,11 +104,6 @@ public class TorusRecipeManager {
 
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     private void registerDefaultRecipes() {
-        registerCrusherRecipe(new CrusherRecipe("torus:crushed_coal", new RecipeIngredient(Material.COAL_ORE), new ItemStack(Material.COAL, 5), 2));
-        registerCrusherRecipe(new CrusherRecipe("torus:crushed_copper", new RecipeIngredient(Material.COPPER_ORE), new ItemStack(Material.RAW_COPPER, 2), 5));
-        registerCrusherRecipe(new CrusherRecipe("torus:crushed_iron", new RecipeIngredient(Material.IRON_ORE), new ItemStack(Material.RAW_IRON, 2), 5));
-        registerCrusherRecipe(new CrusherRecipe("torus:crushed_gold", new RecipeIngredient(Material.GOLD_ORE), new ItemStack(Material.RAW_GOLD, 2), 7));
-
         registerWasherRecipe(new WasherRecipe("torus:iron_dust", new RecipeIngredient(Material.RAW_IRON), TorusItem.getById("torus:iron_dust").toItemStack(), 8));
         registerWasherRecipe(new WasherRecipe("torus:copper_dust", new RecipeIngredient(Material.RAW_COPPER), TorusItem.getById("torus:copper_dust").toItemStack(), 8));
         registerWasherRecipe(new WasherRecipe("torus:gold_dust", new RecipeIngredient(Material.RAW_GOLD), TorusItem.getById("torus:gold_dust").toItemStack(), 10));
