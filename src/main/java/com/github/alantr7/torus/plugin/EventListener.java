@@ -44,7 +44,9 @@ public class EventListener implements Listener {
 
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
         BlockLocation location = new BlockLocation(block.getLocation());
-        Direction direction = Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite();
+        Direction direction = event.getBlockFace().getModY() != 0
+          ? Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite()
+          : Direction.fromBlockFace(event.getBlockFace());
 
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
 
