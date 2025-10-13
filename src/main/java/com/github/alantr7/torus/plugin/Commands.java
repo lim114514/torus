@@ -2,9 +2,11 @@ package com.github.alantr7.torus.plugin;
 
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bukkitplugin.commands.annotations.CommandHandler;
+import com.github.alantr7.bukkitplugin.commands.executor.ExecutorType;
 import com.github.alantr7.bukkitplugin.commands.factory.CommandBuilder;
 import com.github.alantr7.bukkitplugin.commands.registry.Command;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -34,6 +36,13 @@ public class Commands {
 
           ((Player) ctx.getExecutor()).getInventory().addItem(item.toItemStack());
           ctx.respond("You received 1 x " + item.namespacedId);
+      });
+
+    @CommandHandler Command browse = CommandBuilder.using("torus")
+      .parameter("browse")
+      .forExecutors(ExecutorType.PLAYER)
+      .executes(ctx -> {
+          new ItemBrowserMainGUI((Player) ctx.getExecutor()).open();
       });
 
     @CommandHandler Command inspect = CommandBuilder.using("torus")
