@@ -20,7 +20,6 @@ public class TorusItemManager {
         // Structure Items
         registerItem(new TorusItem("torus:solar_generator", Category.GENERATORS, Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
         registerItem(new TorusItem("torus:coal_generator", Category.GENERATORS, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
-        registerItem(new TorusItem("torus:power_bank", Category.GENERATORS, Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:block_breaker", Category.MACHINES, Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList()));
         registerItem(new TorusItem("torus:pump", Category.MACHINES, Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList()));
@@ -35,6 +34,7 @@ public class TorusItemManager {
 
         registerItem(new TorusItem("torus:screwdriver",  Category.TOOLS, null, Material.STICK, "Screwdriver", Collections.emptyList()));
 
+        registerItem(new TorusItem("torus:power_bank", Category.STORAGE, Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList()));
         registerItem(new TorusItem("torus:fluid_tank", Category.STORAGE, Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
 
         // Regular Items
