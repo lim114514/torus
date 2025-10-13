@@ -8,51 +8,70 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TorusItemManager {
 
     private final Map<String, TorusItem> registry = new HashMap<>();
 
+    private final Map<String, Category> categories = new LinkedHashMap<>();
+
     {
         // Structure Items
-        registerItem(new TorusItem("torus:solar_generator", Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
-        registerItem(new TorusItem("torus:coal_generator", Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
-        registerItem(new TorusItem("torus:power_bank", Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList()));
+        registerItem(new TorusItem("torus:solar_generator", Category.GENERATORS, Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
+        registerItem(new TorusItem("torus:coal_generator", Category.GENERATORS, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
+        registerItem(new TorusItem("torus:power_bank", Category.GENERATORS, Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList()));
 
-        registerItem(new TorusItem("torus:block_breaker", Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList()));
-        registerItem(new TorusItem("torus:pump", Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList()));
-        registerItem(new TorusItem("torus:ore_crusher", Structures.ORE_CRUSHER, Material.PAPER, "Ore Crusher", Collections.emptyList()));
-        registerItem(new TorusItem("torus:ore_washer", Structures.ORE_WASHER, Material.PAPER, "Ore Washer", Collections.emptyList()));
-        registerItem(new TorusItem("torus:blast_furnace", Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
+        registerItem(new TorusItem("torus:block_breaker", Category.MACHINES, Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList()));
+        registerItem(new TorusItem("torus:pump", Category.MACHINES, Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList()));
+        registerItem(new TorusItem("torus:ore_crusher", Category.MACHINES, Structures.ORE_CRUSHER, Material.PAPER, "Ore Crusher", Collections.emptyList()));
+        registerItem(new TorusItem("torus:ore_washer", Category.MACHINES, Structures.ORE_WASHER, Material.PAPER, "Ore Washer", Collections.emptyList()));
+        registerItem(new TorusItem("torus:blast_furnace", Category.MACHINES, Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
 
-        registerItem(new TorusItem("torus:energy_cable", Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList()));
-        registerItem(new TorusItem("torus:fluid_pipe", Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
-        registerItem(new TorusItem("torus:item_conduit", Structures.ITEM_CABLE, Material.PAPER, "Item Conduit", Collections.emptyList()));
-        registerItem(new TorusItem("torus:connector", Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
-        registerItem(new TorusItem("torus:screwdriver", null, Material.STICK, "Screwdriver", Collections.emptyList()));
+        registerItem(new TorusItem("torus:energy_cable", Category.NETWORK, Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList()));
+        registerItem(new TorusItem("torus:fluid_pipe", Category.NETWORK, Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
+        registerItem(new TorusItem("torus:item_conduit", Category.NETWORK, Structures.ITEM_CABLE, Material.PAPER, "Item Conduit", Collections.emptyList()));
+        registerItem(new TorusItem("torus:connector", Category.NETWORK, Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
 
-        registerItem(new TorusItem("torus:fluid_tank", Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
+        registerItem(new TorusItem("torus:screwdriver",  Category.TOOLS, null, Material.STICK, "Screwdriver", Collections.emptyList()));
+
+        registerItem(new TorusItem("torus:fluid_tank", Category.STORAGE, Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
 
         // Regular Items
-        registerItem(new TorusItem("torus:iron_dust", null, Material.DEAD_TUBE_CORAL_FAN, "Iron Dust", Collections.emptyList()));
-        registerItem(new TorusItem("torus:copper_dust", null, Material.GLOWSTONE_DUST, "Copper Dust", Collections.emptyList()));
-        registerItem(new TorusItem("torus:gold_dust", null, Material.HORN_CORAL_FAN, "Gold Dust", Collections.emptyList()));
-        registerItem(new TorusItem("torus:steel_ingot", null, Material.IRON_INGOT, "Steel Ingot", Collections.emptyList()));
-        registerItem(new TorusItem("torus:machine_block", null, Material.IRON_BLOCK, "Machine Block", Collections.emptyList()));
-        registerItem(new TorusItem("torus:copper_wire", null, Material.PITCHER_POD, "Copper Wire", Collections.emptyList()));
-        registerItem(new TorusItem("torus:copper_coil", null, Material.PITCHER_POD, "Copper Coil", Collections.emptyList()));
-        registerItem(new TorusItem("torus:transistor", null, Material.COMPARATOR, "Transistor", Collections.emptyList()));
-        registerItem(new TorusItem("torus:circuit_board", null, Material.PAPER, "Circuit Board", Collections.emptyList()));
-        registerItem(new TorusItem("torus:motor", null, Material.HEAVY_CORE, "Motor", Collections.emptyList()));
-        registerItem(new TorusItem("torus:generator", null, Material.HEAVY_CORE, "Generator", Collections.emptyList()));
+        registerItem(new TorusItem("torus:iron_dust", Category.RESOURCES, null, Material.DEAD_TUBE_CORAL_FAN, "Iron Dust", Collections.emptyList()));
+        registerItem(new TorusItem("torus:copper_dust", Category.RESOURCES, null, Material.GLOWSTONE_DUST, "Copper Dust", Collections.emptyList()));
+        registerItem(new TorusItem("torus:gold_dust", Category.RESOURCES, null, Material.HORN_CORAL_FAN, "Gold Dust", Collections.emptyList()));
+        registerItem(new TorusItem("torus:steel_ingot", Category.RESOURCES, null, Material.IRON_INGOT, "Steel Ingot", Collections.emptyList()));
+        registerItem(new TorusItem("torus:machine_block", Category.COMPONENTS, null, Material.IRON_BLOCK, "Machine Block", Collections.emptyList()));
+        registerItem(new TorusItem("torus:copper_wire", Category.COMPONENTS, null, Material.PITCHER_POD, "Copper Wire", Collections.emptyList()));
+        registerItem(new TorusItem("torus:copper_coil", Category.COMPONENTS, null, Material.PITCHER_POD, "Copper Coil", Collections.emptyList()));
+        registerItem(new TorusItem("torus:transistor", Category.COMPONENTS, null, Material.COMPARATOR, "Transistor", Collections.emptyList()));
+        registerItem(new TorusItem("torus:circuit_board", Category.COMPONENTS, null, Material.PAPER, "Circuit Board", Collections.emptyList()));
+        registerItem(new TorusItem("torus:motor", Category.COMPONENTS, null, Material.HEAVY_CORE, "Motor", Collections.emptyList()));
+        registerItem(new TorusItem("torus:generator", Category.COMPONENTS, null, Material.HEAVY_CORE, "Generator", Collections.emptyList()));
+    }
+
+    {
+        categories.put("resources", Category.RESOURCES);
+        categories.put("generators", Category.GENERATORS);
+        categories.put("machines", Category.MACHINES);
+        categories.put("network", Category.NETWORK);
+        categories.put("components", Category.COMPONENTS);
+        categories.put("storage", Category.STORAGE);
+        categories.put("tools", Category.TOOLS);
+
+        Category.RESOURCES.display = getItemById("torus:copper_dust").itemStack;
+        Category.GENERATORS.display = new ItemStack(Material.FURNACE);
+        Category.MACHINES.display = getItemById("torus:motor").itemStack;
+        Category.COMPONENTS.display = getItemById("torus:transistor").itemStack;
+        Category.TOOLS.display = getItemById("torus:screwdriver").itemStack;
     }
 
     public void registerItem(TorusItem item) {
         registry.put(item.namespacedId, item);
+        if (item.category != null) {
+            item.category.items.add(item);
+        }
     }
 
     public TorusItem getItemById(String id) {
@@ -98,6 +117,10 @@ public class TorusItemManager {
 
     public Collection<TorusItem> getItems() {
         return registry.values();
+    }
+
+    public Collection<Category> getCategories() {
+        return categories.values();
     }
 
 }

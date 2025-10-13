@@ -19,13 +19,16 @@ public class TorusItem {
 
     public final String namespacedId;
 
+    public final Category category;
+
     protected final ItemStack itemStack;
 
     @Getter
     protected Structure structure;
 
-    public TorusItem(String namespacedId, Structure structure, Material material, String name, List<String> lore) {
+    public TorusItem(String namespacedId, Category category, Structure structure, Material material, String name, List<String> lore) {
         this.namespacedId = namespacedId;
+        this.category = category;
         this.structure = structure;
         this.itemStack = new ItemStack(material);
 
