@@ -1,0 +1,27 @@
+coal_ore_to_coal:
+  type: CRUSHING
+  result: "minecraft:coal"
+  amount: 5
+  duration: 2
+  ingredient: "minecraft:coal_ore"
+
+copper_ore_to_raw_copper:
+  type: CRUSHING
+  result: "minecraft:raw_copper"
+  amount: 2
+  duration: 5
+  ingredient: "minecraft:copper_ore"
+
+iron_ore_to_raw_iron:
+  type: CRUSHING
+  result: "minecraft:raw_iron"
+  amount: 2
+  duration: 5
+  ingredient: "minecraft:iron_ore"
+
+gold_ore_to_raw_gold:
+  type: CRUSHING
+  result: "minecraft:raw_gold"
+  amount: 2
+  duration: 7
+  ingredient: "minecraft:gold_ore"
