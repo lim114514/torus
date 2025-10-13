@@ -16,6 +16,8 @@ public abstract class Structure {
 
     protected byte[] bounds = { 0, 0, 0 };
 
+    protected byte[] offset;
+
     public Structure(String id, Class<? extends StructureInstance> instanceClass) {
         this.id = id;
         this.instanceClass = instanceClass;
@@ -35,7 +37,10 @@ public abstract class Structure {
     }
 
     public boolean isPlaceableAt(BlockLocation location, Direction direction) {
+        byte[] offset = calculateOffset(direction.getOpposite());
         byte[] bounds = MathUtils.rotateVectors(this.bounds, direction);
+
+        location = location.getRelative(offset[0], offset[1], offset[2]);
         for (int i = 0; i < bounds.length; i += 3) {
             if (location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]).getBlock().getType().isSolid()) {
                 return false;
@@ -45,6 +50,8 @@ public abstract class Structure {
     }
 
     public StructureInstance place(BlockLocation location, Direction direction) {
+        byte[] offset = calculateOffset(direction.getOpposite());
+        location = location.getRelative(offset[0], offset[1], offset[2]);
         StructureInstance instance = instantiate(location, direction);
         try {
             instance.setup();
@@ -56,6 +63,13 @@ public abstract class Structure {
 
         location.world.placeStructure(instance);
         return instance;
+    }
+
+    private byte[] calculateOffset(Direction direction) {
+        if (offset == null)
+            return new byte[] { 0, 0, 0 };
+
+        return MathUtils.rotateVectors(this.offset, direction);
     }
 
     @Override
