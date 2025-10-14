@@ -158,6 +158,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         moverZ = getComponent("mover_z");
 
         inConnector = getConnector("in_energy");
+        inConnector.maximumInput = 350;
         outConnector = getConnector("out_item");
         outConnector.linkedInventory = outBuffer;
     }
