@@ -4,6 +4,7 @@ import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Structure {
@@ -15,6 +16,9 @@ public abstract class Structure {
     protected final Class<? extends StructureInstance> instanceClass;
 
     protected byte[] bounds = { 0, 0, 0 };
+
+    @Getter
+    protected byte[] size;
 
     protected byte[] offset;
 
@@ -31,6 +35,21 @@ public abstract class Structure {
         } else if (bounds.length % 3 != 0) {
             throw new RuntimeException("Invalid structure bounds!");
         }
+
+        byte[] min = { 127, 127, 127 };
+        byte[] max = { -128, -128, -128 };
+
+        for (int i = 0; i < bounds.length; i+=3) {
+            min[0] = (byte) Math.min(bounds[i], min[0]);
+            min[1] = (byte) Math.min(bounds[i+1], min[1]);
+            min[2] = (byte) Math.min(bounds[i+2], min[2]);
+
+            max[0] = (byte) Math.max(bounds[i], max[0]);
+            max[1] = (byte) Math.max(bounds[i+1], max[1]);
+            max[2] = (byte) Math.max(bounds[i+2], max[2]);
+        }
+
+        size = new byte[] { (byte) (max[0] - min[0]), (byte) (max[1] - min[1]), (byte) (max[2] - min[2]) };
     }
 
     protected void createBounds(ByteArrayBuilder builder) {

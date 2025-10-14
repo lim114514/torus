@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -35,7 +36,16 @@ public class TorusItem {
         ItemMeta meta = itemStack.getItemMeta();
         meta.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING, namespacedId);
         meta.setDisplayName(ChatColor.WHITE + name);
-        meta.setLore(lore);
+
+        List<String> lore0 = meta.hasLore() ? meta.getLore() : new LinkedList<>();
+        if (structure != null) {
+            byte[] size = structure.getSize();
+            lore0.add(ChatColor.BLUE + String.format("Structure [%dx%dx%d]", size[0], size[1], size[2]));
+            if (!lore.isEmpty())
+                lore0.add("");
+        }
+        lore0.addAll(lore);
+        meta.setLore(lore0);
 
         CustomModelDataComponent component = meta.getCustomModelDataComponent();
         component.setStrings(Collections.singletonList(namespacedId));
