@@ -2,8 +2,11 @@ package com.github.alantr7.torus.world;
 
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.Structures;
+import org.bukkit.Bukkit;
 import org.joml.Vector2i;
 
 import java.io.File;
@@ -108,10 +111,11 @@ public class TorusRegion {
 
         ByteArrayReader reader = new ByteArrayReader(buffer);
         while (reader.hasNext()) {
-            // Occupation
-            if (reader.peek() == 1) {
-                reader.readU1();
+            int basePointer = reader.getPointer();
+            int structureId = ByteArrayReader.toInt(reader.readBytes(2));
 
+            // Occupation
+            if (structureId == 1) {
                 int packedXZ = reader.readU1() & 0xff;
                 int x = (packedXZ >> 4) & 0x0f;
                 int z = packedXZ & 0x0f;
@@ -130,13 +134,18 @@ public class TorusRegion {
 
             // Structure
             else {
-                int pointer = reader.getPointer();
-                StructureInstance structure = StructureInstance.fromBytes(this, chunk, reader);
-                if (structure != null) {
-                    chunk._placeStructureWithOccupations(structure);
-                } else {
-                    System.err.println("Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + pointer);
+                int length = ByteArrayReader.toInt(reader.readBytes(2));
+                try {
+                    StructureInstance structure = StructureInstance.fromBytes(this, chunk, reader, structureId);
+                    if (structure != null) {
+                        chunk._placeStructureWithOccupations(structure);
+                    } else {
+                        System.err.println("Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + basePointer);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Corrupted structure in region " + x + ", " + z + " with ID: " + TorusPlugin.getInstance().getStructureRegistry().getStructure(structureId) + " (" + structureId + ")");
                 }
+                reader.setPointer(basePointer + length + 4);
             }
         }
     }
@@ -181,7 +190,7 @@ public class TorusRegion {
             if (chunk.contains(structureLocation))
                 continue;
 
-            writer.writeU1(1);
+            writer.writeU2(1);
             writer.writeU1(((occupation.x & 15) << 4) | (occupation.z & 15));
             writer.writeU2(occupation.y);
 

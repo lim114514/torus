@@ -124,6 +124,11 @@ public abstract class StructureInstance {
         // Structure ID
         buffer.writeU2(structure.numericId);
 
+        int basePointer = buffer.getPointer();
+
+        // Structure Length
+        buffer.writeU2(0);
+
         // Location
         buffer.writeBytes(ByteArrayWriter.toBytes(location.x & 0xf, 1));;
         buffer.writeBytes(ByteArrayWriter.toBytes(location.y, 2));
@@ -170,12 +175,16 @@ public abstract class StructureInstance {
 
         // Data Container
         buffer.writeBytes(dataContainer.toBytes(keys));
-
         dataContainer.setDirty(false);
+
+        int returnPointer = buffer.getPointer();
+        buffer.setPointer(basePointer);
+        buffer.writeU2(returnPointer - basePointer - 2);
+        buffer.setPointer(returnPointer);
     }
 
-    public static StructureInstance fromBytes(TorusRegion region, TorusChunk chunk, ByteArrayReader reader) {
-        Structure structure = TorusPlugin.getInstance().getStructureRegistry().getStructure(ByteArrayReader.toInt(reader.readBytes(2)));
+    public static StructureInstance fromBytes(TorusRegion region, TorusChunk chunk, ByteArrayReader reader, int structureId) {
+        Structure structure = TorusPlugin.getInstance().getStructureRegistry().getStructure(structureId);
 
         // Location
         int x = ByteArrayReader.toInt(reader.readBytes(1));
