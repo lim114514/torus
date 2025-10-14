@@ -84,6 +84,7 @@ public class StructureRegistry {
         register(Structures.PUMP);
         register(Structures.ORE_CRUSHER);
         register(Structures.ORE_WASHER);
+        register(Structures.QUARRY);
 
         register(Structures.ENERGY_CABLE);
         register(Structures.ITEM_CABLE);

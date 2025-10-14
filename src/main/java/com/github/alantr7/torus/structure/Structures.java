@@ -8,6 +8,7 @@ public class Structures {
     public static final Pump PUMP = new Pump();
     public static final OreCrusher ORE_CRUSHER = new OreCrusher();
     public static final OreWasher ORE_WASHER = new OreWasher();
+    public static final Quarry QUARRY = new Quarry();
 
     public static final EnergyCable ENERGY_CABLE = new EnergyCable();
     public static final ItemCable ITEM_CABLE = new ItemCable();

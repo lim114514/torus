@@ -21,11 +21,12 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:solar_generator", Category.GENERATORS, Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
         registerItem(new TorusItem("torus:coal_generator", Category.GENERATORS, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
 
+        registerItem(new TorusItem("torus:blast_furnace", Category.MACHINES, Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
         registerItem(new TorusItem("torus:block_breaker", Category.MACHINES, Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList()));
         registerItem(new TorusItem("torus:pump", Category.MACHINES, Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList()));
         registerItem(new TorusItem("torus:ore_crusher", Category.MACHINES, Structures.ORE_CRUSHER, Material.PAPER, "Ore Crusher", Collections.emptyList()));
         registerItem(new TorusItem("torus:ore_washer", Category.MACHINES, Structures.ORE_WASHER, Material.PAPER, "Ore Washer", Collections.emptyList()));
-        registerItem(new TorusItem("torus:blast_furnace", Category.MACHINES, Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
+        registerItem(new TorusItem("torus:quarry", Category.MACHINES, Structures.QUARRY, Material.PAPER, "Quarry", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:energy_cable", Category.NETWORK, Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList()));
         registerItem(new TorusItem("torus:fluid_pipe", Category.NETWORK, Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
