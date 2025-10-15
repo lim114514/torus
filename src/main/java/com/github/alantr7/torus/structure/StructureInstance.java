@@ -5,6 +5,7 @@ import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
+import com.github.alantr7.torus.structure.display.EntityReference;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
@@ -17,9 +18,8 @@ import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.structure.display.Model;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.joml.Vector2i;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -46,11 +46,14 @@ public abstract class StructureInstance {
 
     private byte[] bounds;
 
+    private int[][] occupiedChunks;
+
     public StructureInstance(LoadContext context) {
         this.structure = context.structure();
         this.location = context.location();
         this.direction = context.direction();
         this.dataContainer = context.data();
+        setOccupiedChunks();
     }
 
     public StructureInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
@@ -75,6 +78,7 @@ public abstract class StructureInstance {
             connectors.put(new ConnectorLocation(components.get(connectorDef.component()).absoluteLocation, connectorDef.matter()), connector);
             connectorsByName.put(connectorDef.component(), connector);
         }
+        setOccupiedChunks();
     }
 
     public byte[] getBounds() {
@@ -102,6 +106,25 @@ public abstract class StructureInstance {
 
     public Collection<Connector> getConnectors() {
         return connectors.values();
+    }
+
+    private void setOccupiedChunks() {
+        byte[] bounds = getBounds();
+        Set<Vector2i> positions = new HashSet<>();
+
+        for (int i = 0; i < bounds.length; i+=3) {
+            positions.add(new Vector2i((location.x + bounds[i]) >> 4, (location.z + bounds[i + 2]) >> 4));
+        }
+
+        this.occupiedChunks = positions.stream().map(v -> new int[]{v.x, v.y}).toArray(int[][]::new);
+    }
+
+    public boolean isFullyLoaded() {
+        for (int[] chunkPos : occupiedChunks) {
+            if (location.world.getChunkAt(chunkPos[0], chunkPos[1]) == null)
+                return false;
+        }
+        return true;
     }
 
     public abstract void tick();
@@ -150,10 +173,10 @@ public abstract class StructureInstance {
 
             // Model
             if (component.getModel() != null) {
-                buffer.writeU1(component.getModel().entities.size());
-                for (ItemDisplay entity : component.getModel().entities) {
-                    buffer.writeBytes(ByteArrayWriter.toBytes(entity.getUniqueId().getMostSignificantBits(), 8));
-                    buffer.writeBytes(ByteArrayWriter.toBytes(entity.getUniqueId().getLeastSignificantBits(), 8));
+                buffer.writeU1(component.getModel().entityReferences.size());
+                for (EntityReference ref : component.getModel().entityReferences) {
+                    buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getMostSignificantBits(), 8));
+                    buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getLeastSignificantBits(), 8));
                 }
             } else {
                 buffer.writeU1(0);
@@ -215,19 +238,14 @@ public abstract class StructureInstance {
 
             // Model
             int entitiesLength = reader.readU1();
-            List<ItemDisplay> entities = new ArrayList<>();
+            List<EntityReference> entities = new ArrayList<>();
 
             for (int j = 0; j < entitiesLength; j++) {
                 byte[] uidmost = reader.readBytes(8);
                 byte[] uidleast = reader.readBytes(8);
 
                 UUID uid = new UUID(ByteArrayReader.toLong(uidmost), ByteArrayReader.toLong(uidleast));
-                ItemDisplay entity = (ItemDisplay) Bukkit.getEntity(uid);
-                if (entity != null) {
-                    entities.add(entity);
-                } else {
-                    System.err.println("Broken model for " + structure + " at " + location);
-                }
+                entities.add(new EntityReference(uid));
             }
 
             Model model = new Model(entities);

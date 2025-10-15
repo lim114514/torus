@@ -11,6 +11,7 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
@@ -75,13 +76,15 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
     private void updateModel() {
         float angle = (processedTicks * 120) / 180f * (float) Math.PI;
-        leftWheel.getModel().entities.forEach(display -> {
+        leftWheel.getModel().entityReferences.forEach(ref -> {
+            ItemDisplay display = ref.getEntity();
             Transformation transformation = display.getTransformation();
             display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(angle * 0.9f, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(20);
         });
-        rightWheel.getModel().entities.forEach(display -> {
+        rightWheel.getModel().entityReferences.forEach(ref -> {
+            ItemDisplay display = ref.getEntity();
             Transformation transformation = display.getTransformation();
             display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(angle, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
             display.setInterpolationDelay(0);

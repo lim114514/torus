@@ -59,6 +59,10 @@ public class TorusWorld {
         return regions.get(new Vector2i(location.regionX, location.regionZ));
     }
 
+    TorusRegion getRegionAt(int x, int z) {
+        return regions.get(new Vector2i(x, z));
+    }
+
     @NotNull
     TorusRegion getRegionOrLoad(BlockLocation location) {
         return regions.computeIfAbsent(new Vector2i(location.regionX, location.regionZ), v -> {
@@ -75,8 +79,13 @@ public class TorusWorld {
 
     @Nullable
     public TorusChunk getChunk(BlockLocation location) {
-        TorusRegion region = getRegion(location);
-        return region != null ? region.chunks.get(new Vector2i(location.x >> 4, location.z >> 4)) : null;
+        return getChunkAt(location.x >> 4, location.z >> 4);
+    }
+
+    @Nullable
+    public TorusChunk getChunkAt(int x, int z) {
+        TorusRegion region = getRegionAt(x >> 5, z >> 5);
+        return region != null ? region.chunks.get(new Vector2i(x, z)) : null;
     }
 
     @NotNull
@@ -131,7 +140,7 @@ public class TorusWorld {
     public void tick() {
         regions.values().forEach(region -> {
             region.chunks.values().forEach(chunk -> chunk.structures.values().forEach(s -> {
-                if (s.isCorrupted)
+                if (s.isCorrupted || !s.isFullyLoaded())
                     return;
 
                 try {

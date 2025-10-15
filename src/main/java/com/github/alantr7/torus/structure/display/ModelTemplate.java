@@ -42,7 +42,7 @@ public class ModelTemplate {
             entities.add(entity);
         }
 
-        return new Model(entities);
+        return new Model(entities.stream().map(EntityReference::new).toList());
     }
 
     public Model recycle(Model model, Location location, Direction direction) {
@@ -59,8 +59,8 @@ public class ModelTemplate {
             );
 
             ItemDisplay entity;
-            if (entityIdx < model.entities.size()) {
-                entity = model.entities.get(entityIdx);
+            if (entityIdx < model.entityReferences.size()) {
+                entity = model.entityReferences.get(entityIdx).getEntity();
                 entity.teleport(partLocation);
             } else {
                 entity = location.getWorld().spawn(partLocation, ItemDisplay.class);
@@ -70,11 +70,11 @@ public class ModelTemplate {
             entities.add(entity);
         }
 
-        for (; entityIdx < model.entities.size(); entityIdx++) {
-            model.entities.get(entityIdx).remove();
+        for (; entityIdx < model.entityReferences.size(); entityIdx++) {
+            model.entityReferences.get(entityIdx).getEntity().remove();
         }
 
-        return new Model(entities);
+        return new Model(entities.stream().map(EntityReference::new).toList());
     }
 
     private void transformEntity(ItemDisplay entity, ItemDisplayModelTemplate part, Direction direction) {

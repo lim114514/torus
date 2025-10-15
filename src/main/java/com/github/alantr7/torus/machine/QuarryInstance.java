@@ -45,11 +45,11 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     public QuarryInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(structure, location, bodyDef, direction);
 
-        getComponent("drill_holder").getModel().entities.forEach(d -> d.setTeleportDuration(10));
-        getComponent("drill").getModel().entities.forEach(d -> d.setTeleportDuration(10));
-        getComponent("drill_tip").getModel().entities.forEach(d -> d.setTeleportDuration(10));
-        getComponent("mover_x").getModel().entities.forEach(d -> d.setTeleportDuration(10));
-        getComponent("mover_z").getModel().entities.forEach(d -> d.setTeleportDuration(10));
+        getComponent("drill_holder").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
+        getComponent("drill").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
+        getComponent("drill_tip").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
+        getComponent("mover_x").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
+        getComponent("mover_z").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
     }
 
     byte horizontalPosition = 0;
@@ -143,7 +143,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         drillLength.update(len);
 
-        ItemDisplay drillModel = drill.getModel().entities.getFirst();
+        ItemDisplay drillModel = drill.getModel().entityReferences.getFirst().getEntity();
         Transformation transform = drillModel.getTransformation();
         transform.getScale().y = len + f;
         drillModel.setTransformation(transform);

@@ -8,7 +8,6 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.util.Transformation;
 
@@ -49,7 +48,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
 
         StructureComponent component = getComponent("charge");
 
-        ItemDisplay entity = component.getModel().entities.getFirst();
+        ItemDisplay entity = component.getModel().entityReferences.getFirst().getEntity();
         Transformation transformation = entity.getTransformation();
         transformation.getScale().y = height;
         transformation.getTranslation().y = height / 2f;
