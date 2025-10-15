@@ -68,9 +68,9 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
                     return;
 
                 for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.toBukkit().getChunk())) {
-                    player.sendBlockDamage(ore.getLocation(), Math.min(1, (1 + breakingTicks) / 3f));
+                    player.sendBlockDamage(ore.getLocation(), Math.min(1, (breakingTicks) / 3f));
                 }
-                if (breakingTicks == 3) {
+                if (breakingTicks == 4) {
                     breakingTicks = 0;
                     outBuffer.addItem(new ItemStack(ore.getType()));
                     ore.setType(Material.AIR);
