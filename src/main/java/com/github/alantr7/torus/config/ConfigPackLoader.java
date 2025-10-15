@@ -54,6 +54,7 @@ public class ConfigPackLoader {
             switch (rawRecipeType) {
                 case "CRAFTING" -> loadCraftingRecipe(section, recipeId);
                 case "CRUSHING" -> loadCrushingRecipe(section, recipeId);
+                case "WASHING" -> loadWasherRecipe(section, recipeId);
 
                 default -> System.err.println("Invalid recipe type: " + rawRecipeType);
             }
@@ -158,6 +159,44 @@ public class ConfigPackLoader {
         }
 
         TorusPlugin.getInstance().getRecipeManager().registerCrusherRecipe(new CrusherRecipe(
+          recipeId,
+          ingredientReference.providerId.equals("minecraft")
+            ? new RecipeIngredient(ingredientReference.getItem().getType())
+            : new RecipeIngredient(ingredientReference.providerId + ":" + ingredientReference.itemId),
+          result,
+          section.getInt("duration")
+        ));
+        System.out.println("Loaded recipe: " + recipeId);
+    }
+
+    private void loadWasherRecipe(ConfigurationSection section, String recipeId) {
+        String rawResult = section.getString("result");
+        if (rawResult == null) {
+            System.err.println("Recipe result can not be null.");
+            return;
+        }
+
+        ItemStack result = ItemReference.parse(rawResult).getItem();
+        if (result == null) {
+            System.err.println("Recipe result item not found.");
+            return;
+        }
+        result.setAmount(section.getInt("amount", 1));
+
+        String rawIngredient = section.getString("ingredient");
+        if (rawIngredient == null) {
+            System.err.println("Ingredient can not be null.");
+            return;
+        }
+
+        ItemReference ingredientReference = ItemReference.parse(rawIngredient);
+        ItemStack ingredient = ingredientReference.getItem();
+        if (ingredient == null) {
+            System.err.println("Ingredient item can not be found.");
+            return;
+        }
+
+        TorusPlugin.getInstance().getRecipeManager().registerWasherRecipe(new WasherRecipe(
           recipeId,
           ingredientReference.providerId.equals("minecraft")
             ? new RecipeIngredient(ingredientReference.getItem().getType())

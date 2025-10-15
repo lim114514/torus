@@ -139,7 +139,9 @@ public class TorusWorld {
 
     public void tick() {
         regions.values().forEach(region -> {
-            region.chunks.values().forEach(chunk -> chunk.structures.values().forEach(s -> {
+            region.chunks.values()
+              .forEach(chunk -> chunk.structures.values()
+                .forEach(s -> {
                 if (s.isCorrupted || !s.isFullyLoaded())
                     return;
 
