@@ -106,6 +106,8 @@ public class TorusRegion {
         raf.seek(regionFileOffset);
 
         int chunkSize = ByteArrayReader.toInt(new byte[] { raf.readByte(), raf.readByte() });
+        chunk.size = chunkSize;
+
         byte[] buffer = new byte[chunkSize];
         raf.readFully(buffer);
 
@@ -200,6 +202,8 @@ public class TorusRegion {
 
         raf.write(writer.getBuffer());
         int chunkSize = writer.getPointer();
+
+        chunk.size = chunkSize;
 
         // Save new keys
         if (keysLength < strings.getSize()) {

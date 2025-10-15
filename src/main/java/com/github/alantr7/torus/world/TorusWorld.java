@@ -74,7 +74,7 @@ public class TorusWorld {
     }
 
     @Nullable
-    TorusChunk getChunk(BlockLocation location) {
+    public TorusChunk getChunk(BlockLocation location) {
         TorusRegion region = getRegion(location);
         return region != null ? region.chunks.get(new Vector2i(location.x >> 4, location.z >> 4)) : null;
     }

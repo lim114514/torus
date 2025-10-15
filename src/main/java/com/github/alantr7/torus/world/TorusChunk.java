@@ -1,8 +1,10 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.structure.StructureInstance;
+import lombok.Getter;
 import org.joml.Vector2i;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,9 @@ public class TorusChunk {
     public final TorusWorld world;
 
     public final Vector2i position;
+
+    @Getter
+    int size;
 
     public boolean isDirty;
 
@@ -37,6 +42,14 @@ public class TorusChunk {
 
     public boolean contains(BlockLocation location) {
         return location.x >> 4 == position.x && location.z >> 4 == position.y;
+    }
+
+    public Collection<StructureInstance> getStructures() {
+        return structures.values();
+    }
+
+    public Collection<BlockLocation> getOccupations() {
+        return occupations.values();
     }
 
 }
