@@ -16,6 +16,9 @@ import org.bukkit.entity.ItemDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Quarry extends Structure {
 
     static ModelTemplate MODEL_BASE = new ModelTemplate();
@@ -104,6 +107,11 @@ public class Quarry extends Structure {
     static ModelTemplate MODEL_MOVER_Z = new ModelTemplate();
     static {
         MODEL_MOVER_Z.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 4.5f, 0f), new Vector3f(.25f, .25f, 10f), 0f, 0f));
+    }
+
+    public static final Set<Material> BLOCK_BLACKLIST = new HashSet<>();
+    static {
+        BLOCK_BLACKLIST.add(Material.BEDROCK);
     }
 
     public Quarry() {

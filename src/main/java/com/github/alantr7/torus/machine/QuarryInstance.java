@@ -63,7 +63,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         if (drillPosition != null) {
             Block ore = drillPosition.getRelative(0, -1, 0).getBlock();
-            if (ore.getType() != Material.AIR) {
+            if (!ore.getType().isAir() && !Quarry.BLOCK_BLACKLIST.contains(ore.getType())) {
                 if (storedEnergy.get() < 150)
                     return;
 
@@ -95,7 +95,8 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     public void advance() {
         byte z = (byte) (horizontalPosition / 9);
         byte x = z % 2 == 0 ? (byte) (horizontalPosition % 9) : (byte) (8 - horizontalPosition % 9);
-        setDrillRelativePosition(new byte[]{ x, (byte) (-level), (byte) (horizontalPosition / 9) });
+        if (!setDrillRelativePosition(new byte[]{ x, (byte) (-level), (byte) (horizontalPosition / 9) }))
+            return;
 
         byte dir = level % 2 == 0 ? 1 : (byte) (-1);
         horizontalPosition += dir;
@@ -113,9 +114,16 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         horizontalPosition = (byte) (horizontalPosition % 81);
     }
 
-    public void setDrillRelativePosition(byte[] position0) {
+    public boolean setDrillRelativePosition(byte[] position0) {
         byte[] position = new byte[] {(byte) (-position0[0] + 4), position0[1], (byte) (position0[2] - 4)};
         position = MathUtils.rotateVectors(position, direction);
+
+        BlockLocation nextDrillPosition = location.getRelative(position[0], position[1], position[2]);
+        if (Quarry.BLOCK_BLACKLIST.contains(nextDrillPosition.getBlock().getType())) {
+            return false;
+        }
+
+        drillPosition = nextDrillPosition;
 
         byte[] xMoverPosition = new byte[] {0, 0, (byte)(position0[2] - 4)};
         xMoverPosition = MathUtils.rotateVectors(xMoverPosition, direction);
@@ -126,7 +134,6 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         moverX.getModel().teleport(location.toBukkit().add(.5, 4.5f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
         moverZ.getModel().teleport(location.toBukkit().add(.5, 4.5f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
 
-        drillPosition = location.getRelative(position[0], position[1], position[2]);
         updateDrillLength();
 
         drill.getModel().teleport(location.toBukkit().add(.5, .125f + drillLength.get() / 2f + .5f, .5).add(position[0], position[1], position[2]));
@@ -135,6 +142,8 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         float[] holderOffset = {.25f, .3f, .15f};
         holderOffset = MathUtils.rotateVectors(holderOffset, direction.getOpposite());
         drillHolder.getModel().teleport(location.toBukkit().add(.5 + holderOffset[0], 5 + holderOffset[1], .5 + holderOffset[2]).add(position[0], 0, position[2]));
+
+        return true;
     }
 
     public void updateDrillLength() {
