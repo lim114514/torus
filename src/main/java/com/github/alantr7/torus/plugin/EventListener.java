@@ -17,8 +17,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -134,6 +138,45 @@ public class EventListener implements Listener {
 
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
         event.getPlayer().sendMessage(ChatColor.YELLOW + "You rotated the machine.");
+    }
+
+    @EventHandler
+    void onUseTorusItemInVanillaCraftingRecipe(PrepareItemCraftEvent event) {
+        if (!(event.getRecipe() instanceof CraftingRecipe recipe))
+            return;
+
+        if (!recipe.getKey().getNamespace().equals("minecraft"))
+            return;
+
+        for (ItemStack stack : event.getInventory().getMatrix()) {
+            if (stack == null)
+                continue;
+
+            if (TorusItem.getByItemStack(stack) != null) {
+                event.getInventory().setResult(null);
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    void onUseTorusItemInVanillaCraftingRecipe(CraftItemEvent event) {
+        if (!(event.getRecipe() instanceof CraftingRecipe recipe))
+            return;
+
+        if (!recipe.getKey().getNamespace().equals("minecraft"))
+            return;
+
+        for (ItemStack stack : event.getInventory().getMatrix()) {
+            if (stack == null)
+                continue;
+
+            if (TorusItem.getByItemStack(stack) != null) {
+                event.setCancelled(true);
+                event.getInventory().setResult(null);
+                return;
+            }
+        }
     }
 
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
