@@ -11,6 +11,7 @@ import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.world.BlockLocation;
+import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -45,7 +46,7 @@ public class Commands {
           new ItemBrowserMainGUI((Player) ctx.getExecutor()).open();
       });
 
-    @CommandHandler Command inspect = CommandBuilder.using("torus")
+    @CommandHandler Command inspectStructure = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("inspect_structure")
       .executes(ctx -> {
@@ -77,6 +78,26 @@ public class Commands {
               ctx.respond("    - Flow: " + ChatColor.GRAY + connector.getFlowDirection());
               ctx.respond("    - Connections: " + ChatColor.GRAY + connector.getConnections());
           }
+      });
+
+    @CommandHandler Command inspectChunk = CommandBuilder.using("torus")
+      .parameter("debug")
+      .parameter("inspect_chunk")
+      .executes(ctx -> {
+          Player player = (Player) ctx.getExecutor();
+          TorusChunk chunk = TorusPlugin.getInstance().getWorldManager().getWorld(player.getWorld()).getChunk(
+            new BlockLocation(player.getLocation())
+          );
+
+          if (chunk == null) {
+              ctx.respond("This chunk does not have any structures.");
+              return;
+          }
+
+          ctx.respond("Chunk position: " + chunk.position);
+          ctx.respond("Chunk size: " + chunk.getSize());
+          ctx.respond("Structures: " + chunk.getStructures().size());
+          ctx.respond("Occupations: " + chunk.getOccupations().size());
       });
 
 }
