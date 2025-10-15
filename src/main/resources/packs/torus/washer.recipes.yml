@@ -1,0 +1,17 @@
+iron_dust:
+  type: WASHING
+  result: "torus:iron_dust"
+  duration: 8
+  ingredient: "minecraft:raw_iron"
+
+copper_dust:
+  type: WASHING
+  result: "torus:copper_dust"
+  duration: 8
+  ingredient: "minecraft:raw_copper"
+
+gold_dust:
+  type: WASHING
+  result: "torus:gold_dust"
+  duration: 10
+  ingredient: "minecraft:raw_gold"
