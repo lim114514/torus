@@ -49,7 +49,7 @@ public abstract class Structure {
             max[2] = (byte) Math.max(bounds[i+2], max[2]);
         }
 
-        size = new byte[] { (byte) (max[0] - min[0]), (byte) (max[1] - min[1]), (byte) (max[2] - min[2]) };
+        size = new byte[] { (byte) (max[0] - min[0] + 1), (byte) (max[1] - min[1] + 1), (byte) (max[2] - min[2] + 1) };
     }
 
     protected void createBounds(ByteArrayBuilder builder) {
