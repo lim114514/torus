@@ -22,6 +22,8 @@ public class TorusItem {
 
     public final Category category;
 
+    public final String name;
+
     protected final ItemStack itemStack;
 
     @Getter
@@ -38,6 +40,7 @@ public class TorusItem {
     public TorusItem(String namespacedId, Category category, Structure structure, ItemStack stack, String name, List<String> lore) {
         this.namespacedId = namespacedId;
         this.category = category;
+        this.name = name;
         this.structure = structure;
         this.itemStack = stack;
 
@@ -59,18 +62,6 @@ public class TorusItem {
         component.setStrings(Collections.singletonList(namespacedId));
         meta.setCustomModelDataComponent(component);
         itemStack.setItemMeta(meta);
-    }
-
-    public void setDisplayName(String name) {
-        updateMeta(meta -> meta.setDisplayName(name));
-    }
-
-    public void setLore(List<String> lore) {
-        updateMeta(meta -> meta.setLore(lore));
-    }
-
-    public void setCustomModelData(Integer cmd) {
-        updateMeta(meta -> meta.setCustomModelData(cmd));
     }
 
     public boolean isPlaceable() {

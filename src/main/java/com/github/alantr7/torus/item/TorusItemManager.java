@@ -76,7 +76,9 @@ public class TorusItemManager {
     }
 
     public TorusItem getItemById(String id) {
-        return registry.get(id);
+        if (id.startsWith("torus:"))
+            return registry.get(id);
+        return registry.get("torus:" + id);
     }
 
     public TorusItem getItemByItemStack(ItemStack item) {

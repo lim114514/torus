@@ -2,6 +2,7 @@ package com.github.alantr7.torus.plugin;
 
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bukkitplugin.commands.annotations.CommandHandler;
+import com.github.alantr7.bukkitplugin.commands.executor.Evaluator;
 import com.github.alantr7.bukkitplugin.commands.executor.ExecutorType;
 import com.github.alantr7.bukkitplugin.commands.factory.CommandBuilder;
 import com.github.alantr7.bukkitplugin.commands.registry.Command;
@@ -13,9 +14,11 @@ import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusWorld;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 @Singleton
 public class Commands {
@@ -25,18 +28,38 @@ public class Commands {
 
     @CommandHandler Command give = CommandBuilder.using("torus")
       .parameter("give")
+      .parameter("{target}", Evaluator.PLAYER, p -> p.tabComplete(args -> Bukkit.getOnlinePlayers().stream().map(Player::getName).toList()))
       .parameter("{item}", p -> p.tabComplete((args) -> {
+          if (args.length > 2 && !"torus:".startsWith(args[2]) && !args[2].startsWith("torus:")) {
+              return TorusPlugin.getInstance().getItemManager().getItemIds().stream().map(id -> id.substring("torus:".length())).toList();
+          }
           return TorusPlugin.getInstance().getItemManager().getItemIds();
       }))
+      .parameter("{amount}", Evaluator.INTEGER, p -> p.defaultValue(ctx -> 1))
+      .requireMatches(3)
       .executes(ctx -> {
+          Player target = (Player) ctx.getArgument("target");
+          if (target == null) {
+              ctx.respond("Player not found.");
+              return;
+          }
+
           TorusItem item = TorusPlugin.getInstance().getItemManager().getItemById((String) ctx.getArgument("item"));
           if (item == null) {
               ctx.respond("Unknown item.");
               return;
           }
 
-          ((Player) ctx.getExecutor()).getInventory().addItem(item.toItemStack());
-          ctx.respond("You received 1 x " + item.namespacedId);
+          if (ctx.optArgument("amount").isEmpty() || (int) ctx.getArgument("amount") < 1 || (int) ctx.getArgument("amount") > 150) {
+              ctx.respond("Specified amount is not a valid number.");
+              return;
+          }
+
+          ItemStack stack = item.toItemStack().clone();
+          stack.setAmount((int) ctx.getArgument("amount"));
+
+          ((Player) ctx.getExecutor()).getInventory().addItem(stack);
+          ctx.respond("You received 1 x " + item.name);
       });
 
     @CommandHandler Command browse = CommandBuilder.using("torus")
