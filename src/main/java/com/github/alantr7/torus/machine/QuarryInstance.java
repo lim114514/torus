@@ -87,7 +87,6 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         }
 
         if (hasSufficientEnergy(50)) {
-            consumeEnergy(50);
             advance();
         }
     }
@@ -95,8 +94,11 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     public void advance() {
         byte z = (byte) (horizontalPosition / 9);
         byte x = z % 2 == 0 ? (byte) (horizontalPosition % 9) : (byte) (8 - horizontalPosition % 9);
-        if (!setDrillRelativePosition(new byte[]{ x, (byte) (-level), (byte) (horizontalPosition / 9) }))
+        if (!setDrillRelativePosition(new byte[]{ x, (byte) (-level), (byte) (horizontalPosition / 9) })) {
             return;
+        }
+
+        consumeEnergy(50);
 
         byte dir = level % 2 == 0 ? 1 : (byte) (-1);
         horizontalPosition += dir;
