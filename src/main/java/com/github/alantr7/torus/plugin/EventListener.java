@@ -39,8 +39,13 @@ public class EventListener implements Listener {
             return;
 
         TorusItem torusItem = TorusItem.getByItemStack(item);
-        if (torusItem == null || !torusItem.isPlaceable())
+        if (torusItem == null)
             return;
+
+        if (!torusItem.isPlaceable()) {
+            event.setCancelled(true);
+            return;
+        }
 
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
         BlockLocation location = new BlockLocation(block.getLocation());
