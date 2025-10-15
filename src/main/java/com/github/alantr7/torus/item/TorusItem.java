@@ -27,11 +27,19 @@ public class TorusItem {
     @Getter
     protected Structure structure;
 
+    public TorusItem(String namespacedId, Category category, Structure structure, HeadData data, String name, List<String> lore) {
+        this(namespacedId, category, structure, data.stack.clone(), name, lore);
+    }
+
     public TorusItem(String namespacedId, Category category, Structure structure, Material material, String name, List<String> lore) {
+        this(namespacedId, category, structure, new ItemStack(material), name, lore);
+    }
+
+    public TorusItem(String namespacedId, Category category, Structure structure, ItemStack stack, String name, List<String> lore) {
         this.namespacedId = namespacedId;
         this.category = category;
         this.structure = structure;
-        this.itemStack = new ItemStack(material);
+        this.itemStack = stack;
 
         ItemMeta meta = itemStack.getItemMeta();
         meta.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING, namespacedId);

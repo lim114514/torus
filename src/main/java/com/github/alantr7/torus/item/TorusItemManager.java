@@ -43,13 +43,13 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:copper_dust", Category.RESOURCES, null, Material.GLOWSTONE_DUST, "Copper Dust", Collections.emptyList()));
         registerItem(new TorusItem("torus:gold_dust", Category.RESOURCES, null, Material.HORN_CORAL_FAN, "Gold Dust", Collections.emptyList()));
         registerItem(new TorusItem("torus:steel_ingot", Category.RESOURCES, null, Material.IRON_INGOT, "Steel Ingot", Collections.emptyList()));
-        registerItem(new TorusItem("torus:machine_block", Category.COMPONENTS, null, Material.IRON_BLOCK, "Machine Block", Collections.emptyList()));
+        registerItem(new TorusItem("torus:machine_block", Category.COMPONENTS, null, new HeadData("http://textures.minecraft.net/texture/944bdc56def9a99e0f775d0c3879a69138d1510a18bbacb0c82902bbf816171c"), "Machine Block", Collections.emptyList()));
         registerItem(new TorusItem("torus:copper_wire", Category.COMPONENTS, null, Material.PITCHER_POD, "Copper Wire", Collections.emptyList()));
-        registerItem(new TorusItem("torus:copper_coil", Category.COMPONENTS, null, Material.PITCHER_POD, "Copper Coil", Collections.emptyList()));
+        registerItem(new TorusItem("torus:copper_coil", Category.COMPONENTS, null, new HeadData("http://textures.minecraft.net/texture/b3652284921a2dba440060f2f63aa3ba2b0df62c9c36bf7883acedc336df911b"), "Copper Coil", Collections.emptyList()));
         registerItem(new TorusItem("torus:transistor", Category.COMPONENTS, null, Material.COMPARATOR, "Transistor", Collections.emptyList()));
         registerItem(new TorusItem("torus:circuit_board", Category.COMPONENTS, null, Material.PAPER, "Circuit Board", Collections.emptyList()));
-        registerItem(new TorusItem("torus:motor", Category.COMPONENTS, null, Material.HEAVY_CORE, "Motor", Collections.emptyList()));
-        registerItem(new TorusItem("torus:generator", Category.COMPONENTS, null, Material.HEAVY_CORE, "Generator", Collections.emptyList()));
+        registerItem(new TorusItem("torus:motor", Category.COMPONENTS, null, new HeadData("http://textures.minecraft.net/texture/8cbca012f67e54de9aee72ff424e056c2ae58de5eacc949ab2bcd9683cec"), "Motor", Collections.emptyList()));
+        registerItem(new TorusItem("torus:generator", Category.COMPONENTS, null, new HeadData("http://textures.minecraft.net/texture/7b6a3366d21618e244c1a8e49f32feae2924aeaf985c9d16b0b430ccb2a88ffa"), "Generator", Collections.emptyList()));
     }
 
     {
