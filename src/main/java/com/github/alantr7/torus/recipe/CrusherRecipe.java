@@ -2,9 +2,7 @@ package com.github.alantr7.torus.recipe;
 
 import org.bukkit.inventory.ItemStack;
 
-public class CrusherRecipe {
-
-    public final String id;
+public class CrusherRecipe extends TorusRecipe {
 
     public final RecipeIngredient ingredient;
 
@@ -13,7 +11,7 @@ public class CrusherRecipe {
     public final int crushTicks;
 
     public CrusherRecipe(String id, RecipeIngredient ingredient, ItemStack result, int crushTicks) {
-        this.id = id;
+        super(id);
         this.ingredient = ingredient;
         this.result = result;
         this.crushTicks = crushTicks;
