@@ -10,6 +10,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
@@ -53,6 +54,7 @@ public class ConfigPackLoader {
 
             switch (rawRecipeType) {
                 case "CRAFTING" -> loadCraftingRecipe(section, recipeId);
+                case "SMELTING" -> loadSmeltingRecipe(section, recipeId);
                 case "CRUSHING" -> loadCrushingRecipe(section, recipeId);
                 case "WASHING" -> loadWasherRecipe(section, recipeId);
 
@@ -129,6 +131,41 @@ public class ConfigPackLoader {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadSmeltingRecipe(ConfigurationSection section, String recipeId) {
+        String rawResult = section.getString("result");
+        if (rawResult == null) {
+            System.err.println("Recipe result can not be null.");
+            return;
+        }
+
+        ItemStack result = ItemReference.parse(rawResult).getItem();
+        if (result == null) {
+            System.err.println("Recipe result item not found.");
+            return;
+        }
+        result.setAmount(section.getInt("amount", 1));
+
+        String rawIngredient = section.getString("ingredient");
+        if (rawIngredient == null) {
+            System.err.println("Ingredient can not be null.");
+            return;
+        }
+
+        ItemReference ingredientReference = ItemReference.parse(rawIngredient);
+        ItemStack ingredient = ingredientReference.getItem();
+        if (ingredient == null) {
+            System.err.println("Ingredient item can not be found.");
+            return;
+        }
+
+        TorusPlugin.getInstance().getRecipeManager().registerSmeltingRecipe(new FurnaceRecipe(
+          new NamespacedKey(TorusPlugin.getInstance(), recipeId),
+          result,
+          new RecipeChoice.ExactChoice(ingredient), 0f, section.getInt("duration"))
+        );
+        System.out.println("Loaded smelting recipe: " + recipeId);
     }
 
     private void loadCrushingRecipe(ConfigurationSection section, String recipeId) {
