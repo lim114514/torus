@@ -1,0 +1,17 @@
+iron_dust_to_ingot:
+  type: SMELTING
+  result: "minecraft:iron_ingot"
+  ingredient: "torus:iron_dust"
+  duration: 60
+
+copper_dust_to_ingot:
+  type: SMELTING
+  result: "minecraft:copper_ingot"
+  ingredient: "torus:copper_dust"
+  duration: 60
+
+gold_dust_to_ingot:
+  type: SMELTING
+  result: "minecraft:gold_ingot"
+  ingredient: "torus:gold_dust"
+  duration: 601
