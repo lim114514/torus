@@ -26,7 +26,7 @@ public class ConfigManager {
     }
 
     private void savePresetPack() {
-        TorusPlugin.getInstance().saveResource("packs/torus/items.recipes.yml", false);
+        TorusPlugin.getInstance().saveResource("packs/torus/crafting.recipes.yml", false);
         TorusPlugin.getInstance().saveResource("packs/torus/smelting.recipes.yml", false);
         TorusPlugin.getInstance().saveResource("packs/torus/crusher.recipes.yml", false);
         TorusPlugin.getInstance().saveResource("packs/torus/washer.recipes.yml", false);
