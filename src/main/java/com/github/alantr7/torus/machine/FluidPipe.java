@@ -18,6 +18,7 @@ public class FluidPipe extends Structure {
 
     public FluidPipe() {
         super("torus:fluid_pipe", CableInstance.class);
+        requiresHammerToBreak = false;
     }
 
     @Override

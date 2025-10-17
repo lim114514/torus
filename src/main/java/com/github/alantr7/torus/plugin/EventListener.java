@@ -94,20 +94,29 @@ public class EventListener implements Listener {
         TorusWorld world = TorusPlugin.getInstance().getWorldManager().getWorld(event.getPlayer().getWorld());
         BlockLocation loc = new BlockLocation(event.getClickedBlock().getLocation());
 
-        StructureInstance structure = world.getStructure(loc);
-        if (structure == null)
+        StructureInstance instance = world.getStructure(loc);
+        if (instance == null)
             return;
 
-        if (structure.testOwnership(event.getPlayer())) {
+        if (instance.structure.requiresHammerToBreak) {
+            TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
+            if (item == null || !item.namespacedId.equals("torus:hammer")) {
+                event.getPlayer().sendMessage(ChatColor.RED + "This structure can be broken only with hammer.");
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        if (instance.testOwnership(event.getPlayer())) {
             if (event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
-                TorusItem drop = TorusPlugin.getInstance().getItemManager().getItemByStructure(structure.structure);
+                TorusItem drop = TorusPlugin.getInstance().getItemManager().getItemByStructure(instance.structure);
                 if (drop != null) {
                     world.getBukkit().dropItem(loc.toBukkit().add(.5, 0, .5), drop.toItemStack().clone());
                 }
             }
-            world.removeStructure(structure);
+            world.removeStructure(instance);
         } else {
-            event.getPlayer().sendMessage(ChatColor.RED + "You can not break a machine that you do not own.");
+            event.getPlayer().sendMessage(ChatColor.RED + "You can not break a structure that you do not own.");
         }
     }
 

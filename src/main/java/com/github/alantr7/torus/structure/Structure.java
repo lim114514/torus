@@ -22,6 +22,8 @@ public abstract class Structure {
 
     protected byte[] offset;
 
+    public boolean requiresHammerToBreak = true;
+
     public Structure(String id, Class<? extends StructureInstance> instanceClass) {
         this.id = id;
         this.instanceClass = instanceClass;
