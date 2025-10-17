@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
-import com.github.alantr7.torus.gui.InventoryInterfaceFilterEditGUI;
+import com.github.alantr7.torus.gui.structure.InventoryInterfaceFilterEditGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;

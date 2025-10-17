@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.gui.BlastFurnaceGUI;
+import com.github.alantr7.torus.gui.structure.BlastFurnaceGUI;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.recipe.BlastFurnaceRecipe;

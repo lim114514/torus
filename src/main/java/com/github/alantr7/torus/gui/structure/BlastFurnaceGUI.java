@@ -1,11 +1,10 @@
-package com.github.alantr7.torus.gui;
+package com.github.alantr7.torus.gui.structure;
 
 import com.github.alantr7.bukkitplugin.gui.ClickType;
 import com.github.alantr7.bukkitplugin.gui.CloseInitiator;
 import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.machine.BlastFurnaceInstance;
-import com.github.alantr7.torus.recipe.BlastFurnaceRecipe;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

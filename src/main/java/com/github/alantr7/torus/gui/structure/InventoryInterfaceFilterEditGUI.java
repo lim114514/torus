@@ -1,4 +1,4 @@
-package com.github.alantr7.torus.gui;
+package com.github.alantr7.torus.gui.structure;
 
 import com.github.alantr7.bukkitplugin.gui.ClickType;
 import com.github.alantr7.bukkitplugin.gui.CloseInitiator;
