@@ -5,12 +5,14 @@ import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.item.TorusItemManager;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -97,6 +99,12 @@ public class EventListener implements Listener {
             return;
 
         if (structure.testOwnership(event.getPlayer())) {
+            if (event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+                TorusItem drop = TorusPlugin.getInstance().getItemManager().getItemByStructure(structure.structure);
+                if (drop != null) {
+                    world.getBukkit().dropItem(loc.toBukkit().add(.5, 0, .5), drop.toItemStack().clone());
+                }
+            }
             world.removeStructure(structure);
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "You can not break a machine that you do not own.");

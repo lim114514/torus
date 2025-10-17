@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.item;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.Structures;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -90,6 +91,14 @@ public class TorusItemManager {
             return null;
 
         return registry.get(itemId);
+    }
+
+    public TorusItem getItemByStructure(Structure structure) {
+        for (TorusItem item : getItems()) {
+            if (item.structure == structure)
+                return item;
+        }
+        return null;
     }
 
     // TODO: Implement item providers system to support other plugins
