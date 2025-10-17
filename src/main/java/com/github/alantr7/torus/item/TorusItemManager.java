@@ -35,6 +35,7 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:connector", Category.NETWORK, Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:screwdriver",  Category.TOOLS, null, Material.STICK, "Screwdriver", Collections.emptyList()));
+        registerItem(new TorusItem("torus:hammer",  Category.TOOLS, null, Material.STICK, "Hammer", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:power_bank", Category.STORAGE, Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList()));
         registerItem(new TorusItem("torus:fluid_tank", Category.STORAGE, Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
