@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.structure.data;
 
-import lombok.Getter;
+import java.util.UUID;
 
 public class Data<T> {
 
@@ -32,6 +32,7 @@ public class Data<T> {
         public static final Type<Float>     FLOAT = new Type<>(2, "float");
         public static final Type<String>    STRING = new Type<>(3, "string");
         public static final Type<byte[]>    BYTE_ARRAY = new Type<>(4, "byte_array");
+        public static final Type<UUID>      UUID = new Type<>(5, "uuid");
 
         public final int id;
 

@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class DataContainer {
 
@@ -37,6 +38,15 @@ public class DataContainer {
         return data;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T getOrDefault(String name, Data.Type<T> type, T defaultValue) {
+        Data data = entries.get(name);
+        if (data == null || data.type != type)
+            return defaultValue;
+
+        return (T) data.value;
+    }
+
     public byte[] toBytes(StringPool keys) {
         ByteArrayWriter buffer = new ByteArrayWriter();
         buffer.writeU1(entries.size());
@@ -56,6 +66,11 @@ public class DataContainer {
                 case 4 -> {
                     buffer.writeU2(((byte[]) entry.value).length);
                     buffer.writeBytes((byte[]) entry.value);
+                }
+                // UUID
+                case 5 -> {
+                    buffer.writeBytes(ByteArrayWriter.toBytes(((UUID) entry.value).getMostSignificantBits()));
+                    buffer.writeBytes(ByteArrayWriter.toBytes(((UUID) entry.value).getLeastSignificantBits()));
                 }
             }
         });
@@ -99,6 +114,11 @@ public class DataContainer {
                 case 4 -> {
                     type = Data.Type.BYTE_ARRAY;
                     value = buffer.readBytes(ByteArrayReader.toInt(buffer.readBytes(2)));
+                }
+                // UUID
+                case 5 -> {
+                    type = Data.Type.UUID;
+                    value = new UUID(ByteArrayReader.toLong(buffer.readBytes(8)), ByteArrayReader.toLong(buffer.readBytes(8)));
                 }
                 default -> {
                     type = null;

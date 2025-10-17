@@ -60,7 +60,9 @@ public class EventListener implements Listener {
         cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
 
         if (torusItem.getStructure().isPlaceableAt(location, direction)) {
-            torusItem.getStructure().place(location, direction);
+            StructureInstance structure = torusItem.getStructure().place(location, direction);
+            if (structure != null)
+                structure.setOwnerId(event.getPlayer().getUniqueId());
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to place the structure here.");
         }
@@ -91,8 +93,13 @@ public class EventListener implements Listener {
         BlockLocation loc = new BlockLocation(event.getClickedBlock().getLocation());
 
         StructureInstance structure = world.getStructure(loc);
-        if (structure != null) {
+        if (structure == null)
+            return;
+
+        if (structure.testOwnership(event.getPlayer())) {
             world.removeStructure(structure);
+        } else {
+            event.getPlayer().sendMessage(ChatColor.RED + "You can not break a machine that you do not own.");
         }
     }
 

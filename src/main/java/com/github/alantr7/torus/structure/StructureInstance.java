@@ -5,6 +5,7 @@ import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
+import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.display.EntityReference;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.ConnectorLocation;
@@ -18,7 +19,10 @@ import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.structure.display.Model;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import java.lang.reflect.Constructor;
@@ -130,6 +134,20 @@ public abstract class StructureInstance {
     public abstract void tick();
 
     protected abstract void setup();
+
+    @Nullable
+    public UUID getOwnerId() {
+        return dataContainer.getOrDefault("owner_id", Data.Type.UUID, null);
+    }
+
+    public void setOwnerId(@Nullable UUID id) {
+        dataContainer.persist("owner_id", Data.Type.UUID, id);
+    }
+
+    public boolean testOwnership(@NotNull Player player) {
+        UUID ownerId = getOwnerId();
+        return ownerId != null && player.getUniqueId().equals(ownerId);
+    }
 
     public void remove() {
         location.world.removeStructure(this);
