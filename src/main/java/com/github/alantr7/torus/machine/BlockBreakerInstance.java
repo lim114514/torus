@@ -12,7 +12,9 @@ import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
 import lombok.Getter;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class BlockBreakerInstance extends StructureInstance implements EnergyContainer {
@@ -28,6 +30,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     protected Connector itemConnector;
 
     protected StructureInventory inventory;
+
+    protected int breakingTicks;
 
     public static final int RF_COST = 25;
 
@@ -56,9 +60,22 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
             return;
         }
 
-        if (!location.getRelative(direction).getBlock().getType().isAir()) {
-            inventory.addItem(new ItemStack(location.getRelative(direction).getBlock().getType()));
-            location.getRelative(direction).getBlock().setType(Material.AIR);
+        Location blockLocation = location.getRelative(direction).toBukkit();
+        if (!blockLocation.getBlock().getType().isAir()) {
+            float blockDamage;
+            if (breakingTicks++ == 3) {
+                inventory.addItem(new ItemStack(blockLocation.getBlock().getType()));
+                location.getRelative(direction).getBlock().setType(Material.AIR);
+
+                blockDamage = 0;
+                breakingTicks = 0;
+            } else {
+                blockDamage = (float) breakingTicks / 3;
+            }
+
+            for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.x >> 4, location.z >> 4)) {
+                player.sendBlockDamage(blockLocation, blockDamage);
+            }
             consumeEnergy(RF_COST);
         }
     }
