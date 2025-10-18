@@ -55,6 +55,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
             connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
         }
 
+        int connections = connector.getConnections();
         boolean shouldUpdateModel = false;
         for (Direction direction : Direction.values()) {
             if (!connector.isConnectableFrom(direction)) {
@@ -91,8 +92,11 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
             connector.setConnected(direction, hasConnected);
         }
 
-        if (shouldUpdateModel)
+        if (shouldUpdateModel) {
             updateModel();
+        } else if (connector.getConnections() != connections) {
+            save();
+        }
     }
 
     public void updateModel() {
