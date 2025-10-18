@@ -2,6 +2,8 @@ package com.github.alantr7.torus.config;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemReference;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.recipe.RecipeIngredient;
 import com.github.alantr7.torus.recipe.WasherRecipe;
@@ -36,7 +38,7 @@ public class ConfigPackLoader {
                 handleRecipeFile(file);
             }
             else {
-                System.err.println("Config type for file not recognized: " + file.getName());
+                TorusLogger.error(Category.RECIPES, "Config type for file not recognized: " + file.getName());
             }
         }
     }
@@ -48,7 +50,7 @@ public class ConfigPackLoader {
             String rawRecipeType = section.getString("type");
 
             if (rawRecipeType == null) {
-                System.err.println("Recipe type can not be null.");
+                TorusLogger.error(Category.RECIPES, "Recipe type can not be null.");
                 continue;
             }
 
@@ -58,30 +60,29 @@ public class ConfigPackLoader {
                 case "CRUSHING" -> loadCrushingRecipe(section, recipeId);
                 case "WASHING" -> loadWasherRecipe(section, recipeId);
 
-                default -> System.err.println("Invalid recipe type: " + rawRecipeType);
+                default -> TorusLogger.error(Category.RECIPES, "Invalid recipe type: " + rawRecipeType);
             }
 
         }
-        System.out.println("Recipes loaded!");
     }
 
     private void loadCraftingRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
-            System.err.println("Recipe result can not be null.");
+            TorusLogger.error(Category.RECIPES,  "Recipe result can not be null.");
             return;
         }
 
         ItemStack result = ItemReference.parse(rawResult).getItem();
         if (result == null) {
-            System.err.println("Recipe result item not found.");
+            TorusLogger.error(Category.RECIPES,  "Recipe result item not found.");
             return;
         }
         result.setAmount(section.getInt("amount", 1));
 
         List<String> rawShape = section.getStringList("shape");
         if (rawShape.isEmpty()) {
-            System.err.println("Recipe shape can not be empty.");
+            TorusLogger.error(Category.RECIPES,  "Recipe shape can not be empty.");
             return;
         }
 
@@ -89,7 +90,7 @@ public class ConfigPackLoader {
 
         int size = rawShape.getFirst().length();
         if (size != 2 && size != 3) {
-            System.err.println("Recipe shape must be 2x2 or 3x3.");
+            TorusLogger.error(Category.RECIPES,  "Recipe shape must be 2x2 or 3x3.");
             return;
         }
 
@@ -98,7 +99,7 @@ public class ConfigPackLoader {
 
         for (String row : rawShape) {
             if (row.length() != size) {
-                System.err.println("Invalid recipe shape size.");
+                TorusLogger.error(Category.RECIPES,  "Invalid recipe shape size.");
                 return;
             }
 
@@ -109,13 +110,13 @@ public class ConfigPackLoader {
 
                 String rawReference = section.getString("ingredients." + ch);
                 if (rawReference == null) {
-                    System.err.println("Ingredient is not set for character: " + ch + ".");
+                    TorusLogger.error(Category.RECIPES,  "Ingredient is not set for character: " + ch + ".");
                     return;
                 }
 
                 ItemStack ingredient = ItemReference.parse(rawReference).getItem();
                 if (ingredient == null) {
-                    System.err.println("Ingredient item not found.");
+                    TorusLogger.error(Category.RECIPES,  "Ingredient item not found.");
                     return;
                 }
 
@@ -127,7 +128,10 @@ public class ConfigPackLoader {
         try {
             Bukkit.removeRecipe(recipe.getKey());
             Bukkit.addRecipe(recipe);
-            System.out.println("Loaded recipe: " + recipeId);
+
+            if (MainConfig.LOGS_RECIPE_LOAD) {
+                TorusLogger.info(Category.RECIPES, "Loaded crafting recipe: " + recipeId);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,27 +140,27 @@ public class ConfigPackLoader {
     private void loadSmeltingRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
-            System.err.println("Recipe result can not be null.");
+            TorusLogger.error(Category.RECIPES,  "Recipe result can not be null.");
             return;
         }
 
         ItemStack result = ItemReference.parse(rawResult).getItem();
         if (result == null) {
-            System.err.println("Recipe result item not found.");
+            TorusLogger.error(Category.RECIPES,  "Recipe result item not found.");
             return;
         }
         result.setAmount(section.getInt("amount", 1));
 
         String rawIngredient = section.getString("ingredient");
         if (rawIngredient == null) {
-            System.err.println("Ingredient can not be null.");
+            TorusLogger.error(Category.RECIPES,  "Ingredient can not be null.");
             return;
         }
 
         ItemReference ingredientReference = ItemReference.parse(rawIngredient);
         ItemStack ingredient = ingredientReference.getItem();
         if (ingredient == null) {
-            System.err.println("Ingredient item can not be found.");
+            TorusLogger.error(Category.RECIPES,  "Ingredient item can not be found.");
             return;
         }
 
@@ -165,33 +169,35 @@ public class ConfigPackLoader {
           result,
           new RecipeChoice.ExactChoice(ingredient), 0f, section.getInt("duration"))
         );
-        System.out.println("Loaded smelting recipe: " + recipeId);
+        if (MainConfig.LOGS_RECIPE_LOAD) {
+            TorusLogger.info(Category.RECIPES, "Loaded smelting recipe: " + recipeId);
+        }
     }
 
     private void loadCrushingRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
-            System.err.println("Recipe result can not be null.");
+            TorusLogger.error(Category.RECIPES, "Recipe result can not be null.");
             return;
         }
 
         ItemStack result = ItemReference.parse(rawResult).getItem();
         if (result == null) {
-            System.err.println("Recipe result item not found.");
+            TorusLogger.error(Category.RECIPES, "Recipe result item not found.");
             return;
         }
         result.setAmount(section.getInt("amount", 1));
 
         String rawIngredient = section.getString("ingredient");
         if (rawIngredient == null) {
-            System.err.println("Ingredient can not be null.");
+            TorusLogger.error(Category.RECIPES, "Ingredient can not be null.");
             return;
         }
 
         ItemReference ingredientReference = ItemReference.parse(rawIngredient);
         ItemStack ingredient = ingredientReference.getItem();
         if (ingredient == null) {
-            System.err.println("Ingredient item can not be found.");
+            TorusLogger.error(Category.RECIPES, "Ingredient item can not be found.");
             return;
         }
 
@@ -203,33 +209,35 @@ public class ConfigPackLoader {
           result,
           section.getInt("duration")
         ));
-        System.out.println("Loaded recipe: " + recipeId);
+        if (MainConfig.LOGS_RECIPE_LOAD) {
+            TorusLogger.info(Category.RECIPES, "Loaded crushing recipe: " + recipeId);
+        }
     }
 
     private void loadWasherRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
-            System.err.println("Recipe result can not be null.");
+            TorusLogger.error(Category.RECIPES, "Recipe result can not be null.");
             return;
         }
 
         ItemStack result = ItemReference.parse(rawResult).getItem();
         if (result == null) {
-            System.err.println("Recipe result item not found.");
+            TorusLogger.error(Category.RECIPES, "Recipe result item not found.");
             return;
         }
         result.setAmount(section.getInt("amount", 1));
 
         String rawIngredient = section.getString("ingredient");
         if (rawIngredient == null) {
-            System.err.println("Ingredient can not be null.");
+            TorusLogger.error(Category.RECIPES, "Ingredient can not be null.");
             return;
         }
 
         ItemReference ingredientReference = ItemReference.parse(rawIngredient);
         ItemStack ingredient = ingredientReference.getItem();
         if (ingredient == null) {
-            System.err.println("Ingredient item can not be found.");
+            TorusLogger.error(Category.RECIPES, "Ingredient item can not be found.");
             return;
         }
 
@@ -241,7 +249,9 @@ public class ConfigPackLoader {
           result,
           section.getInt("duration")
         ));
-        System.out.println("Loaded recipe: " + recipeId);
+        if (MainConfig.LOGS_RECIPE_LOAD) {
+            TorusLogger.info(Category.RECIPES, "Loaded washing recipe: " + recipeId);
+        }
     }
 
 }

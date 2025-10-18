@@ -1,5 +1,8 @@
 package com.github.alantr7.torus.world;
 
+import com.github.alantr7.torus.config.MainConfig;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
 import com.github.alantr7.torus.math.Direction;
@@ -272,6 +275,7 @@ public class TorusWorld {
     }
 
     public void save() {
+        long start = System.currentTimeMillis();
         regions.forEach((loc, region) -> {
             try {
                 region.save();
@@ -279,6 +283,9 @@ public class TorusWorld {
                 e.printStackTrace();
             }
         });
+        if (MainConfig.LOGS_WORLD_SAVE) {
+            TorusLogger.info(Category.WORLD, "Saved " + bukkit.getName() + " in " + (System.currentTimeMillis() - start) + "ms.");
+        }
     }
 
 }
