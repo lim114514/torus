@@ -23,3 +23,7 @@ It is highly recommended to use the resource pack (for items) which can be downl
 - Rain Collector
 - Biofuel Generator <br>
   ...and more! Suggestions are welcome on my [Discord server](https://discord.gg/Zn4DDmUnPg).
+
+## Preview
+### Quarry
+![quarry](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaG5na3AwdHQ5dXdkMjB0ZXYzN29ieHYxYTByNWdmanJ5anRkOHBqayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/q5W305y42KBzNlwpI6/giphy.gif)
