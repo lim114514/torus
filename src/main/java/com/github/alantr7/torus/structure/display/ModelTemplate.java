@@ -16,18 +16,18 @@ import java.util.List;
 
 public class ModelTemplate {
 
-    private final List<ItemDisplayModelTemplate> parts = new ArrayList<>();
+    private final List<ModelPartItemDisplayRenderer> parts = new ArrayList<>();
 
     public static final ModelTemplate EMPTY = new ModelTemplate();
 
-    public void add(ItemDisplayModelTemplate part) {
+    public void add(ModelPartItemDisplayRenderer part) {
         parts.add(part);
     }
 
     public Model build(Location location, Direction direction) {
         List<ItemDisplay> entities = new ArrayList<>();
-        for (ItemDisplayModelTemplate part : parts) {
-            Vector3f rotatedOffset = new Vector3f(part.offset().x, part.offset().y, part.offset().z);
+        for (ModelPartItemDisplayRenderer part : parts) {
+            Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
             MathUtils.applyRotation(rotatedOffset, direction.rotH);
 
             Location partLocation = new Location(
@@ -50,8 +50,8 @@ public class ModelTemplate {
 
         int entityIdx = 0;
         for (; entityIdx < parts.size(); entityIdx++) {
-            ItemDisplayModelTemplate part = parts.get(entityIdx);
-            Vector3f rotatedOffset = new Vector3f(part.offset().x, part.offset().y, part.offset().z);
+            ModelPartItemDisplayRenderer part = parts.get(entityIdx);
+            Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
             MathUtils.applyRotation(rotatedOffset, direction.rotH);
 
             Location partLocation = new Location(
@@ -77,14 +77,14 @@ public class ModelTemplate {
         return new Model(entities.stream().map(EntityReference::new).toList());
     }
 
-    private void transformEntity(ItemDisplay entity, ItemDisplayModelTemplate part, Direction direction) {
-        entity.setItemStack(new ItemStack(part.material()));
+    private void transformEntity(ItemDisplay entity, ModelPartItemDisplayRenderer part, Direction direction) {
+        entity.setItemStack(new ItemStack(part.material));
         entity.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "purpose"), PersistentDataType.STRING, "structure_model");
 
         Transformation transformation = entity.getTransformation();
-        transformation.getScale().set(part.scale());
+        transformation.getScale().set(part.scale);
         entity.setTransformation(transformation);
-        entity.setRotation(direction.rotH + part.rotH(), direction.rotV + part.rotV());
+        entity.setRotation(direction.rotH + part.rotH, direction.rotV + part.rotV);
     }
 
 }

@@ -9,12 +9,11 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.structure.display.ItemDisplayModelTemplate;
+import com.github.alantr7.torus.structure.display.ModelPartItemDisplayRenderer;
 import com.github.alantr7.torus.structure.display.Model;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.bukkit.Material;
-import org.bukkit.entity.ItemDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -22,42 +21,42 @@ public class CoalGenerator extends Structure {
 
     static ModelTemplate MODEL = new ModelTemplate();
     static {
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .0625f, 1f), new Vector3f(1.75f, .125f, 2.6875f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, 1.1875f, 2.125f - .5f), new Vector3f(.625f, .125f, .625f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .9375f, .9375f - .5f), new Vector3f(.375f, .1875f, 1.1875f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, 1f), new Vector3f(.25f, .25f, 2.75f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, .375f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, .75f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, 1.125f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .5f, 1.5f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.BLAST_FURNACE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .625f, 2.125f - .5f), new Vector3f(1f, 1f, 1f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, .4375f, .9375f - .5f), new Vector3f(.625f, .8125f, 1.375f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.LIGHTNING_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, 1.0625f, .0625f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.LIGHTNING_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, 1.0625f, .4375f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.LIGHTNING_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0, 1.0625f, .8125f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, .0625f, 1f), new Vector3f(1.75f, .125f, 2.6875f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, 1.1875f, 2.125f - .5f), new Vector3f(.625f, .125f, .625f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, .9375f, .9375f - .5f), new Vector3f(.375f, .1875f, 1.1875f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, .5f, 1f), new Vector3f(.25f, .25f, 2.75f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, .5f, .375f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, .5f, .75f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, .5f, 1.125f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, .5f, 1.5f - .5f), new Vector3f(.6875f, .8125f, .125f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.BLAST_FURNACE, new Vector3f(0, .625f, 2.125f - .5f), new Vector3f(1f, 1f, 1f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0, .4375f, .9375f - .5f), new Vector3f(.625f, .8125f, 1.375f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.LIGHTNING_ROD, new Vector3f(0, 1.0625f, .0625f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.LIGHTNING_ROD, new Vector3f(0, 1.0625f, .4375f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.LIGHTNING_ROD, new Vector3f(0, 1.0625f, .8125f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
 
-        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(-.125f - .5f, .375f, .0625f), new Vector3f(1f, .5f, 1f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(.125f - .5f, .625f, .0625f), new Vector3f(1f, .5f, 1f), 90f, 90f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.END_ROD, new Vector3f(-.125f - .5f, .375f, .0625f), new Vector3f(1f, .5f, 1f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .0625f), new Vector3f(1f, .5f, 1f), 90f, 90f));
 
-        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(-.125f - .5f, .375f, .4375f), new Vector3f(1f, .5f, 1f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(.125f - .5f, .625f, .4375f), new Vector3f(1f, .5f, 1f), 90f, 90f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.END_ROD, new Vector3f(-.125f - .5f, .375f, .4375f), new Vector3f(1f, .5f, 1f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .4375f), new Vector3f(1f, .5f, 1f), 90f, 90f));
 
-        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(-.125f - .5f, .375f, .8125f), new Vector3f(1f, .5f, 1f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.END_ROD, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(.125f - .5f, .625f, .8125f), new Vector3f(1f, .5f, 1f), 90f, 90f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.END_ROD, new Vector3f(-.125f - .5f, .375f, .8125f), new Vector3f(1f, .5f, 1f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .8125f), new Vector3f(1f, .5f, 1f), 90f, 90f));
 
         // Chimney
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(1.125f - .5f, .875f, .8125f - .5f), new Vector3f(.3125f, 1.5f, .3125f), 0f, 0f));
-        MODEL.add(new ItemDisplayModelTemplate(Material.CYAN_TERRACOTTA, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(1.125f - .5f, 2.25f, .8125f - .5f), new Vector3f(.25f, 1.25f, .25f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(1.125f - .5f, .875f, .8125f - .5f), new Vector3f(.3125f, 1.5f, .3125f), 0f, 0f));
+        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(1.125f - .5f, 2.25f, .8125f - .5f), new Vector3f(.25f, 1.25f, .25f), 0f, 0f));
     }
 
     static ModelTemplate MODEL_INPUT_CONNECTOR = new ModelTemplate();
     static {
-        MODEL_INPUT_CONNECTOR.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, .5f, .0625f - .5f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
+        MODEL_INPUT_CONNECTOR.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, .5f, .0625f - .5f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
     }
 
     static ModelTemplate MODEL_OUTPUT_CONNECTOR = new ModelTemplate();
     static {
-        MODEL_OUTPUT_CONNECTOR.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, .5f, 2.4375f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
+        MODEL_OUTPUT_CONNECTOR.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, .5f, 2.4375f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
     }
 
     public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();

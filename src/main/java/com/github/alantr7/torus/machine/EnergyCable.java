@@ -8,46 +8,45 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.structure.display.ItemDisplayModelTemplate;
+import com.github.alantr7.torus.structure.display.ModelPartItemDisplayRenderer;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import org.bukkit.Material;
-import org.bukkit.entity.ItemDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class EnergyCable extends Structure {
 
-    static ItemDisplayModelTemplate[] MODELS_ENERGY = {
-      new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.GRAY_WOOL, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
+    static ModelPartItemDisplayRenderer[] MODELS_ENERGY = {
+      new ModelPartItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
     };
 
-    static ItemDisplayModelTemplate[] MODELS_ITEM = {
-      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_GRAY_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
+    static ModelPartItemDisplayRenderer[] MODELS_ITEM = {
+      new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
     };
 
-    static ItemDisplayModelTemplate[] MODELS_FLUID = {
-      new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
-      new ItemDisplayModelTemplate(Material.LIGHT_BLUE_TERRACOTTA, ItemDisplay.ItemDisplayTransform.GROUND, 0, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
+    static ModelPartItemDisplayRenderer[] MODELS_FLUID = {
+      new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0, .5f, -0.25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0, .5f, .25f), new Vector3f(0.2f, 0.2f, .5f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(-.25f, .5f, 0f), new Vector3f(.5f, 0.2f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, .75f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, .25f, 0f), new Vector3f(.2f, 0.5f, 0.2f), 0f, 0f),
+      new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0, .5f, 0), new Vector3f(.25f, .25f, .25f), 0f, 0f),
     };
 
-    static ItemDisplayModelTemplate[][] CABLE_MODELS = {
+    static ModelPartItemDisplayRenderer[][] CABLE_MODELS = {
       MODELS_ITEM, MODELS_ENERGY, MODELS_FLUID
     };
 

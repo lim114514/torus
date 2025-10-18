@@ -8,11 +8,10 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.structure.display.ItemDisplayModelTemplate;
+import com.github.alantr7.torus.structure.display.ModelPartItemDisplayRenderer;
 import com.github.alantr7.torus.structure.display.Model;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import org.bukkit.Material;
-import org.bukkit.entity.ItemDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -20,13 +19,13 @@ public class BlockBreaker extends Structure {
 
     static ModelTemplate BASE_MODEL = new ModelTemplate();
     static {
-        BASE_MODEL.add(new ItemDisplayModelTemplate(Material.STICKY_PISTON, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.0f), new Vector3f(1f, 0.75f, 1f), 180f, 90f));
-        BASE_MODEL.add(new ItemDisplayModelTemplate(Material.DISPENSER, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, -0.5f + 0.0625f), new Vector3f(0.75f, 0.75f, 0.125f), 180f, 0f));
+        BASE_MODEL.add(new ModelPartItemDisplayRenderer(Material.STICKY_PISTON, new Vector3f(0f, 0.5f, 0.0f), new Vector3f(1f, 0.75f, 1f), 180f, 90f));
+        BASE_MODEL.add(new ModelPartItemDisplayRenderer(Material.DISPENSER, new Vector3f(0f, 0.5f, -0.5f + 0.0625f), new Vector3f(0.75f, 0.75f, 0.125f), 180f, 0f));
     }
 
     static ModelTemplate CONNECTOR_MODEL = new ModelTemplate();
     static {
-        CONNECTOR_MODEL.add(new ItemDisplayModelTemplate(Material.GRAY_CONCRETE, ItemDisplay.ItemDisplayTransform.NONE, 0, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
+        CONNECTOR_MODEL.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
     }
 
     public BlockBreaker() {
@@ -43,7 +42,7 @@ public class BlockBreaker extends Structure {
 
         StructureConnectorDef powerConnector = new StructureConnectorDef("power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask());
 
-        StructureComponentDef itemComponent = new StructureComponentDef("item_connector", new Vector3f(0, 0, 0), null);
+        StructureComponentDef itemComponent = new StructureComponentDef("item_connector", new Vector3f(0, 0, 0), (Model) null);
         StructureConnectorDef itemConnector = new StructureConnectorDef("item_connector", Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.DOWN.mask());
 
         StructureBodyDef body = new StructureBodyDef(

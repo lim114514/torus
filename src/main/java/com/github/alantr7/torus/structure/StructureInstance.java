@@ -68,14 +68,14 @@ public abstract class StructureInstance {
         this.dataContainer.structure = this;
 
         for (StructureComponentDef componentDef : bodyDef.components()) {
-            MathUtils.applyRotation(componentDef.offset(), direction.rotH);
+            MathUtils.applyRotation(componentDef.offset, direction.rotH);
             StructureComponent component = new StructureComponent(
               this,
-              new BlockLocation(location.world, (int) componentDef.offset().x, (int) componentDef.offset().y, (int) componentDef.offset().z),
-              componentDef.name(),
-              componentDef.model()
+              new BlockLocation(location.world, (int) componentDef.offset.x, (int) componentDef.offset.y, (int) componentDef.offset.z),
+              componentDef.name,
+              componentDef.template == null ? componentDef.model : componentDef.template.build(location.toBukkit().add(.5, 0, .5), direction)
             );
-            components.put(componentDef.name(), component);
+            components.put(componentDef.name, component);
         }
 
         for (StructureConnectorDef connectorDef : bodyDef.connectors()) {
