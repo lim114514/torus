@@ -65,6 +65,7 @@ public abstract class StructureInstance {
         this.location = location;
         this.direction = direction;
         this.dataContainer = new DataContainer();
+        this.dataContainer.structure = this;
 
         for (StructureComponentDef componentDef : bodyDef.components()) {
             MathUtils.applyRotation(componentDef.offset(), direction.rotH);
@@ -306,6 +307,7 @@ public abstract class StructureInstance {
             constructor.setAccessible(true);
 
             StructureInstance instance = constructor.newInstance(new LoadContext(structure, location, Direction.values()[direction], dataContainer));
+            dataContainer.structure = instance;
             instance.components.putAll(components);
             instance.connectors.putAll(connectors);
             connectors.forEach((l, c) -> instance.connectorsByName.put(c.getComponent().name, c));

@@ -23,6 +23,7 @@ public class Data<T> {
     public void update(T value) {
         this.value = value;
         container.isDirty = true;
+        container.structure.location.getChunk().isDirty = true;
     }
 
     public static class Type<T> {

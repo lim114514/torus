@@ -151,11 +151,6 @@ public class TorusWorld {
                     e.printStackTrace();
                 }
             }));
-            try {
-                region.save();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         });
         ticks++;
     }

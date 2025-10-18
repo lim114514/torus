@@ -87,6 +87,12 @@ public class TorusWorldManager implements Listener {
         }
     }
 
+    @InvokePeriodically(interval = 20 * 60)
+    @Invoke(Invoke.Schedule.AFTER_PLUGIN_DISABLE)
+    private void autoSaveStructures() {
+        worlds.values().forEach(TorusWorld::save);
+    }
+
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(this, TorusPlugin.getInstance());
