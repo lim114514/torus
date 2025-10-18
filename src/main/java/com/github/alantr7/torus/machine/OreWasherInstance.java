@@ -73,7 +73,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
         }
 
         if (recipe != null && processedTicks >= recipe.washTicks) {
-            itemOutBuffer.addItem(recipe.result.clone());
+            itemOutBuffer.addItem(recipe.result.asResult());
             recipe = null;
             processedTicks = 0;
         }

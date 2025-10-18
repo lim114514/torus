@@ -5,7 +5,7 @@ import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
-import com.github.alantr7.torus.recipe.RecipeIngredient;
+import com.github.alantr7.torus.recipe.RecipeResult;
 import com.github.alantr7.torus.recipe.WasherRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -181,12 +181,11 @@ public class ConfigPackLoader {
             return;
         }
 
-        ItemStack result = ItemReference.parse(rawResult).getItem();
-        if (result == null) {
+        ItemStack resultItem = ItemReference.parse(rawResult).getItem();
+        if (resultItem == null) {
             TorusLogger.error(Category.RECIPES, "Recipe result item not found.");
             return;
         }
-        result.setAmount(section.getInt("amount", 1));
 
         String rawIngredient = section.getString("ingredient");
         if (rawIngredient == null) {
@@ -201,12 +200,23 @@ public class ConfigPackLoader {
             return;
         }
 
+        short rangeMin, rangeMax;
+        if (section.isSet("amount")) {
+            if (section.isInt("amount")) {
+                rangeMin = rangeMax = (short) section.getInt("amount");
+            } else {
+                rangeMin = (short) section.getInt("amount.min", 1);
+                rangeMax = (short) section.getInt("amount.max", 1);
+            }
+        } else {
+            rangeMin = 1;
+            rangeMax = 1;
+        }
+
         TorusPlugin.getInstance().getRecipeManager().registerCrusherRecipe(new CrusherRecipe(
           recipeId,
-          ingredientReference.providerId.equals("minecraft")
-            ? new RecipeIngredient(ingredientReference.getItem().getType())
-            : new RecipeIngredient(ingredientReference.providerId + ":" + ingredientReference.itemId),
-          result,
+          ingredientReference,
+          new RecipeResult(resultItem, rangeMin, rangeMax),
           section.getInt("duration")
         ));
         if (MainConfig.LOGS_RECIPE_LOAD) {
@@ -221,12 +231,24 @@ public class ConfigPackLoader {
             return;
         }
 
-        ItemStack result = ItemReference.parse(rawResult).getItem();
-        if (result == null) {
+        ItemStack resultItem = ItemReference.parse(rawResult).getItem();
+        if (resultItem == null) {
             TorusLogger.error(Category.RECIPES, "Recipe result item not found.");
             return;
         }
-        result.setAmount(section.getInt("amount", 1));
+
+        short rangeMin, rangeMax;
+        if (section.isSet("amount")) {
+            if (section.isInt("amount")) {
+                rangeMin = rangeMax = (short) section.getInt("amount");
+            } else {
+                rangeMin = (short) section.getInt("amount.min", 1);
+                rangeMax = (short) section.getInt("amount.max", 1);
+            }
+        } else {
+            rangeMin = 1;
+            rangeMax = 1;
+        }
 
         String rawIngredient = section.getString("ingredient");
         if (rawIngredient == null) {
@@ -243,10 +265,8 @@ public class ConfigPackLoader {
 
         TorusPlugin.getInstance().getRecipeManager().registerWasherRecipe(new WasherRecipe(
           recipeId,
-          ingredientReference.providerId.equals("minecraft")
-            ? new RecipeIngredient(ingredientReference.getItem().getType())
-            : new RecipeIngredient(ingredientReference.providerId + ":" + ingredientReference.itemId),
-          result,
+          ingredientReference,
+          new RecipeResult(resultItem, rangeMin, rangeMax),
           section.getInt("duration")
         ));
         if (MainConfig.LOGS_RECIPE_LOAD) {

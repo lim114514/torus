@@ -11,6 +11,7 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -58,7 +59,8 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
             }
         } else {
             if (processedTicks >= recipe.crushTicks) {
-                itemOutBuffer.addItem(recipe.result.clone());
+                ItemStack result = recipe.result.asResult();
+                itemOutBuffer.addItem(result);
                 recipe = null;
                 processedTicks = 0;
             } else {

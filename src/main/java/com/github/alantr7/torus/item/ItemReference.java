@@ -34,6 +34,18 @@ public class ItemReference {
         return Objects.hash(providerId, itemId);
     }
 
+    public String getNamespacedId() {
+        return providerId + ":" + itemId;
+    }
+
+    public boolean isVanillaItem() {
+        return providerId.equals("minecraft");
+    }
+
+    public boolean isCustomItem() {
+        return !providerId.equals("minecraft");
+    }
+
     public static ItemReference parse(String item) {
         int pos = item.indexOf(":");
         return pos == -1 ? new ItemReference("minecraft", item) : new ItemReference(item.substring(0, pos), item.substring(pos + 1));

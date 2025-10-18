@@ -32,17 +32,11 @@ public class TorusRecipeManager {
     }
 
     public CrusherRecipe getCrusherRecipeByIngredient(ItemStack ingredient) {
-        TorusItem torusIngredient = TorusItem.getByItemStack(ingredient);
+        ItemReference ingredientReference = ItemReference.create(ingredient);
         for (Map.Entry<String, CrusherRecipe> recipe : crusherRecipes.entrySet()) {
-            RecipeIngredient recipeIngredient = recipe.getValue().ingredient;
-            if (recipeIngredient.isVanillaItem()) {
-                if (recipeIngredient.material == ingredient.getType())
-                    return recipe.getValue();
-            }
-
-            else if (torusIngredient != null && torusIngredient.namespacedId.equals(recipe.getValue().ingredient.namespacedId)) {
+            ItemReference recipeIngredient = recipe.getValue().ingredient;
+            if (recipeIngredient.equals(ingredientReference))
                 return recipe.getValue();
-            }
         }
 
         return null;
@@ -51,9 +45,9 @@ public class TorusRecipeManager {
     public void registerCrusherRecipe(CrusherRecipe recipe) {
         crusherRecipes.put(recipe.id, recipe);
         if (recipe.ingredient.isVanillaItem()) {
-            OreCrusher.INPUT_CRITERIA.materials.add(recipe.ingredient.material);
+            OreCrusher.INPUT_CRITERIA.materials.add(recipe.ingredient.getItem().getType());
         } else {
-            OreCrusher.INPUT_CRITERIA.ids.add(recipe.ingredient.namespacedId);
+            OreCrusher.INPUT_CRITERIA.ids.add(recipe.ingredient.getNamespacedId());
         }
     }
 
@@ -62,17 +56,10 @@ public class TorusRecipeManager {
     }
 
     public WasherRecipe getWasherRecipeByIngredient(ItemStack ingredient) {
-        TorusItem torusIngredient = TorusItem.getByItemStack(ingredient);
+        ItemReference ingredientReference = ItemReference.create(ingredient);
         for (Map.Entry<String, WasherRecipe> recipe : washerRecipes.entrySet()) {
-            RecipeIngredient recipeIngredient = recipe.getValue().ingredient;
-            if (recipeIngredient.isVanillaItem()) {
-                if (recipeIngredient.material == ingredient.getType())
-                    return recipe.getValue();
-            }
-
-            else if (torusIngredient != null && torusIngredient.namespacedId.equals(recipe.getValue().ingredient.namespacedId)) {
+            if (recipe.getValue().ingredient.equals(ingredientReference))
                 return recipe.getValue();
-            }
         }
 
         return null;
@@ -81,9 +68,9 @@ public class TorusRecipeManager {
     public void registerWasherRecipe(WasherRecipe recipe) {
         washerRecipes.put(recipe.id, recipe);
         if (recipe.ingredient.isVanillaItem()) {
-            OreWasher.INPUT_CRITERIA.materials.add(recipe.ingredient.material);
+            OreWasher.INPUT_CRITERIA.materials.add(recipe.ingredient.getItem().getType());
         } else {
-            OreWasher.INPUT_CRITERIA.ids.add(recipe.ingredient.namespacedId);
+            OreWasher.INPUT_CRITERIA.ids.add(recipe.ingredient.getNamespacedId());
         }
     }
 

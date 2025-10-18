@@ -1,16 +1,17 @@
 package com.github.alantr7.torus.recipe;
 
+import com.github.alantr7.torus.item.ItemReference;
 import org.bukkit.inventory.ItemStack;
 
 public class WasherRecipe extends TorusRecipe {
 
-    public final RecipeIngredient ingredient;
+    public final ItemReference ingredient;
 
-    public final ItemStack result;
+    public final RecipeResult result;
 
     public final int washTicks;
 
-    public WasherRecipe(String id, RecipeIngredient ingredient, ItemStack result, int washTicks) {
+    public WasherRecipe(String id, ItemReference ingredient, RecipeResult result, int washTicks) {
         super(id);
         this.ingredient = ingredient;
         this.result = result;
