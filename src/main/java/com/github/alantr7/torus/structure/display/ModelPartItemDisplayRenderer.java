@@ -2,11 +2,12 @@ package com.github.alantr7.torus.structure.display;
 
 import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.inventory.ItemStack;
 import org.joml.Vector3f;
 
 public final class ModelPartItemDisplayRenderer {
 
-    public final Material material;
+    public final ItemStack itemStack;
     public ItemDisplay.ItemDisplayTransform transform;
     public final float[] offset;
     public final float[] scale;
@@ -14,7 +15,7 @@ public final class ModelPartItemDisplayRenderer {
     public final float rotV;
 
     public ModelPartItemDisplayRenderer(Material material, Vector3f offset, Vector3f scale, float rotH, float rotV) {
-        this.material = material;
+        this.itemStack = new ItemStack(material);
         this.transform = ItemDisplay.ItemDisplayTransform.NONE;
         this.offset = new float[] { offset.x, offset.y, offset.z };
         this.scale = new float[] { scale.x, scale.y, scale.z };
@@ -23,7 +24,11 @@ public final class ModelPartItemDisplayRenderer {
     }
 
     public ModelPartItemDisplayRenderer(Material material, float[] data) {
-        this.material = material;
+        this(new ItemStack(material), data);
+    }
+
+    public ModelPartItemDisplayRenderer(ItemStack stack, float[] data) {
+        this.itemStack = stack;
         this.transform = ItemDisplay.ItemDisplayTransform.NONE;
         this.offset = new float[] { data[0], data[1], data[2] };
         this.scale = new float[] { data[3], data[4], data[5] };

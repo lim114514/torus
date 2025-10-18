@@ -78,7 +78,7 @@ public class ModelTemplate {
     }
 
     private void transformEntity(ItemDisplay entity, ModelPartItemDisplayRenderer part, Direction direction) {
-        entity.setItemStack(new ItemStack(part.material));
+        entity.setItemStack(part.itemStack.clone());
         entity.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "purpose"), PersistentDataType.STRING, "structure_model");
 
         Transformation transformation = entity.getTransformation();

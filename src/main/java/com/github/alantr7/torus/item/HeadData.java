@@ -15,7 +15,11 @@ public class HeadData {
     public final ItemStack stack;
 
     public HeadData(String textureUrl) {
-        stack = new ItemStack(Material.PLAYER_HEAD);
+        stack = create(textureUrl);
+    }
+
+    public static ItemStack create(String textureUrl) {
+        ItemStack stack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) stack.getItemMeta();
 
         PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID());
@@ -30,6 +34,8 @@ public class HeadData {
 
         meta.setOwnerProfile(profile);
         stack.setItemMeta(meta);
+
+        return stack;
     }
 
 }
