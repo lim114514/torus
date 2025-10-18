@@ -2,30 +2,47 @@ package com.github.alantr7.torus.recipe;
 
 import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
-import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.machine.OreCrusher;
 import com.github.alantr7.torus.machine.OreWasher;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.FurnaceRecipe;
+import org.bukkit.Keyed;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.Recipe;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Singleton
 public class TorusRecipeManager {
+
+    private final List<Keyed> recipesRegisteredToBukkit = new ArrayList<>();
 
     private final Map<String, CrusherRecipe> crusherRecipes = new HashMap<>();
 
     private final Map<String, WasherRecipe> washerRecipes = new HashMap<>();
 
     private final Map<String, BlastFurnaceRecipe> blastFurnaceRecipes = new HashMap<>();
+
+    public void reset() {
+        for (Keyed recipe : recipesRegisteredToBukkit) {
+            Bukkit.removeRecipe(recipe.getKey());
+        }
+        recipesRegisteredToBukkit.clear();
+        crusherRecipes.clear();
+        washerRecipes.clear();
+        blastFurnaceRecipes.clear();
+
+        OreCrusher.INPUT_CRITERIA = new ItemCriteria();
+        OreWasher.INPUT_CRITERIA = new ItemCriteria();
+    }
+
+    public <R extends Recipe & Keyed> void registerBukkitRecipe(R recipe) {
+        Bukkit.removeRecipe(recipe.getKey());
+        Bukkit.addRecipe(recipe);
+        recipesRegisteredToBukkit.add(recipe);
+    }
 
     public CrusherRecipe getCrusherRecipeById(String id) {
         return crusherRecipes.get(id);
@@ -72,14 +89,6 @@ public class TorusRecipeManager {
         } else {
             OreWasher.INPUT_CRITERIA.ids.add(recipe.ingredient.getNamespacedId());
         }
-    }
-
-    public void registerSmeltingRecipe(FurnaceRecipe recipe) {
-        if (Bukkit.getRecipe(recipe.getKey()) != null) {
-            Bukkit.removeRecipe(recipe.getKey());
-        }
-
-        Bukkit.addRecipe(recipe);
     }
 
     public void registerBlastFurnaceRecipe(BlastFurnaceRecipe recipe) {

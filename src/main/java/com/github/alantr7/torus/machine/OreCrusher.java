@@ -76,7 +76,7 @@ public class OreCrusher extends Structure {
         MODEL_WHEEL_RIGHT.add(new ModelPartItemDisplayRenderer(Material.STRUCTURE_VOID, new Vector3f(-1.3125f - .5f, 1.5f, -.375f - .5f), new Vector3f(.75f, .75f, 2.4375f), 0f, 0f));
     }
 
-    public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();
+    public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
     public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
 

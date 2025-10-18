@@ -7,7 +7,6 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.recipe.RecipeResult;
 import com.github.alantr7.torus.recipe.WasherRecipe;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,6 +28,8 @@ public class ConfigPackLoader {
     }
 
     public void load() {
+        TorusPlugin.getInstance().getRecipeManager().reset();
+
         File[] files = packDirectory.listFiles();
         if (files == null)
             return;
@@ -125,15 +126,9 @@ public class ConfigPackLoader {
             }
         }
 
-        try {
-            Bukkit.removeRecipe(recipe.getKey());
-            Bukkit.addRecipe(recipe);
-
-            if (MainConfig.LOGS_RECIPE_LOAD) {
-                TorusLogger.info(Category.RECIPES, "Loaded crafting recipe: " + recipeId);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        TorusPlugin.getInstance().getRecipeManager().registerBukkitRecipe(recipe);
+        if (MainConfig.LOGS_RECIPE_LOAD) {
+            TorusLogger.info(Category.RECIPES, "Loaded crafting recipe: " + recipeId);
         }
     }
 
@@ -164,7 +159,7 @@ public class ConfigPackLoader {
             return;
         }
 
-        TorusPlugin.getInstance().getRecipeManager().registerSmeltingRecipe(new FurnaceRecipe(
+        TorusPlugin.getInstance().getRecipeManager().registerBukkitRecipe(new FurnaceRecipe(
           new NamespacedKey(TorusPlugin.getInstance(), recipeId),
           result,
           new RecipeChoice.ExactChoice(ingredient), 0f, section.getInt("duration"))

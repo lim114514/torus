@@ -69,6 +69,13 @@ public class Commands {
           new ItemBrowserMainGUI((Player) ctx.getExecutor()).open();
       });
 
+    @CommandHandler Command reload = CommandBuilder.using("torus")
+      .parameter("reload")
+      .executes(ctx -> {
+          TorusPlugin.getInstance().getConfigManager().initialize();
+          ctx.respond("Reloaded configs.");
+      });
+
     @CommandHandler Command inspectStructure = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("inspect_structure")

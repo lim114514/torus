@@ -65,7 +65,7 @@ public class OreWasher extends Structure {
 
     public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
 
-    public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();
+    public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
     public OreWasher() {
         super("torus:ore_washer", OreWasherInstance.class);
