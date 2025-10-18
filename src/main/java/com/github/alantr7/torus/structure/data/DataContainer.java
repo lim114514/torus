@@ -5,7 +5,6 @@ import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.math.StringPool;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +51,8 @@ public class DataContainer {
         buffer.writeU1(entries.size());
 
         entries.forEach((key, entry) -> {
-            buffer.writeU1((entry.type.id << 4) | keys.pool(key));
+            buffer.writeU1(keys.pool(key));
+            buffer.writeU1(entry.type.id);
             switch (entry.type.id) {
                 // BYTE
                 case 0 -> buffer.writeBytes(new byte[] { (byte) entry.value });
@@ -83,9 +83,8 @@ public class DataContainer {
         DataContainer container = new DataContainer();
 
         for (int i = 0; i < entriesCount; i++) {
-            int packed = buffer.readU1();
-            int typeId = (packed >> 4) & 0xf;
-            String key = keys.at(packed & 0xf);
+            String key = keys.at(buffer.readU1());
+            int typeId = buffer.readU1();
             Data.Type type;
             Object value;
 

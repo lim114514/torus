@@ -27,7 +27,7 @@ public class Data<T> {
 
     public static class Type<T> {
 
-        public static final Type<Byte>      BYTE = new Type<>(1, "byte");
+        public static final Type<Byte>      BYTE = new Type<>(0, "byte");
         public static final Type<Integer>   INT = new Type<>(1, "int");
         public static final Type<Float>     FLOAT = new Type<>(2, "float");
         public static final Type<String>    STRING = new Type<>(3, "string");
