@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.item.HeadData;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -23,9 +24,8 @@ public class Quarry extends Structure {
     static ModelTemplate MODEL_BASE = new ModelTemplate();
     static {
         // Controller
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0f, .4375f, -6f), new Vector3f(.8125f, .875f, .875f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.LIME_CONCRETE, new Vector3f(.4375f - .5f, .6875f, -6.4375f), new Vector3f(.125f, .125f, .0625f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.RED_CONCRETE, new Vector3f(-.25f, .6875f, -6.4375f), new Vector3f(.125f, .125f, .0625f), 0f, 0f));
+        MODEL_BASE.add(new ModelPartItemDisplayRenderer(HeadData.create("http://textures.minecraft.net/texture/9318a300fda1733caf16ce78bc6dc82e7f0e1bec7e9e3cb24179e28580d3a2f8"), new float[] { 0f, .875f, -6f, 1.5f, 1.5f, 1.5f }));
+        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new float[] { 0f, .0625f, -6f, 1f, .125f, 1f }));
 
         // Cables to/from controller
         MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(-1.9375f - .5f, .6875f, -5.25f), new Vector3f(4.75f, .125f, .125f), 0f, 0f));
