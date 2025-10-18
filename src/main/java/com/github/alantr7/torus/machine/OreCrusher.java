@@ -82,6 +82,7 @@ public class OreCrusher extends Structure {
 
     public OreCrusher() {
         super("torus:ore_crusher", OreCrusherInstance.class);
+        offset = new byte[]{ 0, 0, -1 };
     }
 
     @Override
@@ -97,6 +98,7 @@ public class OreCrusher extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
+        direction = direction.getLeft();
         StructureComponentDef body = new StructureComponentDef("body", new Vector3f(), MODEL_BASE.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
         StructureComponentDef energyIn = new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), MODEL_ENERGY.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
         StructureComponentDef itemsIn = new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), MODEL_ITEMS_IN.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
