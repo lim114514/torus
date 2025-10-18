@@ -24,6 +24,7 @@ public class PhysicalConnector extends Structure {
 
     public PhysicalConnector() {
         super("torus:connector", PhysicalConnectorInstance.class);
+        requiresHammerToBreak = false;
     }
 
     @Override
