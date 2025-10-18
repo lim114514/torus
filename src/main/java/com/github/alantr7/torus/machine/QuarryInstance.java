@@ -38,6 +38,10 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     protected int breakingTicks;
 
+    protected Data<Byte> horizontalPosition = dataContainer.persist("pos_h", Data.Type.BYTE, (byte) 0);
+
+    protected Data<Byte> level = dataContainer.persist("pos_v", Data.Type.BYTE, (byte) 0);
+
     QuarryInstance(LoadContext context) {
         super(context);
     }
@@ -51,10 +55,6 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         getComponent("mover_x").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
         getComponent("mover_z").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
     }
-
-    byte horizontalPosition = 0;
-
-    byte level = 0;
 
     @Override
     public void tick() {
@@ -92,28 +92,28 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     }
 
     public void advance() {
-        byte z = (byte) (horizontalPosition / 9);
-        byte x = z % 2 == 0 ? (byte) (horizontalPosition % 9) : (byte) (8 - horizontalPosition % 9);
-        if (!setDrillRelativePosition(new byte[]{ x, (byte) (-level), (byte) (horizontalPosition / 9) })) {
+        byte z = (byte) (horizontalPosition.get() / 9);
+        byte x = z % 2 == 0 ? (byte) (horizontalPosition.get() % 9) : (byte) (8 - horizontalPosition.get() % 9);
+        if (!setDrillRelativePosition(new byte[]{ x, (byte) (-level.get()), (byte) (horizontalPosition.get() / 9) })) {
             return;
         }
 
         consumeEnergy(50);
 
-        byte dir = level % 2 == 0 ? 1 : (byte) (-1);
-        horizontalPosition += dir;
+        byte dir = level.get() % 2 == 0 ? 1 : (byte) (-1);
+        horizontalPosition.update((byte) (horizontalPosition.get() + dir));
 
-        if (dir == 1 && horizontalPosition == 81) {
-            level++;
-            horizontalPosition--;
+        if (dir == 1 && horizontalPosition.get() == 81) {
+            level.update((byte) (level.get() + 1));
+            horizontalPosition.update((byte) (horizontalPosition.get() - 1));
         }
-        else if (dir == -1 && horizontalPosition == -1) {
-            level++;
-            horizontalPosition = 0;
+        else if (dir == -1 && horizontalPosition.get() == -1) {
+            level.update((byte) (level.get() + 1));
+            horizontalPosition.update((byte) 0);
         }
 
-        level = (byte) Math.min(level, 120);
-        horizontalPosition = (byte) (horizontalPosition % 81);
+        level.update((byte) Math.min(level.get(), 120));
+        horizontalPosition.update((byte) (horizontalPosition.get() % 81));
     }
 
     public boolean setDrillRelativePosition(byte[] position0) {
