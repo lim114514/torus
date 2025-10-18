@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.structure.component;
 
-import com.github.alantr7.torus.Fluid;
+import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.world.BlockLocation;

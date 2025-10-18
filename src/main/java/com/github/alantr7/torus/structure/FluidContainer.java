@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.structure;
 
-import com.github.alantr7.torus.Fluid;
+import com.github.alantr7.torus.world.Fluid;
 import org.jetbrains.annotations.Nullable;
 
 public interface FluidContainer {

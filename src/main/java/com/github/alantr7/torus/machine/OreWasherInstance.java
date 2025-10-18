@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.Fluid;
+import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.recipe.WasherRecipe;
