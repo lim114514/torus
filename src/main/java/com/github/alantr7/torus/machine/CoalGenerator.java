@@ -81,29 +81,15 @@ public class CoalGenerator extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef baseComponent = new StructureComponentDef(
-          "base", new Vector3f(), MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)
-        );
-
-        Model inputConnectorModel = MODEL_INPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        StructureComponentDef inputConnectorComponent = new StructureComponentDef(
-          "item_connector", new Vector3f(0, 0, 2), inputConnectorModel
-        );
-
-        Model outputConnectorModel = MODEL_OUTPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        StructureComponentDef powerConnectorComponent = new StructureComponentDef(
-          "power_connector", new Vector3f(0, 0, 0), outputConnectorModel
-        );
-
-        StructureConnectorDef inputConnector = new StructureConnectorDef(
-          "item_connector", Connector.Matter.ITEM, Connector.FlowDirection.IN, direction.getOpposite().mask()
-        );
-        StructureConnectorDef outputConnector = new StructureConnectorDef(
-          "power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.mask()
-        );
-
-        StructureBodyDef bodyDef = new StructureBodyDef(new StructureComponentDef[]{ baseComponent, inputConnectorComponent, powerConnectorComponent }, new StructureConnectorDef[]{ inputConnector, outputConnector });
-        return new CoalGeneratorInstance(location, bodyDef, direction);
+        return new CoalGeneratorInstance(location, new StructureBodyDef(new StructureComponentDef[]{
+          new StructureComponentDef("base", new Vector3f(), MODEL),
+          new StructureComponentDef(
+            "item_connector", new Vector3f(0, 0, 2), MODEL_INPUT_CONNECTOR, new StructureConnectorDef(Connector.Matter.ITEM, Connector.FlowDirection.IN, direction.getOpposite().mask())
+          ),
+          new StructureComponentDef(
+            "power_connector", new Vector3f(0, 0, 0), MODEL_OUTPUT_CONNECTOR, new StructureConnectorDef(Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.mask())
+          )
+        }), direction);
     }
 
 }

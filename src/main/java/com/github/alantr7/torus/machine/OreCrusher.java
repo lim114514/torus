@@ -101,19 +101,20 @@ public class OreCrusher extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         direction = direction.getLeft();
-        StructureComponentDef body = new StructureComponentDef("body", new Vector3f(), MODEL_BASE.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef energyIn = new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), MODEL_ENERGY.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef itemsIn = new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), MODEL_ITEMS_IN.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef itemsOut = new StructureComponentDef("out_connector", new Vector3f(1, 0, 0), MODEL_ITEMS_OUT.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef wheelLeft = new StructureComponentDef("wheel_left", new Vector3f(), MODEL_WHEEL_LEFT.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef wheelRight = new StructureComponentDef("wheel_right", new Vector3f(), MODEL_WHEEL_RIGHT.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-
         return new OreCrusherInstance(location, new StructureBodyDef(
-          new StructureComponentDef[]{ body, energyIn, itemsIn, itemsOut, wheelLeft, wheelRight },
-          new StructureConnectorDef[]{
-            new StructureConnectorDef("power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getLeft().mask()),
-            new StructureConnectorDef("item_connector", Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()),
-            new StructureConnectorDef("out_connector", Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.getRight().mask()),
+          new StructureComponentDef[]{
+            new StructureComponentDef("body", new Vector3f(), MODEL_BASE),
+            new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), MODEL_ENERGY, new StructureConnectorDef(
+              Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getLeft().mask()
+            )),
+            new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), MODEL_ITEMS_IN, new StructureConnectorDef(
+              Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()
+            )),
+            new StructureComponentDef("out_connector", new Vector3f(1, 0, 0), MODEL_ITEMS_OUT, new StructureConnectorDef(
+              Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.getRight().mask()
+            )),
+            new StructureComponentDef("wheel_left", new Vector3f(), MODEL_WHEEL_LEFT),
+            new StructureComponentDef("wheel_right", new Vector3f(), MODEL_WHEEL_RIGHT)
           }
         ), direction);
     }

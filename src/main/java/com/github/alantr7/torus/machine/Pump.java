@@ -47,18 +47,17 @@ public class Pump extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef baseComponentDef = new StructureComponentDef("base", new Vector3f(), MODEL_BASE.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef fluidConnectorComponentDef = new StructureComponentDef("fluid_connector", new Vector3f(0, 1, 0), MODEL_FLUID_CONNECTOR.build(location.getBlock().getLocation().add(.5, 1, .5), direction));
-        StructureComponentDef energyConnectorComponentDef = new StructureComponentDef("power_connector", new Vector3f(0, 1, 0), MODEL_ENERGY_CONNECTOR.build(location.getBlock().getLocation().add(.5, 1, .5), direction));
-
-        StructureConnectorDef fluidConnector = new StructureConnectorDef("fluid_connector", Connector.Matter.FLUID, Connector.FlowDirection.OUT, Direction.UP.mask());
-        StructureConnectorDef energyConnector = new StructureConnectorDef("power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask());
-
-        StructureBodyDef bodyDef = new StructureBodyDef(
-          new StructureComponentDef[]{baseComponentDef, fluidConnectorComponentDef, energyConnectorComponentDef},
-          new StructureConnectorDef[]{fluidConnector, energyConnector}
-        );
-        return new PumpInstance(location, bodyDef, direction);
+        return new PumpInstance(location, new StructureBodyDef(
+          new StructureComponentDef[]{
+            new StructureComponentDef("base", new Vector3f(), MODEL_BASE),
+            new StructureComponentDef("power_connector", new Vector3f(0, 1, 0), MODEL_ENERGY_CONNECTOR.build(location.getBlock().getLocation().add(.5, 1, .5), direction), new StructureConnectorDef(
+              Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask()
+            )),
+            new StructureComponentDef("fluid_connector", new Vector3f(0, 1, 0), MODEL_FLUID_CONNECTOR.build(location.getBlock().getLocation().add(.5, 1, .5), direction), new StructureConnectorDef(
+              Connector.Matter.FLUID, Connector.FlowDirection.OUT, Direction.UP.mask()
+            ))
+          }
+        ), direction);
     }
 
 }

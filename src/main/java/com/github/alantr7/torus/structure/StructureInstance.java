@@ -76,12 +76,12 @@ public abstract class StructureInstance {
               componentDef.template == null ? componentDef.model : componentDef.template.build(location.toBukkit().add(.5, 0, .5), direction)
             );
             components.put(componentDef.name, component);
-        }
 
-        for (StructureConnectorDef connectorDef : bodyDef.connectors()) {
-            Connector connector = new Connector(components.get(connectorDef.component()), connectorDef.allowedConnections(), connectorDef.matter(), connectorDef.direction());
-            connectors.put(new ConnectorLocation(components.get(connectorDef.component()).absoluteLocation, connectorDef.matter()), connector);
-            connectorsByName.put(connectorDef.component(), connector);
+            if (componentDef.connectorDef != null) {
+                Connector connector = new Connector(components.get(componentDef.name), componentDef.connectorDef.allowedConnections(), componentDef.connectorDef.matter(), componentDef.connectorDef.direction());
+                connectors.put(new ConnectorLocation(components.get(componentDef.name).absoluteLocation, componentDef.connectorDef.matter()), connector);
+                connectorsByName.put(componentDef.name, connector);
+            }
         }
         setOccupiedChunks();
     }

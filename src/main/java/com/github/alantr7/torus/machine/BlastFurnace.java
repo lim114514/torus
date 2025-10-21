@@ -76,19 +76,17 @@ public class BlastFurnace extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef base = new StructureComponentDef("base", new Vector3f(0f, 0f, 0f), MODEL_BASE.build(location.toBukkit().add(.5, 0, .5), direction));
-        StructureComponentDef inputComponent = new StructureComponentDef("in_item", new Vector3f(0, 4, 1), MODEL_IN_ITEM.build(location.toBukkit().add(.5, 0, .5), direction));
-        StructureComponentDef outputComponent = new StructureComponentDef("out_item", new Vector3f(1, 0, 0), MODEL_OUT_ITEM.build(location.toBukkit().add(.5, 0, .5), direction));
-        StructureComponentDef slugOutputComponent = new StructureComponentDef("out_slug", new Vector3f(-1, 0, 0), MODEL_OUT_SLUG.build(location.toBukkit().add(.5, 0, .5), direction));
-
-        StructureConnectorDef inputConnector = new StructureConnectorDef("in_item", Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask());
-        StructureConnectorDef outputConnector = new StructureConnectorDef("out_item", Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask());
-        StructureConnectorDef slugOutputConnector = new StructureConnectorDef("out_slug", Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask());
-
         return new BlastFurnaceInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          base, inputComponent, outputComponent, slugOutputComponent
-        }, new StructureConnectorDef[]{
-          inputConnector, outputConnector, slugOutputConnector
+          new StructureComponentDef("base", new Vector3f(0f, 0f, 0f), MODEL_BASE),
+          new StructureComponentDef("in_item", new Vector3f(0, 4, 1), MODEL_IN_ITEM, new StructureConnectorDef(
+            Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()
+          )),
+          new StructureComponentDef("out_item", new Vector3f(1, 0, 0), MODEL_OUT_ITEM.build(location.toBukkit().add(.5, 0, .5), direction), new StructureConnectorDef(
+            Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask()
+          )),
+          new StructureComponentDef("out_slug", new Vector3f(-1, 0, 0), MODEL_OUT_SLUG.build(location.toBukkit().add(.5, 0, .5), direction), new StructureConnectorDef(
+            Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask()
+          ))
         }), direction);
     }
 

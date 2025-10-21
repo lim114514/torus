@@ -50,21 +50,12 @@ public class SolarGenerator extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef baseComponent = new StructureComponentDef(
-          "base", new Vector3f(), MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)
-        );
-
-        Model connectorModel = CONNECTOR_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        StructureComponentDef powerConnectorComponent = new StructureComponentDef(
-          "power_connector", new Vector3f(), connectorModel
-        );
-
-        StructureConnectorDef connector = new StructureConnectorDef(
-          "power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.getOpposite().mask()
-        );
-
-        StructureBodyDef bodyDef = new StructureBodyDef(new StructureComponentDef[]{ baseComponent, powerConnectorComponent }, new StructureConnectorDef[]{ connector });
-        return new SolarGeneratorInstance(location, bodyDef, direction);
+        return new SolarGeneratorInstance(location, new StructureBodyDef(new StructureComponentDef[]{
+          new StructureComponentDef("base", new Vector3f(), MODEL),
+          new StructureComponentDef("power_connector", new Vector3f(), CONNECTOR_MODEL, new StructureConnectorDef(
+            Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.getOpposite().mask()
+          ))
+        }), direction);
     }
 
 }

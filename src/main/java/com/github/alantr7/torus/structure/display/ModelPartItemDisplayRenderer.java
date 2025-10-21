@@ -23,11 +23,11 @@ public final class ModelPartItemDisplayRenderer {
         this.rotV = rotV;
     }
 
-    public ModelPartItemDisplayRenderer(Material material, float[] data) {
+    public ModelPartItemDisplayRenderer(Material material, float... data) {
         this(new ItemStack(material), data);
     }
 
-    public ModelPartItemDisplayRenderer(ItemStack stack, float[] data) {
+    public ModelPartItemDisplayRenderer(ItemStack stack, float... data) {
         this.itemStack = stack;
         this.transform = ItemDisplay.ItemDisplayTransform.NONE;
         this.offset = new float[] { data[0], data[1], data[2] };

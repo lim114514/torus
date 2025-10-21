@@ -50,24 +50,16 @@ public class PowerBank extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef baseComponent = new StructureComponentDef(
-          "base", new Vector3f(), MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)
-        );
-        StructureComponentDef progressComponent = new StructureComponentDef(
-          "charge", new Vector3f(), PROGRESS_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)
-        );
-
-        Model connectorModel = CONNECTOR_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        StructureComponentDef powerConnectorComponent = new StructureComponentDef(
-          "power_connector", new Vector3f(0, 1, 0), connectorModel
-        );
-
-        StructureConnectorDef connector = new StructureConnectorDef(
-          "power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.ALL, Direction.UP.mask()
-        );
-
-        StructureBodyDef bodyDef = new StructureBodyDef(new StructureComponentDef[]{ baseComponent, progressComponent, powerConnectorComponent }, new StructureConnectorDef[]{ connector });
-        return new PowerBankInstance(location, bodyDef, direction);
+        return new PowerBankInstance(location, new StructureBodyDef(new StructureComponentDef[]{
+          new StructureComponentDef("base", new Vector3f(), MODEL),
+          new StructureComponentDef(
+            "power_connector", new Vector3f(0, 1, 0), CONNECTOR_MODEL, new StructureConnectorDef(
+            Connector.Matter.ENERGY, Connector.FlowDirection.ALL, Direction.UP.mask()
+          )),
+          new StructureComponentDef(
+            "charge", new Vector3f(), PROGRESS_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)
+          )
+        }), direction);
     }
 
 }

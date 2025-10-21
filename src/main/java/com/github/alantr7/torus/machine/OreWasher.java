@@ -80,19 +80,21 @@ public class OreWasher extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef body = new StructureComponentDef("body", new Vector3f(), MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef itemsIn = new StructureComponentDef("item_connector", new Vector3f(0f, 1f, 0f), MODEL_CONNECTOR_ITEMS_IN.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef itemsOut = new StructureComponentDef("out_connector", new Vector3f(0f, 0, 0f), MODEL_CONNECTOR_ITEMS_OUT.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef powerIn = new StructureComponentDef("power_connector", new Vector3f(0f, 0, 1f), MODEL_CONNECTOR_POWER.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        StructureComponentDef waterIn = new StructureComponentDef("fluid_connector", new Vector3f(0f, 0, 1f), MODEL_WATER_IN.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-
         return new OreWasherInstance(location, new StructureBodyDef(
-          new StructureComponentDef[] { body, itemsIn, itemsOut, powerIn, waterIn },
-          new StructureConnectorDef[]{
-            new StructureConnectorDef("item_connector", Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()),
-            new StructureConnectorDef("out_connector", Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask()),
-            new StructureConnectorDef("power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask()),
-            new StructureConnectorDef("fluid_connector", Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()),
+          new StructureComponentDef[] {
+            new StructureComponentDef("body", new Vector3f(), MODEL),
+            new StructureComponentDef("item_connector", new Vector3f(0f, 1f, 0f), MODEL_CONNECTOR_ITEMS_IN, new StructureConnectorDef(
+              Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()
+            )),
+            new StructureComponentDef("out_connector", new Vector3f(0f, 0, 0f), MODEL_CONNECTOR_ITEMS_OUT, new StructureConnectorDef(
+              Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask()
+            )),
+            new StructureComponentDef("power_connector", new Vector3f(0f, 0, 1f), MODEL_CONNECTOR_POWER, new StructureConnectorDef(
+              Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask()
+            )),
+            new StructureComponentDef("fluid_connector", new Vector3f(0f, 0, 1f), MODEL_WATER_IN, new StructureConnectorDef(
+              Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()
+            ))
           }
         ), direction);
     }

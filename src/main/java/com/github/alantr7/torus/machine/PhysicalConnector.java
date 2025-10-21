@@ -37,22 +37,12 @@ public class PhysicalConnector extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef connectorDef = new StructureComponentDef(
-          "connector",
-          new Vector3f(),
-          CONNECTOR_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction)
-        );
-
-        StructureComponentDef cableDef = new StructureComponentDef(
-          "cable",
-          new Vector3f(),
-          ModelTemplate.EMPTY.build(location.getBlock().getLocation().add(.5, 0, .5), Direction.NORTH)
-        );
-
         StructureBodyDef body = new StructureBodyDef(
-          new StructureComponentDef[]{connectorDef, cableDef},
-          new StructureConnectorDef[]{
-            new StructureConnectorDef("connector", Connector.Matter.ITEM, Connector.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false))
+          new StructureComponentDef[]{
+            new StructureComponentDef("connector", new Vector3f(), CONNECTOR_MODEL, new StructureConnectorDef(
+              Connector.Matter.ITEM, Connector.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false)
+            )),
+            new StructureComponentDef("cable", new Vector3f(), ModelTemplate.EMPTY),
           }
         );
 

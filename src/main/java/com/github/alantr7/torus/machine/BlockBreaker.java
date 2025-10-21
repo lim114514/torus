@@ -34,24 +34,16 @@ public class BlockBreaker extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        Model bodyModel = BASE_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        StructureComponentDef bodyComponent = new StructureComponentDef("body", new Vector3f(0, 0, 0), bodyModel);
-
-        Model connectorModel = CONNECTOR_MODEL.build(location.getBlock().getLocation().add(.5, 0, .5), direction);
-        StructureComponentDef powerConnectorComponent = new StructureComponentDef("power_connector", new Vector3f(0, 0, 0), connectorModel);
-
-        StructureConnectorDef powerConnector = new StructureConnectorDef("power_connector", Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask());
-
-        StructureComponentDef itemComponent = new StructureComponentDef("item_connector", new Vector3f(0, 0, 0), (Model) null);
-        StructureConnectorDef itemConnector = new StructureConnectorDef("item_connector", Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.DOWN.mask());
-
-        StructureBodyDef body = new StructureBodyDef(
-          new StructureComponentDef[]{ bodyComponent, powerConnectorComponent, itemComponent },
-          new StructureConnectorDef[]{ powerConnector, itemConnector }
-        );
-
-        System.out.println();
-        return new BlockBreakerInstance(location, body, direction);
+        return new BlockBreakerInstance(location, new StructureBodyDef(
+          new StructureComponentDef[]{
+            new StructureComponentDef("body", new Vector3f(0, 0, 0), BASE_MODEL),
+            new StructureComponentDef("power_connector", new Vector3f(0, 0, 0), CONNECTOR_MODEL, new StructureConnectorDef(
+              Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask()
+            )),
+            new StructureComponentDef("item_connector", new Vector3f(0, 0, 0), (Model) null, new StructureConnectorDef(
+              Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.DOWN.mask()
+            )) }
+        ), direction);
     }
 
 }

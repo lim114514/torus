@@ -158,18 +158,18 @@ public class Quarry extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new QuarryInstance(this, location, new StructureBodyDef(
           new StructureComponentDef[]{
-            new StructureComponentDef("base", new Vector3f(), MODEL_BASE.build(location.toBukkit().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("in_energy", new Vector3f(0, 0, -6), MODEL_ENERGY_CONNECTOR.build(location.toBukkit().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("out_item", new Vector3f(0, 0, -6), MODEL_ITEM_CONNECTOR.build(location.toBukkit().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("drill_holder", new Vector3f(), MODEL_DRILL_HOLDER.build(location.toBukkit().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("drill", new Vector3f(), MODEL_DRILL.build(location.toBukkit().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("drill_tip", new Vector3f(), MODEL_DRILL_TIP.build(location.toBukkit().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("mover_x", new Vector3f(), MODEL_MOVER_X.build(location.toBukkit().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("mover_z", new Vector3f(), MODEL_MOVER_Z.build(location.toBukkit().add(.5f, 0, .5f), direction)),
-          },
-          new StructureConnectorDef[]{
-            new StructureConnectorDef("in_energy", Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.getLeft().mask()),
-            new StructureConnectorDef("out_item", Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.UP.mask())
+            new StructureComponentDef("base", new Vector3f(), MODEL_BASE),
+            new StructureComponentDef("in_energy", new Vector3f(0, 0, -6), MODEL_ENERGY_CONNECTOR, new StructureConnectorDef(
+              Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.getLeft().mask()
+            )),
+            new StructureComponentDef("out_item", new Vector3f(0, 0, -6), MODEL_ITEM_CONNECTOR, new StructureConnectorDef(
+              Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.UP.mask()
+            )),
+            new StructureComponentDef("drill_holder", new Vector3f(), MODEL_DRILL_HOLDER),
+            new StructureComponentDef("drill", new Vector3f(), MODEL_DRILL),
+            new StructureComponentDef("drill_tip", new Vector3f(), MODEL_DRILL_TIP),
+            new StructureComponentDef("mover_x", new Vector3f(), MODEL_MOVER_X),
+            new StructureComponentDef("mover_z", new Vector3f(), MODEL_MOVER_Z),
           }
         ), direction);
     }

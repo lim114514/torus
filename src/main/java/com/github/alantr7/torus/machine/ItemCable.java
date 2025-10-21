@@ -34,8 +34,9 @@ public class ItemCable extends Structure {
         ModelTemplate modelDisconnected = new ModelTemplate();
         modelDisconnected.add(MODELS_ITEM[6]);
 
-        StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), modelDisconnected.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
-        return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}, new StructureConnectorDef[0]), Connector.Matter.ITEM);
+        return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{
+          new StructureComponentDef("base", new Vector3f(), modelDisconnected)
+        }), Connector.Matter.ITEM);
     }
 
 }

@@ -72,18 +72,16 @@ public class FluidTank extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        Vector3f output = new Vector3f(0f, 0f, -1f);
-
         return new FluidTankInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
-            new StructureComponentDef("base", new Vector3f(), MODEL_BASE.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("input", new Vector3f(0f, 3f, 0f), MODEL_INPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("output", output, MODEL_OUTPUT_CONNECTOR.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
-            new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f), MODEL_LIQUID.build(location.getBlock().getLocation().add(.5f, 0, .5f), direction)),
-          },
-          new StructureConnectorDef[]{
-            new StructureConnectorDef("input", Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()),
-            new StructureConnectorDef("output", Connector.Matter.FLUID, Connector.FlowDirection.OUT, direction.mask()),
+            new StructureComponentDef("base", new Vector3f(), MODEL_BASE),
+            new StructureComponentDef("input", new Vector3f(0f, 3f, 0f), MODEL_INPUT_CONNECTOR, new StructureConnectorDef(
+              Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()
+            )),
+            new StructureComponentDef("output", new Vector3f(0f, 0f, -1f), MODEL_OUTPUT_CONNECTOR, new StructureConnectorDef(
+              Connector.Matter.FLUID, Connector.FlowDirection.OUT, direction.mask()
+            )),
+            new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f), MODEL_LIQUID),
           }
         ), direction);
     }
