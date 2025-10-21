@@ -52,7 +52,7 @@ public class EnergyCable extends Structure {
 
     public EnergyCable() {
         super("torus:energy_cable", CableInstance.class);
-        requiresHammerToBreak = false;
+        isHeavy = false;
     }
 
     @Override

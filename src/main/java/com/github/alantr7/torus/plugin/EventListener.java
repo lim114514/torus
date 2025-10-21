@@ -5,15 +5,11 @@ import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.TorusItem;
-import com.github.alantr7.torus.item.TorusItemManager;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.world.TorusWorld;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,7 +20,6 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,8 +58,12 @@ public class EventListener implements Listener {
 
         if (torusItem.getStructure().isPlaceableAt(location, direction)) {
             StructureInstance structure = torusItem.getStructure().place(location, direction);
-            if (structure != null)
+            if (structure != null) {
                 structure.setOwnerId(event.getPlayer().getUniqueId());
+                if (structure.structure.isHeavy) {
+                    structure.location.world.getBukkit().playSound(location.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_PLACE, 0.2f, 1f);
+                }
+            }
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to place the structure here.");
         }
@@ -83,6 +82,8 @@ public class EventListener implements Listener {
         if (structure != null) {
             cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
             structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
+
+            event.setCancelled(true);
         }
     }
 
@@ -98,7 +99,7 @@ public class EventListener implements Listener {
         if (instance == null)
             return;
 
-        if (instance.structure.requiresHammerToBreak) {
+        if (instance.structure.isHeavy) {
             TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
             if (item == null || !item.namespacedId.equals("torus:hammer")) {
                 event.getPlayer().sendMessage(ChatColor.RED + "This structure can be broken only with hammer.");
@@ -115,6 +116,9 @@ public class EventListener implements Listener {
                 }
             }
             world.removeStructure(instance);
+            if (instance.structure.isHeavy) {
+                world.getBukkit().playSound(loc.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_USE, 0.2f, 1.2f);
+            }
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "You can not break a structure that you do not own.");
         }

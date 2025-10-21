@@ -18,7 +18,7 @@ public class ItemCable extends Structure {
 
     public ItemCable() {
         super("torus:item_cable", CableInstance.class);
-        requiresHammerToBreak = false;
+        isHeavy = false;
     }
 
     @Override
