@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import org.bukkit.Location;
 import org.bukkit.block.Block;

@@ -5,7 +5,6 @@ import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
-import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
 import lombok.Getter;

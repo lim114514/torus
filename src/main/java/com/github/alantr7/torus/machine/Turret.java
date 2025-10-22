@@ -2,7 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;

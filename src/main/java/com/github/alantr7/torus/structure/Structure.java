@@ -3,7 +3,7 @@ package com.github.alantr7.torus.structure;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -11,7 +11,6 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

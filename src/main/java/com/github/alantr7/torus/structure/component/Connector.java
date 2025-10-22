@@ -4,7 +4,7 @@ import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.FluidContainer;
 import com.github.alantr7.torus.structure.StructureInstance;

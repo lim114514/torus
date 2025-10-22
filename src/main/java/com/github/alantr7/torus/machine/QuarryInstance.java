@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;

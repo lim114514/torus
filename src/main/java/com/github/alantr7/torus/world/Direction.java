@@ -1,4 +1,4 @@
-package com.github.alantr7.torus.math;
+package com.github.alantr7.torus.world;
 
 import org.bukkit.block.BlockFace;
 

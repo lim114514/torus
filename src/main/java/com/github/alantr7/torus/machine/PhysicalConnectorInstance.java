@@ -7,7 +7,7 @@ import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;

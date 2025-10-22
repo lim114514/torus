@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -10,7 +10,6 @@ import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.display.ModelPartItemDisplayRenderer;
-import com.github.alantr7.torus.structure.display.Model;
 import com.github.alantr7.torus.structure.display.ModelTemplate;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;

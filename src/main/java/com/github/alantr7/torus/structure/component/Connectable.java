@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.structure.component;
 
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 
 public interface Connectable {
 

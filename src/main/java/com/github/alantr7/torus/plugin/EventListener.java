@@ -6,7 +6,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.*;

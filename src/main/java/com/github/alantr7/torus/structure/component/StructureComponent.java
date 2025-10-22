@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.structure.component;
 
 import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.display.Model;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.structure.display;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;

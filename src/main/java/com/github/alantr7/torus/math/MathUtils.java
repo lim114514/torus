@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.math;
 
+import com.github.alantr7.torus.world.Direction;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3i;

@@ -2,7 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.math.Direction;
+import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.component.Connector;
