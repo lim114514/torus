@@ -63,6 +63,9 @@ public class EventListener implements Listener {
                 if (structure.structure.isHeavy) {
                     structure.location.world.getBukkit().playSound(location.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_PLACE, 0.2f, 1f);
                 }
+                if (event.getPlayer().getGameMode() == GameMode.SURVIVAL || event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+                    item.setAmount(item.getAmount() - 1);
+                }
             }
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to place the structure here.");
@@ -109,7 +112,7 @@ public class EventListener implements Listener {
         }
 
         if (instance.testOwnership(event.getPlayer())) {
-            if (event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+            if (event.getPlayer().getGameMode() == GameMode.SURVIVAL || event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
                 TorusItem drop = TorusPlugin.getInstance().getItemManager().getItemByStructure(instance.structure);
                 if (drop != null) {
                     world.getBukkit().dropItem(loc.toBukkit().add(.5, 0, .5), drop.toItemStack().clone());
