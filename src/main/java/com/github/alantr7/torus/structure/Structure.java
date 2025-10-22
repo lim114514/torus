@@ -1,11 +1,15 @@
 package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.structure.display.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Structure {
 
@@ -23,6 +27,8 @@ public abstract class Structure {
     protected byte[] offset;
 
     public boolean isHeavy = true;
+
+    protected final Map<String, ModelTemplate> namedModelTemplates = new HashMap<>();
 
     public Structure(String id, Class<? extends StructureInstance> instanceClass) {
         this.id = id;
@@ -91,6 +97,17 @@ public abstract class Structure {
             return new byte[] { 0, 0, 0 };
 
         return MathUtils.rotateVectors(this.offset, direction);
+    }
+
+    public ModelTemplate getNamedModelTemplate(String name) {
+        if (name == null)
+            return null;
+
+        return namedModelTemplates.get(name);
+    }
+
+    protected void registerNamedModelTemplate(ModelTemplate template) {
+        namedModelTemplates.put(template.name, template);
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.github.alantr7.torus.math.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ItemDisplay;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
@@ -15,6 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelTemplate {
+
+    public final String name;
+
+    public ModelTemplate(String name) {
+        this.name = name;
+    }
+
+    public ModelTemplate() {
+        this(null);
+    }
 
     private final List<ModelPartItemDisplayRenderer> parts = new ArrayList<>();
 
@@ -42,17 +51,17 @@ public class ModelTemplate {
             entities.add(entity);
         }
 
-        return new Model(entities.stream().map(EntityReference::new).toList());
+        return new Model(this, entities.stream().map(EntityReference::new).toList());
     }
 
-    public Model recycle(Model model, Location location, Direction direction) {
+    public Model recycle(Model model, Location location, float rotH, float rotV) {
         List<ItemDisplay> entities = new ArrayList<>();
 
         int entityIdx = 0;
         for (; entityIdx < parts.size(); entityIdx++) {
             ModelPartItemDisplayRenderer part = parts.get(entityIdx);
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
-            MathUtils.applyRotation(rotatedOffset, direction.rotH);
+            MathUtils.applyRotation(rotatedOffset, rotH);
 
             Location partLocation = new Location(
               location.getWorld(), location.getX() + rotatedOffset.x, location.getY() + rotatedOffset.y, location.getZ() + rotatedOffset.z
@@ -66,7 +75,7 @@ public class ModelTemplate {
                 entity = location.getWorld().spawn(partLocation, ItemDisplay.class);
             }
 
-            transformEntity(entity, part, direction);
+            transformEntity(entity, part, rotH, rotV);
             entities.add(entity);
         }
 
@@ -74,17 +83,21 @@ public class ModelTemplate {
             model.entityReferences.get(entityIdx).getEntity().remove();
         }
 
-        return new Model(entities.stream().map(EntityReference::new).toList());
+        return new Model(this, entities.stream().map(EntityReference::new).toList());
     }
 
     private void transformEntity(ItemDisplay entity, ModelPartItemDisplayRenderer part, Direction direction) {
+        transformEntity(entity, part, direction.rotH, direction.rotV);
+    }
+
+    private void transformEntity(ItemDisplay entity, ModelPartItemDisplayRenderer part, float rotH, float rotV) {
         entity.setItemStack(part.itemStack.clone());
         entity.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "purpose"), PersistentDataType.STRING, "structure_model");
 
         Transformation transformation = entity.getTransformation();
         transformation.getScale().set(part.scale);
         entity.setTransformation(transformation);
-        entity.setRotation(direction.rotH + part.rotH, direction.rotV + part.rotV);
+        entity.setRotation(rotH + part.rotH, rotV + part.rotV);
     }
 
 }

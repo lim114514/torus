@@ -7,9 +7,12 @@ import java.util.List;
 
 public class Model {
 
+    public final ModelTemplate template;
+
     public final List<EntityReference> entityReferences;
 
-    public Model(List<EntityReference> entityReferences) {
+    public Model(ModelTemplate template, List<EntityReference> entityReferences) {
+        this.template = template;
         this.entityReferences = entityReferences;
     }
 

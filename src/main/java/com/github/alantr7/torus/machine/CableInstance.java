@@ -91,7 +91,7 @@ public class CableInstance extends StructureInstance implements Connectable {
             }
         }
 
-        components.get("base").setModel(model.recycle(components.get("base").getModel(), location.getBlock().getLocation().add(.5, 0, .5), direction));
+        components.get("base").setModel(model.recycle(components.get("base").getModel(), location.getBlock().getLocation().add(.5, 0, .5), direction.rotH, direction.rotV));
         save();
     }
 

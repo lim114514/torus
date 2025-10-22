@@ -12,7 +12,6 @@ import com.github.alantr7.torus.math.ConnectorLocation;
 import com.github.alantr7.torus.math.Direction;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
-import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
@@ -192,12 +191,20 @@ public abstract class StructureInstance {
 
             // Model
             if (component.getModel() != null) {
+                if (component.getModel().template != null && component.getModel().template.name != null) {
+                    buffer.writeU1(1);
+                    buffer.writeU1(keys.pool(component.getModel().template.name));
+                } else {
+                    buffer.writeU1(0);
+                }
+
                 buffer.writeU1(component.getModel().entityReferences.size());
                 for (EntityReference ref : component.getModel().entityReferences) {
                     buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getMostSignificantBits(), 8));
                     buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getLeastSignificantBits(), 8));
                 }
             } else {
+                buffer.writeU1(0);
                 buffer.writeU1(0);
             }
         });
@@ -256,6 +263,8 @@ public abstract class StructureInstance {
             int cy = reader.readU1();
 
             // Model
+            String modelName = reader.readU1() == 1 ? region.strings.at(reader.readU1()) : null;
+
             int entitiesLength = reader.readU1();
             List<EntityReference> entities = new ArrayList<>();
 
@@ -267,7 +276,7 @@ public abstract class StructureInstance {
                 entities.add(new EntityReference(uid));
             }
 
-            Model model = new Model(entities);
+            Model model = new Model(structure != null ? structure.getNamedModelTemplate(modelName) : null, entities);
             StructureComponent component = new StructureComponent(name, location.getRelative(cx, cy, cz), new BlockLocation(chunk.world, cx, cy, cz), Direction.values()[direction], model);
             components.put(name, component);
         }
