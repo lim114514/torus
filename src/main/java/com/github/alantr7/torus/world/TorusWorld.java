@@ -73,6 +73,7 @@ public class TorusWorld {
                 region.load();
             } catch (Exception e) {
                 e.printStackTrace();
+                TorusLogger.error(Category.WORLD, e.getMessage());
             }
 
             return region;

@@ -32,7 +32,9 @@ public class TorusRegion {
     public final StringPool strings = new StringPool();
     public final Map<Vector2i, TorusChunk> chunks = new HashMap<>();
 
-    public byte[] header = new byte[SECTION_LENGTH_KEYS + SECTION_LENGTH_CHUNKS_OFFSETS];
+    public byte[] header = new byte[1 + SECTION_LENGTH_KEYS + SECTION_LENGTH_CHUNKS_OFFSETS];
+
+    public static final byte FILE_FORMAT_VERSION = 1;
 
     public TorusRegion(TorusWorld world, int x, int z) {
         this.world = world;
@@ -44,7 +46,9 @@ public class TorusRegion {
     private void createFile() {
         try {
             RandomAccessFile file = new RandomAccessFile(regionFile, "rw");
-            file.setLength(SECTION_LENGTH_KEYS + SECTION_LENGTH_CHUNKS_OFFSETS);
+            header[0] = FILE_FORMAT_VERSION;
+            file.write(FILE_FORMAT_VERSION);
+            file.setLength(header.length);
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,8 +62,18 @@ public class TorusRegion {
         RandomAccessFile raf = new RandomAccessFile(regionFile, "r");
         raf.readFully(header);
 
+        if (header[0] != FILE_FORMAT_VERSION) {
+            byte oldFormat = header[0];
+            header = new byte[1 + SECTION_LENGTH_KEYS + SECTION_LENGTH_CHUNKS_OFFSETS];
+            raf.close();
+
+            createFile();
+
+            throw new Exception("Region " + x + ", " + z + " is saved in format " + oldFormat + " but current is " + FILE_FORMAT_VERSION + ". Skipping it as converters do not exist yet.");
+        }
+
         // Read string pool
-        for (int i = 0; i < SECTION_LENGTH_KEYS; i += 16) {
+        for (int i = 1; i <= SECTION_LENGTH_KEYS; i += 16) {
             if (header[i] == 0)
                 break;
 
@@ -96,7 +110,7 @@ public class TorusRegion {
 
     private void loadChunk(RandomAccessFile raf, TorusChunk chunk) throws Exception {
         int index = (chunk.position.x & 31) + (chunk.position.y & 31) * 32;
-        int regionFileOffset = ByteArrayReader.toInt(header, SECTION_LENGTH_KEYS + index * 3, 3);
+        int regionFileOffset = ByteArrayReader.toInt(header, 1 + SECTION_LENGTH_KEYS + index * 3, 3);
 
         // Chunk is empty
         if (regionFileOffset == 0) {
@@ -156,7 +170,7 @@ public class TorusRegion {
     // Go through header and find unsaved chunk. Check if that location is busy.
     private int _allocateChunkData(int chunkIndex) {
         int end = (int) regionFile.length();
-        System.arraycopy(ByteArrayWriter.toBytes(end, 3), 0, header, SECTION_LENGTH_KEYS + chunkIndex * 3, 3);
+        System.arraycopy(ByteArrayWriter.toBytes(end, 3), 0, header, 1 + SECTION_LENGTH_KEYS + chunkIndex * 3, 3);
         return end;
     }
 
@@ -166,11 +180,11 @@ public class TorusRegion {
 
         // Find chunk's section in the file
         int index = (chunk.position.x & 31) + (chunk.position.y & 31) * 32;
-        int regionFileOffset = ByteArrayReader.toInt(header, SECTION_LENGTH_KEYS + index * 3, 3);
+        int regionFileOffset = ByteArrayReader.toInt(header, 1 + SECTION_LENGTH_KEYS + index * 3, 3);
         if (regionFileOffset == 0) {
             regionFileOffset = _allocateChunkData(index);
 
-            raf.seek(SECTION_LENGTH_KEYS + index * 3);
+            raf.seek(1 + SECTION_LENGTH_KEYS + index * 3);
             raf.write(ByteArrayWriter.toBytes(regionFileOffset, 3));
         }
 
@@ -208,7 +222,7 @@ public class TorusRegion {
         // Save new keys
         if (keysLength < strings.getSize()) {
             for (int i = keysLength; i < strings.getSize(); i++) {
-                raf.seek(i * 16L);
+                raf.seek(1 + i * 16L);
 
                 String key = strings.at(i);
                 if (key.length() > 16) {
