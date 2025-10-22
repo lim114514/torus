@@ -13,10 +13,12 @@ public class Structures {
     public static final EnergyCable ENERGY_CABLE = new EnergyCable();
     public static final ItemCable ITEM_CABLE = new ItemCable();
     public static final FluidPipe FLUID_CABLE = new FluidPipe();
-
     public static final PhysicalConnector CONNECTOR = new PhysicalConnector();
 
+
     public static final FluidTank FLUID_TANK = new FluidTank();
+
+    public static final Turret TURRET = new Turret();
 
     public static final CoalGenerator COAL_GENERATOR = new CoalGenerator();
     public static final SolarGenerator SOLAR_GENERATOR = new SolarGenerator();
