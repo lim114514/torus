@@ -38,7 +38,7 @@ public class TorusWorld {
         this.bukkit = bukkit;
         this.directory = new File(bukkit.getWorldFolder(), "torus");
         this.directory.mkdirs();
-        this.regionsDirectory = new File(this.directory, "regions");
+        this.regionsDirectory = new File(this.directory, "region");
         this.regionsDirectory.mkdirs();
     }
 
