@@ -45,6 +45,7 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:copper_dust", Category.RESOURCES, null, Material.GLOWSTONE_DUST, "Copper Dust", Collections.emptyList()));
         registerItem(new TorusItem("torus:gold_dust", Category.RESOURCES, null, Material.HORN_CORAL_FAN, "Gold Dust", Collections.emptyList()));
         registerItem(new TorusItem("torus:steel_ingot", Category.RESOURCES, null, Material.IRON_INGOT, "Steel Ingot", Collections.emptyList()));
+        registerItem(new TorusItem("torus:steel_nugget", Category.RESOURCES, null, Material.IRON_NUGGET, "Steel Nugget", Collections.emptyList()));
         registerItem(new TorusItem("torus:machine_block", Category.COMPONENTS, null, new HeadData("http://textures.minecraft.net/texture/944bdc56def9a99e0f775d0c3879a69138d1510a18bbacb0c82902bbf816171c"), "Machine Block", Collections.emptyList()));
         registerItem(new TorusItem("torus:copper_wire", Category.COMPONENTS, null, Material.PITCHER_POD, "Copper Wire", Collections.emptyList()));
         registerItem(new TorusItem("torus:copper_coil", Category.COMPONENTS, null, new HeadData("http://textures.minecraft.net/texture/b3652284921a2dba440060f2f63aa3ba2b0df62c9c36bf7883acedc336df911b"), "Copper Coil", Collections.emptyList()));
