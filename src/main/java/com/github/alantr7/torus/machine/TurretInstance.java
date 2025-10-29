@@ -57,6 +57,9 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 //            }
 //        }
 
+        if (getStoredEnergy().get() < 250)
+            return;
+
         Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), 5, 1.5, 5, e -> e instanceof Monster || e instanceof Slime);
         if (entities.isEmpty())
             return;
@@ -64,6 +67,8 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
         target = (LivingEntity) entities.iterator().next();
         if (target == null || target.isDead() || target.getHealth() == 0)
             return;
+
+        consumeEnergy(250);
 
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
             location.world.getBukkit().playSound(location.toBukkit().add(.5, 0, .5), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.2f);
