@@ -5,22 +5,21 @@ Torus is a Minecraft plugin that allows you to automate farms, build machines, m
 **Plugin is still in early stage and you can only download it from my [Discord server](https://discord.gg/Zn4DDmUnPg).**<br />
 It is highly recommended to use the resource pack (for items) which can be downloaded [here](https://github.com/alantr7/torus-rp).
 
-## Machines and structures
-- Item conduits, energy cables & fluid pipes
-- Block Breaker
-- Ore Crusher
-- Coal Generator
-- Solar Generator
-- Power Bank
-- Inventory Interface
-- Fluid Tank
+## Content
+A list of all available structures and items can be found [here](https://github.com/alantr7/torus/blob/master/CONTENT.md).
 
 ## Todo List
-- Electric Furnaces
+- Electric Furnace
+- Electric Crafter
+- Electric Brewing Station
+- Factory Hopper
+- Conveyor Belt (for moving entities)
 - Modular pistons (something like the Pistronics 2 mod)
-- Crop Harvester & Crop Planter
-- Sprinklers
+- Farming Machine
+- Sprinkler
 - Rain Collector
+- Smeltery (probably replace Blast Furnace with it)
+- Pump with extendable pipe
 - Biofuel Generator <br>
   ...and more! Suggestions are welcome on my [Discord server](https://discord.gg/Zn4DDmUnPg).
 
