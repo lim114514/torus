@@ -27,8 +27,8 @@ public class Turret extends Structure {
         MODEL_HEAD.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, 0f, 1.125f, 0f, .1875f, .1875f, .1875f));
         MODEL_HEAD.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, 0f, 1.578125f, 0f, .25f, .0625f, .1875f));
         MODEL_HEAD.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, .3125f - .5f, 1.375f, 0f, .0625f, .125f, .1875f));
-        MODEL_HEAD.add(new ModelPartItemDisplayRenderer(Material.GREEN_TERRACOTTA, .25f, 1.1875f, 0f, .1875f, .375f, .1875f));
-        MODEL_HEAD.add(new ModelPartItemDisplayRenderer(Material.CHAIN, .25f, .8125f, 0f, .3125f, .5625f, .375f, 90, 0));
+//        MODEL_HEAD.add(new ModelPartItemDisplayRenderer(Material.GREEN_TERRACOTTA, .25f, 1.1875f, 0f, .1875f, .375f, .1875f));
+//        MODEL_HEAD.add(new ModelPartItemDisplayRenderer(Material.CHAIN, .25f, .8125f, 0f, .3125f, .5625f, .375f, 90, 0));
     }
 
     static ModelTemplate MODEL_BASE = new ModelTemplate();
@@ -39,14 +39,14 @@ public class Turret extends Structure {
 
         // Cables
         MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, .458125f - .5f, .5625f, .125f, .0625f, .875f, .0625f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, .04875f, .75f, .125f, .0625f, .4375f, .0625f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, .04875f, .5f, .25f, .0625f, .0625f, .3125f));
+//        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, .04875f, .75f, .125f, .0625f, .4375f, .0625f));
+//        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.LIGHT_GRAY_TERRACOTTA, .04875f, .5f, .25f, .0625f, .0625f, .3125f));
 
         // Power connector
         MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, 0f, .0625f, 0f, .75f, .125f, .75f));
 
         // Item connector
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, 0f, .5f, .4375f, .5f, .5f, .125f));
+//        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, 0f, .5f, .4375f, .5f, .5f, .125f));
     }
 
     public static ItemCriteria AMMO_CRITERIA = new ItemCriteria();
