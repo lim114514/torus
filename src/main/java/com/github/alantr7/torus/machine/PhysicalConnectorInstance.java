@@ -186,6 +186,8 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
         if (item != null && item.namespacedId.equals("torus:screwdriver")) {
             flowDirectionData.update(getFlowDirection() == Connector.FlowDirection.IN ? Connector.FlowDirection.OUT.ordinal() : Connector.FlowDirection.IN.ordinal());
             connector.setFlowDirection(getFlowDirection());
+
+            event.getPlayer().sendMessage("Flow direction changed to: " + connector.getFlowDirection());
             return;
         }
 
