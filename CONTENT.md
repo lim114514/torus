@@ -6,10 +6,10 @@
 - ✔ Ore Crusher
 - ✔ Ore Washer
 - ✔ Blast Furnace
+- ✔ Quarry
+- ✔ Laser Turret
 - Biofuel Generator
-- Quarry
 - Sprinkler
-- Laser Turret
 
 ## Structures
 - ✔ Energy Cable, Fluid Pipe, Item Conduit 
@@ -23,7 +23,8 @@
 - ✔ Copper Wire
 - ✔ Copper Coil
 - ✔ Circuit Board
-- Wrench
+- ✔ Hammer
+- ✔ Screwdriver
 - ✔ Connector
 - Photovoltaic Cell
 - ✔ Machine Block
