@@ -3,6 +3,10 @@ package com.github.alantr7.torus.structure;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.exception.MissingDataException;
+import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.structure.data.Data;
@@ -92,6 +96,14 @@ public abstract class StructureInstance {
         return this.bounds = MathUtils.rotateVectors(structure.bounds, direction);
     }
 
+    public StructureComponent requireComponent(String name) throws MissingDataException {
+        StructureComponent component = components.get(name);
+        if (component == null)
+            throw new MissingDataException("Component by name '" + name + "' could not be found.");
+
+        return component;
+    }
+
     public StructureComponent getComponent(String name) {
         return components.get(name);
     }
@@ -106,6 +118,14 @@ public abstract class StructureInstance {
 
     public Connector getConnector(String name) {
         return connectorsByName.get(name);
+    }
+
+    public Connector requireConnector(String name) throws MissingDataException {
+        Connector connector = connectorsByName.get(name);
+        if (connector == null)
+            throw new MissingDataException("Connector by name '" + name + "' could not be found.");
+
+        return connector;
     }
 
     public Collection<Connector> getConnectors() {
@@ -133,7 +153,7 @@ public abstract class StructureInstance {
 
     public abstract void tick();
 
-    protected abstract void setup();
+    protected abstract void setup() throws SetupException;
 
     @Nullable
     public UUID getOwnerId() {
@@ -305,7 +325,7 @@ public abstract class StructureInstance {
         DataContainer dataContainer = DataContainer.fromBytes(reader, region.strings);
 
         if (structure == null) {
-            System.err.println("Invalid structure!");
+            TorusLogger.error(Category.STRUCTURES, "Unrecognized structure ID: " + structureId);
             return null;
         }
 
@@ -321,10 +341,16 @@ public abstract class StructureInstance {
             instance.connectors.putAll(connectors);
             connectors.forEach((l, c) -> instance.connectorsByName.put(c.getComponent().name, c));
 
-            instance.setup();
+            try {
+                instance.setup();
+            } catch (SetupException exc) {
+                instance.isCorrupted = true;
+                exc.printStackTrace();
+            }
+
             return instance;
         } catch (Exception e) {
-            System.err.println("Could not instantiate " + instanceClass.getName());
+            TorusLogger.error(Category.STRUCTURES, "Could not instantiate " + instanceClass.getName());
             e.printStackTrace();
         }
 
