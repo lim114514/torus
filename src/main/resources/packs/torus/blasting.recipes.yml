@@ -1,0 +1,7 @@
+steel_ingot:
+  type: BLASTING
+  result: "torus:steel_ingot"
+  ingredients:
+    - "minecraft:coal"
+    - "minecraft:iron_ingot"
+  duration: 15

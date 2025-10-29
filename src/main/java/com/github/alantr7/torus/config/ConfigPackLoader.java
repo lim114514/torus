@@ -4,6 +4,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.recipe.BlastFurnaceRecipe;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.recipe.RecipeResult;
 import com.github.alantr7.torus.recipe.WasherRecipe;
@@ -56,10 +57,11 @@ public class ConfigPackLoader {
             }
 
             switch (rawRecipeType) {
-                case "CRAFTING" -> loadCraftingRecipe(section, recipeId);
-                case "SMELTING" -> loadSmeltingRecipe(section, recipeId);
-                case "CRUSHING" -> loadCrushingRecipe(section, recipeId);
-                case "WASHING" -> loadWasherRecipe(section, recipeId);
+                case "CRAFTING" ->  loadCraftingRecipe(section, recipeId);
+                case "SMELTING" ->  loadSmeltingRecipe(section, recipeId);
+                case "CRUSHING" ->  loadCrushingRecipe(section, recipeId);
+                case "WASHING" ->   loadWasherRecipe(section, recipeId);
+                case "BLASTING" ->  loadBlastFurnaceRecipe(section, recipeId);
 
                 default -> TorusLogger.error(Category.RECIPES, "Invalid recipe type: " + rawRecipeType);
             }
@@ -266,6 +268,67 @@ public class ConfigPackLoader {
         ));
         if (MainConfig.LOGS_RECIPE_LOAD) {
             TorusLogger.info(Category.RECIPES, "Loaded washing recipe: " + recipeId);
+        }
+    }
+
+    private void loadBlastFurnaceRecipe(ConfigurationSection section, String recipeId) {
+        String rawResult = section.getString("result");
+        if (rawResult == null) {
+            TorusLogger.error(Category.RECIPES, "Recipe result can not be null.");
+            return;
+        }
+
+        ItemStack resultItem = ItemReference.parse(rawResult).getItem();
+        if (resultItem == null) {
+            TorusLogger.error(Category.RECIPES, "Recipe result item not found.");
+            return;
+        }
+
+        short rangeMin, rangeMax;
+        if (section.isSet("amount")) {
+            if (section.isInt("amount")) {
+                rangeMin = rangeMax = (short) section.getInt("amount");
+            } else {
+                rangeMin = (short) section.getInt("amount.min", 1);
+                rangeMax = (short) section.getInt("amount.max", 1);
+            }
+        } else {
+            rangeMin = 1;
+            rangeMax = 1;
+        }
+
+        List<String> rawIngredients = section.getStringList("ingredients");
+        if (rawIngredients.isEmpty() || rawIngredients.size() > 3) {
+            TorusLogger.error(Category.RECIPES, "Ingredients count must be between 1 and 3.");
+            return;
+        }
+
+        ItemReference[] ingredients = new ItemReference[rawIngredients.size()];
+        for (int i = 0; i < rawIngredients.size(); i++) {
+            String rawIngredient = rawIngredients.get(i);
+            if (rawIngredient == null) {
+                TorusLogger.error(Category.RECIPES, "Ingredient can not be null.");
+                return;
+            }
+
+            ItemReference ingredientReference = ItemReference.parse(rawIngredient);
+            ItemStack ingredient = ingredientReference.getItem();
+            if (ingredient == null) {
+                TorusLogger.error(Category.RECIPES, "Ingredient item can not be found.");
+                return;
+            }
+
+            ingredients[i] = ingredientReference;
+        }
+
+        TorusPlugin.getInstance().getRecipeManager().registerBlastFurnaceRecipe(new BlastFurnaceRecipe(
+          recipeId,
+          ingredients,
+          new RecipeResult(resultItem, rangeMin, rangeMax),
+          section.getInt("duration")
+        ));
+        if (MainConfig.LOGS_RECIPE_LOAD) {
+            TorusLogger.info(Category.RECIPES, "Loaded blasting recipe: " + recipeId);
         }
     }
 
