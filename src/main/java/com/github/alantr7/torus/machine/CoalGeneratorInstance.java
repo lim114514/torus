@@ -46,7 +46,7 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
         outputConnector = getConnector("power_connector");
         outputConnector.maximumOutput = 500;
 
-        chimneyPosition = MathUtils.rotateVectors(new float[] { 1.125f - .5f, 1.8f, 0.8125f - .5f }, direction);
+        chimneyPosition = MathUtils.rotateVectors(new float[] { 1.125f - .5f, 1.8f, 0.8125f - .5f }, direction.rotH, direction.rotV);
     }
 
     @Override

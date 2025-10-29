@@ -142,7 +142,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         drillTip.getModel().teleport(location.toBukkit().add(.5, .5f - .125f, .5).add(position[0], position[1], position[2]));
 
         float[] holderOffset = {.25f, .3f, .15f};
-        holderOffset = MathUtils.rotateVectors(holderOffset, direction.getOpposite());
+        holderOffset = MathUtils.rotateVectors(holderOffset, direction.getOpposite().rotH, direction.getOpposite().rotV);
         drillHolder.getModel().teleport(location.toBukkit().add(.5 + holderOffset[0], 5 + holderOffset[1], .5 + holderOffset[2]).add(position[0], 0, position[2]));
 
         return true;

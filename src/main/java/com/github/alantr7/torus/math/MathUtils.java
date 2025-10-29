@@ -40,12 +40,12 @@ public class MathUtils {
         return bounds;
     }
 
-    public static float[] rotateVectors(float[] parentBounds, Direction direction) {
+    public static float[] rotateVectors(float[] parentBounds, float rotH, float rotV) {
         float[] bounds = new float[parentBounds.length];
 
         for (int i = 0; i < bounds.length; i += 3) {
             float distance = (float) Math.sqrt(parentBounds[i] * parentBounds[i] + parentBounds[i + 2] * parentBounds[i + 2]);
-            float angle = (float) Math.toRadians(direction.rotH) + (float) Math.atan2(parentBounds[i + 2], parentBounds[i]);
+            float angle = (float) Math.toRadians(rotH) + (float) Math.atan2(parentBounds[i + 2], parentBounds[i]);
 
             bounds[i] = (float) Math.cos(angle) * distance;
             bounds[i + 2] = (float) Math.sin(angle) * distance;
