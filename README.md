@@ -2,8 +2,13 @@
 
 Torus is a Minecraft plugin that allows you to automate farms, build machines, make factories, and more.
 
-**Plugin is still in early stage and you can only download it from my [Discord server](https://discord.gg/Zn4DDmUnPg).**<br />
-It is highly recommended to use the resource pack (for items) which can be downloaded [here](https://github.com/alantr7/torus-rp).
+## DO NOT USE IN YOUR WORLDS YET! OR MAKE A BACKUP BEFORE YOU DO!
+Torus is in experimental phase and isn't well tested! Plugin might fail to recognize structures and they can get stuck in your world even if plugin is deleted! (unless removed manually).
+
+## DO NOT USE ON PUBLIC SERVERS YET!
+Torus does NOT have proper permissions YET! Structure ownership is NOT checked YET, land claiming plugins are NOT supported YET!
+
+### It is highly recommended to use the resource pack which can be downloaded [here](https://github.com/alantr7/torus-rp).
 
 ## Content
 A list of all available structures and items can be found [here](https://github.com/alantr7/torus/blob/master/CONTENT.md).
