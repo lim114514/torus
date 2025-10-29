@@ -58,10 +58,10 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
         if (recipe != null) {
             if (isActive && processedTicks++ >= recipe.smeltDuration) {
                 ItemStack resultSlot = inventory.getItem(16);
-                if (resultSlot != null && ItemReference.compare(resultSlot, recipe.result)) {
-                    resultSlot.setAmount(resultSlot.getAmount() + recipe.result.getAmount());
+                if (resultSlot != null && ItemReference.compare(resultSlot, recipe.result.item)) {
+                    resultSlot.setAmount(resultSlot.getAmount() + recipe.result.asResult().getAmount());
                 } else {
-                    inventory.setItem(16, recipe.result.clone());
+                    inventory.setItem(16, recipe.result.asResult());
                 }
                 this.recipe = null;
                 this.processedTicks = 0;
@@ -87,7 +87,7 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
 
     private void updateRecipeDisplay() {
         if (recipe != null) {
-            ItemStack recipeItem = recipe.result.clone();
+            ItemStack recipeItem = recipe.result.asResult();
             ItemMeta meta = recipeItem.getItemMeta();
             List<String> lore = new LinkedList<>();
 

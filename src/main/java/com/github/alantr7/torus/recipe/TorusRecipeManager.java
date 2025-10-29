@@ -99,9 +99,4 @@ public class TorusRecipeManager {
         return blastFurnaceRecipes.values();
     }
 
-    @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
-    private void registerDefaultRecipes() {
-        registerBlastFurnaceRecipe(new BlastFurnaceRecipe("torus:steel_ingot", new ItemReference[]{ new ItemReference("minecraft", "COAL"), new ItemReference("minecraft", "IRON_INGOT") }, TorusItem.getById("torus:steel_ingot").toItemStack(), 10));
-    }
-
 }
