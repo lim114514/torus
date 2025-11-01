@@ -4,17 +4,21 @@ import com.github.alantr7.bukkitplugin.gui.ClickType;
 import com.github.alantr7.bukkitplugin.gui.CloseInitiator;
 import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.gui.recipeview.ViewCraftingRecipeGUI;
 import com.github.alantr7.torus.item.Category;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.plugin.Permissions;
 import org.bukkit.ChatColor;
+import org.bukkit.Keyed;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ItemBrowserCategoryGUI extends GUI {
@@ -32,6 +36,8 @@ public class ItemBrowserCategoryGUI extends GUI {
     protected void init() {
         createInventory("Item Browser / " + category.name, 54);
         setInteractionEnabled(false);
+
+        registerEventCallback(Action.CLOSE, () -> new ItemBrowserMainGUI(getPlayer()).open());
     }
 
     @Override
@@ -41,10 +47,36 @@ public class ItemBrowserCategoryGUI extends GUI {
             ItemStack stack = item.toItemStack().clone();
             if (getPlayer().hasPermission(Permissions.BROWSE_GUI_GET_ITEM)) {
                 ItemMeta meta = stack.getItemMeta();
-                meta.setLore(List.of(ChatColor.GRAY + "Left click to get"));
+                List<String> lore = new LinkedList<>();
+                lore.add(ChatColor.GRAY + "+ Left click to obtain");
+                if (item.hasRecipes()) {
+                    lore.add(ChatColor.GRAY + "+ Right click to view recipes");
+                }
+
+                meta.setLore(lore);
 
                 registerInteractionCallback(slot, ClickType.LEFT, () -> {
                     getPlayer().getInventory().addItem(item.toItemStack().clone());
+                });
+
+                registerInteractionCallback(slot, ClickType.RIGHT, () -> {
+                    Keyed recipe = item.getRecipes().iterator().next();
+                    GUI viewer;
+
+                    if (recipe instanceof ShapedRecipe shaped) {
+                        viewer = new ViewCraftingRecipeGUI(shaped, getPlayer());
+                    } else {
+                        getPlayer().sendMessage(ChatColor.RED + "This recipe can not be previewed.");
+                        viewer = null;
+                    }
+
+                    if (viewer != null) {
+                        clearEventCallbacks(Action.CLOSE);
+
+                        Player player = getPlayer();
+                        viewer.registerEventCallback(Action.CLOSE, () -> new ItemBrowserCategoryGUI(category, player).open());
+                        viewer.open();
+                    }
                 });
 
                 stack.setItemMeta(meta);
@@ -60,7 +92,6 @@ public class ItemBrowserCategoryGUI extends GUI {
 
     @Override
     protected void onInventoryClose(CloseInitiator closeInitiator) {
-        new ItemBrowserMainGUI(getPlayer()).open();;
     }
 
     @Override
