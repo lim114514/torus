@@ -36,6 +36,7 @@ public class Commands {
           return TorusPlugin.getInstance().getItemManager().getItemIds();
       }))
       .parameter("{amount}", Evaluator.INTEGER, p -> p.defaultValue(ctx -> 1))
+      .permission(Permissions.COMMAND_GIVE)
       .requireMatches(3)
       .executes(ctx -> {
           Player target = (Player) ctx.getArgument("target");
@@ -64,13 +65,14 @@ public class Commands {
 
     @CommandHandler Command browse = CommandBuilder.using("torus")
       .parameter("browse")
-      .forExecutors(ExecutorType.PLAYER)
+      .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_BROWSE)
       .executes(ctx -> {
           new ItemBrowserMainGUI((Player) ctx.getExecutor()).open();
       });
 
     @CommandHandler Command reload = CommandBuilder.using("torus")
       .parameter("reload")
+      .permission(Permissions.COMMAND_RELOAD)
       .executes(ctx -> {
           TorusPlugin.getInstance().getConfigManager().initialize();
           ctx.respond("Reloaded configs.");
@@ -79,6 +81,7 @@ public class Commands {
     @CommandHandler Command inspectStructure = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("inspect_structure")
+      .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_DEBUG)
       .executes(ctx -> {
           Player player = (Player) ctx.getExecutor();
           Block block = player.getTargetBlockExact(5);
@@ -114,6 +117,7 @@ public class Commands {
     @CommandHandler Command inspectChunk = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("inspect_chunk")
+      .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_DEBUG)
       .executes(ctx -> {
           Player player = (Player) ctx.getExecutor();
           TorusChunk chunk = TorusPlugin.getInstance().getWorldManager().getWorld(player.getWorld()).getChunk(
