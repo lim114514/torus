@@ -189,7 +189,7 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
 
     @Override
     public String getInspectionText(BlockLocation location, Player player) {
-        return "Blast Furnace [" + (recipe != null ? recipe.id : "No recipe") + "] [" + String.format("%.0f %%", 100f * (float) processedTicks / (recipe != null ? recipe.smeltDuration : 1)) + "]";
+        return "Blast Furnace [" + (recipe != null ? recipe.key : "No recipe") + "] [" + String.format("%.0f %%", 100f * (float) processedTicks / (recipe != null ? recipe.smeltDuration : 1)) + "]";
     }
 
 }

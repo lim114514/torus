@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.recipe;
 
-import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
@@ -38,10 +37,18 @@ public class TorusRecipeManager {
         OreWasher.INPUT_CRITERIA = new ItemCriteria();
     }
 
+    private void trackTorusItemRecipe(ItemStack result, Keyed key) {
+        TorusItem item = TorusItem.getByItemStack(result);
+        if (item != null)
+            item.getRecipes().add(key);
+    }
+
     public <R extends Recipe & Keyed> void registerBukkitRecipe(R recipe) {
         Bukkit.removeRecipe(recipe.getKey());
         Bukkit.addRecipe(recipe);
         recipesRegisteredToBukkit.add(recipe);
+
+        trackTorusItemRecipe(recipe.getResult(), recipe);
     }
 
     public CrusherRecipe getCrusherRecipeById(String id) {
@@ -60,12 +67,14 @@ public class TorusRecipeManager {
     }
 
     public void registerCrusherRecipe(CrusherRecipe recipe) {
-        crusherRecipes.put(recipe.id, recipe);
+        crusherRecipes.put(recipe.key.toString(), recipe);
         if (recipe.ingredient.isVanillaItem()) {
             OreCrusher.INPUT_CRITERIA.materials.add(recipe.ingredient.getItem().getType());
         } else {
             OreCrusher.INPUT_CRITERIA.ids.add(recipe.ingredient.getNamespacedId());
         }
+
+        trackTorusItemRecipe(recipe.result.item, recipe);
     }
 
     public WasherRecipe getWasherRecipeById(String id) {
@@ -83,16 +92,19 @@ public class TorusRecipeManager {
     }
 
     public void registerWasherRecipe(WasherRecipe recipe) {
-        washerRecipes.put(recipe.id, recipe);
+        washerRecipes.put(recipe.key.toString(), recipe);
         if (recipe.ingredient.isVanillaItem()) {
             OreWasher.INPUT_CRITERIA.materials.add(recipe.ingredient.getItem().getType());
         } else {
             OreWasher.INPUT_CRITERIA.ids.add(recipe.ingredient.getNamespacedId());
         }
+
+        trackTorusItemRecipe(recipe.result.item, recipe);
     }
 
     public void registerBlastFurnaceRecipe(BlastFurnaceRecipe recipe) {
-        blastFurnaceRecipes.put(recipe.id, recipe);
+        blastFurnaceRecipes.put(recipe.key.toString(), recipe);
+        trackTorusItemRecipe(recipe.result.item, recipe);
     }
 
     public Collection<BlastFurnaceRecipe> getBlastFurnaceRecipes() {

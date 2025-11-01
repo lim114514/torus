@@ -91,7 +91,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Override
     public String getInspectionText(BlockLocation location, Player player) {
-        return String.format("Ore Washer [%d mb] [%d RF] [%s %.0f%%]", water.get(), getStoredEnergy().get(), recipe != null ? recipe.id : "No recipe", (float) processedTicks / (recipe == null ? 1 : recipe.washTicks) * 100);
+        return String.format("Ore Washer [%d mb] [%d RF] [%s %.0f%%]", water.get(), getStoredEnergy().get(), recipe != null ? recipe.key : "No recipe", (float) processedTicks / (recipe == null ? 1 : recipe.washTicks) * 100);
     }
 
     @Override

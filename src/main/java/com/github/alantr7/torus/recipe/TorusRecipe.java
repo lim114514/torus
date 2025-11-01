@@ -1,11 +1,21 @@
 package com.github.alantr7.torus.recipe;
 
-public abstract class TorusRecipe {
+import lombok.Getter;
+import org.bukkit.Keyed;
+import org.bukkit.NamespacedKey;
 
-    public final String id;
+public abstract class TorusRecipe implements Keyed {
 
-    public TorusRecipe(String id) {
-        this.id = id;
+    @Getter
+    public final NamespacedKey key;
+
+    public TorusRecipe(String key) {
+        int index = key.indexOf(':');
+        if (index != -1) {
+            this.key = new NamespacedKey(key.substring(0, index), key.substring(index + 1));
+        } else {
+            this.key = new NamespacedKey("torus", key);
+        }
     }
 
 }

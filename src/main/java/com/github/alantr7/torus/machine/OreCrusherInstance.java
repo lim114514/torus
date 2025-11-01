@@ -107,7 +107,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
     @Override
     public String getInspectionText(BlockLocation location, Player player) {
-        return "Ore Crusher " + String.format("[%d RF] [%s %.2f%%]", getStoredEnergy().get(), recipe != null ? recipe.id : "No recipe", (float) processedTicks / (recipe != null ? recipe.crushTicks : 1) * 100);
+        return "Ore Crusher " + String.format("[%d RF] [%s %.2f%%]", getStoredEnergy().get(), recipe != null ? recipe.key : "No recipe", (float) processedTicks / (recipe != null ? recipe.crushTicks : 1) * 100);
     }
 
 }

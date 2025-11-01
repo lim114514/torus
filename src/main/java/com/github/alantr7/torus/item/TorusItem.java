@@ -4,6 +4,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
 import lombok.Getter;
 import org.bukkit.ChatColor;
+import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -11,9 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class TorusItem {
@@ -25,6 +24,9 @@ public class TorusItem {
     public final String name;
 
     protected final ItemStack itemStack;
+
+    @Getter
+    protected final Set<Keyed> recipes = new HashSet<>();
 
     @Getter
     protected Structure structure;
@@ -73,6 +75,10 @@ public class TorusItem {
         updateMeta(meta ->
             meta.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING, namespacedId)
         );
+    }
+
+    public boolean hasRecipes() {
+        return !recipes.isEmpty();
     }
 
     private void updateMeta(Consumer<ItemMeta> consumer) {
