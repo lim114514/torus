@@ -1,3 +1,25 @@
+hammer:
+  type: CRAFTING
+  result: "torus:hammer"
+  shape:
+    - " I "
+    - " SI"
+    - "S  "
+  ingredients:
+    I: "minecraft:iron_ingot"
+    S: "minecraft:stick"
+
+screwdriver:
+  type: CRAFTING
+  result: "torus:screwdriver"
+  shape:
+    - "  I"
+    - " S "
+    - "S  "
+  ingredients:
+    I: "minecraft:iron_ingot"
+    S: "minecraft:stick"
+
 copper_wire:
   type: CRAFTING
   result: "torus:copper_wire"
