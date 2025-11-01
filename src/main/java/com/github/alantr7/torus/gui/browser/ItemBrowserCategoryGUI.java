@@ -61,22 +61,18 @@ public class ItemBrowserCategoryGUI extends GUI {
 
                 registerInteractionCallback(slot, ClickType.RIGHT, () -> {
                     Keyed recipe = item.getRecipes().iterator().next();
-                    GUI viewer;
+                    GUI viewer = TorusPlugin.getInstance().getRecipeManager().createRecipeViewer(getPlayer(), recipe);
 
-                    if (recipe instanceof ShapedRecipe shaped) {
-                        viewer = new ViewCraftingRecipeGUI(shaped, getPlayer());
-                    } else {
+                    if (viewer == null) {
                         getPlayer().sendMessage(ChatColor.RED + "This recipe can not be previewed.");
-                        viewer = null;
+                        return;
                     }
 
-                    if (viewer != null) {
-                        clearEventCallbacks(Action.CLOSE);
+                    clearEventCallbacks(Action.CLOSE);
 
-                        Player player = getPlayer();
-                        viewer.registerEventCallback(Action.CLOSE, () -> new ItemBrowserCategoryGUI(category, player).open());
-                        viewer.open();
-                    }
+                    Player player = getPlayer();
+                    viewer.registerEventCallback(Action.CLOSE, () -> new ItemBrowserCategoryGUI(category, player).open());
+                    viewer.open();
                 });
 
                 stack.setItemMeta(meta);

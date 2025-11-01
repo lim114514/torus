@@ -1,15 +1,22 @@
 package com.github.alantr7.torus.recipe;
 
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
+import com.github.alantr7.bukkitplugin.gui.GUI;
+import com.github.alantr7.torus.gui.browser.ItemBrowserCategoryGUI;
+import com.github.alantr7.torus.gui.recipeview.ViewCraftingRecipeGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.machine.OreCrusher;
 import com.github.alantr7.torus.machine.OreWasher;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -109,6 +116,18 @@ public class TorusRecipeManager {
 
     public Collection<BlastFurnaceRecipe> getBlastFurnaceRecipes() {
         return blastFurnaceRecipes.values();
+    }
+
+    @Nullable
+    public <R extends Keyed> GUI createRecipeViewer(Player player, R recipe) {
+        GUI viewer;
+        if (recipe instanceof ShapedRecipe shaped) {
+            viewer = new ViewCraftingRecipeGUI(shaped, player);
+        } else {
+            return null;
+        }
+
+        return viewer;
     }
 
 }

@@ -6,6 +6,7 @@ import com.github.alantr7.bukkitplugin.commands.executor.Evaluator;
 import com.github.alantr7.bukkitplugin.commands.executor.ExecutorType;
 import com.github.alantr7.bukkitplugin.commands.factory.CommandBuilder;
 import com.github.alantr7.bukkitplugin.commands.registry.Command;
+import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
@@ -16,6 +17,7 @@ import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Keyed;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -68,6 +70,38 @@ public class Commands {
       .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_BROWSE)
       .executes(ctx -> {
           new ItemBrowserMainGUI((Player) ctx.getExecutor()).open();
+      });
+
+    @CommandHandler Command recipe = CommandBuilder.using("torus")
+      .parameter("recipe")
+      .parameter("{item}", p -> p.tabComplete((args) -> {
+            if (args.length > 2 && !"torus:".startsWith(args[2]) && !args[2].startsWith("torus:")) {
+                return TorusPlugin.getInstance().getItemManager().getItemIds().stream().map(id -> id.substring("torus:".length())).toList();
+            }
+            return TorusPlugin.getInstance().getItemManager().getItemIds();
+        }))
+      .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_RECIPE)
+      .executes(ctx -> {
+          TorusItem item = TorusPlugin.getInstance().getItemManager().getItemById((String) ctx.getArgument("item"));
+          if (item == null) {
+              ctx.respond("Unknown item.");
+              return;
+          }
+
+          if (!item.hasRecipes()) {
+              ctx.respond(ChatColor.RED + "This item does not have any recipes.");
+              return;
+          }
+
+          Keyed recipe = item.getRecipes().iterator().next();
+          GUI viewer = TorusPlugin.getInstance().getRecipeManager().createRecipeViewer((Player) ctx.getExecutor(), recipe);
+
+          if (viewer == null) {
+              ctx.respond(ChatColor.RED + "This recipe can not be previewed.");
+              return;
+          }
+
+          viewer.open();
       });
 
     @CommandHandler Command reload = CommandBuilder.using("torus")

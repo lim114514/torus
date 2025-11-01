@@ -10,6 +10,9 @@ public class Permissions {
     @Permission(allowed = Permission.Allowed.OP, description = "Permission for using /torus browse")
     public static final String COMMAND_BROWSE = "torus.command.browse";
 
+    @Permission(allowed = Permission.Allowed.OP, description = "Permission for using /torus recipe")
+    public static final String COMMAND_RECIPE = "torus.command.recipe";
+
     @Permission(allowed = Permission.Allowed.OP, description = "Permission for using /torus reload")
     public static final String COMMAND_RELOAD = "torus.command.reload";
 
