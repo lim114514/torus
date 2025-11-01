@@ -128,50 +128,6 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
-    void onMachineRotate(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
-            return;
-
-        ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        if (item.getType() != Material.DEBUG_STICK)
-            return;
-
-        if (cooldowns.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
-            return;
-
-        StructureInstance machine = new BlockLocation(event.getClickedBlock().getLocation()).getStructure();
-        if (machine == null)
-            return;
-
-        event.setCancelled(true);
-
-        Direction right = switch (machine.direction) {
-            case NORTH -> Direction.EAST;
-            case EAST -> Direction.SOUTH;
-            case SOUTH -> Direction.WEST;
-            case WEST -> Direction.NORTH;
-            default -> null;
-        };
-
-        if (right == null) {
-            event.getPlayer().sendMessage("Can not rotate this machine.");
-            return;
-        }
-
-        machine.remove();
-        if (!machine.structure.isPlaceableAt(machine.location, right)) {
-            machine.structure.place(machine.location, machine.direction);
-            event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to rotate the machine.");
-            return;
-        }
-
-        machine.structure.place(machine.location, right);
-
-        cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
-        event.getPlayer().sendMessage(ChatColor.YELLOW + "You rotated the machine.");
-    }
-
-    @EventHandler
     void onUseTorusItemInVanillaCraftingRecipe(PrepareItemCraftEvent event) {
         if (!(event.getRecipe() instanceof CraftingRecipe recipe))
             return;
