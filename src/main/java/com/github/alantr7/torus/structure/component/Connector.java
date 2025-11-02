@@ -12,6 +12,7 @@ import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -20,6 +21,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Connector implements Connectable {
+
+    public StructureInstance structure;
 
     @Getter @Setter
     protected int connections;
@@ -80,6 +83,10 @@ public class Connector implements Connectable {
         int directionsCount = 0;
         int closedDirectionsCount = 0;
         List<Connection> networkConnections = new ArrayList<>();
+
+        if (structure != null) {
+            networkConnections.add(new Connection(structure, this));
+        }
 
         for (Direction direction : Direction.values()) {
             if (!isConnected(direction))
@@ -177,7 +184,7 @@ public class Connector implements Connectable {
                 continue;
 
             EnergyContainer capacitor = (EnergyContainer) conn.structure;
-            amount -= capacitor.consumeEnergy(Math.min(amount, conn.connector.maximumOutput));
+            amount -= capacitor.consumeEnergy(Math.min(amount, conn.connector.maximumOutput));;
 
             if (amount == 0)
                 break;

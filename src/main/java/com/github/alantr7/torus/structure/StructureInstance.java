@@ -82,6 +82,7 @@ public abstract class StructureInstance {
 
             if (componentDef.connectorDef != null) {
                 Connector connector = new Connector(components.get(componentDef.name), componentDef.connectorDef.allowedConnections(), componentDef.connectorDef.matter(), componentDef.connectorDef.direction());
+                connector.structure = this;
                 connectors.put(new ConnectorLocation(components.get(componentDef.name).absoluteLocation, componentDef.connectorDef.matter()), connector);
                 connectorsByName.put(componentDef.name, connector);
             }
@@ -336,7 +337,10 @@ public abstract class StructureInstance {
             dataContainer.structure = instance;
             instance.components.putAll(components);
             instance.connectors.putAll(connectors);
-            connectors.forEach((l, c) -> instance.connectorsByName.put(c.getComponent().name, c));
+            connectors.forEach((l, c) -> {
+                c.structure = instance;
+                instance.connectorsByName.put(c.getComponent().name, c);
+            });
 
             try {
                 instance.setup();
