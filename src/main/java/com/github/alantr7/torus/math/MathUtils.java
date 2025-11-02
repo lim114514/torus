@@ -1,20 +1,36 @@
 package com.github.alantr7.torus.math;
 
 import com.github.alantr7.torus.world.Direction;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 public class MathUtils {
 
-    public static final Vector3i V3I_ZERO = new Vector3i(0, 0, 0);
-    public static final Vector3i V3I_ONE = new Vector3i(1, 1, 1);
-
     public static void applyRotation(Vector3f vector, float angle) {
-        double distance = new Vector2f(vector.x, vector.z).length();
-        double currentAngle = Math.toDegrees(Math.atan2(vector.x, vector.z));
-        vector.x = (float) (Math.sin(Math.toRadians(currentAngle -angle)) * distance);
-        vector.z = (float) (Math.cos(Math.toRadians(currentAngle -angle)) * distance);
+        float[] result = rotateVector(new float[] { vector.x, vector.z }, angle);
+        vector.x = result[0];
+        vector.z = result[1];
+    }
+
+    private static float[] rotateVector(float[] pos, float angle) {
+        return switch ((int) angle) {
+            case 0, 360     -> new float[] { pos[0], pos[1] };
+            case 90, -270   -> new float[] { -pos[1], pos[0] };
+            case 180, -180  -> new float[] { -pos[0], -pos[1] };
+            case 270, -90   -> new float[] { pos[1], -pos[0] };
+            default -> {
+                float distance = (float) Math.sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
+                float currentAngle = (float) Math.toDegrees(Math.atan2(pos[0], pos[1]));
+
+                yield new float[] {
+                  (float) (Math.sin(Math.toRadians(currentAngle -angle)) * distance),
+                  (float) (Math.cos(Math.toRadians(currentAngle -angle)) * distance)
+                };
+            }
+        };
     }
 
     public static boolean hasFlag(int mask, int flag) {
@@ -29,11 +45,9 @@ public class MathUtils {
         byte[] bounds = new byte[parentBounds.length];
 
         for (int i = 0; i < bounds.length; i += 3) {
-            float distance = (float) Math.sqrt(parentBounds[i] * parentBounds[i] + parentBounds[i + 2] * parentBounds[i + 2]);
-            float angle = (float) Math.toRadians(direction.rotH) + (float) Math.atan2(parentBounds[i + 2], parentBounds[i]);
-
-            bounds[i] = (byte) Math.round((float) Math.cos(angle) * distance);
-            bounds[i + 2] = (byte) Math.round((float) Math.sin(angle) * distance);
+            float[] result = rotateVector(new float[] { parentBounds[i], parentBounds[i + 2] }, direction.rotH);
+            bounds[i]     = (byte) Math.round(result[0]);
+            bounds[i + 2] = (byte) Math.round(result[1]);
             bounds[i + 1] = parentBounds[i + 1];
         }
 
