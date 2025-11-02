@@ -35,11 +35,15 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         connector.maximumInput = 500;
     }
 
+    int energyAtLastTick;
     @Override
     public void tick() {
-        if (connector.maintainEnergy(this) != 0) {
+        connector.maintainEnergy(this);
+        if (energyAtLastTick != storedEnergy.get()) {
             updateModel();
         }
+
+        energyAtLastTick = storedEnergy.get();
     }
 
     public void updateModel() {
