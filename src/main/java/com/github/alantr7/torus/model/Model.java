@@ -1,4 +1,4 @@
-package com.github.alantr7.torus.structure.display;
+package com.github.alantr7.torus.model;
 
 import org.bukkit.Location;
 import org.joml.Vector3f;

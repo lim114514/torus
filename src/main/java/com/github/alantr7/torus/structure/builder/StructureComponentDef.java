@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.structure.builder;
 
-import com.github.alantr7.torus.structure.display.Model;
-import com.github.alantr7.torus.structure.display.ModelTemplate;
+import com.github.alantr7.torus.model.Model;
+import com.github.alantr7.torus.model.ModelTemplate;
 import org.joml.Vector3f;
 
 public class StructureComponentDef {
