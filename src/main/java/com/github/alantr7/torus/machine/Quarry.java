@@ -178,7 +178,7 @@ public class Quarry extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("base", new Vector3f(), MODEL_BASE),
             new StructureComponentDef("in_energy", new Vector3f(0, 0, -6), MODEL_ENERGY_CONNECTOR, new StructureConnectorDef(
-              Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.getLeft().mask()
+              Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getLeft().mask()
             )),
             new StructureComponentDef("out_item", new Vector3f(0, 0, -6), MODEL_ITEM_CONNECTOR, new StructureConnectorDef(
               Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.UP.mask()
