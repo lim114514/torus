@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
@@ -17,14 +19,25 @@ import org.joml.Vector3f;
 
 public class PhysicalConnector extends Structure {
 
-    static PartModelTemplate CONNECTOR_MODEL = new PartModelTemplate();
+    static PartModelTemplate CONNECTOR_MODEL = new PartModelTemplate("base");
     static {
         CONNECTOR_MODEL.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
+    }
+
+    public static final ModelTemplate INITIAL_MODEL = new ModelTemplate();
+    static {
+        INITIAL_MODEL.add(CONNECTOR_MODEL);
+        INITIAL_MODEL.add(new PartModelTemplate("cable"));
     }
 
     public PhysicalConnector() {
         super("torus:connector", PhysicalConnectorInstance.class);
         isHeavy = false;
+    }
+
+    @Override
+    public ModelTemplate getInitialModel() {
+        return INITIAL_MODEL;
     }
 
     @Override
@@ -42,7 +55,7 @@ public class PhysicalConnector extends Structure {
             new StructureComponentDef("connector", new Vector3f(), CONNECTOR_MODEL, new StructureConnectorDef(
               Connector.Matter.ITEM, Connector.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false)
             )),
-            new StructureComponentDef("cable", new Vector3f(), PartModelTemplate.EMPTY),
+            new StructureComponentDef("cable", new Vector3f(), (PartModel) null),
           }
         );
 

@@ -100,8 +100,8 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     }
 
     public void updateModel() {
-        components.get("cable").getModel().remove();
-        PartModelTemplate model = new PartModelTemplate();
+        model.getPart("cable").remove();
+        PartModelTemplate model = new PartModelTemplate("cable");
 
         for (Direction direction : Direction.values()) {
             if (connector.isConnected(direction)) {
@@ -114,8 +114,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
             model.add(EnergyCable.MODELS_ITEM[direction.getOpposite().ordinal()]);
         }
 
-        components.get("cable").setModel(model.build(location.getBlock().getLocation().add(.5, 0, .5), Direction.NORTH));
-        save();
+        this.model.parts.put("cable", model.build(location.getBlock().getLocation().add(.5, 0, .5), Direction.NORTH));
     }
 
     @Override

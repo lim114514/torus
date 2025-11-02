@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -17,7 +18,7 @@ import org.joml.Vector3f;
 
 public class FluidTank extends Structure {
 
-    static PartModelTemplate MODEL_BASE = new PartModelTemplate();
+    static PartModelTemplate MODEL_BASE = new PartModelTemplate("base");
     static {
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(.875f, .5f, -.39f - .5f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(-0.375f - 0.5f, .5f, -.39f - .5f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
@@ -38,24 +39,36 @@ public class FluidTank extends Structure {
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, 0.5f, -.5625f - .5f), new Vector3f(.1875f, .1875f, .6875f), 0f, 0f));
     }
 
-    static PartModelTemplate MODEL_INPUT_CONNECTOR = new PartModelTemplate();
+    static PartModelTemplate MODEL_INPUT_CONNECTOR = new PartModelTemplate("in_fluid");
     static {
         MODEL_INPUT_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 3.9375f, 0f), new Vector3f(.625f, .125f, .625f), 0f, 0f));
     }
 
-    static PartModelTemplate MODEL_OUTPUT_CONNECTOR = new PartModelTemplate();
+    static PartModelTemplate MODEL_OUTPUT_CONNECTOR = new PartModelTemplate("out_fluid");
     static {
         MODEL_OUTPUT_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 0.5f, -0.9375f - 0.5f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
     }
 
-    static PartModelTemplate MODEL_LIQUID = new PartModelTemplate();
+    static PartModelTemplate MODEL_LIQUID = new PartModelTemplate("liquid");
     static {
         MODEL_LIQUID.add(new PartModelElementItemDisplayRenderer(Material.BLUE_CONCRETE, new Vector3f(0f, 1.265f, 0f), new Vector3f(2.15f, 0f, 2.15f), 0f, 0f));
     }
 
+    public static final ModelTemplate INITIAL_MODEL = new ModelTemplate();
+    static {
+        INITIAL_MODEL.add(MODEL_BASE);
+        INITIAL_MODEL.add(MODEL_INPUT_CONNECTOR);
+        INITIAL_MODEL.add(MODEL_OUTPUT_CONNECTOR);
+        INITIAL_MODEL.add(MODEL_LIQUID);
+    }
 
     public FluidTank() {
         super("torus:fluid_tank", FluidTankInstance.class);
+    }
+
+    @Override
+    public ModelTemplate getInitialModel() {
+        return INITIAL_MODEL;
     }
 
     @Override

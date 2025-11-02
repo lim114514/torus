@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -15,9 +17,22 @@ import static com.github.alantr7.torus.machine.EnergyCable.MODELS_FLUID;
 
 public class FluidPipe extends Structure {
 
+    static ModelTemplate INITIAL_MODEL = new ModelTemplate();
+    static {
+        PartModelTemplate part = new PartModelTemplate("base");
+        part.add(MODELS_FLUID[0]);
+
+        INITIAL_MODEL.add(part);
+    }
+
     public FluidPipe() {
         super("torus:fluid_pipe", CableInstance.class);
         isHeavy = false;
+    }
+
+    @Override
+    public ModelTemplate getInitialModel() {
+        return INITIAL_MODEL;
     }
 
     @Override
@@ -30,10 +45,7 @@ public class FluidPipe extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        PartModelTemplate modelDisconnected = new PartModelTemplate();
-        modelDisconnected.add(MODELS_FLUID[6]);
-
-        StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), modelDisconnected.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
+        StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), (PartModel) null);
         return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}), Connector.Matter.FLUID);
     }
 

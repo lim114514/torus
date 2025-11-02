@@ -50,12 +50,6 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     public QuarryInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(structure, location, bodyDef, direction);
-
-        getComponent("drill_holder").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
-        getComponent("drill").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
-        getComponent("drill_tip").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
-        getComponent("mover_x").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
-        getComponent("mover_z").getModel().entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
     }
 
     @Override
@@ -91,6 +85,15 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         if (hasSufficientEnergy(50)) {
             advance();
         }
+    }
+
+    @Override
+    public void handleModelInit() {
+        model.getPart("drill_holder").entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
+        model.getPart("drill").entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
+        model.getPart("drill_tip").entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
+        model.getPart("mover_x").entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
+        model.getPart("mover_z").entityReferences.forEach(d -> d.entity.setTeleportDuration(10));
     }
 
     public void advance() {
@@ -135,17 +138,17 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         byte[] zMoverPosition = new byte[] {(byte) (-position0[0] + 4), 0, 0};
         zMoverPosition = MathUtils.rotateVectors(zMoverPosition, direction);
 
-        moverX.getModel().teleport(location.toBukkit().add(.5, 4.5f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
-        moverZ.getModel().teleport(location.toBukkit().add(.5, 4.5f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
+        model.getPart("mover_x").teleport(location.toBukkit().add(.5, 4.5f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
+        model.getPart("mover_z").teleport(location.toBukkit().add(.5, 4.5f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
 
         updateDrillLength();
 
-        drill.getModel().teleport(location.toBukkit().add(.5, .125f + drillLength.get() / 2f + .5f, .5).add(position[0], position[1], position[2]));
-        drillTip.getModel().teleport(location.toBukkit().add(.5, .5f - .125f, .5).add(position[0], position[1], position[2]));
+        model.getPart("drill").teleport(location.toBukkit().add(.5, .125f + drillLength.get() / 2f + .5f, .5).add(position[0], position[1], position[2]));
+        model.getPart("drill_tip").teleport(location.toBukkit().add(.5, .5f - .125f, .5).add(position[0], position[1], position[2]));
 
         float[] holderOffset = {.25f, .3f, .15f};
         holderOffset = MathUtils.rotateVectors(holderOffset, direction.getOpposite().rotH, direction.getOpposite().rotV);
-        drillHolder.getModel().teleport(location.toBukkit().add(.5 + holderOffset[0], 5 + holderOffset[1], .5 + holderOffset[2]).add(position[0], 0, position[2]));
+        model.getPart("drill_holder").teleport(location.toBukkit().add(.5 + holderOffset[0], 5 + holderOffset[1], .5 + holderOffset[2]).add(position[0], 0, position[2]));
 
         return true;
     }
@@ -156,7 +159,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         drillLength.update(len);
 
-        ItemDisplay drillModel = drill.getModel().entityReferences.getFirst().getEntity();
+        ItemDisplay drillModel = model.getPart("drill").entityReferences.getFirst().getEntity();
         Transformation transform = drillModel.getTransformation();
         transform.getScale().y = len + f;
         drillModel.setTransformation(transform);

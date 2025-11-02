@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -17,24 +18,33 @@ import org.joml.Vector3f;
 
 public class SolarGenerator extends Structure {
 
-    static PartModelTemplate MODEL = new PartModelTemplate();
+    static PartModelTemplate MODEL = new PartModelTemplate("base");
     static {
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(0, 0.125f, 0), new Vector3f(0.75f, 0.25f, 0.75f), 0f, 0f));
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.LIGHT_GRAY_CONCRETE, new Vector3f(0, 1.0625f, 0), new Vector3f(0.125f, 1.625f, 0.125f), 0f, 0f));
 
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.BLACK_CONCRETE, new Vector3f(0, 1.875f, 0), new Vector3f(2.4f, 0.062f, 2.4f), 0f, -20f));
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.LAPIS_BLOCK, new Vector3f(0, 1.875f, 0), new Vector3f(2.25f, 0.0625f, 2.25f), 0f, -20f));
-
-        System.out.println();
     }
 
-    static PartModelTemplate CONNECTOR_MODEL = new PartModelTemplate();
+    static PartModelTemplate CONNECTOR_MODEL = new PartModelTemplate("out_energy");
     static {
         CONNECTOR_MODEL.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
     }
 
+    public static final ModelTemplate INITIAL_MODEL = new ModelTemplate();
+    static {
+        INITIAL_MODEL.add(MODEL);
+        INITIAL_MODEL.add(CONNECTOR_MODEL);
+    }
+
     public SolarGenerator() {
         super("torus:solar_generator", SolarGeneratorInstance.class);
+    }
+
+    @Override
+    public ModelTemplate getInitialModel() {
+        return INITIAL_MODEL;
     }
 
     @Override

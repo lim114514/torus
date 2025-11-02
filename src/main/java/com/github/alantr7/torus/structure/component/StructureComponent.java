@@ -17,23 +17,18 @@ public class StructureComponent {
 
     public final Direction direction;
 
-    @Getter @Setter
-    protected PartModel model;
-
-    public StructureComponent(String name, BlockLocation absoluteLocation, BlockLocation relativeLocation, Direction direction, PartModel model) {
+    public StructureComponent(String name, BlockLocation absoluteLocation, BlockLocation relativeLocation, Direction direction) {
         this.name = name;
         this.absoluteLocation = absoluteLocation;
         this.relativeLocation = relativeLocation;
         this.direction = direction;
-        this.model = model;
     }
 
-    public StructureComponent(StructureInstance structure, BlockLocation relativeLocation, String name, PartModel model) {
+    public StructureComponent(StructureInstance structure, BlockLocation relativeLocation, String name) {
         this.absoluteLocation = structure.location.getRelative(relativeLocation);
         this.relativeLocation = relativeLocation;
         this.name = name;
         this.direction = structure.direction;
-        this.model = model;
     }
 
 }

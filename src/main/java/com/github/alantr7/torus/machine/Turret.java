@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
+import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -31,7 +32,7 @@ public class Turret extends Structure {
 //        MODEL_HEAD.add(new ModelPartItemDisplayRenderer(Material.CHAIN, .25f, .8125f, 0f, .3125f, .5625f, .375f, 90, 0));
     }
 
-    static PartModelTemplate MODEL_BASE = new PartModelTemplate();
+    static PartModelTemplate MODEL_BASE = new PartModelTemplate("base");
     static {
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, 0f, 1f, 0f, .3125f, .0625f, .3125f));
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, 0f, 1f, .125f, .1875f, .125f, .1875f));
@@ -49,12 +50,23 @@ public class Turret extends Structure {
 //        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, 0f, .5f, .4375f, .5f, .5f, .125f));
     }
 
+    public static final ModelTemplate INITIAL_MODEL = new ModelTemplate();
+    static {
+        INITIAL_MODEL.add(MODEL_HEAD);
+        INITIAL_MODEL.add(MODEL_BASE);
+    }
+
     public static ItemCriteria AMMO_CRITERIA = new ItemCriteria();
     static { AMMO_CRITERIA.ids.add("torus:steel_nugget"); }
 
     public Turret() {
         super("torus:turret", TurretInstance.class);
         registerNamedModelTemplate(MODEL_HEAD);
+    }
+
+    @Override
+    public ModelTemplate getInitialModel() {
+        return INITIAL_MODEL;
     }
 
     @Override

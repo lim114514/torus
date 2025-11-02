@@ -34,7 +34,13 @@ public class CableInstance extends StructureInstance implements Connectable {
     protected void setup() {
     }
 
+    @Override
+    public void handleModelInit() {
+        updateModel();
+    }
+
     public void updateConnections() {
+        int connections = getConnections();
         updateConnection(Direction.NORTH);
         updateConnection(Direction.SOUTH);
         updateConnection(Direction.EAST);
@@ -45,6 +51,10 @@ public class CableInstance extends StructureInstance implements Connectable {
         if (shouldUpdateModel) {
             updateModel();
             shouldUpdateModel = false;
+        }
+
+        if (getConnections() != connections) {
+            save();
         }
     }
 
@@ -80,7 +90,7 @@ public class CableInstance extends StructureInstance implements Connectable {
     }
 
     public void updateModel() {
-        PartModelTemplate model = new PartModelTemplate();
+        PartModelTemplate model = new PartModelTemplate("base");
         if (connections.get() == 0) {
             model.add(CABLE_MODELS[type.get()][6]);
         }
@@ -91,8 +101,7 @@ public class CableInstance extends StructureInstance implements Connectable {
             }
         }
 
-        components.get("base").setModel(model.recycle(components.get("base").getModel(), location.getBlock().getLocation().add(.5, 0, .5), direction.rotH, direction.rotV));
-        save();
+        this.model.parts.put("base", model.recycle(this.model.getPart("base"), location.getBlock().getLocation().add(.5, 0, .5), direction.rotH, direction.rotV));
     }
 
     @Override

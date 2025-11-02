@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -63,6 +64,10 @@ public abstract class Structure {
     protected void createBounds(ByteArrayBuilder builder) {
     }
 
+    public ModelTemplate getInitialModel() {
+        return null;
+    }
+
     public boolean isPlaceableAt(BlockLocation location, Direction direction) {
         byte[] offset = calculateOffset(direction.getOpposite());
         byte[] bounds = MathUtils.rotateVectors(this.bounds, direction);
@@ -81,6 +86,11 @@ public abstract class Structure {
         location = location.getRelative(offset[0], offset[1], offset[2]);
         StructureInstance instance = instantiate(location, direction);
         try {
+            ModelTemplate modelTemplate = getInitialModel();
+            if (modelTemplate != null) {
+                instance.model = modelTemplate.toModel(location, direction);
+            }
+            instance.handleModelInit();
             instance.setup();
         } catch (Exception ex) {
             ex.printStackTrace();

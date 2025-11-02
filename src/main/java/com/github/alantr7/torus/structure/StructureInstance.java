@@ -9,8 +9,8 @@ import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
+import com.github.alantr7.torus.model.Model;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.model.EntityReference;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.ConnectorLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -19,7 +19,6 @@ import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
 import org.bukkit.entity.Player;
@@ -55,6 +54,8 @@ public abstract class StructureInstance {
 
     private int[][] occupiedChunks;
 
+    public Model model = new Model();
+
     public StructureInstance(LoadContext context) {
         this.structure = context.structure();
         this.location = context.location();
@@ -75,8 +76,7 @@ public abstract class StructureInstance {
             StructureComponent component = new StructureComponent(
               this,
               new BlockLocation(location.world, (int) componentDef.offset.x, (int) componentDef.offset.y, (int) componentDef.offset.z),
-              componentDef.name,
-              componentDef.template == null ? componentDef.model : componentDef.template.build(location.toBukkit().add(.5, 0, .5), direction)
+              componentDef.name
             );
             components.put(componentDef.name, component);
 
@@ -87,6 +87,9 @@ public abstract class StructureInstance {
             }
         }
         setOccupiedChunks();
+    }
+
+    public void handleModelInit() {
     }
 
     public byte[] getBounds() {
@@ -210,23 +213,23 @@ public abstract class StructureInstance {
             buffer.writeU1(component.relativeLocation.y);
 
             // Model
-            if (component.getModel() != null) {
-                if (component.getModel().template != null && component.getModel().template.name != null) {
-                    buffer.writeU1(1);
-                    buffer.writeU1(keys.pool(component.getModel().template.name));
-                } else {
-                    buffer.writeU1(0);
-                }
-
-                buffer.writeU1(component.getModel().entityReferences.size());
-                for (EntityReference ref : component.getModel().entityReferences) {
-                    buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getMostSignificantBits(), 8));
-                    buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getLeastSignificantBits(), 8));
-                }
-            } else {
+//            if (component.getModel() != null) {
+//                if (component.getModel().template != null && component.getModel().template.name != null) {
+//                    buffer.writeU1(1);
+//                    buffer.writeU1(keys.pool(component.getModel().template.name));
+//                } else {
+//                    buffer.writeU1(0);
+//                }
+//
+//                buffer.writeU1(component.getModel().entityReferences.size());
+//                for (EntityReference ref : component.getModel().entityReferences) {
+//                    buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getMostSignificantBits(), 8));
+//                    buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getLeastSignificantBits(), 8));
+//                }
+//            } else {
                 buffer.writeU1(0);
                 buffer.writeU1(0);
-            }
+//            }
         });
 
         // Connectors
@@ -286,18 +289,12 @@ public abstract class StructureInstance {
             String modelName = reader.readU1() == 1 ? region.strings.at(reader.readU1()) : null;
 
             int entitiesLength = reader.readU1();
-            List<EntityReference> entities = new ArrayList<>();
-
             for (int j = 0; j < entitiesLength; j++) {
-                byte[] uidmost = reader.readBytes(8);
-                byte[] uidleast = reader.readBytes(8);
-
-                UUID uid = new UUID(ByteArrayReader.toLong(uidmost), ByteArrayReader.toLong(uidleast));
-                entities.add(new EntityReference(uid));
+                reader.readBytes(8);
+                reader.readBytes(8);
             }
 
-            PartModel model = new PartModel(structure != null ? structure.getNamedModelTemplate(modelName) : null, entities);
-            StructureComponent component = new StructureComponent(name, location.getRelative(cx, cy, cz), new BlockLocation(chunk.world, cx, cy, cz), Direction.values()[direction], model);
+            StructureComponent component = new StructureComponent(name, location.getRelative(cx, cy, cz), new BlockLocation(chunk.world, cx, cy, cz), Direction.values()[direction]);
             components.put(name, component);
         }
 

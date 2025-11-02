@@ -4,6 +4,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.InvokePeriodically;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.StructureInstance;
 import net.md_5.bungee.api.ChatMessageType;
@@ -92,6 +93,14 @@ public class TorusWorldManager implements Listener {
     private void autoSaveStructures() {
         worlds.values().forEach(TorusWorld::save);
     }
+
+    @Invoke(Invoke.Schedule.AFTER_PLUGIN_DISABLE)
+    private void removeModelsOnDisable() {
+        worlds.values().forEach(world ->world.regions.values().forEach(region -> region.chunks.values().forEach(chunk -> {
+            chunk.structures.values().forEach(s -> s.model.parts.values().forEach(PartModel::remove));
+        })));
+    }
+
 
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     private void registerEvents() {

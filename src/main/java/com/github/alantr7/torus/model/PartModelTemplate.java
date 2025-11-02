@@ -21,13 +21,7 @@ public class PartModelTemplate {
         this.name = name;
     }
 
-    public PartModelTemplate() {
-        this(null);
-    }
-
     private final List<PartModelElementItemDisplayRenderer> parts = new ArrayList<>();
-
-    public static final PartModelTemplate EMPTY = new PartModelTemplate();
 
     public void add(PartModelElementItemDisplayRenderer part) {
         parts.add(part);

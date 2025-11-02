@@ -42,13 +42,11 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         }
     }
 
-    private void updateModel() {
+    public void updateModel() {
         float ratio = (float) storedEnergy.get() / (float) energyCapacity;
         float height = 1.125f * ratio;
 
-        StructureComponent component = getComponent("charge");
-
-        ItemDisplay entity = component.getModel().entityReferences.getFirst().getEntity();
+        ItemDisplay entity = this.model.getPart("progress").entityReferences.getFirst().getEntity();
         Transformation transformation = entity.getTransformation();
         transformation.getScale().y = height;
         transformation.getTranslation().y = height / 2f;

@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.model;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.joml.Vector3f;
 

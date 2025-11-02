@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -49,9 +51,22 @@ public class EnergyCable extends Structure {
       MODELS_ITEM, MODELS_ENERGY, MODELS_FLUID
     };
 
+    static ModelTemplate INITIAL_MODEL = new ModelTemplate();
+    static {
+        PartModelTemplate part = new PartModelTemplate("base");
+        part.add(MODELS_ENERGY[0]);
+
+        INITIAL_MODEL.add(part);
+    }
+
     public EnergyCable() {
         super("torus:energy_cable", CableInstance.class);
         isHeavy = false;
+    }
+
+    @Override
+    public ModelTemplate getInitialModel() {
+        return INITIAL_MODEL;
     }
 
     @Override
@@ -64,10 +79,7 @@ public class EnergyCable extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        PartModelTemplate modelDisconnected = new PartModelTemplate();
-        modelDisconnected.add(MODELS_ENERGY[6]);
-
-        StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), modelDisconnected.build(location.getBlock().getLocation().add(.5, 0, .5), direction));
+        StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), (PartModel) null);
         return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}), Connector.Matter.ENERGY);
     }
 
