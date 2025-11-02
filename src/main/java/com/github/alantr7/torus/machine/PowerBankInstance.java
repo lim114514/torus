@@ -53,7 +53,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         ItemDisplay entity = this.model.getPart("progress").entityReferences.getFirst().getEntity();
         Transformation transformation = entity.getTransformation();
         transformation.getScale().y = height;
-        transformation.getTranslation().y = height / 2f;
+        transformation.getTranslation().y = PowerBank.PROGRESS_MODEL.parts.getFirst().offset[1] + height / 2f;
         entity.setTransformation(transformation);
     }
 

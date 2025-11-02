@@ -2,6 +2,7 @@ package com.github.alantr7.torus.model;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -10,10 +11,13 @@ public class PartModel {
 
     public final PartModelTemplate template;
 
+    public final Entity parent;
+
     public final List<EntityReference> entityReferences;
 
-    public PartModel(PartModelTemplate template, List<EntityReference> entityReferences) {
+    public PartModel(PartModelTemplate template, Entity parent, List<EntityReference> entityReferences) {
         this.template = template;
+        this.parent = parent;
         this.entityReferences = entityReferences;
     }
 
@@ -55,6 +59,7 @@ public class PartModel {
     }
 
     public void remove() {
+        parent.remove();
         entityReferences.forEach(ref -> {
             if (ref.getEntity() != null)
                 ref.entity.remove();
