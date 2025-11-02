@@ -11,7 +11,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -101,7 +101,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     public void updateModel() {
         components.get("cable").getModel().remove();
-        ModelTemplate model = new ModelTemplate();
+        PartModelTemplate model = new PartModelTemplate();
 
         for (Direction direction : Direction.values()) {
             if (connector.isConnected(direction)) {

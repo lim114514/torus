@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.math.MathUtils;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -28,7 +28,7 @@ public abstract class Structure {
 
     public boolean isHeavy = true;
 
-    protected final Map<String, ModelTemplate> namedModelTemplates = new HashMap<>();
+    protected final Map<String, PartModelTemplate> namedModelTemplates = new HashMap<>();
 
     public Structure(String id, Class<? extends StructureInstance> instanceClass) {
         this.id = id;
@@ -99,14 +99,14 @@ public abstract class Structure {
         return MathUtils.rotateVectors(this.offset, direction);
     }
 
-    public ModelTemplate getNamedModelTemplate(String name) {
+    public PartModelTemplate getNamedModelTemplate(String name) {
         if (name == null)
             return null;
 
         return namedModelTemplates.get(name);
     }
 
-    protected void registerNamedModelTemplate(ModelTemplate template) {
+    protected void registerNamedModelTemplate(PartModelTemplate template) {
         namedModelTemplates.put(template.name, template);
     }
 

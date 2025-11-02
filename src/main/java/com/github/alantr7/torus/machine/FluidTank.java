@@ -9,48 +9,48 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.model.ModelPartItemDisplayRenderer;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelElementItemDisplayRenderer;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class FluidTank extends Structure {
 
-    static ModelTemplate MODEL_BASE = new ModelTemplate();
+    static PartModelTemplate MODEL_BASE = new PartModelTemplate();
     static {
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(.875f, .5f, -.39f - .5f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(-0.375f - 0.5f, .5f, -.39f - .5f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(-0.39f - .5f, .5f, .875f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(.875f, .5f, 1.35f - 0.5f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(.875f, .5f, -.39f - .5f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(-0.375f - 0.5f, .5f, -.39f - .5f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(-0.39f - .5f, .5f, .875f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(.875f, .5f, 1.35f - 0.5f), new Vector3f(.25f, .9375f, .25f), 0f, 0f));
 
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(0f, 1.125f, 0f), new Vector3f(2.25f, .3125f, 2.25f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(0f, 3.4375f, 0f), new Vector3f(2.25f, .125f, 2.25f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(0f, 1.125f, 0f), new Vector3f(2.25f, .3125f, 2.25f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE_POWDER, new Vector3f(0f, 3.4375f, 0f), new Vector3f(2.25f, .125f, 2.25f), 0f, 0f));
 
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.TINTED_GLASS, new Vector3f(0f, 2.3125f, -0.5f -.675f), new Vector3f(2.25f, 2.125f, 0.1f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.TINTED_GLASS, new Vector3f(0f, 2.3125f, -0.5f + 1.675f), new Vector3f(2.25f, 2.125f, 0.1f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.TINTED_GLASS, new Vector3f(1.175f, 2.3125f, 0f), new Vector3f(0.1f, 2.125f, 2.25f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.TINTED_GLASS, new Vector3f(-0.5f - 0.675f, 2.3125f, 0f), new Vector3f(0.1f, 2.125f, 2.25f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.TINTED_GLASS, new Vector3f(0f, 2.3125f, -0.5f -.675f), new Vector3f(2.25f, 2.125f, 0.1f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.TINTED_GLASS, new Vector3f(0f, 2.3125f, -0.5f + 1.675f), new Vector3f(2.25f, 2.125f, 0.1f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.TINTED_GLASS, new Vector3f(1.175f, 2.3125f, 0f), new Vector3f(0.1f, 2.125f, 2.25f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.TINTED_GLASS, new Vector3f(-0.5f - 0.675f, 2.3125f, 0f), new Vector3f(0.1f, 2.125f, 2.25f), 0f, 0f));
 
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.POLISHED_TUFF_WALL, new Vector3f(0f, 3.6875f, 0f), new Vector3f(0.6875f, .375f, .75f), 90f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.POLISHED_TUFF_WALL, new Vector3f(0f, 3.6875f, 0f), new Vector3f(0.6875f, .375f, .75f), 90f, 0f));
 
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, .6875f, -.145f - .5f), new Vector3f(.1875f, .5625f, .1875f), 0f, 0f));
-        MODEL_BASE.add(new ModelPartItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, 0.5f, -.5625f - .5f), new Vector3f(.1875f, .1875f, .6875f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, .6875f, -.145f - .5f), new Vector3f(.1875f, .5625f, .1875f), 0f, 0f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, 0.5f, -.5625f - .5f), new Vector3f(.1875f, .1875f, .6875f), 0f, 0f));
     }
 
-    static ModelTemplate MODEL_INPUT_CONNECTOR = new ModelTemplate();
+    static PartModelTemplate MODEL_INPUT_CONNECTOR = new PartModelTemplate();
     static {
-        MODEL_INPUT_CONNECTOR.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 3.9375f, 0f), new Vector3f(.625f, .125f, .625f), 0f, 0f));
+        MODEL_INPUT_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 3.9375f, 0f), new Vector3f(.625f, .125f, .625f), 0f, 0f));
     }
 
-    static ModelTemplate MODEL_OUTPUT_CONNECTOR = new ModelTemplate();
+    static PartModelTemplate MODEL_OUTPUT_CONNECTOR = new PartModelTemplate();
     static {
-        MODEL_OUTPUT_CONNECTOR.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 0.5f, -0.9375f - 0.5f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
+        MODEL_OUTPUT_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 0.5f, -0.9375f - 0.5f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
     }
 
-    static ModelTemplate MODEL_LIQUID = new ModelTemplate();
+    static PartModelTemplate MODEL_LIQUID = new PartModelTemplate();
     static {
-        MODEL_LIQUID.add(new ModelPartItemDisplayRenderer(Material.BLUE_CONCRETE, new Vector3f(0f, 1.265f, 0f), new Vector3f(2.15f, 0f, 2.15f), 0f, 0f));
+        MODEL_LIQUID.add(new PartModelElementItemDisplayRenderer(Material.BLUE_CONCRETE, new Vector3f(0f, 1.265f, 0f), new Vector3f(2.15f, 0f, 2.15f), 0f, 0f));
     }
 
 

@@ -8,8 +8,8 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.model.ModelPartItemDisplayRenderer;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelElementItemDisplayRenderer;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -17,24 +17,24 @@ import org.joml.Vector3f;
 
 public class PowerBank extends Structure {
 
-    static ModelTemplate MODEL = new ModelTemplate();
+    static PartModelTemplate MODEL = new PartModelTemplate();
     static {
-        MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, 0.75f, 0), new Vector3f(0.75f, 1.5f, 0.75f), 0f, 0f));
-        MODEL.add(new ModelPartItemDisplayRenderer(Material.WHITE_STAINED_GLASS, new Vector3f(0, 0.72125f, 0.121875f - 0.5f), new Vector3f(0.1875f, 1.1875f, 0.0625f), 0f, 0f));
-        MODEL.add(new ModelPartItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0, 0.72125f, 0.11625f - 0.5f), new Vector3f(0.125f, 1.12f, 0.0625f), 0f, 0f));
+        MODEL.add(new PartModelElementItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(0, 0.75f, 0), new Vector3f(0.75f, 1.5f, 0.75f), 0f, 0f));
+        MODEL.add(new PartModelElementItemDisplayRenderer(Material.WHITE_STAINED_GLASS, new Vector3f(0, 0.72125f, 0.121875f - 0.5f), new Vector3f(0.1875f, 1.1875f, 0.0625f), 0f, 0f));
+        MODEL.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0, 0.72125f, 0.11625f - 0.5f), new Vector3f(0.125f, 1.12f, 0.0625f), 0f, 0f));
     }
 
-    static ModelTemplate PROGRESS_MODEL = new ModelTemplate();
+    static PartModelTemplate PROGRESS_MODEL = new PartModelTemplate();
     static {
-        PROGRESS_MODEL.add(new ModelPartItemDisplayRenderer(Material.CYAN_CONCRETE, new Vector3f(0, 0.1675f, 0.11525f - 0.5f), new Vector3f(0.12f, 0.0011f, 0.0625f), 0f, 0f));
+        PROGRESS_MODEL.add(new PartModelElementItemDisplayRenderer(Material.CYAN_CONCRETE, new Vector3f(0, 0.1675f, 0.11525f - 0.5f), new Vector3f(0.12f, 0.0011f, 0.0625f), 0f, 0f));
     }
 
-    static ModelTemplate CONNECTOR_MODEL = new ModelTemplate();
+    static PartModelTemplate CONNECTOR_MODEL = new PartModelTemplate();
     static {
-        CONNECTOR_MODEL.add(new ModelPartItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(0f, 1.75f, 0), new Vector3f(.2f, 0.5f, .2f), 0f, 0f));
-        CONNECTOR_MODEL.add(new ModelPartItemDisplayRenderer(Material.WAXED_CUT_COPPER_SLAB, new Vector3f(0f, 1.625f, 0), new Vector3f(0.375f, 0.1875f, 0.375f), 0f, 0f));
-        CONNECTOR_MODEL.add(new ModelPartItemDisplayRenderer(Material.WAXED_CUT_COPPER_SLAB, new Vector3f(0f, 1.78375f, 0), new Vector3f(0.375f, 0.1875f, 0.375f), 0f, 0f));
-        CONNECTOR_MODEL.add(new ModelPartItemDisplayRenderer(Material.WAXED_CUT_COPPER_SLAB, new Vector3f(0f, 1.9375f, 0), new Vector3f(0.375f, 0.1875f, 0.375f), 0f, 0f));
+        CONNECTOR_MODEL.add(new PartModelElementItemDisplayRenderer(Material.GRAY_WOOL, new Vector3f(0f, 1.75f, 0), new Vector3f(.2f, 0.5f, .2f), 0f, 0f));
+        CONNECTOR_MODEL.add(new PartModelElementItemDisplayRenderer(Material.WAXED_CUT_COPPER_SLAB, new Vector3f(0f, 1.625f, 0), new Vector3f(0.375f, 0.1875f, 0.375f), 0f, 0f));
+        CONNECTOR_MODEL.add(new PartModelElementItemDisplayRenderer(Material.WAXED_CUT_COPPER_SLAB, new Vector3f(0f, 1.78375f, 0), new Vector3f(0.375f, 0.1875f, 0.375f), 0f, 0f));
+        CONNECTOR_MODEL.add(new PartModelElementItemDisplayRenderer(Material.WAXED_CUT_COPPER_SLAB, new Vector3f(0f, 1.9375f, 0), new Vector3f(0.375f, 0.1875f, 0.375f), 0f, 0f));
     }
 
     public PowerBank() {

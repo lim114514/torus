@@ -13,29 +13,29 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelTemplate {
+public class PartModelTemplate {
 
     public final String name;
 
-    public ModelTemplate(String name) {
+    public PartModelTemplate(String name) {
         this.name = name;
     }
 
-    public ModelTemplate() {
+    public PartModelTemplate() {
         this(null);
     }
 
-    private final List<ModelPartItemDisplayRenderer> parts = new ArrayList<>();
+    private final List<PartModelElementItemDisplayRenderer> parts = new ArrayList<>();
 
-    public static final ModelTemplate EMPTY = new ModelTemplate();
+    public static final PartModelTemplate EMPTY = new PartModelTemplate();
 
-    public void add(ModelPartItemDisplayRenderer part) {
+    public void add(PartModelElementItemDisplayRenderer part) {
         parts.add(part);
     }
 
-    public Model build(Location location, Direction direction) {
+    public PartModel build(Location location, Direction direction) {
         List<ItemDisplay> entities = new ArrayList<>();
-        for (ModelPartItemDisplayRenderer part : parts) {
+        for (PartModelElementItemDisplayRenderer part : parts) {
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
             MathUtils.applyRotation(rotatedOffset, direction.rotH);
 
@@ -51,15 +51,15 @@ public class ModelTemplate {
             entities.add(entity);
         }
 
-        return new Model(this, entities.stream().map(EntityReference::new).toList());
+        return new PartModel(this, entities.stream().map(EntityReference::new).toList());
     }
 
-    public Model recycle(Model model, Location location, float rotH, float rotV) {
+    public PartModel recycle(PartModel model, Location location, float rotH, float rotV) {
         List<ItemDisplay> entities = new ArrayList<>();
 
         int entityIdx = 0;
         for (; entityIdx < parts.size(); entityIdx++) {
-            ModelPartItemDisplayRenderer part = parts.get(entityIdx);
+            PartModelElementItemDisplayRenderer part = parts.get(entityIdx);
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
             MathUtils.applyRotation(rotatedOffset, rotH);
 
@@ -83,14 +83,14 @@ public class ModelTemplate {
             model.entityReferences.get(entityIdx).getEntity().remove();
         }
 
-        return new Model(this, entities.stream().map(EntityReference::new).toList());
+        return new PartModel(this, entities.stream().map(EntityReference::new).toList());
     }
 
-    private void transformEntity(ItemDisplay entity, ModelPartItemDisplayRenderer part, Direction direction) {
+    private void transformEntity(ItemDisplay entity, PartModelElementItemDisplayRenderer part, Direction direction) {
         transformEntity(entity, part, direction.rotH, direction.rotV);
     }
 
-    private void transformEntity(ItemDisplay entity, ModelPartItemDisplayRenderer part, float rotH, float rotV) {
+    private void transformEntity(ItemDisplay entity, PartModelElementItemDisplayRenderer part, float rotH, float rotV) {
         entity.setPersistent(false);
         entity.setItemStack(part.itemStack.clone());
         entity.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "purpose"), PersistentDataType.STRING, "structure_model");

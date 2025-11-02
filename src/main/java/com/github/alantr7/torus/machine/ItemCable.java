@@ -7,7 +7,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -30,7 +30,7 @@ public class ItemCable extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        ModelTemplate modelDisconnected = new ModelTemplate();
+        PartModelTemplate modelDisconnected = new PartModelTemplate();
         modelDisconnected.add(MODELS_ITEM[6]);
 
         return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{

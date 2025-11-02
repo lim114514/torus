@@ -5,7 +5,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connectable;
@@ -80,7 +80,7 @@ public class CableInstance extends StructureInstance implements Connectable {
     }
 
     public void updateModel() {
-        ModelTemplate model = new ModelTemplate();
+        PartModelTemplate model = new PartModelTemplate();
         if (connections.get() == 0) {
             model.add(CABLE_MODELS[type.get()][6]);
         }

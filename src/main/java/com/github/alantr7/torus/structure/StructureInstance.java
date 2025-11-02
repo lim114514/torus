@@ -19,7 +19,7 @@ import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
-import com.github.alantr7.torus.model.Model;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
 import org.bukkit.entity.Player;
@@ -296,7 +296,7 @@ public abstract class StructureInstance {
                 entities.add(new EntityReference(uid));
             }
 
-            Model model = new Model(structure != null ? structure.getNamedModelTemplate(modelName) : null, entities);
+            PartModel model = new PartModel(structure != null ? structure.getNamedModelTemplate(modelName) : null, entities);
             StructureComponent component = new StructureComponent(name, location.getRelative(cx, cy, cz), new BlockLocation(chunk.world, cx, cy, cz), Direction.values()[direction], model);
             components.put(name, component);
         }
