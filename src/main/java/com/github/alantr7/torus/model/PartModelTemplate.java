@@ -80,9 +80,9 @@ public class PartModelTemplate {
         Transformation transformation = entity.getTransformation();
         transformation.getTranslation().set(translation);
         transformation.getScale().set(part.scale);
-        transformation.getLeftRotation().setAngleAxis((float) Math.toRadians(part.rotV), 0f, 0f, 1f);
+        transformation.getLeftRotation().set(part.rotation);
         entity.setTransformation(transformation);
-        entity.setRotation(rotH + part.rotH, rotV);
+        entity.setRotation(rotH, rotV);
     }
 
 }
