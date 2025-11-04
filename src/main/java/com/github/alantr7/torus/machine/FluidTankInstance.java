@@ -61,20 +61,20 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     public void updateLiquidModel() {
         float height = (float) stored.get() / getFluidCapacity() * 2.1f;
-        float bottomOffset = 1.265f + height / 2;
-
-        ItemDisplay display = liquidComponent.getModel().entityReferences.getFirst().getEntity();
+        ItemDisplay display = model.getPart("liquid").entityReferences.getFirst().getEntity();
         if ((display.getItemStack().getType() == Material.BLUE_CONCRETE && fluid.get() != Fluid.WATER.ordinal()) || (display.getItemStack().getType() == Material.ORANGE_CONCRETE && fluid.get() != Fluid.LAVA.ordinal())) {
             display.setItemStack(new ItemStack(fluid.get() == Fluid.WATER.ordinal() ? Material.BLUE_CONCRETE : Material.ORANGE_CONCRETE));
         }
 
         Transformation transformation = display.getTransformation();
 
+        Vector3f translation = transformation.getTranslation();
+        translation.y = FluidTank.MODEL_LIQUID.parts.getFirst().offset[1] + height / 2f;
+
         Vector3f scale = transformation.getScale();
         scale.y = height;
 
         display.setTransformation(transformation);
-        display.teleport(location.getBlock().getLocation().add(.5f, bottomOffset, .5f));
     }
 
     @Override

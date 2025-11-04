@@ -1,7 +1,8 @@
 package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.math.MathUtils;
-import com.github.alantr7.torus.structure.display.ModelTemplate;
+import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -28,7 +29,7 @@ public abstract class Structure {
 
     public boolean isHeavy = true;
 
-    protected final Map<String, ModelTemplate> namedModelTemplates = new HashMap<>();
+    protected final Map<String, PartModelTemplate> namedModelTemplates = new HashMap<>();
 
     public Structure(String id, Class<? extends StructureInstance> instanceClass) {
         this.id = id;
@@ -63,6 +64,10 @@ public abstract class Structure {
     protected void createBounds(ByteArrayBuilder builder) {
     }
 
+    public ModelTemplate getInitialModel() {
+        return null;
+    }
+
     public boolean isPlaceableAt(BlockLocation location, Direction direction) {
         byte[] offset = calculateOffset(direction.getOpposite());
         byte[] bounds = MathUtils.rotateVectors(this.bounds, direction);
@@ -81,6 +86,11 @@ public abstract class Structure {
         location = location.getRelative(offset[0], offset[1], offset[2]);
         StructureInstance instance = instantiate(location, direction);
         try {
+            ModelTemplate modelTemplate = getInitialModel();
+            if (modelTemplate != null) {
+                instance.model = modelTemplate.toModel(location, direction);
+            }
+            instance.handleModelInit();
             instance.setup();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -99,14 +109,14 @@ public abstract class Structure {
         return MathUtils.rotateVectors(this.offset, direction);
     }
 
-    public ModelTemplate getNamedModelTemplate(String name) {
+    public PartModelTemplate getNamedModelTemplate(String name) {
         if (name == null)
             return null;
 
         return namedModelTemplates.get(name);
     }
 
-    protected void registerNamedModelTemplate(ModelTemplate template) {
+    protected void registerNamedModelTemplate(PartModelTemplate template) {
         namedModelTemplates.put(template.name, template);
     }
 

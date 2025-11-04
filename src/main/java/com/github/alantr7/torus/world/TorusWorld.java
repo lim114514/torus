@@ -5,6 +5,7 @@ import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
 import lombok.Getter;
@@ -107,6 +108,8 @@ public class TorusWorld {
 
         TorusChunk torusChunk = region.chunks.remove(new Vector2i(chunk.getX(), chunk.getZ()));
         if (torusChunk != null) {
+            // TODO: Verify if this is needed. Entities shouldn't be saved anyway because they are set to not persist.
+            torusChunk.structures.values().forEach(structure -> structure.model.parts.values().forEach(PartModel::remove));
             if (torusChunk.isDirty) {
                 try {
                     region.save();
@@ -265,10 +268,7 @@ public class TorusWorld {
         });
 
         // Remove models
-        instance.getComponents().forEach((component) -> {
-            if (component.getModel() != null)
-                component.getModel().remove();
-        });
+        instance.model.parts.values().forEach(PartModel::remove);
     }
 
     void load() {

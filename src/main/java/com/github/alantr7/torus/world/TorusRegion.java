@@ -4,9 +4,8 @@ import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.StringPool;
+import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.Structures;
-import org.bukkit.Bukkit;
 import org.joml.Vector2i;
 
 import java.io.File;
@@ -154,11 +153,17 @@ public class TorusRegion {
                 try {
                     StructureInstance structure = StructureInstance.fromBytes(this, chunk, reader, structureId);
                     if (structure != null) {
+                        ModelTemplate modelTemplate = structure.structure.getInitialModel();
+                        if (modelTemplate != null) {
+                            structure.model = modelTemplate.toModel(structure.location, structure.direction);
+                        }
+                        structure.handleModelInit();
                         chunk._placeStructureWithOccupations(structure);
                     } else {
                         System.err.println("Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + basePointer);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.err.println("Corrupted structure in region " + x + ", " + z + " with ID: " + TorusPlugin.getInstance().getStructureRegistry().getStructure(structureId) + " (" + structureId + ")");
                 }
                 reader.setPointer(basePointer + length + 4);

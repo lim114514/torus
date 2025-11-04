@@ -35,23 +35,25 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         connector.maximumInput = 500;
     }
 
+    int energyAtLastTick;
     @Override
     public void tick() {
-        if (connector.maintainEnergy(this) != 0) {
+        connector.maintainEnergy(this);
+        if (energyAtLastTick != storedEnergy.get()) {
             updateModel();
         }
+
+        energyAtLastTick = storedEnergy.get();
     }
 
-    private void updateModel() {
+    public void updateModel() {
         float ratio = (float) storedEnergy.get() / (float) energyCapacity;
         float height = 1.125f * ratio;
 
-        StructureComponent component = getComponent("charge");
-
-        ItemDisplay entity = component.getModel().entityReferences.getFirst().getEntity();
+        ItemDisplay entity = this.model.getPart("progress").entityReferences.getFirst().getEntity();
         Transformation transformation = entity.getTransformation();
         transformation.getScale().y = height;
-        transformation.getTranslation().y = height / 2f;
+        transformation.getTranslation().y = PowerBank.PROGRESS_MODEL.parts.getFirst().offset[1] + height / 2f;
         entity.setTransformation(transformation);
     }
 
