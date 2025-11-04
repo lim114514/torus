@@ -11,7 +11,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.structure.display.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -48,6 +48,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     protected void setup() {
         connector = getConnector("connector");
         updateCriteria(getFilter());
+        updateModel();
     }
 
     public void updateConnections() {
@@ -100,9 +101,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     }
 
     public void updateModel() {
-        components.get("cable").getModel().remove();
-        ModelTemplate model = new ModelTemplate();
-
+        PartModelTemplate model = new PartModelTemplate("cable");
         for (Direction direction : Direction.values()) {
             if (connector.isConnected(direction)) {
                 model.add(EnergyCable.MODELS_ITEM[direction.ordinal()]);
@@ -114,8 +113,9 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
             model.add(EnergyCable.MODELS_ITEM[direction.getOpposite().ordinal()]);
         }
 
-        components.get("cable").setModel(model.build(location.getBlock().getLocation().add(.5, 0, .5), Direction.NORTH));
-        save();
+        this.model.parts.put("cable", this.model.parts.containsKey("cable")
+            ? model.recycle(this.model.getPart("cable"), location.toBukkitCentered(), Direction.NORTH.rotH, Direction.NORTH.rotV)
+            : model.build(location.toBukkitCentered(), Direction.NORTH));
     }
 
     @Override

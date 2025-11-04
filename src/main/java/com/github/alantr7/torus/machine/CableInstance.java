@@ -5,7 +5,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.structure.display.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connectable;
@@ -34,7 +34,13 @@ public class CableInstance extends StructureInstance implements Connectable {
     protected void setup() {
     }
 
+    @Override
+    public void handleModelInit() {
+        updateModel();
+    }
+
     public void updateConnections() {
+        int connections = getConnections();
         updateConnection(Direction.NORTH);
         updateConnection(Direction.SOUTH);
         updateConnection(Direction.EAST);
@@ -45,6 +51,10 @@ public class CableInstance extends StructureInstance implements Connectable {
         if (shouldUpdateModel) {
             updateModel();
             shouldUpdateModel = false;
+        }
+
+        if (getConnections() != connections) {
+            save();
         }
     }
 
@@ -80,7 +90,7 @@ public class CableInstance extends StructureInstance implements Connectable {
     }
 
     public void updateModel() {
-        ModelTemplate model = new ModelTemplate();
+        PartModelTemplate model = new PartModelTemplate("base");
         if (connections.get() == 0) {
             model.add(CABLE_MODELS[type.get()][6]);
         }
@@ -91,8 +101,7 @@ public class CableInstance extends StructureInstance implements Connectable {
             }
         }
 
-        components.get("base").setModel(model.recycle(components.get("base").getModel(), location.getBlock().getLocation().add(.5, 0, .5), direction.rotH, direction.rotV));
-        save();
+        this.model.parts.put("base", model.recycle(this.model.getPart("base"), location.getBlock().getLocation().add(.5, 0, .5), direction.rotH, direction.rotV));
     }
 
     @Override

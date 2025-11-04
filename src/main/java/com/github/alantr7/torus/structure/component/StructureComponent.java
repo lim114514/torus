@@ -2,7 +2,7 @@ package com.github.alantr7.torus.structure.component;
 
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
-import com.github.alantr7.torus.structure.display.Model;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,23 +17,18 @@ public class StructureComponent {
 
     public final Direction direction;
 
-    @Getter @Setter
-    protected Model model;
-
-    public StructureComponent(String name, BlockLocation absoluteLocation, BlockLocation relativeLocation, Direction direction, Model model) {
+    public StructureComponent(String name, BlockLocation absoluteLocation, BlockLocation relativeLocation, Direction direction) {
         this.name = name;
         this.absoluteLocation = absoluteLocation;
         this.relativeLocation = relativeLocation;
         this.direction = direction;
-        this.model = model;
     }
 
-    public StructureComponent(StructureInstance structure, BlockLocation relativeLocation, String name, Model model) {
+    public StructureComponent(StructureInstance structure, BlockLocation relativeLocation, String name) {
         this.absoluteLocation = structure.location.getRelative(relativeLocation);
         this.relativeLocation = relativeLocation;
         this.name = name;
         this.direction = structure.direction;
-        this.model = model;
     }
 
 }

@@ -44,6 +44,10 @@ public class BlockLocation {
         return new Location(world.getBukkit(), x, y, z);
     }
 
+    public @NotNull Location toBukkitCentered() {
+        return new Location(world.getBukkit(), x + 0.5f, y, z + 0.5f);
+    }
+
     public Block getBlock() {
         return world.getBukkit().getBlockAt(x, y, z);
     }
