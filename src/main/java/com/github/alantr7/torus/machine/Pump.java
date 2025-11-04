@@ -23,14 +23,14 @@ public class Pump extends Structure {
     static PartModelTemplate MODEL_BASE = new PartModelTemplate("base");
     static {
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(0, 0.5f, 0), new Vector3f(2f, 1f, 2f), 0f, 0f));
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.DROPPER, new Vector3f(0, 1.375f, 0), new Vector3f(.9375f, .75f, .75f), 0f, 90f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.DROPPER, new Vector3f(0, 1.375f, 0), new Vector3f(.75f, .75f, .9375f), 0f, 90f));
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.CHAIN, new Vector3f(0.25f, 0.6875f, 0.1875f), new Vector3f(.5625f, .8125f,  1), 90f, 0f));
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, 1.875f, 0f), new Vector3f(.1875f, .1875f,  .1875f), 0f, 0f));
     }
 
     static PartModelTemplate MODEL_FLUID_CONNECTOR = new PartModelTemplate("out_fluid");
     static {
-        MODEL_FLUID_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0, .9375f, 0), new Vector3f(.625f, .125f, .625f), 0f, 0f));
+        MODEL_FLUID_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0, 1.9375f, 0), new Vector3f(.625f, .125f, .625f), 0f, 0f));
     }
 
     static PartModelTemplate MODEL_ENERGY_CONNECTOR = new PartModelTemplate("in_energy");

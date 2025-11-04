@@ -37,6 +37,7 @@ public class BlockBreaker extends Structure {
 
     public BlockBreaker() {
         super("torus:block_breaker", BlockBreakerInstance.class);
+        isHeavy = false;
     }
 
     @Override
