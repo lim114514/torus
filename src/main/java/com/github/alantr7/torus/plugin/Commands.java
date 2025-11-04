@@ -43,18 +43,18 @@ public class Commands {
       .executes(ctx -> {
           Player target = (Player) ctx.getArgument("target");
           if (target == null) {
-              ctx.respond("Player not found.");
+              ctx.respond(ChatColor.RED + "Specified player could not be found.");
               return;
           }
 
           TorusItem item = TorusPlugin.getInstance().getItemManager().getItemById((String) ctx.getArgument("item"));
           if (item == null) {
-              ctx.respond("Unknown item.");
+              ctx.respond(ChatColor.RED + "Specified item does not exist.");
               return;
           }
 
           if (ctx.optArgument("amount").isEmpty() || (int) ctx.getArgument("amount") < 1 || (int) ctx.getArgument("amount") > 150) {
-              ctx.respond("Specified amount is not a valid number.");
+              ctx.respond(ChatColor.RED + "Specified amount is not a valid number.");
               return;
           }
 
@@ -62,7 +62,7 @@ public class Commands {
           stack.setAmount((int) ctx.getArgument("amount"));
 
           ((Player) ctx.getExecutor()).getInventory().addItem(stack);
-          ctx.respond("You received 1 x " + item.name);
+          ctx.respond(ChatColor.YELLOW + "You received 1 x " + ChatColor.GOLD + item.name);
       });
 
     @CommandHandler Command browse = CommandBuilder.using("torus")
@@ -84,7 +84,7 @@ public class Commands {
       .executes(ctx -> {
           TorusItem item = TorusPlugin.getInstance().getItemManager().getItemById((String) ctx.getArgument("item"));
           if (item == null) {
-              ctx.respond("Unknown item.");
+              ctx.respond(ChatColor.RED + "Specified item does not exist.");
               return;
           }
 
@@ -109,7 +109,7 @@ public class Commands {
       .permission(Permissions.COMMAND_RELOAD)
       .executes(ctx -> {
           TorusPlugin.getInstance().getConfigManager().initialize();
-          ctx.respond("Reloaded configs.");
+          ctx.respond(ChatColor.YELLOW + "Configurations reloaded.");
       });
 
     @CommandHandler Command inspectStructure = CommandBuilder.using("torus")
@@ -164,7 +164,7 @@ public class Commands {
           }
 
           ctx.respond("Chunk position: " + chunk.position);
-          ctx.respond("Chunk size: " + chunk.getSize());
+          ctx.respond("Chunk size: " + chunk.getSize() + " bytes");
           ctx.respond("Structures: " + chunk.getStructures().size());
           ctx.respond("Occupations: " + chunk.getOccupations().size());
       });
