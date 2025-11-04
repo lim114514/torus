@@ -236,7 +236,7 @@ public class Connector implements Connectable {
         List<ItemStack> result = new ArrayList<>();
         AtomicInteger amount1 = new AtomicInteger(amount);
 
-        if (networkConnections.size() > 1) {
+        if (networkConnections.size() == 1) {
             for (Direction direction : Direction.values()) {
                 if (isConnectableFrom(direction) && TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction))) {
                     BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();

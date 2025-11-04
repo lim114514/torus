@@ -90,8 +90,8 @@ public abstract class Structure {
             if (modelTemplate != null) {
                 instance.model = modelTemplate.toModel(location, direction);
             }
-            instance.handleModelInit();
             instance.setup();
+            instance.handleModelInit();
         } catch (Exception ex) {
             ex.printStackTrace();
             System.err.println("Corrupted structure. It will be loaded but not ticked.");
