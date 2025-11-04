@@ -4,6 +4,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Inject;
 import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -47,13 +48,19 @@ public class EventListener implements Listener {
             return;
         }
 
+        cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
+
+        if (MainConfig.WORLD_BLACKLIST.contains(event.getClickedBlock().getWorld().getName())) {
+            event.getPlayer().sendMessage(ChatColor.RED + "Structures were disabled in this world by server owners.");
+            event.setCancelled(true);
+            return;
+        }
+
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
         BlockLocation location = new BlockLocation(block.getLocation());
         Direction direction = event.getBlockFace().getModY() != 0
           ? Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite()
           : Direction.fromBlockFace(event.getBlockFace());
-
-        cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
 
         if (torusItem.getStructure().isPlaceableAt(location, direction)) {
             StructureInstance structure = torusItem.getStructure().place(location, direction);
