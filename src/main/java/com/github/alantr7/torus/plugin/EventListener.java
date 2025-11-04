@@ -125,6 +125,7 @@ public class EventListener implements Listener {
             }
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "You can not break a structure that you do not own.");
+            event.setCancelled(true);
         }
     }
 
