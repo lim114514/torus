@@ -41,8 +41,8 @@ public class OreCrusher extends Structure {
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_SHULKER_BOX, new Vector3f(0f, .125f, 0), new Vector3f(2.75f, .125f, .625f), 0f, 0f));
 
         // Motor belt
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(-.475f - .5f, 1.941875f, -.375f - .5f), new Vector3f(.1875f, .0625f, 1.396f), 90f, 11.32f));
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(-.4375f - .5f, 1.123125f, -.375f - .5f), new Vector3f(.1875f, .0625f, 1.38f), 90f, -6.01f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(-.475f - .5f, 1.941875f, -.375f - .5f), new Vector3f(.1875f, .0625f, 1.396f), 270f, 11.32f));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(-.4375f - .5f, 1.123125f, -.375f - .5f), new Vector3f(.1875f, .0625f, 1.38f), 270f, -6.01f));
 
         // Motor on the right
         MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.WEATHERED_COPPER, new Vector3f(-1.8125f, 1.5f, 0f), new Vector3f(.6875f, .6875f, 1.1875f), 0f, 0f));
