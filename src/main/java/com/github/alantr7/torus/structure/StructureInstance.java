@@ -10,6 +10,7 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.model.Model;
+import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.ConnectorLocation;
@@ -170,7 +171,7 @@ public abstract class StructureInstance {
 
     public boolean testOwnership(@NotNull Player player) {
         UUID ownerId = getOwnerId();
-        return ownerId != null && player.getUniqueId().equals(ownerId);
+        return player.hasPermission(Permissions.STRUCTURE_BREAK_OTHERS) || (ownerId != null && player.getUniqueId().equals(ownerId));
     }
 
     public void remove() {
