@@ -94,12 +94,12 @@ public class CoalGenerator extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new CoalGeneratorInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f(), MODEL),
+          new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef(
-            "item_connector", new Vector3f(0, 0, 2), MODEL_INPUT_CONNECTOR, new StructureConnectorDef(Connector.Matter.ITEM, Connector.FlowDirection.IN, direction.getOpposite().mask())
+            "item_connector", new Vector3f(0, 0, 2), new StructureConnectorDef(Connector.Matter.ITEM, Connector.FlowDirection.IN, direction.getOpposite().mask())
           ),
           new StructureComponentDef(
-            "power_connector", new Vector3f(0, 0, 0), MODEL_OUTPUT_CONNECTOR, new StructureConnectorDef(Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.mask())
+            "power_connector", new Vector3f(0, 0, 0), new StructureConnectorDef(Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.mask())
           )
         }), direction);
     }

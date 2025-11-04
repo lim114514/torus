@@ -2,7 +2,6 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -92,14 +91,14 @@ public class BlastFurnace extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new BlastFurnaceInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f(0f, 0f, 0f), MODEL_BASE),
-          new StructureComponentDef("in_item", new Vector3f(0, 4, 1), MODEL_IN_ITEM, new StructureConnectorDef(
+          new StructureComponentDef("base", new Vector3f(0f, 0f, 0f)),
+          new StructureComponentDef("in_item", new Vector3f(0, 4, 1), new StructureConnectorDef(
             Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()
           )),
-          new StructureComponentDef("out_item", new Vector3f(1, 0, 0), (PartModel) null, new StructureConnectorDef(
+          new StructureComponentDef("out_item", new Vector3f(1, 0, 0), new StructureConnectorDef(
             Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask()
           )),
-          new StructureComponentDef("out_slug", new Vector3f(-1, 0, 0), (PartModel) null, new StructureConnectorDef(
+          new StructureComponentDef("out_slug", new Vector3f(-1, 0, 0), new StructureConnectorDef(
             Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask()
           ))
         }), direction);

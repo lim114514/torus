@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
@@ -64,12 +63,12 @@ public class PowerBank extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new PowerBankInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f(), MODEL),
+          new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef(
-            "power_connector", new Vector3f(0, 1, 0), CONNECTOR_MODEL, new StructureConnectorDef(
+            "power_connector", new Vector3f(0, 1, 0), new StructureConnectorDef(
             Connector.Matter.ENERGY, Connector.FlowDirection.ALL, Direction.UP.mask()
           )),
-          new StructureComponentDef("charge", new Vector3f(), (PartModel) null)
+          new StructureComponentDef("charge", new Vector3f())
         }), direction);
     }
 

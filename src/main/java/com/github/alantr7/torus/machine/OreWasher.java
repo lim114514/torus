@@ -97,17 +97,17 @@ public class OreWasher extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new OreWasherInstance(location, new StructureBodyDef(
           new StructureComponentDef[] {
-            new StructureComponentDef("body", new Vector3f(), MODEL),
-            new StructureComponentDef("item_connector", new Vector3f(0f, 1f, 0f), MODEL_CONNECTOR_ITEMS_IN, new StructureConnectorDef(
+            new StructureComponentDef("body", new Vector3f()),
+            new StructureComponentDef("item_connector", new Vector3f(0f, 1f, 0f), new StructureConnectorDef(
               Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()
             )),
-            new StructureComponentDef("out_connector", new Vector3f(0f, 0, 0f), MODEL_CONNECTOR_ITEMS_OUT, new StructureConnectorDef(
+            new StructureComponentDef("out_connector", new Vector3f(0f, 0, 0f), new StructureConnectorDef(
               Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask()
             )),
-            new StructureComponentDef("power_connector", new Vector3f(0f, 0, 1f), MODEL_CONNECTOR_POWER, new StructureConnectorDef(
+            new StructureComponentDef("power_connector", new Vector3f(0f, 0, 1f), new StructureConnectorDef(
               Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask()
             )),
-            new StructureComponentDef("fluid_connector", new Vector3f(0f, 0, 1f), MODEL_WATER_IN, new StructureConnectorDef(
+            new StructureComponentDef("fluid_connector", new Vector3f(0f, 0, 1f), new StructureConnectorDef(
               Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()
             ))
           }

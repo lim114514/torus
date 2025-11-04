@@ -60,8 +60,8 @@ public class SolarGenerator extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new SolarGeneratorInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f(), MODEL),
-          new StructureComponentDef("power_connector", new Vector3f(), CONNECTOR_MODEL, new StructureConnectorDef(
+          new StructureComponentDef("base", new Vector3f()),
+          new StructureComponentDef("power_connector", new Vector3f(), new StructureConnectorDef(
             Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.getOpposite().mask()
           ))
         }), direction);

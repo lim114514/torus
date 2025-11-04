@@ -87,14 +87,14 @@ public class FluidTank extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new FluidTankInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
-            new StructureComponentDef("base", new Vector3f(), MODEL_BASE),
-            new StructureComponentDef("input", new Vector3f(0f, 3f, 0f), MODEL_INPUT_CONNECTOR, new StructureConnectorDef(
+            new StructureComponentDef("base", new Vector3f()),
+            new StructureComponentDef("input", new Vector3f(0f, 3f, 0f), new StructureConnectorDef(
               Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()
             )),
-            new StructureComponentDef("output", new Vector3f(0f, 0f, -1f), MODEL_OUTPUT_CONNECTOR, new StructureConnectorDef(
+            new StructureComponentDef("output", new Vector3f(0f, 0f, -1f), new StructureConnectorDef(
               Connector.Matter.FLUID, Connector.FlowDirection.OUT, direction.mask()
             )),
-            new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f), MODEL_LIQUID),
+            new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f)),
           }
         ), direction);
     }

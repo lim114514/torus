@@ -1,8 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.PartModel;
-import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -64,11 +62,11 @@ public class Pump extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new PumpInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
-            new StructureComponentDef("base", new Vector3f(), MODEL_BASE),
-            new StructureComponentDef("power_connector", new Vector3f(0, 1, 0), (PartModel) null, new StructureConnectorDef(
+            new StructureComponentDef("base", new Vector3f()),
+            new StructureComponentDef("power_connector", new Vector3f(0, 1, 0), new StructureConnectorDef(
               Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask()
             )),
-            new StructureComponentDef("fluid_connector", new Vector3f(0, 1, 0), (PartModel) null, new StructureConnectorDef(
+            new StructureComponentDef("fluid_connector", new Vector3f(0, 1, 0), new StructureConnectorDef(
               Connector.Matter.FLUID, Connector.FlowDirection.OUT, Direction.UP.mask()
             ))
           }

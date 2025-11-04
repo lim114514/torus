@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
@@ -52,10 +51,10 @@ public class PhysicalConnector extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         StructureBodyDef body = new StructureBodyDef(
           new StructureComponentDef[]{
-            new StructureComponentDef("connector", new Vector3f(), CONNECTOR_MODEL, new StructureConnectorDef(
+            new StructureComponentDef("connector", new Vector3f(), new StructureConnectorDef(
               Connector.Matter.ITEM, Connector.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false)
             )),
-            new StructureComponentDef("cable", new Vector3f(), (PartModel) null),
+            new StructureComponentDef("cable", new Vector3f()),
           }
         );
 

@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -45,7 +44,7 @@ public class FluidPipe extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), (PartModel) null);
+        StructureComponentDef base = new StructureComponentDef("base", new Vector3f());
         return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}), Connector.Matter.FLUID);
     }
 

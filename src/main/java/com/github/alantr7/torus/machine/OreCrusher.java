@@ -119,18 +119,18 @@ public class OreCrusher extends Structure {
         direction = direction.getLeft();
         return new OreCrusherInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
-            new StructureComponentDef("body", new Vector3f(), MODEL_BASE),
-            new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), MODEL_ENERGY, new StructureConnectorDef(
+            new StructureComponentDef("body", new Vector3f()),
+            new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), new StructureConnectorDef(
               Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getLeft().mask()
             )),
-            new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), MODEL_ITEMS_IN, new StructureConnectorDef(
+            new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), new StructureConnectorDef(
               Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()
             )),
-            new StructureComponentDef("out_connector", new Vector3f(1, 0, 0), MODEL_ITEMS_OUT, new StructureConnectorDef(
+            new StructureComponentDef("out_connector", new Vector3f(1, 0, 0), new StructureConnectorDef(
               Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.getRight().mask()
             )),
-            new StructureComponentDef("wheel_left", new Vector3f(), MODEL_WHEEL_LEFT),
-            new StructureComponentDef("wheel_right", new Vector3f(), MODEL_WHEEL_RIGHT)
+            new StructureComponentDef("wheel_left", new Vector3f()),
+            new StructureComponentDef("wheel_right", new Vector3f())
           }
         ), direction);
     }

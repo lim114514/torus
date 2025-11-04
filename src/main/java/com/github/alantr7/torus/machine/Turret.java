@@ -10,7 +10,6 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.PartModelElementItemDisplayRenderer;
 import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -78,12 +77,12 @@ public class Turret extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new TurretInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f(), MODEL_BASE),
-          new StructureComponentDef("head", new Vector3f(), MODEL_HEAD),
-          new StructureComponentDef("in_item", new Vector3f(), (PartModel) null, new StructureConnectorDef(
+          new StructureComponentDef("base", new Vector3f()),
+          new StructureComponentDef("head", new Vector3f()),
+          new StructureComponentDef("in_item", new Vector3f(), new StructureConnectorDef(
             Connector.Matter.ITEM, Connector.FlowDirection.IN, direction.getOpposite().mask()
           )),
-          new StructureComponentDef("in_energy", new Vector3f(), (PartModel) null, new StructureConnectorDef(
+          new StructureComponentDef("in_energy", new Vector3f(), new StructureConnectorDef(
             Connector.Matter.ENERGY, Connector.FlowDirection.IN, Direction.DOWN.mask()
           ))
         }), direction);
