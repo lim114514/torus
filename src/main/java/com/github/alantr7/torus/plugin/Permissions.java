@@ -22,4 +22,7 @@ public class Permissions {
     @Permission(allowed = Permission.Allowed.OP, description = "Permission for getting an item by left clicking it in the browser GUI")
     public static final String BROWSE_GUI_GET_ITEM = "torus.browser.item.get";
 
+    @Permission(allowed = Permission.Allowed.OP, description = "Permission for breaking structures belonging to other players")
+    public static final String STRUCTURE_BREAK_OTHERS = "torus.structure.break.others";
+
 }
