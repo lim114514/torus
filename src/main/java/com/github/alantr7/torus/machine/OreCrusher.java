@@ -116,7 +116,6 @@ public class OreCrusher extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        direction = direction.getLeft();
         return new OreCrusherInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
             new StructureComponentDef("body", new Vector3f()),
