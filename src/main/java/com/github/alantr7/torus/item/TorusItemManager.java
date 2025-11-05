@@ -21,6 +21,7 @@ public class TorusItemManager {
         // Structure Items
         registerItem(new TorusItem("torus:solar_generator", Category.GENERATORS, Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
         registerItem(new TorusItem("torus:coal_generator", Category.GENERATORS, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
+        registerItem(new TorusItem("torus:windmill", Category.GENERATORS, Structures.WINDMILL, Material.PAPER, "Windmill", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:turret", Category.MACHINES, Structures.TURRET, Material.PAPER, "Turret", Collections.emptyList()));
         registerItem(new TorusItem("torus:blast_furnace", Category.MACHINES, Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));

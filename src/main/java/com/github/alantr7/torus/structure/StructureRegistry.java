@@ -92,13 +92,14 @@ public class StructureRegistry {
 
         register(Structures.CONNECTOR);
 
+        register(Structures.POWER_BANK);
         register(Structures.FLUID_TANK);
 
         register(Structures.TURRET);
 
         register(Structures.COAL_GENERATOR);
         register(Structures.SOLAR_GENERATOR);
-        register(Structures.POWER_BANK);
+        register(Structures.WINDMILL);
     }
 
     public void register(Structure structure) {
