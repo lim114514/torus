@@ -35,6 +35,8 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     @Getter
     protected int energyCapacity = 20_000;
 
+    protected float angle;
+
     private CrusherRecipe recipe;
 
     OreCrusherInstance(LoadContext context) {
@@ -68,6 +70,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
                 }
 
                 processedTicks++;
+                angle += (120) / 180f * (float) Math.PI;
                 updateModel();
                 consumeEnergy(OreCrusher.ENERGY_CONSUMPTION_PER_TICK);
             }
@@ -76,7 +79,6 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     }
 
     public void updateModel() {
-        float angle = (processedTicks * 120) / 180f * (float) Math.PI;
         model.getPart("wheel_left").entityReferences.forEach(ref -> {
             ItemDisplay display = ref.getEntity();
             Transformation transformation = display.getTransformation();
