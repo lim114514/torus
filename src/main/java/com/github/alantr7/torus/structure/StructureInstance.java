@@ -213,25 +213,6 @@ public abstract class StructureInstance {
             // Component offset
             buffer.writeU1(((component.relativeLocation.x + 7) << 4) | (component.relativeLocation.z + 7));
             buffer.writeU1(component.relativeLocation.y);
-
-            // Model
-//            if (component.getModel() != null) {
-//                if (component.getModel().template != null && component.getModel().template.name != null) {
-//                    buffer.writeU1(1);
-//                    buffer.writeU1(keys.pool(component.getModel().template.name));
-//                } else {
-//                    buffer.writeU1(0);
-//                }
-//
-//                buffer.writeU1(component.getModel().entityReferences.size());
-//                for (EntityReference ref : component.getModel().entityReferences) {
-//                    buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getMostSignificantBits(), 8));
-//                    buffer.writeBytes(ByteArrayWriter.toBytes(ref.id.getLeastSignificantBits(), 8));
-//                }
-//            } else {
-                buffer.writeU1(0);
-                buffer.writeU1(0);
-//            }
         });
 
         // Connectors
@@ -286,15 +267,6 @@ public abstract class StructureInstance {
             int cx = ((packedXZ >> 4) & 0xf) - 7;
             int cz = (packedXZ & 0xf) - 7;
             int cy = reader.readU1();
-
-            // Model
-            String modelName = reader.readU1() == 1 ? region.strings.at(reader.readU1()) : null;
-
-            int entitiesLength = reader.readU1();
-            for (int j = 0; j < entitiesLength; j++) {
-                reader.readBytes(8);
-                reader.readBytes(8);
-            }
 
             StructureComponent component = new StructureComponent(name, location.getRelative(cx, cy, cz), new BlockLocation(chunk.world, cx, cy, cz), Direction.values()[direction]);
             components.put(name, component);

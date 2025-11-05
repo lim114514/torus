@@ -33,7 +33,7 @@ public class TorusRegion {
 
     public byte[] header = new byte[1 + SECTION_LENGTH_KEYS + SECTION_LENGTH_CHUNKS_OFFSETS];
 
-    public static final byte FILE_FORMAT_VERSION = 1;
+    public static final byte FILE_FORMAT_VERSION = 2;
 
     public TorusRegion(TorusWorld world, int x, int z) {
         this.world = world;
