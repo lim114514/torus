@@ -1,6 +1,7 @@
 ## Machines
 - ✔ Solar Generator
 - ✔ Coal Generator
+- ✔ Windmill
 - ✔ Pump
 - ✔ Block Breaker
 - ✔ Ore Crusher

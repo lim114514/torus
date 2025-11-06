@@ -1,17 +1,20 @@
 ## Overview
 
-Torus is a Minecraft plugin that allows you to automate farms, build machines, make factories, and more.
+Torus is a plugin that brings electricity and custom modeled machines to your server without using mods or resource packs.
 
-## DO NOT USE IN YOUR WORLDS YET! OR MAKE A BACKUP BEFORE YOU DO!
-Torus is in experimental phase and isn't well tested! Plugin might fail to recognize structures and they can get stuck in your world even if plugin is deleted! (unless removed manually).
+With Torus you can:
+- Generate electricity with solar panels, coal generators, and more
+- Improve your storage systems with item conduits (item filter support!)
+- Multiply ores by crushing them into dust
+- Automate mining entire chunks (similar to BuildCraft's quarry)
+- Pump liquids from underground with a pump
+- Automate cobblestone generators with block breakers (great for SkyBlock!)
 
-## DO NOT USE ON PUBLIC SERVERS YET!
-Torus does NOT have proper permissions YET! Structure ownership is NOT checked YET, land claiming plugins are NOT supported YET!
+List of all available content can be found [here](https://github.com/alantr7/torus/blob/master/CONTENT.md).
 
-### It is highly recommended to use the resource pack which can be downloaded [here](https://github.com/alantr7/torus-rp).
+Many of these features will be toggleable to allow gameplay customization to your style.
 
-## Content
-A list of all available structures and items can be found [here](https://github.com/alantr7/torus/blob/master/CONTENT.md).
+Resource pack use is **recommended**, although not necessary, for easier item differentiation. You can download it [here](https://github.com/alantr7/torus-rp/archive/refs/heads/main.zip).
 
 ## Todo List
 - Electric Furnace
