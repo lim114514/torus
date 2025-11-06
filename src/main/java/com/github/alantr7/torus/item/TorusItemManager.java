@@ -87,7 +87,7 @@ public class TorusItemManager {
     }
 
     public TorusItem getItemByItemStack(ItemStack item) {
-        if (!item.hasItemMeta())
+        if (item == null || !item.hasItemMeta())
             return null;
 
         String itemId = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING);

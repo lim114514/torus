@@ -68,6 +68,7 @@ public class BlastFurnace extends Structure {
 
     public BlastFurnace() {
         super("torus:blast_furnace", BlastFurnaceInstance.class);
+        isInteractable = true;
     }
 
     @Override

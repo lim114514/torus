@@ -31,6 +31,7 @@ public class PhysicalConnector extends Structure {
 
     public PhysicalConnector() {
         super("torus:connector", PhysicalConnectorInstance.class);
+        isInteractable = true;
         isHeavy = false;
     }
 

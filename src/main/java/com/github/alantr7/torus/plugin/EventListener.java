@@ -28,15 +28,16 @@ import java.util.UUID;
 @Singleton
 public class EventListener implements Listener {
 
-    Map<UUID, Long> cooldowns = new HashMap<>();
+    Map<UUID, Long> placementCooldown = new HashMap<>();
+    Map<UUID, Long> interactionCooldown = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     void onMachinePlace(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        if (cooldowns.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
+        if (placementCooldown.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
             return;
 
         TorusItem torusItem = TorusItem.getByItemStack(item);
@@ -48,7 +49,9 @@ public class EventListener implements Listener {
             return;
         }
 
-        cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
+        long cooldownExpiry = System.currentTimeMillis() + 200;
+        placementCooldown.put(event.getPlayer().getUniqueId(), cooldownExpiry);
+        interactionCooldown.put(event.getPlayer().getUniqueId(), cooldownExpiry);
 
         if (MainConfig.WORLD_BLACKLIST.contains(event.getClickedBlock().getWorld().getName())) {
             event.getPlayer().sendMessage(ChatColor.RED + "Structures were disabled in this world by server owners.");
@@ -56,8 +59,12 @@ public class EventListener implements Listener {
             return;
         }
 
+        if (!event.getPlayer().isSneaking() && TorusWorld.isItemContainer(new BlockLocation(event.getClickedBlock().getLocation())))
+            return;
+
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
         BlockLocation location = new BlockLocation(block.getLocation());
+
         Direction direction = event.getBlockFace().getModY() != 0
           ? Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite()
           : Direction.fromBlockFace(event.getBlockFace());
@@ -79,21 +86,33 @@ public class EventListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     void onMachineInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
-        if (cooldowns.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
+        if (interactionCooldown.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
             return;
 
         StructureInstance structure = new BlockLocation(event.getClickedBlock().getLocation()).getStructure();
         if (structure != null) {
-            cooldowns.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
-            if (structure.testOwnership(event.getPlayer())) {
-                structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
+            interactionCooldown.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
+
+            if (event.getPlayer().isSneaking() && event.getItem() != null) {
+                TorusItem torusItem = TorusItem.getByItemStack(event.getItem());
+                if (torusItem != null) {
+                    if (torusItem.isPlaceable())
+                        return;
+                } else if (event.getItem().getType().isBlock())
+                    return;
             }
-            event.setCancelled(true);
+
+            if (structure.structure.isInteractable && structure.testOwnership(event.getPlayer())) {
+                structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
+                event.setCancelled(true);
+
+                placementCooldown.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
+            }
         }
     }
 

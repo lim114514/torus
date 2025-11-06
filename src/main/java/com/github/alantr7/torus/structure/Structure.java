@@ -29,6 +29,8 @@ public abstract class Structure {
 
     public boolean isHeavy = true;
 
+    public boolean isInteractable = false;
+
     protected final Map<String, PartModelTemplate> namedModelTemplates = new HashMap<>();
 
     public Structure(String id, Class<? extends StructureInstance> instanceClass) {
