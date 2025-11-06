@@ -15,11 +15,18 @@ public final class PartModelElementItemDisplayRenderer {
     public final Quaternionf rotation;
 
     public PartModelElementItemDisplayRenderer(Material material, Vector3f offset, Vector3f scale, float rotH, float rotV) {
+        this(material, offset, scale, new Vector3f(rotV, rotH, 0));
+    }
+
+    public PartModelElementItemDisplayRenderer(Material material, Vector3f offset, Vector3f scale, Vector3f rotation) {
         this.itemStack = new ItemStack(material);
         this.transform = ItemDisplay.ItemDisplayTransform.NONE;
         this.offset = new float[] { offset.x, offset.y, offset.z };
         this.scale = new float[] { scale.x, scale.y, scale.z };
-        this.rotation = new Quaternionf().rotateAxis((float) Math.toRadians(rotH), 0, 1, 0).rotateAxis((float) Math.toRadians(rotV), 1, 0, 0);
+        this.rotation = new Quaternionf()
+          .rotateAxis((float) Math.toRadians(rotation.x), 1, 0, 0)
+          .rotateAxis((float) Math.toRadians(rotation.y), 0, 1, 0)
+          .rotateAxis((float) Math.toRadians(rotation.z), 0, 0, 1);
     }
 
     public PartModelElementItemDisplayRenderer(Material material, float... data) {
