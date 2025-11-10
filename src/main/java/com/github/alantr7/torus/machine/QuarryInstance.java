@@ -59,7 +59,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         if (drillPosition != null) {
             Block ore = drillPosition.getRelative(0, -1, 0).getBlock();
-            if (!ore.getType().isAir() && !Quarry.BLOCK_BLACKLIST.contains(ore.getType())) {
+            if (!ore.getType().isAir() && !ore.isLiquid() && !Quarry.BLOCK_BLACKLIST.contains(ore.getType())) {
                 if (storedEnergy.get() < 150)
                     return;
 
@@ -68,7 +68,10 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
                 }
                 if (breakingTicks == 4) {
                     breakingTicks = 0;
-                    outBuffer.addItem(new ItemStack(ore.getType()));
+                    for (ItemStack drop : ore.getDrops(new ItemStack(Material.IRON_PICKAXE))) {
+                        outBuffer.addItem(drop.clone());
+                        break;
+                    }
                     ore.setType(Material.AIR);
 
                     for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.toBukkit().getChunk())) {
