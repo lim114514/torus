@@ -36,13 +36,13 @@ public class CoalGenerator extends Structure {
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.LIGHTNING_ROD, new Vector3f(0, 1.0625f, .8125f), new Vector3f(.5f, .25f, .5f), 0f, 0f));
 
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(-.125f - .5f, .375f, .0625f), new Vector3f(1f, .5f, 1f), 0f, 0f));
-        MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .0625f), new Vector3f(1f, .5f, 1f), 270f, 90f));
+        MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .0625f), new Vector3f(1f, .5f, 1f), new Vector3f(0f, 0f, 90f)));
 
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(-.125f - .5f, .375f, .4375f), new Vector3f(1f, .5f, 1f), 0f, 0f));
-        MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .4375f), new Vector3f(1f, .5f, 1f), 270f, 90f));
+        MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .4375f), new Vector3f(1f, .5f, 1f), new Vector3f(0f, 0f, 90f)));
 
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(-.125f - .5f, .375f, .8125f), new Vector3f(1f, .5f, 1f), 0f, 0f));
-        MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .8125f), new Vector3f(1f, .5f, 1f), 270f, 90f));
+        MODEL.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(.125f - .5f, .625f, .8125f), new Vector3f(1f, .5f, 1f), new Vector3f(0f, 0f, 90f)));
 
         // Chimney
         MODEL.add(new PartModelElementItemDisplayRenderer(Material.CYAN_TERRACOTTA, new Vector3f(1.125f - .5f, .875f, .8125f - .5f), new Vector3f(.3125f, 1.5f, .3125f), 0f, 0f));
