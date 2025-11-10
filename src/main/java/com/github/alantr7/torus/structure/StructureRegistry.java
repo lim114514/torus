@@ -90,6 +90,7 @@ public class StructureRegistry {
         register(Structures.ITEM_CABLE);
         register(Structures.FLUID_CABLE);
 
+        register(Structures.POWER_POLE);
         register(Structures.CONNECTOR);
 
         register(Structures.POWER_BANK);

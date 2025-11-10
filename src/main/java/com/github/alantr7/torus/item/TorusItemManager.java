@@ -34,6 +34,8 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:energy_cable", Category.NETWORK, Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList()));
         registerItem(new TorusItem("torus:fluid_pipe", Category.NETWORK, Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
         registerItem(new TorusItem("torus:item_conduit", Category.NETWORK, Structures.ITEM_CABLE, Material.PAPER, "Item Conduit", Collections.emptyList()));
+
+        registerItem(new TorusItem("torus:power_pole", Category.NETWORK, Structures.POWER_POLE, Material.SPRUCE_FENCE, "Power Pole", Collections.emptyList()));
         registerItem(new TorusItem("torus:connector", Category.NETWORK, Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:screwdriver",  Category.TOOLS, null, Material.STICK, "Screwdriver", Collections.emptyList()));

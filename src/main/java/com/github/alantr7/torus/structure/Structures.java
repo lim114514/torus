@@ -14,6 +14,8 @@ public class Structures {
     public static final EnergyCable ENERGY_CABLE = new EnergyCable();
     public static final ItemCable ITEM_CABLE = new ItemCable();
     public static final FluidPipe FLUID_CABLE = new FluidPipe();
+
+    public static final PowerPole POWER_POLE = new PowerPole();
     public static final PhysicalConnector CONNECTOR = new PhysicalConnector();
 
     public static final PowerBank POWER_BANK = new PowerBank();
