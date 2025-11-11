@@ -100,4 +100,9 @@ public class TorusItem {
         return TorusPlugin.getInstance().getItemManager().getItemByItemStack(stack);
     }
 
+    public static boolean is(ItemStack stack, String namespacedId) {
+        TorusItem item = getByItemStack(stack);
+        return item != null && item.namespacedId.equals(namespacedId);
+    }
+
 }
