@@ -112,6 +112,16 @@ public class Commands {
           ctx.respond(ChatColor.YELLOW + "Configurations reloaded.");
       });
 
+    @CommandHandler Command logStructureIds = CommandBuilder.using("torus")
+      .parameter("debug")
+      .parameter("log_structure_ids")
+      .permission(Permissions.COMMAND_DEBUG)
+      .executes(ctx -> {
+          TorusPlugin.getInstance().getStructureRegistry().getStructuresIds().forEach(entry -> {
+              ctx.respond(String.format("%2d: %s", entry.getValue(), entry.getKey()));
+          });
+      });
+
     @CommandHandler Command inspectStructure = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("inspect_structure")
