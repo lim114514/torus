@@ -97,7 +97,7 @@ public class TorusWorldManager implements Listener {
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_DISABLE)
     private void removeModelsOnDisable() {
         worlds.values().forEach(world ->world.regions.values().forEach(region -> region.chunks.values().forEach(chunk -> {
-            chunk.structures.values().forEach(s -> s.model.parts.values().forEach(PartModel::remove));
+            chunk.structures.values().forEach(StructureInstance::handleModelDestroy);
         })));
     }
 

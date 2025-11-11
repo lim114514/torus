@@ -10,6 +10,7 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.model.Model;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -92,6 +93,10 @@ public abstract class StructureInstance {
     }
 
     public void handleModelInit() {
+    }
+
+    public void handleModelDestroy() {
+        model.parts.values().forEach(PartModel::remove);
     }
 
     public byte[] getBounds() {
