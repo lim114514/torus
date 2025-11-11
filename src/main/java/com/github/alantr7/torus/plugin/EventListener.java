@@ -73,7 +73,7 @@ public class EventListener implements Listener {
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
         BlockLocation location = new BlockLocation(block.getLocation());
 
-        Direction direction = event.getBlockFace().getModY() != 0
+        Direction direction = torusItem.getStructure().isOmnidirectional ? Direction.fromBlockFace(event.getBlockFace()) : event.getBlockFace().getModY() != 0
           ? Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite()
           : Direction.fromBlockFace(event.getBlockFace());
 

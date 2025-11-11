@@ -31,6 +31,8 @@ public abstract class Structure {
 
     public boolean isInteractable = false;
 
+    public boolean isOmnidirectional = false;
+
     protected final Map<String, PartModelTemplate> namedModelTemplates = new HashMap<>();
 
     public Structure(String id, Class<? extends StructureInstance> instanceClass) {

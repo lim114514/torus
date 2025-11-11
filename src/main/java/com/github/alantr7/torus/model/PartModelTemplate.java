@@ -7,6 +7,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Transformation;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class PartModelTemplate {
         entity.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "purpose"), PersistentDataType.STRING, "structure_model");
 
         Transformation transformation = entity.getTransformation();
-        transformation.getTranslation().set(translation);
+        transformation.getTranslation().set(rotV == 0 ? translation : new Vector3f(translation).add(0, -0.5f, -0.5f * rotV / Math.abs(rotV)));
         transformation.getScale().set(part.scale);
         transformation.getLeftRotation().set(part.rotation);
         entity.setTransformation(transformation);

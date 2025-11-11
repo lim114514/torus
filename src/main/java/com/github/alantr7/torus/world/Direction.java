@@ -9,7 +9,7 @@ public enum Direction {
     SOUTH(0, 0, 1, 180, 0),
     WEST(-1, 0, 0, 270, 0),
     UP(0, 1, 0, 0, 90),
-    DOWN(0, -1, 0, 0, 180),
+    DOWN(0, -1, 0, 0, -90),
     ;
 
     public final int modX;
