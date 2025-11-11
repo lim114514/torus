@@ -43,6 +43,9 @@ public class StructureRegistry {
                 String id = reader.readString();
 
                 structuresIds.put(id, numericId);
+                if (numericId >= nextStructureId) {
+                    nextStructureId = numericId + 1;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,6 +95,7 @@ public class StructureRegistry {
 
         register(Structures.POWER_POLE);
         register(Structures.CONNECTOR);
+        register(Structures.WIRE_CONNECTOR);
 
         register(Structures.POWER_BANK);
         register(Structures.FLUID_TANK);
@@ -126,6 +130,10 @@ public class StructureRegistry {
 
     public Structure getStructure(int id) {
         return loadedByNumericIds.get(id);
+    }
+
+    public Set<Map.Entry<String, Integer>> getStructuresIds() {
+        return structuresIds.entrySet();
     }
 
 }
