@@ -245,21 +245,25 @@ public class TorusRegion {
     }
 
     TorusChunk getOrLoadChunk(int x, int z) {
-        return chunks.computeIfAbsent(new Vector2i(x, z), k -> {
-            TorusChunk chunk = new TorusChunk(world, k);
-            if (!regionFile.exists())
-                return chunk;
-
-            try {
-                RandomAccessFile raf = new RandomAccessFile(regionFile, "r");
-                loadChunk(raf, chunk);
-                raf.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        TorusChunk chunk = chunks.get(new Vector2i(x, z));
+        if (chunk != null)
             return chunk;
-        });
+
+        chunk = new TorusChunk(world, new Vector2i(x, z));
+        chunks.put(chunk.position, chunk);
+
+        if (!regionFile.exists())
+            return chunk;
+
+        try {
+            RandomAccessFile raf = new RandomAccessFile(regionFile, "r");
+            loadChunk(raf, chunk);
+            raf.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return chunk;
     }
 
     public Collection<TorusChunk> getLoadedChunks() {
