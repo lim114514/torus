@@ -18,8 +18,11 @@ public class PowerPole extends Structure {
 
     public static final PartModelTemplate MODEL_BASE = new PartModelTemplate("base");
     static {
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.STRIPPED_DARK_OAK_WOOD, new Vector3f(0, .5f, 0), new Vector3f(.4375f, 1f, .4375f), new Vector3f()));
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.STRIPPED_SPRUCE_LOG, new Vector3f(0, 2.5f, 0), new Vector3f(.3125f, 3.0625f, .3125f), new Vector3f()));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.STRIPPED_SPRUCE_WOOD, new Vector3f(0, .5f, 0), new Vector3f(.3125f, 1f, .3125f), new Vector3f()));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.STRIPPED_SPRUCE_WOOD, new Vector3f(0, 2.375f, 0), new Vector3f(.25f, 2.9375f, .25f), new Vector3f()));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.STRIPPED_SPRUCE_WOOD, new Vector3f(0, 3.9375f, 0), new Vector3f(.1875f, 2.25f, .25f), new Vector3f(0, 0, 90f)));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.STRIPPED_SPRUCE_WOOD, new Vector3f(.3125f, 3.625f, 0), new Vector3f(.1875f, .875f, .125f), new Vector3f(0, 0, -45f)));
+        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.STRIPPED_SPRUCE_WOOD, new Vector3f(.1875f - .5f, 3.625f, 0), new Vector3f(.1875f, .875f, .125f), new Vector3f(0, 0, 45f)));
     }
 
     public static final ModelTemplate MODEL = new ModelTemplate();
@@ -43,6 +46,8 @@ public class PowerPole extends Structure {
         builder.add(0, 1, 0);
         builder.add(0, 2, 0);
         builder.add(0, 3, 0);
+        builder.add(1, 3, 0);
+        builder.add(-1, 3, 0);
     }
 
     @Override
