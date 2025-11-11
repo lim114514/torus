@@ -17,6 +17,8 @@ public class Structures {
 
     public static final PowerPole POWER_POLE = new PowerPole();
     public static final PhysicalConnector CONNECTOR = new PhysicalConnector();
+    public static final WireConnector WIRE_CONNECTOR = new WireConnector();
+    public static final WireRelay WIRE_RELAY = new WireRelay();
 
     public static final PowerBank POWER_BANK = new PowerBank();
     public static final FluidTank FLUID_TANK = new FluidTank();

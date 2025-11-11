@@ -6,18 +6,24 @@ import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.machine.WireConnectorInstance;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityUnleashEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,6 +36,8 @@ public class EventListener implements Listener {
 
     Map<UUID, Long> placementCooldown = new HashMap<>();
     Map<UUID, Long> interactionCooldown = new HashMap<>();
+
+    public static Map<UUID, WireConnectorInstance> establishingWireConnections = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     void onMachinePlace(PlayerInteractEvent event) {
@@ -151,6 +159,36 @@ public class EventListener implements Listener {
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "You can not break a structure that you do not own.");
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    void onTorusEntityDamage(EntityDamageEvent event) {
+        if (event.getEntity().getScoreboardTags().contains("torus_entity")) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    void onLeashDrop(EntityUnleashEvent event) {
+        if (event.getEntity().getScoreboardTags().contains("torus_entity")) {
+            event.setDropLeash(false);
+
+            if (((LivingEntity) event.getEntity()).getLeashHolder() instanceof Player player) {
+                establishingWireConnections.remove(player.getUniqueId());
+            } else {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    void onSwitchHotbarItem(PlayerItemHeldEvent event) {
+        if (!TorusItem.is(event.getPlayer().getInventory().getItem(event.getNewSlot()), "torus:copper_wire")) {
+            WireConnectorInstance connector = establishingWireConnections.remove(event.getPlayer().getUniqueId());
+            if (connector != null) {
+                connector.connectionCandidate.setLeashHolder(null);
+            }
         }
     }
 
