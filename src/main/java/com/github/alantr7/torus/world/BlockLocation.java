@@ -40,6 +40,10 @@ public class BlockLocation {
         return new BlockLocation(world, this.x + x, this.y + y, this.z + z);
     }
 
+    public double getDistanceTo(BlockLocation location) {
+        return Math.sqrt(Math.pow(location.x - x, 2) + Math.pow(location.y - y, 2) + Math.pow(location.z - z, 2));
+    }
+
     public @NotNull Location toBukkit() {
         return new Location(world.getBukkit(), x, y, z);
     }
