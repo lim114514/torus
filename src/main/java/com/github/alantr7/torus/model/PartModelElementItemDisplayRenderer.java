@@ -24,7 +24,7 @@ public final class PartModelElementItemDisplayRenderer {
         this.offset = new float[] { offset.x, offset.y, offset.z };
         this.scale = new float[] { scale.x, scale.y, scale.z };
         this.rotation = new Quaternionf()
-          .rotationXYZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y), (float) Math.toRadians(rotation.z));
+          .rotateXYZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y), (float) Math.toRadians(rotation.z));
     }
 
     public PartModelElementItemDisplayRenderer(Material material, float... data) {
