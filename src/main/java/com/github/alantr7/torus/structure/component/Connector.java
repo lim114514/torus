@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.structure.component;
 
+import com.github.alantr7.torus.machine.WireConnectorInstance;
+import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.machine.CableInstance;
@@ -20,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Connector implements Connectable {
+public class Connector implements Connectable, Conductor {
 
     public StructureInstance structure;
 
@@ -54,6 +56,17 @@ public class Connector implements Connectable {
 
     public final Matter matter;
 
+    @Override
+    public Collection<BlockLocation> getConnectedNodes() {
+        List<BlockLocation> nodes = new ArrayList<>();
+        for (Direction direction : Direction.values()) {
+            if (isConnected(direction))
+                nodes.add(component.absoluteLocation.getRelative(direction));
+        }
+
+        return nodes;
+    }
+
     public enum FlowDirection {
         ALL, NONE, IN, OUT,
         ;
@@ -79,7 +92,6 @@ public class Connector implements Connectable {
         if (networkUpdateTick == component.absoluteLocation.world.getTicks())
             return;
 
-        // Check if connector is directly connected to another
         int directionsCount = 0;
         int closedDirectionsCount = 0;
         List<Connection> networkConnections = new ArrayList<>();
@@ -88,21 +100,19 @@ public class Connector implements Connectable {
             networkConnections.add(new Connection(structure, this));
         }
 
+        // Check if connector is directly connected to another
         for (Direction direction : Direction.values()) {
             if (!isConnected(direction))
                 continue;
 
             directionsCount++;
-            if (isConnected(direction))
-                continue;
-
             StructureInstance neighbor = component.absoluteLocation.getRelative(direction).getStructure();
             if (neighbor == null) {
                 closedDirectionsCount++;
                 continue;
             }
 
-            if (neighbor instanceof CableInstance) {
+            if (neighbor instanceof CableInstance || neighbor instanceof WireConnectorInstance) {
                 continue;
             }
 
@@ -124,19 +134,15 @@ public class Connector implements Connectable {
         closed.add(component.absoluteLocation);
         for (Direction direction : Direction.values()) {
             if (isConnected(direction)) {
-                if (component.absoluteLocation.getRelative(direction).getStructure() instanceof CableInstance cable)
-                    open.add(cable.location);
+                if (component.absoluteLocation.getRelative(direction).getStructure() instanceof Conductor)
+                    open.add(component.absoluteLocation.getRelative(direction).getStructure().location);
             }
         }
 
         while (!open.isEmpty()) {
             BlockLocation start = open.getFirst();
-            CableInstance startCable = (CableInstance) start.getStructure();
-            for (Direction direction : Direction.values()) {
-                if (!startCable.isConnected(direction))
-                    continue;
-
-                BlockLocation neighborLoc = start.getRelative(direction);
+            Conductor startCable = (Conductor) start.getStructure();
+            for (BlockLocation neighborLoc : startCable.getConnectedNodes()) {
                 if (closed.contains(neighborLoc)) // Skip if already checked
                     continue;
 
@@ -147,11 +153,11 @@ public class Connector implements Connectable {
                 }
 
                 // Check if it's a cable
-                if (neighbor instanceof CableInstance) {
+                if (neighbor instanceof Conductor) {
                     if (!open.contains(neighborLoc)) {
                         open.add(neighborLoc);
-                        continue;
                     }
+                    continue;
                 }
 
                 Connector connector = neighbor.getConnector(neighborLoc, matter);

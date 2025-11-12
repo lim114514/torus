@@ -6,10 +6,12 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.plugin.EventListener;
+import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
+import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -27,7 +29,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
-public class WireConnectorInstance extends StructureInstance {
+public class WireConnectorInstance extends StructureInstance implements Conductor {
 
     private final Map<BlockLocation, WireConnection> connections = new HashMap<>();
 
@@ -121,6 +123,47 @@ public class WireConnectorInstance extends StructureInstance {
             EventListener.establishingWireConnections.put(event.getPlayer().getUniqueId(), this);
             connectionCandidate.setLeashHolder(event.getPlayer());
         }
+    }
+
+    @Override
+    public Collection<BlockLocation> getConnectedNodes() {
+        if (getType() == Type.RELAY)
+            return connections.keySet();
+
+        List<BlockLocation> nodes = new ArrayList<>(connections.keySet());
+        nodes.addAll(getConnector("base").getConnectedNodes());
+
+        return nodes;
+    }
+
+    public void updateConnections() {
+        for (Direction direction : Direction.values()) {
+            updateConnection(direction);
+        }
+    }
+
+    public void updateConnection(Direction direction) {
+        StructureInstance possibleConnection = location.getRelative(direction).getStructure();
+        boolean hasConnected = false;
+
+        // Check if this cable connects to a connector
+        if (possibleConnection != null) {
+            Connector connector = possibleConnection.getConnector(location.getRelative(direction), Connector.Matter.ENERGY);
+            if (connector != null && connector.isConnectableFrom(direction.getOpposite())) {
+                hasConnected = true;
+                connector.setConnected(direction.getOpposite(), true);
+                possibleConnection.save();
+            }
+        }
+
+        // Check if this cable connects to another cable
+        if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Connector.Matter.ENERGY) {
+            hasConnected = true;
+            cable.setConnected(direction.getOpposite(), true);
+            cable.updateModel();
+        }
+
+        getConnector("base").setConnected(direction, hasConnected);
     }
 
     private Slime spawnSlime() {

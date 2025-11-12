@@ -5,6 +5,7 @@ import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
+import com.github.alantr7.torus.machine.WireConnectorInstance;
 import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
@@ -191,6 +192,11 @@ public class TorusWorld {
                             iii.updateConnections();
                         }
                     }
+                    else if (instance.location.getRelative(direction).getStructure() instanceof WireConnectorInstance wci) {
+                        if (cable.getType() == Connector.Matter.ENERGY) {
+                            wci.updateConnections();
+                        }
+                    }
                 }
             }
         }
@@ -205,6 +211,10 @@ public class TorusWorld {
                 }
             }
         });
+
+        if (instance instanceof WireConnectorInstance wci) {
+            wci.updateConnections();
+        }
 
         if (instance instanceof PhysicalConnectorInstance iii) {
             iii.updateConnections();

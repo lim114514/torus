@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -11,9 +12,13 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connectable;
 import com.github.alantr7.torus.structure.component.Connector;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import static com.github.alantr7.torus.machine.EnergyCable.*;
 
-public class CableInstance extends StructureInstance implements Connectable {
+public class CableInstance extends StructureInstance implements Connectable, Conductor {
 
     protected Data<Integer> connections = dataContainer.persist("connections", Data.Type.INT, 0);
 
@@ -125,6 +130,17 @@ public class CableInstance extends StructureInstance implements Connectable {
 
     public Connector.Matter getType() {
         return Connector.Matter.values()[type.get()];
+    }
+
+    @Override
+    public Collection<BlockLocation> getConnectedNodes() {
+        List<BlockLocation> nodes = new ArrayList<>();
+        for (Direction direction : Direction.values()) {
+            if (isConnected(direction))
+                nodes.add(location.getRelative(direction));
+        }
+
+        return nodes;
     }
 
 }
