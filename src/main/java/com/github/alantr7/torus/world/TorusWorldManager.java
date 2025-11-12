@@ -4,6 +4,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.InvokePeriodically;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -74,6 +75,9 @@ public class TorusWorldManager implements Listener {
         worlds.values().forEach(TorusWorld::tick);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!worlds.containsKey(player.getWorld().getUID()) || MainConfig.WORLD_BLACKLIST.contains(player.getWorld().getName()))
+                continue;
+
             Block block = player.getTargetBlockExact(5);
             if (block == null) {
                 player.resetTitle();
