@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityUnleashEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
 
@@ -190,6 +191,42 @@ public class EventListener implements Listener {
                 connector.connectionCandidate.setLeashHolder(null);
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    void onSwitchHotbarItem(InventoryClickEvent event) {
+        Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
+            if (!TorusItem.is(event.getWhoClicked().getInventory().getItemInMainHand(), "torus:copper_wire")) {
+                WireConnectorInstance connector = establishingWireConnections.remove(event.getWhoClicked().getUniqueId());
+                if (connector != null) {
+                    connector.connectionCandidate.setLeashHolder(null);
+                }
+            }
+        }, 1L);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    void onSwitchHotbarItem(InventoryDragEvent event) {
+        Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
+            if (!TorusItem.is(event.getWhoClicked().getInventory().getItemInMainHand(), "torus:copper_wire")) {
+                WireConnectorInstance connector = establishingWireConnections.remove(event.getWhoClicked().getUniqueId());
+                if (connector != null) {
+                    connector.connectionCandidate.setLeashHolder(null);
+                }
+            }
+        }, 1L);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    void onSwitchHotbarItem(PlayerSwapHandItemsEvent event) {
+        Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
+            if (!TorusItem.is(event.getMainHandItem(), "torus:copper_wire")) {
+                WireConnectorInstance connector = establishingWireConnections.remove(event.getPlayer().getUniqueId());
+                if (connector != null) {
+                    connector.connectionCandidate.setLeashHolder(null);
+                }
+            }
+        }, 1L);
     }
 
     @EventHandler
