@@ -173,6 +173,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
             slime.setAI(false);
             slime.setPersistent(false);
             slime.setInvulnerable(true);
+            slime.setRemoveWhenFarAway(false);
             slime.getAttribute(Attribute.SCALE).setBaseValue(0.01d); // scales down the entity to prevent initial flicker
             slime.addScoreboardTag("torus_entity");
             slime.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "connector_position"), PersistentDataType.LIST.integers(), List.of(location.x, location.y, location.z));

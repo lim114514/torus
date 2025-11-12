@@ -38,7 +38,7 @@ public class TorusItemManager {
 
         registerItem(new TorusItem("torus:power_pole", Category.NETWORK, Structures.POWER_POLE, Material.SPRUCE_FENCE, "Power Pole", Collections.emptyList()));
         registerItem(new TorusItem("torus:connector", Category.NETWORK, Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
-        registerItem(new TorusItem("torus:wire_connector", Category.NETWORK, Structures.WIRE_CONNECTOR, Material.HEAVY_CORE, "Wire Connector (WIP)", List.of(ChatColor.RED + "Does not transmit energy yet!")));
+        registerItem(new TorusItem("torus:wire_connector", Category.NETWORK, Structures.WIRE_CONNECTOR, Material.HEAVY_CORE, "Wire Connector", Collections.emptyList()));
         registerItem(new TorusItem("torus:wire_relay", Category.NETWORK, Structures.WIRE_RELAY, Material.HEAVY_CORE, "Wire Relay", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:screwdriver",  Category.TOOLS, null, Material.STICK, "Screwdriver", Collections.emptyList()));
