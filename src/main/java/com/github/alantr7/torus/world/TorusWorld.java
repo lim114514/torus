@@ -6,7 +6,6 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
 import com.github.alantr7.torus.machine.WireConnectorInstance;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
 import lombok.Getter;
@@ -201,20 +200,29 @@ public class TorusWorld {
             }
         }
 
-        // Update all cables around it
-        instance.getConnectors().forEach((connector) -> {
+        // Connect to structures next to it if possible
+        else instance.getConnectors().forEach((connector) -> {
             for (Direction direction : Direction.values()) {
                 if (connector.isConnectableFrom(direction)) {
-                    if (connector.getComponent().absoluteLocation.getRelative(direction).getStructure() instanceof CableInstance cable) {
+                    StructureInstance neighbor = connector.getComponent().absoluteLocation.getRelative(direction).getStructure();
+                    if (neighbor == null)
+                        continue;
+
+                    if (neighbor instanceof CableInstance cable) {
                         cable.updateConnections();
+                        continue;
+                    }
+
+                    Connector neighborConnector;
+                    if ((neighborConnector = neighbor.getConnector(connector.getComponent().absoluteLocation.getRelative(direction), connector.matter)) != null) {
+                        if (neighborConnector.isConnectableFrom(direction.getOpposite())) {
+                            connector.setConnected(direction, true);
+                            neighborConnector.setConnected(direction.getOpposite(), true);
+                        }
                     }
                 }
             }
         });
-
-        if (instance instanceof WireConnectorInstance wci) {
-            wci.updateConnections();
-        }
 
         if (instance instanceof PhysicalConnectorInstance iii) {
             iii.updateConnections();

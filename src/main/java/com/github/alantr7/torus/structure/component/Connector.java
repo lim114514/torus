@@ -134,8 +134,8 @@ public class Connector implements Connectable, Conductor {
         closed.add(component.absoluteLocation);
         for (Direction direction : Direction.values()) {
             if (isConnected(direction)) {
-                if (component.absoluteLocation.getRelative(direction).getStructure() instanceof Conductor)
-                    open.add(component.absoluteLocation.getRelative(direction).getStructure().location);
+                if (component.absoluteLocation.getRelative(direction).getStructure() instanceof Conductor conductor)
+                    open.add(((StructureInstance) conductor).location);
             }
         }
 
@@ -152,7 +152,7 @@ public class Connector implements Connectable, Conductor {
                     continue;
                 }
 
-                // Check if it's a cable
+                // Check if it's a conductor
                 if (neighbor instanceof Conductor) {
                     if (!open.contains(neighborLoc)) {
                         open.add(neighborLoc);
