@@ -17,6 +17,8 @@
 - ✔ Inventory Interface
 - ✔ Fluid Tank
 - ✔ Power Bank
+- ✔ Power Pole
+- ✔ Wire Connector, Wire Relay
 
 ## Items
 - ✔ Iron Dust, Copper Dust, Gold Dust
