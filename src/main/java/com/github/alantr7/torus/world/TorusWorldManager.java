@@ -33,6 +33,9 @@ public class TorusWorldManager implements Listener {
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     void initialize() {
         for (World world : Bukkit.getWorlds()) {
+            if (MainConfig.WORLD_BLACKLIST.contains(world.getName()))
+                continue;
+
             TorusWorld torusWorld = new TorusWorld(world);
             torusWorld.load();
 
@@ -42,6 +45,10 @@ public class TorusWorldManager implements Listener {
 
             worlds.put(world.getUID(), torusWorld);
         }
+    }
+
+    public boolean isWorldSupported(World world) {
+        return worlds.containsKey(world.getUID());
     }
 
     public TorusWorld getWorld(World world) {

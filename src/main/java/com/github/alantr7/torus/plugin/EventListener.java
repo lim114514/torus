@@ -100,6 +100,9 @@ public class EventListener implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
+        if (!TorusPlugin.getInstance().getWorldManager().isWorldSupported(event.getPlayer().getWorld()))
+            return;
+
         if (interactionCooldown.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
             return;
 
