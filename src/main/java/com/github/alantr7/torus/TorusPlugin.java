@@ -5,8 +5,8 @@ import com.github.alantr7.bukkitplugin.annotations.generative.JavaPlugin;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocate;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocations;
 import com.github.alantr7.torus.config.ConfigManager;
-import com.github.alantr7.torus.config.ConfigPackLoader;
 import com.github.alantr7.torus.item.TorusItemManager;
+import com.github.alantr7.torus.player.TorusPlayerManager;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
@@ -49,6 +49,10 @@ public class TorusPlugin extends BukkitPlugin {
 
     public TorusWorldManager getWorldManager() {
         return getSingleton(TorusWorldManager.class);
+    }
+
+    public TorusPlayerManager getPlayerManager() {
+        return getSingleton(TorusPlayerManager.class);
     }
 
 }

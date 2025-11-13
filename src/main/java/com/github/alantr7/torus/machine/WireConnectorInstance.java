@@ -5,7 +5,7 @@ import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.item.TorusItem;
-import com.github.alantr7.torus.plugin.EventListener;
+import com.github.alantr7.torus.player.TorusPlayer;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -98,8 +98,9 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
         }
 
         // Establish connection between two connectors
-        if (EventListener.establishingWireConnections.containsKey(event.getPlayer().getUniqueId())) {
-            WireConnectorInstance origin = EventListener.establishingWireConnections.get(event.getPlayer().getUniqueId());
+        TorusPlayer player = TorusPlayer.get(event.getPlayer());
+        if (player.pendingWireConnection != null) {
+            WireConnectorInstance origin = player.pendingWireConnection;
             if (origin == this) {
                 connectionCandidate.setLeashHolder(null);
             } else if (origin.connections.containsKey(location)) {
@@ -118,9 +119,9 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
                 }
             }
 
-            EventListener.establishingWireConnections.remove(event.getPlayer().getUniqueId());
+            player.pendingWireConnection = null;
         } else {
-            EventListener.establishingWireConnections.put(event.getPlayer().getUniqueId(), this);
+            player.pendingWireConnection = this;
             connectionCandidate.setLeashHolder(event.getPlayer());
         }
     }

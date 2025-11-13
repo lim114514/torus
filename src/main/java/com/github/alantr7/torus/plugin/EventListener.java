@@ -7,6 +7,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.machine.WireConnectorInstance;
+import com.github.alantr7.torus.player.TorusPlayer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -28,17 +29,8 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 @Singleton
 public class EventListener implements Listener {
-
-    Map<UUID, Long> placementCooldown = new HashMap<>();
-    Map<UUID, Long> interactionCooldown = new HashMap<>();
-
-    public static Map<UUID, WireConnectorInstance> establishingWireConnections = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     void onMachinePlace(PlayerInteractEvent event) {
@@ -46,7 +38,8 @@ public class EventListener implements Listener {
             return;
 
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        if (placementCooldown.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
+        TorusPlayer player = TorusPlayer.get(event.getPlayer());
+        if (player.placementCooldownExpiry > System.currentTimeMillis())
             return;
 
         TorusItem torusItem = TorusItem.getByItemStack(item);
@@ -58,9 +51,7 @@ public class EventListener implements Listener {
             return;
         }
 
-        long cooldownExpiry = System.currentTimeMillis() + 200;
-        placementCooldown.put(event.getPlayer().getUniqueId(), cooldownExpiry);
-        interactionCooldown.put(event.getPlayer().getUniqueId(), cooldownExpiry);
+        player.placementCooldownExpiry = player.interactionCooldownExpiry = System.currentTimeMillis() + 200;
 
         if (MainConfig.WORLD_BLACKLIST.contains(event.getClickedBlock().getWorld().getName())) {
             event.getPlayer().sendMessage(ChatColor.RED + "Structures were disabled in this world by server owners.");
@@ -103,12 +94,14 @@ public class EventListener implements Listener {
         if (!TorusPlugin.getInstance().getWorldManager().isWorldSupported(event.getPlayer().getWorld()))
             return;
 
-        if (interactionCooldown.getOrDefault(event.getPlayer().getUniqueId(), 0L) > System.currentTimeMillis())
+        TorusPlayer player = TorusPlayer.get(event.getPlayer());
+
+        if (player.interactionCooldownExpiry > System.currentTimeMillis())
             return;
 
         StructureInstance structure = new BlockLocation(event.getClickedBlock().getLocation()).getStructure();
         if (structure != null) {
-            interactionCooldown.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
+            player.interactionCooldownExpiry = System.currentTimeMillis() + 200;
 
             if (event.getPlayer().isSneaking() && event.getItem() != null) {
                 TorusItem torusItem = TorusItem.getByItemStack(event.getItem());
@@ -121,9 +114,9 @@ public class EventListener implements Listener {
 
             if (structure.structure.isInteractable && structure.testOwnership(event.getPlayer())) {
                 structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
-                event.setCancelled(true);
+                player.placementCooldownExpiry = System.currentTimeMillis() + 200;
 
-                placementCooldown.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 200);
+                event.setCancelled(true);
             }
         }
     }
@@ -179,7 +172,7 @@ public class EventListener implements Listener {
             event.setDropLeash(false);
 
             if (((LivingEntity) event.getEntity()).getLeashHolder() instanceof Player player) {
-                establishingWireConnections.remove(player.getUniqueId());
+                TorusPlayer.get(player).pendingWireConnection = null;
             } else {
                 event.setCancelled(true);
             }
@@ -189,10 +182,7 @@ public class EventListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     void onSwitchHotbarItem(PlayerItemHeldEvent event) {
         if (!TorusItem.is(event.getPlayer().getInventory().getItem(event.getNewSlot()), "torus:copper_wire")) {
-            WireConnectorInstance connector = establishingWireConnections.remove(event.getPlayer().getUniqueId());
-            if (connector != null) {
-                connector.connectionCandidate.setLeashHolder(null);
-            }
+            TorusPlayer.get(event.getPlayer()).abortWireConnection();
         }
     }
 
@@ -200,10 +190,7 @@ public class EventListener implements Listener {
     void onSwitchHotbarItem(InventoryClickEvent event) {
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
             if (!TorusItem.is(event.getWhoClicked().getInventory().getItemInMainHand(), "torus:copper_wire")) {
-                WireConnectorInstance connector = establishingWireConnections.remove(event.getWhoClicked().getUniqueId());
-                if (connector != null) {
-                    connector.connectionCandidate.setLeashHolder(null);
-                }
+                TorusPlayer.get((Player) event.getWhoClicked()).abortWireConnection();
             }
         }, 1L);
     }
@@ -212,10 +199,7 @@ public class EventListener implements Listener {
     void onSwitchHotbarItem(InventoryDragEvent event) {
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
             if (!TorusItem.is(event.getWhoClicked().getInventory().getItemInMainHand(), "torus:copper_wire")) {
-                WireConnectorInstance connector = establishingWireConnections.remove(event.getWhoClicked().getUniqueId());
-                if (connector != null) {
-                    connector.connectionCandidate.setLeashHolder(null);
-                }
+                TorusPlayer.get((Player) event.getWhoClicked()).abortWireConnection();
             }
         }, 1L);
     }
@@ -224,10 +208,7 @@ public class EventListener implements Listener {
     void onSwitchHotbarItem(PlayerSwapHandItemsEvent event) {
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
             if (!TorusItem.is(event.getMainHandItem(), "torus:copper_wire")) {
-                WireConnectorInstance connector = establishingWireConnections.remove(event.getPlayer().getUniqueId());
-                if (connector != null) {
-                    connector.connectionCandidate.setLeashHolder(null);
-                }
+                TorusPlayer.get(event.getPlayer()).abortWireConnection();
             }
         }, 1L);
     }
