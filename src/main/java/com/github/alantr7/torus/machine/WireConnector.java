@@ -31,7 +31,7 @@ public class WireConnector extends Structure {
     }
 
     public WireConnector() {
-        super("torus:wire_connector", WireConnectorInstance.class);
+        super("torus:wire_connector", "Wire Connector", WireConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         isOmnidirectional = true;

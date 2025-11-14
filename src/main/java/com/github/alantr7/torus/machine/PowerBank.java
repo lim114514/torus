@@ -46,7 +46,7 @@ public class PowerBank extends Structure {
     }
 
     public PowerBank() {
-        super("torus:power_bank", PowerBankInstance.class);
+        super("torus:power_bank", "Power Bank", PowerBankInstance.class);
     }
 
     @Override

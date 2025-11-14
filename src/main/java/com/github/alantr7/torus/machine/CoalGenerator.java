@@ -73,7 +73,7 @@ public class CoalGenerator extends Structure {
     }
 
     public CoalGenerator() {
-        super("torus:coal_generator", CoalGeneratorInstance.class);
+        super("torus:coal_generator", "Coal Generator", CoalGeneratorInstance.class);
     }
 
     @Override

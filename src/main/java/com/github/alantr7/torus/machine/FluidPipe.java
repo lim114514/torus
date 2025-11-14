@@ -25,7 +25,7 @@ public class FluidPipe extends Structure {
     }
 
     public FluidPipe() {
-        super("torus:fluid_pipe", CableInstance.class);
+        super("torus:fluid_pipe", "Fluid Pipe", CableInstance.class);
         isHeavy = false;
     }
 

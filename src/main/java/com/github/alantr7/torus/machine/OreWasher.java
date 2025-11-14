@@ -78,7 +78,7 @@ public class OreWasher extends Structure {
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
     public OreWasher() {
-        super("torus:ore_washer", OreWasherInstance.class);
+        super("torus:ore_washer", "Ore Washer", OreWasherInstance.class);
     }
 
     @Override

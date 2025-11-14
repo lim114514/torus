@@ -44,7 +44,7 @@ public class Pump extends Structure {
     }
 
     public Pump() {
-        super("torus:pump", PumpInstance.class);
+        super("torus:pump", "Pump", PumpInstance.class);
     }
 
     @Override

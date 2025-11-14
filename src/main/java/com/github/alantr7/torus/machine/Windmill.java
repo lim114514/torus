@@ -58,7 +58,7 @@ public class Windmill extends Structure {
     public static final float MAXIMUM_SPEED = 1.85f * (float) Math.PI / 3f;
 
     public Windmill() {
-        super("torus:windmill", WindmillInstance.class);
+        super("torus:windmill", "Windmill", WindmillInstance.class);
     }
 
     @Override

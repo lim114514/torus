@@ -92,7 +92,7 @@ public class OreCrusher extends Structure {
     public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
 
     public OreCrusher() {
-        super("torus:ore_crusher", OreCrusherInstance.class);
+        super("torus:ore_crusher", "Ore Crusher", OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
     }
 

@@ -32,7 +32,7 @@ public class WireRelay extends Structure {
     }
 
     public WireRelay() {
-        super("torus:wire_relay", WireConnectorInstance.class);
+        super("torus:wire_relay", "Wire Relay", WireConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
     }

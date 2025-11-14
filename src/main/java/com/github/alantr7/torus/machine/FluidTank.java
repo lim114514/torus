@@ -63,7 +63,7 @@ public class FluidTank extends Structure {
     }
 
     public FluidTank() {
-        super("torus:fluid_tank", FluidTankInstance.class);
+        super("torus:fluid_tank", "Fluid Tank", FluidTankInstance.class);
     }
 
     @Override

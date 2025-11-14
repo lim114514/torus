@@ -31,7 +31,7 @@ public class PowerPole extends Structure {
     }
 
     public PowerPole() {
-        super("torus:power_pole", PowerPoleInstance.class);
+        super("torus:power_pole", "Power Pole", PowerPoleInstance.class);
         isHeavy = false;
     }
 

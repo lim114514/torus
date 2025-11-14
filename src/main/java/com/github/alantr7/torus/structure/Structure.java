@@ -16,6 +16,8 @@ public abstract class Structure {
 
     public final String id;
 
+    public final String name;
+
     public int numericId = -1;
 
     protected final Class<? extends StructureInstance> instanceClass;
@@ -35,8 +37,9 @@ public abstract class Structure {
 
     protected final Map<String, PartModelTemplate> namedModelTemplates = new HashMap<>();
 
-    public Structure(String id, Class<? extends StructureInstance> instanceClass) {
+    public Structure(String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.id = id;
+        this.name = name;
         this.instanceClass = instanceClass;
 
         ByteArrayBuilder builder = new ByteArrayBuilder();

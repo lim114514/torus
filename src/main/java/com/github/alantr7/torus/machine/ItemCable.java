@@ -25,7 +25,7 @@ public class ItemCable extends Structure {
     }
 
     public ItemCable() {
-        super("torus:item_cable", CableInstance.class);
+        super("torus:item_cable", "Item Cable", CableInstance.class);
         isHeavy = false;
     }
 

@@ -42,7 +42,7 @@ public class BlockBreaker extends Structure {
     }
 
     public BlockBreaker() {
-        super("torus:block_breaker", BlockBreakerInstance.class);
+        super("torus:block_breaker", "Block Breaker", BlockBreakerInstance.class);
         isHeavy = false;
     }
 

@@ -59,7 +59,7 @@ public class Turret extends Structure {
     static { AMMO_CRITERIA.ids.add("torus:steel_nugget"); }
 
     public Turret() {
-        super("torus:turret", TurretInstance.class);
+        super("torus:turret", "Laser Turret", TurretInstance.class);
         registerNamedModelTemplate(MODEL_HEAD);
     }
 

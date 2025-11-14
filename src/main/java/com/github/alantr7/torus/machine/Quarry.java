@@ -127,7 +127,7 @@ public class Quarry extends Structure {
     }
 
     public Quarry() {
-        super("torus:quarry", QuarryInstance.class);
+        super("torus:quarry", "Quarry", QuarryInstance.class);
         offset = new byte[] {0, 0, -6};
     }
 

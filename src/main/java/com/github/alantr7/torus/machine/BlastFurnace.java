@@ -67,7 +67,7 @@ public class BlastFurnace extends Structure {
     }
 
     public BlastFurnace() {
-        super("torus:blast_furnace", BlastFurnaceInstance.class);
+        super("torus:blast_furnace", "Blast Furnace", BlastFurnaceInstance.class);
         isInteractable = true;
     }
 
