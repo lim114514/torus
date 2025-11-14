@@ -12,7 +12,7 @@ import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 
-@JavaPlugin(name = "Torus", version = "0.3.0")
+@JavaPlugin(name = "Torus", version = "0.4.0")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
 public class TorusPlugin extends BukkitPlugin {
 
