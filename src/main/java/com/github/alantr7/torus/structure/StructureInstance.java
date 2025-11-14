@@ -10,7 +10,6 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.model.Model;
-import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
@@ -26,6 +25,7 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -72,12 +72,16 @@ public abstract class StructureInstance {
 
     public InspectableData inspectableData;
 
+    @Getter
+    private final FlowMeter flowMeter; // TODO: I hate this so much, but it's a temporary solution until I make traits system
+
     public StructureInstance(LoadContext context) {
         this.structure = context.structure();
         this.location = context.location();
         this.direction = context.direction();
         this.dataContainer = context.data();
         setOccupiedChunks();
+        flowMeter = new FlowMeter(context.location().world);
     }
 
     public StructureInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
@@ -104,6 +108,7 @@ public abstract class StructureInstance {
             }
         }
         setOccupiedChunks();
+        flowMeter = new FlowMeter(location.world);
     }
 
     public void handleModelInit() {

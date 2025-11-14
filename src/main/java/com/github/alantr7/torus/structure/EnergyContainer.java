@@ -5,6 +5,8 @@ import com.github.alantr7.torus.structure.inspection.InspectableData;
 
 public interface EnergyContainer extends Inspectable {
 
+    FlowMeter getFlowMeter();
+
     int getEnergyCapacity();
 
     Data<Integer> getStoredEnergy();
@@ -17,14 +19,20 @@ public interface EnergyContainer extends Inspectable {
         int starting = getStoredEnergy().get();
         getStoredEnergy().update(Math.max(starting - amount, 0));
 
-        return starting - getStoredEnergy().get();
+        int consumed = starting - getStoredEnergy().get();
+        getFlowMeter().update(-consumed);
+
+        return consumed;
     }
 
     default int supplyEnergy(int amount) {
         int starting = getStoredEnergy().get();
         getStoredEnergy().update(Math.min(starting + amount, getEnergyCapacity()));
 
-        return getStoredEnergy().get() - starting;
+        int supplied = getStoredEnergy().get() - starting;
+        getFlowMeter().update(supplied);
+
+        return supplied;
     }
 
     @Override

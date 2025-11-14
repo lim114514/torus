@@ -1,7 +1,9 @@
 package com.github.alantr7.torus.structure.inspection;
 
+import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.world.BlockLocation;
+import org.bukkit.ChatColor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +35,6 @@ public class InspectableData {
     }
 
     public static Function<EnergyContainer, Supplier<String>> TEMPLATE_RF =
-      container -> () -> container.getStoredEnergy().get() + "/" + container.getEnergyCapacity();
+      container -> () -> MathUtils.formatNumber(container.getStoredEnergy().get()) + "/" + MathUtils.formatNumber(container.getEnergyCapacity()) + (container.getFlowMeter().isNeutral() ? "" : (((container.getFlowMeter().getSupplied() > container.getFlowMeter().getConsumed()) ? (ChatColor.GREEN + " ↑ " + (container.getFlowMeter().getSupplied() - container.getFlowMeter().getConsumed())) : (ChatColor.RED + " ↓ " + (container.getFlowMeter().getConsumed() - container.getFlowMeter().getSupplied())))));
 
 }

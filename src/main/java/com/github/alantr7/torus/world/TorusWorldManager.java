@@ -99,6 +99,7 @@ public class TorusWorldManager implements Listener {
             BlockLocation blockLocation = new BlockLocation(block.getLocation());
             StructureInstance structure = blockLocation.getStructure();
             if (structure != null && structure.inspectionHologram != null && structure.inspectableData.inspectableBlocks.contains(blockLocation)) {
+                structure.updateInspectionHologram();
                 torusPlayer.showInspectionHologram(structure);
             } else {
                 torusPlayer.hideInspectionHologram();

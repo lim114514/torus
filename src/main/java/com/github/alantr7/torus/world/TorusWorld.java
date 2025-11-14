@@ -152,9 +152,6 @@ public class TorusWorld {
 
                 try {
                     s.tick();
-                    if (s.inspectableData != null) {
-                        s.updateInspectionHologram();
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

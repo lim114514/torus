@@ -34,7 +34,7 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
     @Override
     public void tick() {
         if (storedEnergy.get() < energyCapacity) {
-            storedEnergy.update((int) Math.min(storedEnergy.get() + 50 * calculateEfficiency(), energyCapacity));
+            supplyEnergy((int) (50 * calculateEfficiency()));
         }
     }
 

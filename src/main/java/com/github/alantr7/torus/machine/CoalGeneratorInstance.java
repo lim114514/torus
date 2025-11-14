@@ -63,7 +63,7 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
         }
 
         if (storedEnergy.get() < energyCapacity) {
-            storedEnergy.update(Math.min(storedEnergy.get() + 300, energyCapacity));
+            supplyEnergy(300);
             remainingBurnTicks--;
 
             location.world.getBukkit().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, location.getBlock().getLocation().add(chimneyPosition[0], chimneyPosition[1], chimneyPosition[2]).add(.5, 1, .5), 0, 0, .075f, 0);

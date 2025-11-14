@@ -14,7 +14,6 @@ import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
