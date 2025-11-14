@@ -3,6 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.gui.structure.BlastFurnaceGUI;
 import com.github.alantr7.torus.item.ItemReference;
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.BlastFurnaceRecipe;
 import com.github.alantr7.torus.structure.Inspectable;
@@ -16,7 +17,6 @@ import com.github.alantr7.torus.world.BlockLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -188,8 +188,9 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
     }
 
     @Override
-    public String getInspectionText(BlockLocation location, Player player) {
-        return "Blast Furnace [" + (recipe != null ? recipe.key : "No recipe") + "] [" + String.format("%.0f %%", 100f * (float) processedTicks / (recipe != null ? recipe.smeltDuration : 1)) + "]";
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 1)
+          .property("Recipe", () -> recipe != null ? recipe.key.toString() : "(None)");
     }
 
 }

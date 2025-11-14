@@ -4,7 +4,7 @@ import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.StringPool;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import org.joml.Vector2i;
 
@@ -153,11 +153,7 @@ public class TorusRegion {
                 try {
                     StructureInstance structure = StructureInstance.fromBytes(this, chunk, reader, structureId);
                     if (structure != null) {
-                        ModelTemplate modelTemplate = structure.structure.getInitialModel();
-                        if (modelTemplate != null) {
-                            structure.model = modelTemplate.toModel(structure.location, structure.direction);
-                        }
-                        structure.handleModelInit();
+                        Structure.place(structure);
                         chunk._placeStructureWithOccupations(structure);
                     } else {
                         System.err.println("Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + basePointer);

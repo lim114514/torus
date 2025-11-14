@@ -10,9 +10,12 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.model.Model;
+import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
+import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableProperty;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.ConnectorLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -23,8 +26,15 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Color;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
@@ -57,6 +67,10 @@ public abstract class StructureInstance {
     private int[][] occupiedChunks;
 
     public Model model = new Model();
+
+    public TextDisplay inspectionHologram;
+
+    public InspectableData inspectableData;
 
     public StructureInstance(LoadContext context) {
         this.structure = context.structure();
@@ -97,6 +111,25 @@ public abstract class StructureInstance {
 
     public void handleModelDestroy() {
         model.parts.values().forEach(PartModel::remove);
+        if (inspectionHologram != null)
+            inspectionHologram.remove();
+    }
+
+    public void spawnInspectionTooltip() {
+        float[] offset = MathUtils.rotateVectors(inspectableData.hologramOffset, direction.rotH, 0);
+        inspectionHologram = location.world.getBukkit().spawn(location.toBukkitCentered().add(0, 0.8d, 0).add(offset[0], offset[1], offset[2]), TextDisplay.class);
+        inspectionHologram.setBillboard(Display.Billboard.CENTER);
+        inspectionHologram.setPersistent(false);
+        inspectionHologram.setSeeThrough(true);
+        inspectionHologram.setBackgroundColor(Color.fromARGB(0, 0, 0, 0));
+        inspectionHologram.setAlignment(TextDisplay.TextAlignment.LEFT);
+        inspectionHologram.setVisibleByDefault(false);
+        inspectionHologram.setShadowed(true);
+
+        Transformation transformation = inspectionHologram.getTransformation();
+        transformation.getScale().set(0.7f, 0.7f, 0.7f);
+        transformation.getTranslation().set(1.4f, 0f, 0f);
+        inspectionHologram.setTransformation(transformation);
     }
 
     public byte[] getBounds() {
@@ -162,6 +195,21 @@ public abstract class StructureInstance {
     }
 
     public abstract void tick();
+
+    private static final TextColor COLOR_STRUCTURE_NAME = TextColor.fromHexString("#ff8854");
+    private static final TextColor COLOR_PROPERTY = TextColor.fromHexString("#cfcfcf");
+    public final void updateInspectionHologram() {
+        Component parent = Component.empty();
+        parent = parent.append(Component.text(structure.name).decorate(TextDecoration.BOLD).color(COLOR_STRUCTURE_NAME)).appendNewline();
+        for (InspectableProperty var : inspectableData.properties) {
+            String value = var.valueSupplier.get();
+            if (value != null) {
+                parent = parent.append(Component.text(var.name + ": " + value).color(COLOR_PROPERTY)).appendNewline();
+            }
+        }
+
+        inspectionHologram.text(parent);
+    }
 
     protected abstract void setup() throws SetupException;
 
@@ -319,13 +367,6 @@ public abstract class StructureInstance {
                 c.structure = instance;
                 instance.connectorsByName.put(c.getComponent().name, c);
             });
-
-            try {
-                instance.setup();
-            } catch (SetupException exc) {
-                instance.isCorrupted = true;
-                exc.printStackTrace();
-            }
 
             return instance;
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Inspectable;
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -18,7 +19,6 @@ import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 
@@ -49,6 +49,12 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
         connector = getConnector("connector");
         updateCriteria(getFilter());
         updateModel();
+    }
+
+    @Override
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 1)
+          .property("Flow", () -> getFlowDirection().name());
     }
 
     public void updateConnections() {
@@ -196,11 +202,6 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     public Connector.FlowDirection getFlowDirection() {
         return Connector.FlowDirection.values()[flowDirectionData.get()];
-    }
-
-    @Override
-    public String getInspectionText(BlockLocation location, Player player) {
-        return "Connector [Flow: " + getFlowDirection() + "]";
     }
 
 }

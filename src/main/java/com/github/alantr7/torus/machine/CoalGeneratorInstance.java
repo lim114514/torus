@@ -1,6 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.exception.MissingDataException;
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
@@ -41,9 +43,9 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     }
 
     @Override
-    protected void setup() {
-        inputConnector = getConnector("item_connector");
-        outputConnector = getConnector("power_connector");
+    protected void setup() throws MissingDataException {
+        inputConnector = requireConnector("item_connector");
+        outputConnector = requireConnector("power_connector");
         outputConnector.maximumOutput = 500;
 
         chimneyPosition = MathUtils.rotateVectors(new float[] { 1.125f - .5f, 1.8f, 0.8125f - .5f }, direction.rotH, direction.rotV);
@@ -69,6 +71,13 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
                 location.world.getBukkit().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, location.getBlock().getLocation().add(chimneyPosition[0], chimneyPosition[1], chimneyPosition[2]).add(.5, 1, .5), 0, 0, .075f, 0);
             }, 10L);
         }
+    }
+
+    @Override
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 1)
+          .offset(0, 0, 1)
+          .property("RF", InspectableData.TEMPLATE_RF.apply(this));
     }
 
 }

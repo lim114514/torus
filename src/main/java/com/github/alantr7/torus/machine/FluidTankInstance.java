@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -10,7 +11,6 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
@@ -84,6 +84,13 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     }
 
     @Override
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 2)
+          .property("Fluid", () -> getFluid() == null ? "(None)" : getFluid().name())
+          .property("Level", () -> getStoredFluid() + "/" + getFluidCapacity());
+    }
+
+    @Override
     public Fluid getFluid() {
         return (fluid.get() == -1 || stored.get() == 0) ? null : Fluid.values()[fluid.get()];
     }
@@ -104,11 +111,6 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
         if (fluid == 0) {
             this.fluid.update(-1);
         }
-    }
-
-    @Override
-    public String getInspectionText(BlockLocation location, Player player) {
-        return "Fluid Tank [" + getStoredFluid() + " / " + getFluidCapacity() + " mb]";
     }
 
 }

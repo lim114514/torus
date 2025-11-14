@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.structure;
 
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.PartModelTemplate;
@@ -92,21 +93,35 @@ public abstract class Structure {
         byte[] offset = calculateOffset(direction.getOpposite());
         location = location.getRelative(offset[0], offset[1], offset[2]);
         StructureInstance instance = instantiate(location, direction);
-        try {
-            ModelTemplate modelTemplate = getInitialModel();
-            if (modelTemplate != null) {
-                instance.model = modelTemplate.toModel(location, direction);
-            }
-            instance.setup();
-            instance.handleModelInit();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.err.println("Corrupted structure. It will be loaded but not ticked.");
-            instance.isCorrupted = true;
-        }
+        place(instance);
 
         location.world.placeStructure(instance);
         return instance;
+    }
+
+    public static void place(StructureInstance instance) {
+        try {
+            instance.setup();
+            ModelTemplate modelTemplate = instance.structure.getInitialModel();
+            if (modelTemplate != null) {
+                instance.model = modelTemplate.toModel(instance.location, instance.direction);
+            }
+            instance.handleModelInit();
+            if (instance instanceof Inspectable inspectable) {
+                instance.inspectableData = inspectable.setupInspectableData();
+                if (instance.inspectableData.inspectableBlocks.isEmpty()) {
+                    byte[] bounds = instance.getBounds();
+                    for (int i = 0; i < bounds.length; i += 3) {
+                        instance.inspectableData.inspectableBlocks.add(instance.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]));
+                    }
+                }
+
+                instance.spawnInspectionTooltip();
+            }
+        } catch (SetupException exc) {
+            instance.isCorrupted = true;
+            exc.printStackTrace();
+        }
     }
 
     private byte[] calculateOffset(Direction direction) {

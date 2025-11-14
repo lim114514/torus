@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.structure.*;
@@ -12,11 +13,9 @@ import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
 import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
-import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -108,8 +107,10 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     }
 
     @Override
-    public String getInspectionText(BlockLocation location, Player player) {
-        return "Ore Crusher " + String.format("[%d RF] [%s %.2f%%]", getStoredEnergy().get(), recipe != null ? recipe.key : "No recipe", (float) processedTicks / (recipe != null ? recipe.crushTicks : 1) * 100);
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 2)
+          .property("RF", InspectableData.TEMPLATE_RF.apply(this))
+          .property("Recipe", () -> recipe != null ? recipe.key.toString() : "(None)");
     }
 
 }
