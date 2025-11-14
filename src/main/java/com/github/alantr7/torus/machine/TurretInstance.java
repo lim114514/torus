@@ -60,7 +60,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
         if (getStoredEnergy().get() < 250)
             return;
 
-        Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), 5, 1.5, 5, e -> e instanceof Monster || e instanceof Slime);
+        Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), 5, 1.5, 5, e -> (e instanceof Monster || e instanceof Slime) && !e.getScoreboardTags().contains("torus_entity"));
         if (entities.isEmpty())
             return;
 
