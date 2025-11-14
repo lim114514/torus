@@ -2,8 +2,10 @@ package com.github.alantr7.torus.player;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.machine.WireConnectorInstance;
+import com.github.alantr7.torus.structure.StructureInstance;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -17,6 +19,8 @@ public class TorusPlayer {
     public long placementCooldownExpiry;
 
     public long interactionCooldownExpiry;
+
+    public TextDisplay activeInspectionHologram;
 
     public WireConnectorInstance pendingWireConnection;
 
@@ -38,6 +42,24 @@ public class TorusPlayer {
             pendingWireConnection.connectionCandidate.setLeashHolder(null);
             pendingWireConnection = null;
         }
+    }
+
+    public void showInspectionHologram(StructureInstance structure) {
+        if (activeInspectionHologram == structure.inspectionHologram)
+            return;
+
+        if (activeInspectionHologram != null) {
+            asBukkit().hideEntity(TorusPlugin.getInstance(), activeInspectionHologram);
+        }
+        asBukkit().showEntity(TorusPlugin.getInstance(), structure.inspectionHologram);
+        activeInspectionHologram = structure.inspectionHologram;
+    }
+
+    public void hideInspectionHologram() {
+        if (activeInspectionHologram != null) {
+            asBukkit().hideEntity(TorusPlugin.getInstance(), activeInspectionHologram);
+        }
+        activeInspectionHologram = null;
     }
 
     @NotNull

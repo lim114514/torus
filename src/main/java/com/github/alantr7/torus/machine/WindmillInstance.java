@@ -7,11 +7,11 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
 import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 
@@ -67,12 +67,15 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
     }
 
     @Override
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 2)
+          .property("RF", InspectableData.TEMPLATE_RF.apply(this))
+          .property("Eff", () -> (int) (efficiency * 100) + "%");
+    }
+
+    @Override
     public int getEnergyCapacity() {
         return 3_000;
     }
 
-    @Override
-    public String getInspectionText(BlockLocation location, Player player) {
-        return EnergyContainer.super.getInspectionText(location, player) + " [Eff: " + String.format("%.1f", efficiency * 100) + "%]";
-    }
 }

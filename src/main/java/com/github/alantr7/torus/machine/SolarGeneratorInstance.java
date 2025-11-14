@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -9,7 +10,6 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
-import org.bukkit.entity.Player;
 
 public class SolarGeneratorInstance extends StructureInstance implements EnergyContainer {
 
@@ -38,6 +38,13 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
         }
     }
 
+    @Override
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 2)
+          .property("RF", InspectableData.TEMPLATE_RF.apply(this))
+          .property("Eff", () -> (int) (calculateEfficiency() * 100) + "%");
+    }
+
     static float pi_10th = (float) Math.PI / 10f;
     static float pi_20th = (float) Math.PI / 20f;
     static float pi2 = (float) Math.PI * 2;
@@ -49,11 +56,6 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
 
         float amp = (float) (Math.max(-pi_10th, Math.sin(Math.PI * time / l - pi2)) + pi_10th) / 2f * (1f/(1f / 2f + pi_20th));
         return amp * maximumEfficiency;
-    }
-
-    @Override
-    public String getInspectionText(BlockLocation location, Player player) {
-        return EnergyContainer.super.getInspectionText(location, player) + " (Eff: " + String.format("%.2f", calculateEfficiency() * 100) + "%)";
     }
 
 }

@@ -1,10 +1,10 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
@@ -33,6 +33,12 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     protected void setup() {
         connector = getConnector("power_connector");
         connector.maximumInput = 500;
+    }
+
+    @Override
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 1)
+          .property("RF", InspectableData.TEMPLATE_RF.apply(this));
     }
 
     int energyAtLastTick;

@@ -6,6 +6,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.model.PartModel;
+import com.github.alantr7.torus.player.TorusPlayer;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.StructureInstance;
 import net.md_5.bungee.api.ChatMessageType;
@@ -80,21 +81,27 @@ public class TorusWorldManager implements Listener {
     @InvokePeriodically(interval = 20)
     private void tickLoadedStructures() {
         worlds.values().forEach(TorusWorld::tick);
+    }
 
+    @InvokePeriodically(interval = 8)
+    private void showInspectionHolograms() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!worlds.containsKey(player.getWorld().getUID()) || MainConfig.WORLD_BLACKLIST.contains(player.getWorld().getName()))
                 continue;
 
+            TorusPlayer torusPlayer = TorusPlayer.get(player);
             Block block = player.getTargetBlockExact(5);
             if (block == null) {
-                player.resetTitle();
+                torusPlayer.hideInspectionHologram();
                 continue;
             }
 
             BlockLocation blockLocation = new BlockLocation(block.getLocation());
-            StructureInstance structure = worlds.get(player.getWorld().getUID()).getStructure(blockLocation);
-            if (structure instanceof Inspectable generator) {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(generator.getInspectionText(blockLocation, player)));
+            StructureInstance structure = blockLocation.getStructure();
+            if (structure != null && structure.inspectionHologram != null && structure.inspectableData.inspectableBlocks.contains(blockLocation)) {
+                torusPlayer.showInspectionHologram(structure);
+            } else {
+                torusPlayer.hideInspectionHologram();
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -17,8 +18,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Collection;
 
 public class BlockBreakerInstance extends StructureInstance implements EnergyContainer {
 
@@ -52,6 +51,12 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         itemConnector = getConnector("item_connector");
         inventory = new CustomStructureInventory(1);
         itemConnector.linkedInventory = inventory;
+    }
+
+    @Override
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 1)
+          .property("RF", InspectableData.TEMPLATE_RF.apply(this));
     }
 
     @Override

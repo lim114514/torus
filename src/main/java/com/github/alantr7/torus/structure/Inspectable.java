@@ -1,10 +1,9 @@
 package com.github.alantr7.torus.structure;
 
-import com.github.alantr7.torus.world.BlockLocation;
-import org.bukkit.entity.Player;
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 
 public interface Inspectable {
 
-    String getInspectionText(BlockLocation location, Player player);
+    InspectableData setupInspectableData();
 
 }
