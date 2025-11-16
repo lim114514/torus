@@ -140,7 +140,7 @@ public class Connector implements Connectable, Conductor {
         }
 
         while (!open.isEmpty()) {
-            BlockLocation start = open.getFirst();
+            BlockLocation start = open.removeFirst();
             Conductor startCable = (Conductor) start.getStructure();
             for (BlockLocation neighborLoc : startCable.getConnectedNodes()) {
                 if (closed.contains(neighborLoc)) // Skip if already checked
@@ -170,7 +170,7 @@ public class Connector implements Connectable, Conductor {
                 }
             }
 
-            closed.add(open.removeFirst());
+            closed.add(start);
         }
 
         this.networkConnections = networkConnections;

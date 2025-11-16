@@ -15,6 +15,12 @@ public class Data<T> {
         this.type = type;
     }
 
+    public Data(DataContainer container, Type<T> type, T value) {
+        this.container = container;
+        this.type = type;
+        this.value = value;
+    }
+
     @SuppressWarnings("unchecked")
     public T get() {
         return (T) value;

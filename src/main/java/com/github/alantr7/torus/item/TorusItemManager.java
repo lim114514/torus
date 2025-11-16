@@ -40,6 +40,7 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:connector", Category.NETWORK, Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
         registerItem(new TorusItem("torus:wire_connector", Category.NETWORK, Structures.WIRE_CONNECTOR, Material.HEAVY_CORE, "Wire Connector", Collections.emptyList()));
         registerItem(new TorusItem("torus:wire_relay", Category.NETWORK, Structures.WIRE_RELAY, Material.HEAVY_CORE, "Wire Relay", Collections.emptyList()));
+        registerItem(new TorusItem("torus:electricity_meter", Category.NETWORK, Structures.ELECTRICITY_METER, Material.OBSERVER, "Electricity Meter", Collections.emptyList()));
 
         registerItem(new TorusItem("torus:screwdriver",  Category.TOOLS, null, Material.STICK, "Screwdriver", Collections.emptyList()));
         registerItem(new TorusItem("torus:hammer",  Category.TOOLS, null, Material.STICK, "Hammer", Collections.emptyList()));

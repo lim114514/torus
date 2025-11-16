@@ -16,6 +16,8 @@ public class InspectableData {
 
     public float[] hologramOffset = {0f, 0f, 0f};
 
+    public float[] hologramTranslation = {1.4f, 0.8f, 0f};
+
     public Set<BlockLocation> inspectableBlocks = new HashSet<>();
 
     private byte nextPosition = 0;
@@ -31,6 +33,11 @@ public class InspectableData {
 
     public InspectableData offset(float x, float y, float z) {
         hologramOffset = new float[] { x, y, z };
+        return this;
+    }
+
+    public InspectableData translate(float x, float y, float z) {
+        hologramTranslation = new float[] { x, y, z };
         return this;
     }
 
