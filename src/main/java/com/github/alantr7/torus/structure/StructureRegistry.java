@@ -97,6 +97,7 @@ public class StructureRegistry {
         register(Structures.CONNECTOR);
         register(Structures.WIRE_CONNECTOR);
         register(Structures.WIRE_RELAY);
+        register(Structures.ELECTRICITY_METER);
 
         register(Structures.POWER_BANK);
         register(Structures.FLUID_TANK);

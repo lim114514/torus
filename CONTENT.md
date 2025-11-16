@@ -19,6 +19,7 @@
 - ✔ Power Bank
 - ✔ Power Pole
 - ✔ Wire Connector, Wire Relay
+- ✔ Electricity Meter
 
 ## Items
 - ✔ Iron Dust, Copper Dust, Gold Dust

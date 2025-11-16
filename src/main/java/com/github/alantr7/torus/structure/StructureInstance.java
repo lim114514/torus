@@ -128,7 +128,7 @@ public abstract class StructureInstance {
 
     public void spawnInspectionTooltip() {
         float[] offset = MathUtils.rotateVectors(inspectableData.hologramOffset, direction.rotH, 0);
-        inspectionHologram = location.world.getBukkit().spawn(location.toBukkitCentered().add(0, 0.8d, 0).add(offset[0], offset[1], offset[2]), TextDisplay.class);
+        inspectionHologram = location.world.getBukkit().spawn(location.toBukkitCentered().add(offset[0], offset[1], offset[2]), TextDisplay.class);
         inspectionHologram.setBillboard(Display.Billboard.CENTER);
         inspectionHologram.setPersistent(false);
         inspectionHologram.setSeeThrough(true);
@@ -139,7 +139,7 @@ public abstract class StructureInstance {
 
         Transformation transformation = inspectionHologram.getTransformation();
         transformation.getScale().set(0.7f, 0.7f, 0.7f);
-        transformation.getTranslation().set(1.4f, 0f, 0f);
+        transformation.getTranslation().set(inspectableData.hologramTranslation);
         inspectionHologram.setTransformation(transformation);
     }
 
