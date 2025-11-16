@@ -10,6 +10,7 @@ import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -155,6 +156,47 @@ public class Commands {
               ctx.respond("    - Matter: " + ChatColor.GRAY + connector.matter);
               ctx.respond("    - Flow: " + ChatColor.GRAY + connector.getFlowDirection());
               ctx.respond("    - Connections: " + ChatColor.GRAY + connector.getConnections());
+          }
+      });
+
+    @CommandHandler Command inspectNetwork = CommandBuilder.using("torus")
+      .parameter("debug")
+      .parameter("inspect_network")
+      .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_DEBUG)
+      .executes(ctx -> {
+          Player player = (Player) ctx.getExecutor();
+          Block block = player.getTargetBlockExact(5);
+          if (block == null) {
+              ctx.respond("Not looking at any structure.");
+              return;
+          }
+
+          TorusWorld world = TorusPlugin.getInstance().getWorldManager().getWorld(player.getWorld());
+          if (world == null) {
+              ctx.respond("Structures aren't allowed in this world.");
+              return;
+          }
+
+          BlockLocation blockLocation = new BlockLocation(block.getLocation());
+          StructureInstance structure = world.getStructure(blockLocation);
+          if (structure == null) {
+              ctx.respond("Not looking at any structure.");
+              return;
+          }
+
+          for (Connector connector : structure.getConnectors()) {
+              ctx.respond(connector.getComponent().name + "  " + connector.getComponent().absoluteLocation + " (" + connector.matter + ")" + ":");
+              for (Connector.Connection connection : connector.networkConnections) {
+                  ctx.respond("   - " + connection.structure.structure.name + " (" + connection.connector.getComponent().absoluteLocation + ")");
+              }
+          }
+
+          if (structure instanceof Conductor conductor) {
+              ctx.respond("Conductor nodes:");
+              for (BlockLocation loc : conductor.getConnectedNodes()) {
+                  if (loc.getStructure() != null)
+                    ctx.respond("  - " + loc.getStructure().structure.name);
+              }
           }
       });
 
