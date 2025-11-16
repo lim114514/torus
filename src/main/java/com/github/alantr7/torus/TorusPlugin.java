@@ -2,6 +2,7 @@ package com.github.alantr7.torus;
 
 import com.github.alantr7.bukkitplugin.BukkitPlugin;
 import com.github.alantr7.bukkitplugin.annotations.generative.JavaPlugin;
+import com.github.alantr7.bukkitplugin.annotations.generative.SoftDepends;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocate;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocations;
 import com.github.alantr7.torus.config.ConfigManager;
@@ -14,6 +15,7 @@ import lombok.Getter;
 
 @JavaPlugin(name = "Torus", version = "0.4.0")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
+@SoftDepends("ProtocolLib")
 public class TorusPlugin extends BukkitPlugin {
 
     @Getter
