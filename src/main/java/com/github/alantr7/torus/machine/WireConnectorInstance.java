@@ -63,6 +63,20 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
+    public void destroy() {
+        connections.forEach((location, conn) -> {
+            WireConnectorInstance remote = (WireConnectorInstance) conn.location.getStructure();
+            if (remote != null) {
+                WireConnection remoteConnection = remote.connections.remove(this.location);
+                if (remoteConnection != null) {
+                    remoteConnection.slime.remove();
+                    remote.saveConnections();
+                }
+            }
+        });
+    }
+
+    @Override
     public void handleModelInit() {
         connectionCandidate = spawnSlime();
         connections.forEach((loc, conn) -> {
