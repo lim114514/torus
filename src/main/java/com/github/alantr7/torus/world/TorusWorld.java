@@ -286,6 +286,9 @@ public class TorusWorld {
 
         // Remove models
         instance.handleModelDestroy();
+
+        // Run destroy callbacks
+        instance.destroy();
     }
 
     void load() {

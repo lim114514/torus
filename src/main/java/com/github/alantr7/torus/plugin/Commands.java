@@ -194,8 +194,7 @@ public class Commands {
           if (structure instanceof Conductor conductor) {
               ctx.respond("Conductor nodes:");
               for (BlockLocation loc : conductor.getConnectedNodes()) {
-                  if (loc.getStructure() != null)
-                    ctx.respond("  - " + loc.getStructure().structure.name);
+                ctx.respond("  - " + (loc.getStructure() != null ? loc.getStructure().structure.name : "Null?"));
               }
           }
       });

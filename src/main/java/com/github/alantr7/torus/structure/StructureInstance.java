@@ -224,6 +224,8 @@ public abstract class StructureInstance {
 
     protected abstract void setup() throws SetupException;
 
+    public void destroy() {};
+
     @Nullable
     public UUID getOwnerId() {
         return dataContainer.getOrDefault("owner_id", Data.Type.UUID, null);
