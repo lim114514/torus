@@ -9,8 +9,7 @@ import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
-import com.github.alantr7.torus.model.Model;
-import com.github.alantr7.torus.model.PartModel;
+import com.github.alantr7.torus.model.*;
 import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
@@ -30,6 +29,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -38,6 +38,7 @@ import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.joml.Vector3f;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -103,8 +104,13 @@ public abstract class StructureInstance {
             if (componentDef.connectorDef != null) {
                 Connector connector = new Connector(components.get(componentDef.name), componentDef.connectorDef.allowedConnections(), componentDef.connectorDef.matter(), componentDef.connectorDef.direction());
                 connector.structure = this;
-                connectors.put(new ConnectorLocation(components.get(componentDef.name).absoluteLocation, componentDef.connectorDef.matter()), connector);
+
                 connectorsByName.put(componentDef.name, connector);
+                for (Direction possibleDirection : Direction.values()) {
+                    if (connector.isConnectableFrom(possibleDirection)) {
+                        connectors.put(new ConnectorLocation(component.absoluteLocation.getRelative(possibleDirection), connector.matter), connector);
+                    }
+                }
             }
         }
         setOccupiedChunks();
@@ -344,7 +350,12 @@ public abstract class StructureInstance {
             if (matterOrdinal < Connector.Matter.values().length && flowDirection < Connector.FlowDirection.values().length) {
                 Connector connector = new Connector(component, allowedConnections, Connector.Matter.values()[matterOrdinal], Connector.FlowDirection.values()[flowDirection]);
                 connector.setConnections(connections);
-                connectors.put(new ConnectorLocation(component.absoluteLocation, connector.matter), connector);
+
+                for (Direction possibleDirection : Direction.values()) {
+                    if (connector.isConnectableFrom(possibleDirection)) {
+                        connectors.put(new ConnectorLocation(component.absoluteLocation.getRelative(possibleDirection), connector.matter), connector);
+                    }
+                }
             } else {
                 System.err.println("Invalid matter or direction!");
             }

@@ -149,7 +149,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
 
         // Check if this cable connects to a connector
         if (possibleConnection != null) {
-            Connector connector = possibleConnection.getConnector(location.getRelative(direction), Connector.Matter.ENERGY);
+            Connector connector = possibleConnection.getConnector(location, Connector.Matter.ENERGY);
             if (connector != null && connector.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
                 connector.setConnected(direction.getOpposite(), true);

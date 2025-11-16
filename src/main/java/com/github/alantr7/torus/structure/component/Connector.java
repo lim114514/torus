@@ -14,6 +14,7 @@ import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -115,7 +116,7 @@ public class Connector implements Connectable, Conductor {
                 continue;
             }
 
-            Connector neighborConnector = neighbor.getConnector(component.absoluteLocation.getRelative(direction), matter);
+            Connector neighborConnector = neighbor.getConnector(component.absoluteLocation, matter);
             if (neighborConnector != null) {
                 networkConnections.add(new Connection(neighbor, neighborConnector));
                 closedDirectionsCount++;
@@ -159,7 +160,7 @@ public class Connector implements Connectable, Conductor {
                     continue;
                 }
 
-                Connector connector = neighbor.getConnector(neighborLoc, matter);
+                Connector connector = neighbor.getConnector(start, matter);
                 if (connector != null) {
                     networkConnections.add(new Connection(neighbor, connector));
                     closed.add(neighborLoc);

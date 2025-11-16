@@ -214,7 +214,7 @@ public class TorusWorld {
                     }
 
                     Connector neighborConnector;
-                    if ((neighborConnector = neighbor.getConnector(connector.getComponent().absoluteLocation.getRelative(direction), connector.matter)) != null) {
+                    if ((neighborConnector = neighbor.getConnector(connector.getComponent().absoluteLocation, connector.matter)) != null) {
                         if (neighborConnector.isConnectableFrom(direction.getOpposite())) {
                             connector.setConnected(direction, true);
                             neighborConnector.setConnected(direction.getOpposite(), true);
@@ -263,7 +263,7 @@ public class TorusWorld {
                             iii.updateConnections();
                         }
                     } else if (cable.isConnected(direction)) {
-                        Connector connector = neighbor.getConnector(instance.location.getRelative(direction), cable.getType());
+                        Connector connector = neighbor.getConnector(instance.location, cable.getType());
                         if (connector != null) {
                             connector.setConnected(direction.getOpposite(), false);
                         }

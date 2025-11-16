@@ -74,7 +74,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
             // Check if this interface connects to a connector
             if (possibleConnection != null) {
-                Connector connector = possibleConnection.getConnector(location.getRelative(direction), Connector.Matter.ITEM);
+                Connector connector = possibleConnection.getConnector(location, Connector.Matter.ITEM);
                 if (connector != null && connector.isConnectableFrom(direction.getOpposite())) {
                     hasConnected = true;
                     shouldUpdateModel = true;
