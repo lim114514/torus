@@ -36,12 +36,20 @@ public class Pump extends Structure {
         MODEL_ENERGY_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0, .5f, 0.4375f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
     }
 
+    static PartModelTemplate MODEL_PIPE = new PartModelTemplate("pipe");
+    static {
+        MODEL_PIPE.add(new PartModelElementItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(), new Vector3f(.1875f, 2, .1875f), new Vector3f()));
+    }
+
     public static final ModelTemplate INITIAL_MODEL = new ModelTemplate();
     static {
         INITIAL_MODEL.add(MODEL_BASE);
         INITIAL_MODEL.add(MODEL_FLUID_CONNECTOR);
         INITIAL_MODEL.add(MODEL_ENERGY_CONNECTOR, new Vector3f(.5f, 1f, .5f));
+        INITIAL_MODEL.add(MODEL_PIPE);
     }
+
+    public static final int MAX_LENGTH = 32;
 
     public Pump() {
         super("torus:pump", "Pump", PumpInstance.class);
