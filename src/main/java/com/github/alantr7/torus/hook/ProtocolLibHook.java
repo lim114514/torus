@@ -42,6 +42,7 @@ public class ProtocolLibHook {
                     return;
 
                 BlockPosition data = event.getPacket().getBlockPositionModifier().getValues().getFirst();
+                boolean includeData = event.getPacket().getBooleans().getValues().getFirst();
                 StructureInstance instance = worldManager.getWorld(event.getPlayer().getWorld()).getStructure(new BlockLocation(
                   worldManager.getWorld(event.getPlayer().getWorld()), data.getX(), data.getY(), data.getZ()
                 ));
@@ -54,6 +55,11 @@ public class ProtocolLibHook {
                     return;
 
                 event.setCancelled(true);
+
+                if (gameMode == GameMode.CREATIVE && includeData) {
+                    event.getPlayer().getInventory().setItemInMainHand(instance.toItem(true));
+                    return;
+                }
 
                 for (int i = 0; i < 9; i++) {
                     ItemStack hotbarItem = event.getPlayer().getInventory().getItem(i);

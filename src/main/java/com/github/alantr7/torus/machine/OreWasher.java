@@ -79,6 +79,8 @@ public class OreWasher extends Structure {
 
     public OreWasher() {
         super("torus:ore_washer", "Ore Washer", OreWasherInstance.class);
+        itemDropDataWhitelist.add("energy");
+        itemDropDataWhitelist.add("fluid");
     }
 
     @Override

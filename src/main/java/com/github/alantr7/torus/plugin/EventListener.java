@@ -3,11 +3,14 @@ package com.github.alantr7.torus.plugin;
 import com.github.alantr7.bukkitplugin.annotations.core.Inject;
 import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
+import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.machine.WireConnectorInstance;
+import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.player.TorusPlayer;
+import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -28,6 +31,8 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 @Singleton
 public class EventListener implements Listener {
@@ -72,6 +77,22 @@ public class EventListener implements Listener {
         if (torusItem.getStructure().isPlaceableAt(location, direction)) {
             StructureInstance structure = torusItem.getStructure().place(location, direction);
             if (structure != null) {
+                PersistentDataContainer structureData = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(TorusPlugin.getInstance(), "structure_data"), PersistentDataType.TAG_CONTAINER);
+                if (structureData != null) {
+                    ByteArrayReader stringsReader = new ByteArrayReader(
+                      structureData.get(new NamespacedKey(TorusPlugin.getInstance(), "string_pool"), PersistentDataType.BYTE_ARRAY)
+                    );
+                    StringPool strings = new StringPool();
+                    while (stringsReader.hasNext()) {
+                        strings.pool(stringsReader.readString());
+                    }
+
+                    ByteArrayReader dataContainerReader = new ByteArrayReader(
+                      structureData.get(new NamespacedKey(TorusPlugin.getInstance(), "data_container"), PersistentDataType.BYTE_ARRAY)
+                    );
+                    DataContainer.overwrite(structure.dataContainer, DataContainer.fromBytes(dataContainerReader, strings), structure.structure.itemDropDataWhitelist);
+                }
+
                 structure.setOwnerId(event.getPlayer().getUniqueId());
                 if (structure.structure.isHeavy) {
                     structure.location.world.getBukkit().playSound(location.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_PLACE, 0.2f, 1f);
@@ -144,9 +165,9 @@ public class EventListener implements Listener {
 
         if (instance.testOwnership(event.getPlayer())) {
             if (event.getPlayer().getGameMode() == GameMode.SURVIVAL || event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-                TorusItem drop = TorusPlugin.getInstance().getItemManager().getItemByStructure(instance.structure);
+                ItemStack drop = instance.toItem(true);
                 if (drop != null) {
-                    world.getBukkit().dropItem(loc.toBukkit().add(.5, 0, .5), drop.toItemStack().clone());
+                    world.getBukkit().dropItem(loc.toBukkit().add(.5, 0, .5), drop);
                 }
             }
             world.removeStructure(instance);

@@ -59,6 +59,7 @@ public class Windmill extends Structure {
 
     public Windmill() {
         super("torus:windmill", "Windmill", WindmillInstance.class);
+        itemDropDataWhitelist.add("energy");
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.MissingDataException;
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
@@ -28,12 +29,18 @@ import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -238,6 +245,49 @@ public abstract class StructureInstance {
     public boolean testOwnership(@NotNull Player player) {
         UUID ownerId = getOwnerId();
         return player.hasPermission(Permissions.STRUCTURE_BREAK_OTHERS) || (ownerId != null && player.getUniqueId().equals(ownerId));
+    }
+
+    public ItemStack toItem(boolean includeData) {
+        TorusItem torusItem = TorusPlugin.getInstance().getItemManager().getItemByStructure(structure);
+        if (torusItem == null)
+            return null;
+
+        ItemStack item = torusItem.toItemStack().clone();
+        if (!includeData || structure.itemDropDataWhitelist.isEmpty())
+            return item;
+
+        ItemMeta meta = item.getItemMeta();
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+
+        if (!structure.itemDropDataWhitelist.isEmpty()) {
+            List<String> lore = meta.getLore();
+            lore.add("");
+            lore.add(ChatColor.GRAY + "Data:");
+            dataContainer.getEntries().forEach((key, data) -> {
+                if (!structure.itemDropDataWhitelist.contains(key)) // TODO: Iterate through whitelist instead
+                    return;
+
+                lore.add(ChatColor.GRAY + " " + key + ": " + ChatColor.WHITE + (data.get().getClass().isArray() ? "array" : data.get()));
+            });
+            meta.setLore(lore);
+        }
+
+        StringPool strings = new StringPool();
+        ByteArrayWriter stringsBytes = new ByteArrayWriter();
+
+        byte[] bytes = dataContainer.toBytes(strings);
+        for (int i = 0; i < strings.getSize(); i++) {
+            stringsBytes.writeString(strings.at(i));
+        }
+
+        PersistentDataContainer structureData = pdc.getAdapterContext().newPersistentDataContainer();
+        structureData.set(new NamespacedKey(TorusPlugin.getInstance(), "string_pool"), PersistentDataType.BYTE_ARRAY, stringsBytes.getBuffer());
+        structureData.set(new NamespacedKey(TorusPlugin.getInstance(), "data_container"), PersistentDataType.BYTE_ARRAY, bytes);
+
+        pdc.set(new NamespacedKey(TorusPlugin.getInstance(), "structure_data"), PersistentDataType.TAG_CONTAINER, structureData);
+
+        item.setItemMeta(meta);
+        return item;
     }
 
     public void remove() {

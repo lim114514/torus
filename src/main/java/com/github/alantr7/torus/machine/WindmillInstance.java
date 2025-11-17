@@ -20,7 +20,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
     float efficiency;
 
     @Getter
-    public final Data<Integer> storedEnergy = dataContainer.persist("power", Data.Type.INT, 0);
+    public final Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     WindmillInstance(LoadContext context) {
         super(context);

@@ -94,6 +94,7 @@ public class OreCrusher extends Structure {
     public OreCrusher() {
         super("torus:ore_crusher", "Ore Crusher", OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
+        itemDropDataWhitelist.add("energy");
     }
 
     @Override

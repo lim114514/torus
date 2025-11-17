@@ -45,6 +45,9 @@ public class Pump extends Structure {
 
     public Pump() {
         super("torus:pump", "Pump", PumpInstance.class);
+        itemDropDataWhitelist.add("energy");
+        itemDropDataWhitelist.add("fluid");
+        itemDropDataWhitelist.add("amount");
     }
 
     @Override

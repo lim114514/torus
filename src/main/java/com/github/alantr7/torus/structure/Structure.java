@@ -11,7 +11,9 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Structure {
 
@@ -35,6 +37,8 @@ public abstract class Structure {
     public boolean isInteractable = false;
 
     public boolean isOmnidirectional = false;
+
+    public Set<String> itemDropDataWhitelist = new HashSet<>();
 
     protected final Map<String, PartModelTemplate> namedModelTemplates = new HashMap<>();
 

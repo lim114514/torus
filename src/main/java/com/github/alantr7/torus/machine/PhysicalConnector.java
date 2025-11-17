@@ -33,6 +33,8 @@ public class PhysicalConnector extends Structure {
         super("torus:connector", "Connector", PhysicalConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
+        itemDropDataWhitelist.add("flow");
+        itemDropDataWhitelist.add("filter");
     }
 
     @Override

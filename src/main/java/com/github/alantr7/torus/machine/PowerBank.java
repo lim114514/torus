@@ -47,6 +47,7 @@ public class PowerBank extends Structure {
 
     public PowerBank() {
         super("torus:power_bank", "Power Bank", PowerBankInstance.class);
+        itemDropDataWhitelist.add("energy");
     }
 
     @Override

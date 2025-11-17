@@ -128,6 +128,7 @@ public class Quarry extends Structure {
 
     public Quarry() {
         super("torus:quarry", "Quarry", QuarryInstance.class);
+        itemDropDataWhitelist.add("energy");
         offset = new byte[] {0, 0, -6};
     }
 

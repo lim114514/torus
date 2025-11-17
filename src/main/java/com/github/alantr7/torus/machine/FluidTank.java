@@ -64,6 +64,8 @@ public class FluidTank extends Structure {
 
     public FluidTank() {
         super("torus:fluid_tank", "Fluid Tank", FluidTankInstance.class);
+        itemDropDataWhitelist.add("fluid");
+        itemDropDataWhitelist.add("stored");
     }
 
     @Override

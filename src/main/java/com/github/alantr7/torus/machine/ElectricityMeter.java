@@ -42,6 +42,7 @@ public class ElectricityMeter extends Structure {
     public ElectricityMeter() {
         super("torus:electricity_meter", "Electricity Meter", ElectricityMeterInstance.class);
         isHeavy = false;
+        itemDropDataWhitelist.add("total");
     }
 
     @Override

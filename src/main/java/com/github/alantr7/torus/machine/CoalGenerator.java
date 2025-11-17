@@ -74,6 +74,7 @@ public class CoalGenerator extends Structure {
 
     public CoalGenerator() {
         super("torus:coal_generator", "Coal Generator", CoalGeneratorInstance.class);
+        itemDropDataWhitelist.add("energy");
     }
 
     @Override

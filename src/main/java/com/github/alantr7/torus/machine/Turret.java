@@ -60,6 +60,7 @@ public class Turret extends Structure {
 
     public Turret() {
         super("torus:turret", "Laser Turret", TurretInstance.class);
+        itemDropDataWhitelist.add("energy");
         registerNamedModelTemplate(MODEL_HEAD);
     }
 

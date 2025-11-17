@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class DataContainer {
@@ -18,6 +19,7 @@ public class DataContainer {
     @Getter @Setter
     boolean isDirty;
 
+    @Getter
     private final Map<String, Data<Object>> entries = new HashMap<>();
 
     @SuppressWarnings("unchecked")
@@ -136,6 +138,18 @@ public class DataContainer {
         }
 
         return container;
+    }
+
+    public static void overwrite(DataContainer original, DataContainer data, Set<String> whitelist) {
+        for (Map.Entry<String, Data<Object>> entry : original.entries.entrySet()) {
+            if (!whitelist.contains(entry.getKey())) // TODO: Iterate through whitelist instead
+                continue;
+
+            Data<Object> newValue = data.entries.get(entry.getKey());
+            if (newValue != null) {
+                entry.getValue().value = newValue.value;
+            }
+        }
     }
 
 }

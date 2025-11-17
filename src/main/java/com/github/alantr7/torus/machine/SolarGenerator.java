@@ -40,6 +40,7 @@ public class SolarGenerator extends Structure {
 
     public SolarGenerator() {
         super("torus:solar_generator", "Solar Generator", SolarGeneratorInstance.class);
+        itemDropDataWhitelist.add("energy");
     }
 
     @Override
