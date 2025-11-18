@@ -92,6 +92,58 @@ machine_block:
   ingredients:
     C: "torus:steel_ingot"
 
+steel_nugget_from_ingot:
+  type: CRAFTING
+  result: "torus:steel_nugget"
+  amount: 9
+  shape:
+    - "I"
+  ingredients:
+    I: "torus:steel_ingot"
+
+steel_ingot_from_nuggets:
+  type: CRAFTING
+  result: "torus:steel_ingot"
+  shape:
+    - "NNN"
+    - "NNN"
+    - "NNN"
+  ingredients:
+    N: "torus:steel_nugget"
+
+# Networking
+power_pole:
+  type: CRAFTING
+  result: "torus:power_pole"
+  shape:
+    - "PPP"
+    - " P "
+    - " P "
+  ingredients:
+    P: "minecraft:stripped_spruce_wood"
+
+wire_connector:
+  type: CRAFTING
+  result: "torus:wire_connector"
+  shape:
+    - "   "
+    - "TCT"
+    - "TCT"
+  ingredients:
+    T: "minecraft:terracotta"
+    C: "minecraft:copper_ingot"
+
+wire_relay:
+  type: CRAFTING
+  result: "torus:wire_relay"
+  shape:
+    - "   "
+    - "TWT"
+    - "TWT"
+  ingredients:
+    T: "minecraft:terracotta"
+    W: "minecraft:white_wool"
+
 # Generators
 generator:
   type: CRAFTING
