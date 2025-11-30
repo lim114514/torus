@@ -26,11 +26,11 @@ public class ConfigManager {
     }
 
     private void savePresetPack() {
-        TorusPlugin.getInstance().saveResource("packs/torus/crafting.recipes.yml", false);
-        TorusPlugin.getInstance().saveResource("packs/torus/smelting.recipes.yml", false);
-        TorusPlugin.getInstance().saveResource("packs/torus/blasting.recipes.yml", false);
-        TorusPlugin.getInstance().saveResource("packs/torus/crusher.recipes.yml", false);
-        TorusPlugin.getInstance().saveResource("packs/torus/washer.recipes.yml", false);
+        TorusPlugin.getInstance().saveResource("packs/torus/recipes/crafting.recipes.yml", false);
+        TorusPlugin.getInstance().saveResource("packs/torus/recipes/smelting.recipes.yml", false);
+        TorusPlugin.getInstance().saveResource("packs/torus/recipes/blasting.recipes.yml", false);
+        TorusPlugin.getInstance().saveResource("packs/torus/recipes/crusher.recipes.yml", false);
+        TorusPlugin.getInstance().saveResource("packs/torus/recipes/washer.recipes.yml", false);
     }
 
 }

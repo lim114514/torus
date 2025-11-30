@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
@@ -10,24 +10,10 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.model.PartModelElementItemDisplayRenderer;
-import com.github.alantr7.torus.model.PartModelTemplate;
-import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class PhysicalConnector extends Structure {
-
-    static PartModelTemplate CONNECTOR_MODEL = new PartModelTemplate("base");
-    static {
-        CONNECTOR_MODEL.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0f, 0.5f, 0.4375f), new Vector3f(0.625f, 0.625f, 0.125f), 0f, 0f));
-    }
-
-    public static final ModelTemplate INITIAL_MODEL = new ModelTemplate();
-    static {
-        INITIAL_MODEL.add(CONNECTOR_MODEL);
-        INITIAL_MODEL.add(new PartModelTemplate("cable"));
-    }
 
     public PhysicalConnector() {
         super("torus:connector", "Connector", PhysicalConnectorInstance.class);
@@ -35,11 +21,7 @@ public class PhysicalConnector extends Structure {
         isHeavy = false;
         itemDropDataWhitelist.add("flow");
         itemDropDataWhitelist.add("filter");
-    }
-
-    @Override
-    public ModelTemplate getInitialModel() {
-        return INITIAL_MODEL;
+        modelLocation = new ModelLocation("torus", "connector");
     }
 
     @Override

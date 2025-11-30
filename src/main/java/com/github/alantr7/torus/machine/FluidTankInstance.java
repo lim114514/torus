@@ -69,7 +69,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
         Transformation transformation = display.getTransformation();
 
         Vector3f translation = transformation.getTranslation();
-        translation.y = FluidTank.MODEL_LIQUID.parts.getFirst().offset[1] + height / 2f;
+        translation.y = 1.265f + height / 2f;
 
         Vector3f scale = transformation.getScale();
         scale.y = height;

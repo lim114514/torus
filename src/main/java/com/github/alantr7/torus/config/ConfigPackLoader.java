@@ -31,7 +31,7 @@ public class ConfigPackLoader {
     public void load() {
         TorusPlugin.getInstance().getRecipeManager().reset();
 
-        File[] files = packDirectory.listFiles();
+        File[] files = new File(packDirectory, "recipes").listFiles();
         if (files == null)
             return;
 

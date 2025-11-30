@@ -6,6 +6,9 @@ import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.model.ModelLoader;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -82,34 +85,34 @@ public class StructureRegistry {
     }
 
     private void registerStructures() {
-        register(Structures.BLAST_FURNACE);
-        register(Structures.BLOCK_BREAKER);
-        register(Structures.PUMP);
-        register(Structures.ORE_CRUSHER);
-        register(Structures.ORE_WASHER);
-        register(Structures.QUARRY);
+        registerAndInitialize(Structures.BLAST_FURNACE);
+        registerAndInitialize(Structures.BLOCK_BREAKER);
+        registerAndInitialize(Structures.PUMP);
+        registerAndInitialize(Structures.ORE_CRUSHER);
+        registerAndInitialize(Structures.ORE_WASHER);
+        registerAndInitialize(Structures.QUARRY);
 
-        register(Structures.ENERGY_CABLE);
-        register(Structures.ITEM_CABLE);
-        register(Structures.FLUID_CABLE);
+        registerAndInitialize(Structures.ENERGY_CABLE);
+        registerAndInitialize(Structures.ITEM_CABLE);
+        registerAndInitialize(Structures.FLUID_CABLE);
 
-        register(Structures.POWER_POLE);
-        register(Structures.CONNECTOR);
-        register(Structures.WIRE_CONNECTOR);
-        register(Structures.WIRE_RELAY);
-        register(Structures.ELECTRICITY_METER);
+        registerAndInitialize(Structures.POWER_POLE);
+        registerAndInitialize(Structures.CONNECTOR);
+        registerAndInitialize(Structures.WIRE_CONNECTOR);
+        registerAndInitialize(Structures.WIRE_RELAY);
+        registerAndInitialize(Structures.ELECTRICITY_METER);
 
-        register(Structures.POWER_BANK);
-        register(Structures.FLUID_TANK);
+        registerAndInitialize(Structures.POWER_BANK);
+        registerAndInitialize(Structures.FLUID_TANK);
 
-        register(Structures.TURRET);
+        registerAndInitialize(Structures.TURRET);
 
-        register(Structures.COAL_GENERATOR);
-        register(Structures.SOLAR_GENERATOR);
-        register(Structures.WINDMILL);
+        registerAndInitialize(Structures.COAL_GENERATOR);
+        registerAndInitialize(Structures.SOLAR_GENERATOR);
+        registerAndInitialize(Structures.WINDMILL);
     }
 
-    public void register(Structure structure) {
+    public void registerAndInitialize(Structure structure) {
         if (structure.numericId != -1) {
             throw new RuntimeException("Structure must not have numeric id already assigned when registering it");
         }
@@ -120,6 +123,15 @@ public class StructureRegistry {
             structure.numericId = nextStructureId++;
             structuresIds.put(structure.id, structure.numericId);
             saveQuery.add(structure);
+        }
+
+        if (structure.modelLocation != null) {
+            try {
+                structure.setModel(ModelLoader.load(structure.modelLocation.pack, structure.modelLocation.id));
+            } catch (Exception e) {
+                TorusLogger.error(Category.STRUCTURES, "Could not model for " + structure.id);
+                e.printStackTrace();
+            }
         }
 
         loaded.put(structure.id, structure);

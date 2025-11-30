@@ -30,7 +30,7 @@ public class ItemCable extends Structure {
     }
 
     @Override
-    public ModelTemplate getInitialModel() {
+    public ModelTemplate getModel() {
         return INITIAL_MODEL;
     }
 

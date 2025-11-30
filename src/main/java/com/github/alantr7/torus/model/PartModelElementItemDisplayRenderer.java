@@ -27,10 +27,6 @@ public final class PartModelElementItemDisplayRenderer {
           .rotateXYZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y), (float) Math.toRadians(rotation.z));
     }
 
-    public PartModelElementItemDisplayRenderer(Material material, float... data) {
-        this(new ItemStack(material), data);
-    }
-
     public PartModelElementItemDisplayRenderer(ItemStack stack, float... data) {
         this.itemStack = stack;
         this.transform = ItemDisplay.ItemDisplayTransform.NONE;
@@ -39,7 +35,8 @@ public final class PartModelElementItemDisplayRenderer {
         if (data.length < 8) {
             rotation = new Quaternionf();
         } else {
-            rotation = new Quaternionf().rotateAxis((float) Math.toRadians(data[6]), 0, 1, 0).rotateAxis((float) Math.toRadians(data[7]), 1, 0, 0);
+            rotation = new Quaternionf()
+              .rotateXYZ((float) Math.toRadians(data[6]), (float) Math.toRadians(data[7]), (float) Math.toRadians(data[8]));
         }
     }
 

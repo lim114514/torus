@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -18,37 +19,6 @@ import org.joml.Vector3f;
 
 public class Pump extends Structure {
 
-    static PartModelTemplate MODEL_BASE = new PartModelTemplate("base");
-    static {
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.END_ROD, new Vector3f(0, 0.5f, 0), new Vector3f(2f, 1f, 2f), 0f, 0f));
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.DROPPER, new Vector3f(0, 1.375f, 0), new Vector3f(.75f, .75f, .9375f), 0f, 90f));
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.CHAIN, new Vector3f(0.25f, 0.6875f, 0.1875f), new Vector3f(.5625f, .8125f,  1), 90f, 0f));
-        MODEL_BASE.add(new PartModelElementItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(0f, 1.875f, 0f), new Vector3f(.1875f, .1875f,  .1875f), 0f, 0f));
-    }
-
-    static PartModelTemplate MODEL_FLUID_CONNECTOR = new PartModelTemplate("out_fluid");
-    static {
-        MODEL_FLUID_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0, 1.9375f, 0), new Vector3f(.625f, .125f, .625f), 0f, 0f));
-    }
-
-    static PartModelTemplate MODEL_ENERGY_CONNECTOR = new PartModelTemplate("in_energy");
-    static {
-        MODEL_ENERGY_CONNECTOR.add(new PartModelElementItemDisplayRenderer(Material.GRAY_CONCRETE, new Vector3f(0, .5f, 0.4375f), new Vector3f(.625f, .625f, .125f), 0f, 0f));
-    }
-
-    static PartModelTemplate MODEL_PIPE = new PartModelTemplate("pipe");
-    static {
-        MODEL_PIPE.add(new PartModelElementItemDisplayRenderer(Material.LIGHT_BLUE_TERRACOTTA, new Vector3f(), new Vector3f(.1875f, 2, .1875f), new Vector3f()));
-    }
-
-    public static final ModelTemplate INITIAL_MODEL = new ModelTemplate();
-    static {
-        INITIAL_MODEL.add(MODEL_BASE);
-        INITIAL_MODEL.add(MODEL_FLUID_CONNECTOR);
-        INITIAL_MODEL.add(MODEL_ENERGY_CONNECTOR, new Vector3f(.5f, 1f, .5f));
-        INITIAL_MODEL.add(MODEL_PIPE);
-    }
-
     public static final int MAX_LENGTH = 32;
 
     public Pump() {
@@ -56,11 +26,7 @@ public class Pump extends Structure {
         itemDropDataWhitelist.add("energy");
         itemDropDataWhitelist.add("fluid");
         itemDropDataWhitelist.add("amount");
-    }
-
-    @Override
-    public ModelTemplate getInitialModel() {
-        return INITIAL_MODEL;
+        modelLocation = new ModelLocation("torus", "pump");
     }
 
     @Override

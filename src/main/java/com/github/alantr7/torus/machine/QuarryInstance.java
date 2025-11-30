@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
@@ -161,7 +160,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         ItemDisplay drillModel = model.getPart("drill").entityReferences.getFirst().getEntity();
         Transformation transform = drillModel.getTransformation();
-        transform.getTranslation().y = Quarry.MODEL_DRILL.parts.getFirst().offset[1] + len / 2f - 1.5f;
+        transform.getTranslation().y = structure.getModel().partsByName.get("drill").parts.getFirst().offset[1] + len / 2f - 1.5f;
         transform.getScale().y = len + f;
         drillModel.setTransformation(transform);
     }

@@ -2,17 +2,16 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class Structure {
@@ -40,7 +39,10 @@ public abstract class Structure {
 
     public Set<String> itemDropDataWhitelist = new HashSet<>();
 
-    protected final Map<String, PartModelTemplate> namedModelTemplates = new HashMap<>();
+    @Getter @Setter
+    private ModelTemplate model;
+
+    public ModelLocation modelLocation;
 
     public Structure(String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.id = id;
@@ -76,10 +78,6 @@ public abstract class Structure {
     protected void createBounds(ByteArrayBuilder builder) {
     }
 
-    public ModelTemplate getInitialModel() {
-        return null;
-    }
-
     public boolean isPlaceableAt(BlockLocation location, Direction direction) {
         byte[] offset = calculateOffset(direction.getOpposite());
         byte[] bounds = MathUtils.rotateVectors(this.bounds, direction);
@@ -106,7 +104,7 @@ public abstract class Structure {
     public static void place(StructureInstance instance) {
         try {
             instance.setup();
-            ModelTemplate modelTemplate = instance.structure.getInitialModel();
+            ModelTemplate modelTemplate = instance.structure.getModel();
             if (modelTemplate != null) {
                 instance.model = modelTemplate.toModel(instance.location, instance.direction);
             }
@@ -133,17 +131,6 @@ public abstract class Structure {
             return new byte[] { 0, 0, 0 };
 
         return MathUtils.rotateVectors(this.offset, direction);
-    }
-
-    public PartModelTemplate getNamedModelTemplate(String name) {
-        if (name == null)
-            return null;
-
-        return namedModelTemplates.get(name);
-    }
-
-    protected void registerNamedModelTemplate(PartModelTemplate template) {
-        namedModelTemplates.put(template.name, template);
     }
 
     @Override

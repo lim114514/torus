@@ -1,0 +1,6 @@
+base:
+  - item_display,light_gray_wool,0,0.4375,0,0.25,0.3125,0.25,0,0,0
+  - item_display,stripped_spruce_log,0,0.1875,0,0.125,0.375,0.125,0,0,0
+  - item_display,brown_concrete,0,0.625,0,0.375,0.125,0.375,0,0,0
+  - item_display,brown_concrete,0,0.4375,0,0.375,0.125,0.375,0,0,0
+  - item_display,brown_concrete,0,0.25,0,0.375,0.125,0.375,0,0,0

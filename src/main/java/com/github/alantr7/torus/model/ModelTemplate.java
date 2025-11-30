@@ -11,12 +11,15 @@ public class ModelTemplate {
 
     public final Map<PartModelTemplate, Vector3f> parts = new HashMap<>();
 
+    public final Map<String, PartModelTemplate> partsByName = new HashMap<>();
+
     public void add(PartModelTemplate template) {
-        parts.put(template, new Vector3f(.5f, 0, .5f));
+        add(template, new Vector3f(.5f, 0, .5f));
     }
 
     public void add(PartModelTemplate template, Vector3f offset) {
         parts.put(template, offset);
+        partsByName.put(template.name, template);
     }
 
     public Model toModel(BlockLocation location, Direction direction) {

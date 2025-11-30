@@ -1,0 +1,5 @@
+base:
+  - item_display,gray_wool,0,0.5,0.25,0.1875,0.1875,0.5,0,0,0
+  - item_display,brown_terracotta,0,0.5,0.3125,0.375,0.375,0.125,0,0,0
+  - item_display,brown_terracotta,0,0.5,0.125,0.375,0.375,0.125,0,0,0
+  - item_display,brown_terracotta,0,0.5,-0.0625,0.375,0.375,0.125,0,0,0

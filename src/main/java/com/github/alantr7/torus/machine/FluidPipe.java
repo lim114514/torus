@@ -30,7 +30,7 @@ public class FluidPipe extends Structure {
     }
 
     @Override
-    public ModelTemplate getInitialModel() {
+    public ModelTemplate getModel() {
         return INITIAL_MODEL;
     }
 
