@@ -2,6 +2,8 @@ package com.github.alantr7.torus.model;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.HeadData;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -34,7 +36,24 @@ public class ModelLoader {
             return loadInternalTorusModel(id);
         }
 
-        return load(file);
+        if (!pack.equals("torus"))
+            return load(file);
+
+        ModelTemplate template = load(file);
+        ModelTemplate internal = loadInternalTorusModel(id);
+
+        if (internal == null)
+            return template;
+
+        // Check if all model parts exist in the custom model
+        for (String part : internal.partsByName.keySet()) {
+            if (!template.partsByName.containsKey(part)) {
+                TorusLogger.error(Category.MODELS, "'" + id + "' model is missing part '" + part + "'");
+                return internal;
+            }
+        }
+
+        return template;
     }
 
     public static ModelTemplate loadInternalTorusModel(String id) {
