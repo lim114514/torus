@@ -16,7 +16,7 @@ import static com.github.alantr7.torus.machine.EnergyCable.MODELS_ITEM;
 
 public class ItemCable extends Structure {
 
-    static ModelTemplate INITIAL_MODEL = new ModelTemplate();
+    static ModelTemplate INITIAL_MODEL = new ModelTemplate(1);
     static {
         PartModelTemplate part = new PartModelTemplate("base");
         part.add(MODELS_ITEM[0]);

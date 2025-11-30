@@ -10,6 +10,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +25,37 @@ public class ModelLoader {
 
     private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9]+");
 
+    public static ModelTemplate load(String pack, String id) {
+        File file = new File(TorusPlugin.getInstance().getDataFolder(), "packs/" + pack + "/structures/" + id + ".model.yml");
+        if (!file.exists()) {
+            if (!pack.equals("torus"))
+                return null;
+
+            return loadInternalTorusModel(id);
+        }
+
+        return load(file);
+    }
+
+    public static ModelTemplate loadInternalTorusModel(String id) {
+        InputStream is = TorusPlugin.getInstance().getResource("packs/torus/structures/" + id + ".model.yml");
+        if (is == null)
+            return null;
+
+        try (InputStreamReader isr = new InputStreamReader(is)) {
+            return load(YamlConfiguration.loadConfiguration(isr));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static ModelTemplate load(File file) {
-        FileConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-        ModelTemplate template = new ModelTemplate();
+        return load(YamlConfiguration.loadConfiguration(file));
+    }
+
+    public static ModelTemplate load(FileConfiguration yaml) {
+        ModelTemplate template = new ModelTemplate(yaml.getInt("model_version", 1));
 
         for (String partName : yaml.getKeys(false)) {
             PartModelTemplate partModelTemplate = new PartModelTemplate(partName);
@@ -42,17 +72,6 @@ public class ModelLoader {
 
         return template;
     }
-
-    public static ModelTemplate load(String pack, String id) {
-        File file = new File(TorusPlugin.getInstance().getDataFolder(), "packs/" + pack + "/structures/" + id + ".model.yml");
-        if (!file.exists()) {
-            // TODO: Save internal if exists
-            return null;
-        }
-
-        return load(file);
-    }
-
 
     public static PartModelElementItemDisplayRenderer parseElement(String raw) {
         Matcher matcher = ITEM_PATTERN.matcher(raw);

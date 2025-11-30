@@ -1,0 +1,16 @@
+# Do not edit this value. It is used to auto-update config.
+config_version: 2
+
+world_blacklist:
+  - world_nether
+  - world_the_end
+
+customization:
+  # Enabling this will load models from '/plugins/Torus/packs/torus/structures' after server restart.
+  # Use '/torus export_model <structure_id>' to save a model file, that can be edited, to the destination mentioned above.
+  # Keep in mind that you will not receive automatic model updates if this option is enabled. You will still get models for new structures.
+  enable_model_editing: false
+
+logs:
+  world_save: true
+  recipe_load: true

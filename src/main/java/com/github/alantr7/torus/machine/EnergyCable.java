@@ -50,7 +50,7 @@ public class EnergyCable extends Structure {
       MODELS_ITEM, MODELS_ENERGY, MODELS_FLUID
     };
 
-    static ModelTemplate INITIAL_MODEL = new ModelTemplate();
+    static ModelTemplate INITIAL_MODEL = new ModelTemplate(1);
     static {
         PartModelTemplate part = new PartModelTemplate("base");
         part.add(MODELS_ENERGY[0]);

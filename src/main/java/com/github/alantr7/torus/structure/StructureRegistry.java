@@ -6,6 +6,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.ModelLoader;
@@ -31,7 +32,7 @@ public class StructureRegistry {
     @Invoke(Invoke.Schedule.BEFORE_PLUGIN_ENABLE)
     private void init() {
         load();
-        registerStructures();
+        registerInternalStructures();
     }
 
     private void load() {
@@ -84,7 +85,7 @@ public class StructureRegistry {
         }
     }
 
-    private void registerStructures() {
+    public void registerInternalStructures() {
         registerAndInitialize(Structures.BLAST_FURNACE);
         registerAndInitialize(Structures.BLOCK_BREAKER);
         registerAndInitialize(Structures.PUMP);
@@ -127,9 +128,13 @@ public class StructureRegistry {
 
         if (structure.modelLocation != null) {
             try {
-                structure.setModel(ModelLoader.load(structure.modelLocation.pack, structure.modelLocation.id));
-            } catch (Exception e) {
-                TorusLogger.error(Category.STRUCTURES, "Could not model for " + structure.id);
+                if (MainConfig.CUSTOMIZATION_ENABLE_MODEL_EDITING || !structure.modelLocation.pack.equals("torus")) {
+                    structure.setModel(ModelLoader.load(structure.modelLocation.pack, structure.modelLocation.id));
+                } else {
+                    structure.setModel(ModelLoader.loadInternalTorusModel(structure.modelLocation.id));
+                }
+            } catch (Exception | Error e) {
+                TorusLogger.error(Category.STRUCTURES, "Could not load model for " + structure.id);
                 e.printStackTrace();
             }
         }
@@ -146,7 +151,11 @@ public class StructureRegistry {
         return loadedByNumericIds.get(id);
     }
 
-    public Set<Map.Entry<String, Integer>> getStructuresIds() {
+    public Set<String> getStructuresIds() {
+        return structuresIds.keySet();
+    }
+
+    public Set<Map.Entry<String, Integer>> getStructuresIdsMap() {
         return structuresIds.entrySet();
     }
 
