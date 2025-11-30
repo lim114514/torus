@@ -1,10 +1,13 @@
 package com.github.alantr7.torus.model;
 
+import com.github.alantr7.torus.TorusPlugin;
 import io.papermc.paper.entity.TeleportFlag;
 import org.bukkit.Location;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PartModel {
@@ -22,7 +25,16 @@ public class PartModel {
     }
 
     public void teleport(Location location) {
-        parent.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN, TeleportFlag.EntityState.RETAIN_PASSENGERS);
+        if (TorusPlugin.usesPaperAPI()) {
+            parent.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN, TeleportFlag.EntityState.RETAIN_PASSENGERS);
+        } else {
+            List<Entity> passengers = new ArrayList<>(parent.getPassengers());
+            parent.eject();
+            parent.teleport(location);
+            for (Entity en : passengers) {
+                parent.addPassenger(en);
+            }
+        }
     }
 
     public void remove() {

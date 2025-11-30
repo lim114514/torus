@@ -26,12 +26,8 @@ import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
 import lombok.Getter;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
@@ -45,7 +41,6 @@ import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
-import org.joml.Vector3f;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -214,19 +209,18 @@ public abstract class StructureInstance {
 
     public abstract void tick();
 
-    private static final TextColor COLOR_STRUCTURE_NAME = TextColor.fromHexString("#ff8854");
-    private static final TextColor COLOR_PROPERTY = TextColor.fromHexString("#cfcfcf");
+    private static final ChatColor COLOR_STRUCTURE_NAME = ChatColor.of("#ff8854");
+    private static final ChatColor COLOR_PROPERTY = ChatColor.of("#cfcfcf");
     public final void updateInspectionHologram() {
-        Component parent = Component.empty();
-        parent = parent.append(Component.text(structure.name).decorate(TextDecoration.BOLD).color(COLOR_STRUCTURE_NAME)).appendNewline();
+        StringBuilder parent = new StringBuilder();
+        parent.append(COLOR_STRUCTURE_NAME).append(ChatColor.BOLD).append(structure.name).append("\n");
         for (InspectableProperty var : inspectableData.properties) {
             String value = var.valueSupplier.get();
             if (value != null) {
-                parent = parent.append(Component.text(var.name + ": " + value).color(COLOR_PROPERTY)).appendNewline();
+                parent.append(COLOR_PROPERTY).append(var.name).append(": ").append(value).append("\n");
             }
         }
-
-        inspectionHologram.text(parent);
+        inspectionHologram.setText(parent.toString());
     }
 
     protected abstract void setup() throws SetupException;
