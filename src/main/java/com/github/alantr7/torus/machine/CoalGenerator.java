@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelLocation;
@@ -24,7 +25,7 @@ public class CoalGenerator extends Structure {
     }
 
     public CoalGenerator() {
-        super("torus:coal_generator", "Coal Generator", CoalGeneratorInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "coal_generator", "Coal Generator", CoalGeneratorInstance.class);
         itemDropDataWhitelist.add("energy");
         modelLocation = new ModelLocation("torus", "coal_generator");
     }

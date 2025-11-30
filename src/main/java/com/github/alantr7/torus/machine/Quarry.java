@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -25,7 +26,7 @@ public class Quarry extends Structure {
     }
 
     public Quarry() {
-        super("torus:quarry", "Quarry", QuarryInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "quarry", "Quarry", QuarryInstance.class);
         itemDropDataWhitelist.add("energy");
         offset = new byte[] {0, 0, -6};
         modelLocation = new ModelLocation("torus", "quarry");

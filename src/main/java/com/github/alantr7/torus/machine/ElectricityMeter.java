@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.PartModelElementItemDisplayRenderer;
@@ -19,7 +20,7 @@ import org.joml.Vector3f;
 public class ElectricityMeter extends Structure {
 
     public ElectricityMeter() {
-        super("torus:electricity_meter", "Electricity Meter", ElectricityMeterInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "electricity_meter", "Electricity Meter", ElectricityMeterInstance.class);
         isHeavy = false;
         itemDropDataWhitelist.add("total");
         modelLocation = new ModelLocation("torus", "electricity_meter");

@@ -171,7 +171,7 @@ public class Commands {
           }
 
           ctx.respond("\n");
-          ctx.respond(ChatColor.GOLD + "Structure ID: " + ChatColor.RESET + structure.structure.id);
+          ctx.respond(ChatColor.GOLD + "Structure ID: " + ChatColor.RESET + structure.structure.namespacedId);
           ctx.respond(ChatColor.GOLD + "Owner ID: " + structure.getOwnerId());
           ctx.respond(ChatColor.GOLD + "Connectors: (" + structure.getConnectors().size() + ")");
           for (Connector connector : structure.getConnectors()) {

@@ -5,6 +5,7 @@ import com.github.alantr7.bukkitplugin.annotations.generative.JavaPlugin;
 import com.github.alantr7.bukkitplugin.annotations.generative.SoftDepends;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocate;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocations;
+import com.github.alantr7.torus.api.TorusPack;
 import com.github.alantr7.torus.config.ConfigManager;
 import com.github.alantr7.torus.item.TorusItemManager;
 import com.github.alantr7.torus.player.TorusPlayerManager;
@@ -13,6 +14,8 @@ import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 
+import java.io.File;
+
 @JavaPlugin(name = "Torus", version = "0.4.2", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
 @SoftDepends("ProtocolLib")
@@ -20,6 +23,8 @@ public class TorusPlugin extends BukkitPlugin {
 
     @Getter
     static TorusPlugin instance;
+
+    public static TorusPack DEFAULT_PACK;
 
     @Getter
     protected final TorusItemManager itemManager;
@@ -31,8 +36,9 @@ public class TorusPlugin extends BukkitPlugin {
 
     public TorusPlugin() {
         instance = this;
-        itemManager = new TorusItemManager();
+        DEFAULT_PACK = new TorusPack("torus", "Torus (Default)");
 
+        itemManager = new TorusItemManager();
         checkPaperAPI();
     }
 

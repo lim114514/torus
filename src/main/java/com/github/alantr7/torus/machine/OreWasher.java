@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelLocation;
@@ -25,7 +26,7 @@ public class OreWasher extends Structure {
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
     public OreWasher() {
-        super("torus:ore_washer", "Ore Washer", OreWasherInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "ore_washer", "Ore Washer", OreWasherInstance.class);
         itemDropDataWhitelist.add("energy");
         itemDropDataWhitelist.add("fluid");
         modelLocation = new ModelLocation("torus", "ore_washer");

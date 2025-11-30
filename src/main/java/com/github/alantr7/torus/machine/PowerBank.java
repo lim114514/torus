@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.Direction;
@@ -20,7 +21,7 @@ import org.joml.Vector3f;
 public class PowerBank extends Structure {
 
     public PowerBank() {
-        super("torus:power_bank", "Power Bank", PowerBankInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "power_bank", "Power Bank", PowerBankInstance.class);
         itemDropDataWhitelist.add("energy");
         modelLocation = new ModelLocation("torus", "power_bank");
     }

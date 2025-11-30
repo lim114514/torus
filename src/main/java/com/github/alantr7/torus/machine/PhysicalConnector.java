@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -16,7 +17,7 @@ import org.joml.Vector3f;
 public class PhysicalConnector extends Structure {
 
     public PhysicalConnector() {
-        super("torus:connector", "Connector", PhysicalConnectorInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "connector", "Connector", PhysicalConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         itemDropDataWhitelist.add("flow");

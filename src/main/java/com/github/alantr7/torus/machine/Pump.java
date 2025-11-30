@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -22,7 +23,7 @@ public class Pump extends Structure {
     public static final int MAX_LENGTH = 32;
 
     public Pump() {
-        super("torus:pump", "Pump", PumpInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "pump", "Pump", PumpInstance.class);
         itemDropDataWhitelist.add("energy");
         itemDropDataWhitelist.add("fluid");
         itemDropDataWhitelist.add("amount");

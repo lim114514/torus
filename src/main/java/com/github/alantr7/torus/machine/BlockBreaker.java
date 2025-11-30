@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -19,7 +20,7 @@ import org.joml.Vector3f;
 public class BlockBreaker extends Structure {
 
     public BlockBreaker() {
-        super("torus:block_breaker", "Block Breaker", BlockBreakerInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
         isHeavy = false;
         itemDropDataWhitelist.add("energy");
         modelLocation = new ModelLocation("torus", "block_breaker");

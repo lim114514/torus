@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -16,7 +17,7 @@ import org.joml.Vector3f;
 public class Turret extends Structure {
 
     public Turret() {
-        super("torus:turret", "Laser Turret", TurretInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "turret", "Laser Turret", TurretInstance.class);
         itemDropDataWhitelist.add("energy");
         modelLocation = new ModelLocation("torus", "turret");
     }

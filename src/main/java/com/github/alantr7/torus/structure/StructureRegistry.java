@@ -73,7 +73,7 @@ public class StructureRegistry {
 
             for (Structure str : saveQuery) {
                 writer.writeU2(str.numericId);
-                writer.writeString(str.id);
+                writer.writeString(str.namespacedId);
             }
 
             saveQuery.clear();
@@ -118,11 +118,11 @@ public class StructureRegistry {
             throw new RuntimeException("Structure must not have numeric id already assigned when registering it");
         }
 
-        if (structuresIds.containsKey(structure.id)) {
-            structure.numericId = structuresIds.get(structure.id);
+        if (structuresIds.containsKey(structure.namespacedId)) {
+            structure.numericId = structuresIds.get(structure.namespacedId);
         } else {
             structure.numericId = nextStructureId++;
-            structuresIds.put(structure.id, structure.numericId);
+            structuresIds.put(structure.namespacedId, structure.numericId);
             saveQuery.add(structure);
         }
 
@@ -134,12 +134,12 @@ public class StructureRegistry {
                     structure.setModel(ModelLoader.loadInternalTorusModel(structure.modelLocation.id));
                 }
             } catch (Exception | Error e) {
-                TorusLogger.error(Category.STRUCTURES, "Could not load model for " + structure.id);
+                TorusLogger.error(Category.STRUCTURES, "Could not load model for " + structure.namespacedId);
                 e.printStackTrace();
             }
         }
 
-        loaded.put(structure.id, structure);
+        loaded.put(structure.namespacedId, structure);
         loadedByNumericIds.put(structure.numericId, structure);
     }
 

@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -25,7 +26,7 @@ public class ItemCable extends Structure {
     }
 
     public ItemCable() {
-        super("torus:item_cable", "Item Cable", CableInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "item_cable", "Item Cable", CableInstance.class);
         isHeavy = false;
     }
 

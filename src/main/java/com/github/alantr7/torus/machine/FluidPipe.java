@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -25,7 +26,7 @@ public class FluidPipe extends Structure {
     }
 
     public FluidPipe() {
-        super("torus:fluid_pipe", "Fluid Pipe", CableInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "fluid_pipe", "Fluid Pipe", CableInstance.class);
         isHeavy = false;
     }
 

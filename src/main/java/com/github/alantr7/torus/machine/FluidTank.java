@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -20,7 +21,7 @@ import org.joml.Vector3f;
 public class FluidTank extends Structure {
 
     public FluidTank() {
-        super("torus:fluid_tank", "Fluid Tank", FluidTankInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "fluid_tank", "Fluid Tank", FluidTankInstance.class);
         itemDropDataWhitelist.add("fluid");
         itemDropDataWhitelist.add("stored");
         modelLocation = new ModelLocation("torus", "fluid_tank");

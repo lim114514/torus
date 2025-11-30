@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
@@ -25,7 +26,7 @@ public class OreCrusher extends Structure {
     public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
 
     public OreCrusher() {
-        super("torus:ore_crusher", "Ore Crusher", OreCrusherInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
         itemDropDataWhitelist.add("energy");
         modelLocation = new ModelLocation("torus", "ore_crusher");

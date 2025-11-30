@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
@@ -22,7 +23,7 @@ public class Windmill extends Structure {
     public static final float MAXIMUM_SPEED = 1.85f * (float) Math.PI / 3f;
 
     public Windmill() {
-        super("torus:windmill", "Windmill", WindmillInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "windmill", "Windmill", WindmillInstance.class);
         itemDropDataWhitelist.add("energy");
         modelLocation = new ModelLocation("torus", "windmill");
     }

@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -59,7 +60,7 @@ public class EnergyCable extends Structure {
     }
 
     public EnergyCable() {
-        super("torus:energy_cable", "Energy Cable", CableInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "energy_cable", "Energy Cable", CableInstance.class);
         isHeavy = false;
     }
 

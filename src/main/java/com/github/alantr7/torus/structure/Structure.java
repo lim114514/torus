@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.structure;
 
+import com.github.alantr7.torus.api.TorusPack;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.model.ModelLocation;
@@ -16,7 +17,9 @@ import java.util.Set;
 
 public abstract class Structure {
 
-    public final String id;
+    public final TorusPack pack;
+
+    public final String namespacedId;
 
     public final String name;
 
@@ -44,8 +47,9 @@ public abstract class Structure {
 
     public ModelLocation modelLocation;
 
-    public Structure(String id, String name, Class<? extends StructureInstance> instanceClass) {
-        this.id = id;
+    public Structure(TorusPack pack, String id, String name, Class<? extends StructureInstance> instanceClass) {
+        this.pack = pack;
+        this.namespacedId = pack.id + ":" + id;
         this.name = name;
         this.instanceClass = instanceClass;
 
@@ -135,7 +139,7 @@ public abstract class Structure {
 
     @Override
     public String toString() {
-        return id;
+        return namespacedId;
     }
 
     protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction);

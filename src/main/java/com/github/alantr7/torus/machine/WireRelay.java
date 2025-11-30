@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -15,7 +16,7 @@ import org.joml.Vector3f;
 public class WireRelay extends Structure {
 
     public WireRelay() {
-        super("torus:wire_relay", "Wire Relay", WireConnectorInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "wire_relay", "Wire Relay", WireConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         modelLocation = new ModelLocation("torus", "wire_relay");

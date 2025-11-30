@@ -20,7 +20,7 @@ import java.io.File;
 public class SolarGenerator extends Structure {
 
     public SolarGenerator() {
-        super("torus:solar_generator", "Solar Generator", SolarGeneratorInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "solar_generator", "Solar Generator", SolarGeneratorInstance.class);
         itemDropDataWhitelist.add("energy");
         modelLocation = new ModelLocation("torus", "solar_generator");
     }

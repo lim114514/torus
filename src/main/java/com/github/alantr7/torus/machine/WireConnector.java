@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -15,7 +16,7 @@ import org.joml.Vector3f;
 public class WireConnector extends Structure {
 
     public WireConnector() {
-        super("torus:wire_connector", "Wire Connector", WireConnectorInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "wire_connector", "Wire Connector", WireConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         isOmnidirectional = true;

@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
@@ -18,7 +19,7 @@ import org.joml.Vector3f;
 public class PowerPole extends Structure {
 
     public PowerPole() {
-        super("torus:power_pole", "Power Pole", PowerPoleInstance.class);
+        super(TorusPlugin.DEFAULT_PACK, "power_pole", "Power Pole", PowerPoleInstance.class);
         isHeavy = false;
         modelLocation = new ModelLocation("torus", "power_pole");
     }
