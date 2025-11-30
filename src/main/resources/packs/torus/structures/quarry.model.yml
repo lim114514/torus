@@ -31,7 +31,7 @@ in_energy:
 in_item:
   - item_display,gray_concrete,0,0.9375,-6,0.625,0.125,0.625,0,0,0
 
-drill_holder:
+head:
   - item_display,orange_terracotta,0,4.4375,0,0.3125,2.1875,0.3125,0,0,0
   - item_display,light_gray_terracotta,0,5.8125,0,0.125,0.5625,0.125,0,0,0
   - item_display,light_gray_terracotta,-0.5,5.3125,0,0.125,1.5,0.125,0,0,0
@@ -40,14 +40,14 @@ drill_holder:
   - item_display,gray_concrete,-0.25,5.1875,-0.125,0.125,0.175,0.375,0,0,0
   - item_display,weathered_copper,0,5.125,-0.3125,0.375,0.8125,0.3125,0,0,0
 
-drill:
+feed:
   - item_display,orange_terracotta,0,2.125,0,0.1875,3.25,0.1875,0,0,0
 
-drill_tip:
+drill_bit:
   - item_display,quartz_block,0,0.375,0,0.1875,0.25,0.1875,0,0,0
 
-mover_x:
+gantry_x:
   - item_display,cyan_terracotta,0,4.5,0,10,0.25,0.25,0,0,0
 
-mover_z:
+gantry_z:
   - item_display,cyan_terracotta,0,4.5,0,0.25,0.25,10,0,0,0

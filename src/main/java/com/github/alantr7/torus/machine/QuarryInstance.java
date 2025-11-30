@@ -24,7 +24,7 @@ import org.bukkit.util.Transformation;
 
 public class QuarryInstance extends StructureInstance implements EnergyContainer {
 
-    protected StructureComponent drillHolder, drill, drillTip, moverX, moverZ;
+    protected StructureComponent head, feed, bit, gantryX, gantryZ;
 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
@@ -91,11 +91,11 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     @Override
     public void handleModelInit() {
-        model.getPart("drill_holder").parent.setTeleportDuration(10);
-        model.getPart("drill").parent.setTeleportDuration(10);
-        model.getPart("drill_tip").parent.setTeleportDuration(10);
-        model.getPart("mover_x").parent.setTeleportDuration(10);
-        model.getPart("mover_z").parent.setTeleportDuration(10);
+        model.getPart("head").parent.setTeleportDuration(10);
+        model.getPart("feed").parent.setTeleportDuration(10);
+        model.getPart("drill_bit").parent.setTeleportDuration(10);
+        model.getPart("gantry_x").parent.setTeleportDuration(10);
+        model.getPart("gantry_z").parent.setTeleportDuration(10);
     }
 
     public void advance() {
@@ -140,14 +140,14 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         byte[] zMoverPosition = new byte[] {(byte) (-position0[0] + 4), 0, 0};
         zMoverPosition = MathUtils.rotateVectors(zMoverPosition, direction);
 
-        model.getPart("mover_x").teleport(location.toBukkit().add(.5, 0f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
-        model.getPart("mover_z").teleport(location.toBukkit().add(.5, 0f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
+        model.getPart("gantry_x").teleport(location.toBukkit().add(.5, 0f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
+        model.getPart("gantry_z").teleport(location.toBukkit().add(.5, 0f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
 
         updateDrillLength();
 
-        model.getPart("drill").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
-        model.getPart("drill_tip").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
-        model.getPart("drill_holder").teleport(location.toBukkit().add(.5, 0, .5).add(position[0], 0, position[2]));
+        model.getPart("feed").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
+        model.getPart("drill_bit").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
+        model.getPart("head").teleport(location.toBukkit().add(.5, 0, .5).add(position[0], 0, position[2]));
 
         return true;
     }
@@ -158,20 +158,20 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         drillLength.update(len);
 
-        ItemDisplay drillModel = model.getPart("drill").entityReferences.getFirst().getEntity();
+        ItemDisplay drillModel = model.getPart("feed").entityReferences.getFirst().getEntity();
         Transformation transform = drillModel.getTransformation();
-        transform.getTranslation().y = structure.getModel().partsByName.get("drill").parts.getFirst().offset[1] + len / 2f - 1.5f;
+        transform.getTranslation().y = structure.getModel().partsByName.get("feed").parts.getFirst().offset[1] + len / 2f - 1.5f;
         transform.getScale().y = len + f;
         drillModel.setTransformation(transform);
     }
 
     @Override
     protected void setup() {
-        drillHolder = getComponent("drill_holder");
-        drill = getComponent("drill");
-        drillTip = getComponent("drill_tip");
-        moverX = getComponent("mover_x");
-        moverZ = getComponent("mover_z");
+        head = getComponent("head");
+        feed = getComponent("feed");
+        bit = getComponent("drill_bit");
+        gantryX = getComponent("gantry_x");
+        gantryZ = getComponent("gantry_z");
 
         inConnector = getConnector("in_energy");
         inConnector.maximumInput = 350;

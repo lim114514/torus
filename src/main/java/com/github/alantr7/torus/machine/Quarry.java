@@ -78,11 +78,11 @@ public class Quarry extends Structure {
             new StructureComponentDef("out_item", new Vector3f(0, 0, -6), new StructureConnectorDef(
               Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.UP.mask()
             )),
-            new StructureComponentDef("drill_holder", new Vector3f()),
-            new StructureComponentDef("drill", new Vector3f()),
-            new StructureComponentDef("drill_tip", new Vector3f()),
-            new StructureComponentDef("mover_x", new Vector3f()),
-            new StructureComponentDef("mover_z", new Vector3f()),
+            new StructureComponentDef("head", new Vector3f()),
+            new StructureComponentDef("feed", new Vector3f()),
+            new StructureComponentDef("drill_bit", new Vector3f()),
+            new StructureComponentDef("gantry_x", new Vector3f()),
+            new StructureComponentDef("gantry_z", new Vector3f()),
           }
         ), direction);
     }
