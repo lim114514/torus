@@ -8,9 +8,11 @@ import com.github.alantr7.bukkitplugin.commands.factory.CommandBuilder;
 import com.github.alantr7.bukkitplugin.commands.registry.Command;
 import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Conductor;
+import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -113,12 +115,33 @@ public class Commands {
           ctx.respond(ChatColor.YELLOW + "Configurations reloaded.");
       });
 
+    @CommandHandler Command exportModel = CommandBuilder.using("torus")
+      .parameter("export_model")
+      .parameter("{structure}", p -> p.tabComplete(args -> TorusPlugin.getInstance().getStructureRegistry().getStructuresIds()))
+      .permission(Permissions.COMMAND_EXPORT_MODEL)
+      .executes(ctx -> {
+          Structure structure = TorusPlugin.getInstance().getStructureRegistry().getStructure((String) ctx.getArgument("structure"));
+          if (structure == null) {
+              ctx.respond("Structure with specified id not found.");
+              return;
+          }
+
+          if (structure.modelLocation == null || !structure.modelLocation.pack.equals("torus")) {
+              ctx.respond("You can not edit the model of this structure");
+              return;
+          }
+
+          TorusPlugin.getInstance().saveResource("packs/torus/structures/" + structure.modelLocation.id + ".model.yml", true);
+          ctx.respond("Model successfully exported.");
+      });
+
     @CommandHandler Command logStructureIds = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("log_structure_ids")
       .permission(Permissions.COMMAND_DEBUG)
       .executes(ctx -> {
-          TorusPlugin.getInstance().getStructureRegistry().getStructuresIds().forEach(entry -> {
+          ctx.respond("Editing? : " + MainConfig.CUSTOMIZATION_ENABLE_MODEL_EDITING);
+          TorusPlugin.getInstance().getStructureRegistry().getStructuresIdsMap().forEach(entry -> {
               ctx.respond(String.format("%2d: %s", entry.getValue(), entry.getKey()));
           });
       });
