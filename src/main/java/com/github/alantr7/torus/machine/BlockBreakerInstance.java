@@ -22,9 +22,6 @@ import org.bukkit.inventory.ItemStack;
 public class BlockBreakerInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
-    protected int energyCapacity = 50;
-
-    @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     protected Connector powerConnector;
@@ -34,8 +31,6 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     protected StructureInventory inventory;
 
     protected int breakingTicks;
-
-    public static final int RF_COST = 25;
 
     public BlockBreakerInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.BLOCK_BREAKER, location, bodyDef, direction);
@@ -49,6 +44,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     protected void setup() {
         powerConnector = getConnector("power_connector");
         itemConnector = getConnector("item_connector");
+        powerConnector.maximumInput = BlockBreaker.ENERGY_MAXIMUM_INPUT;
         inventory = new CustomStructureInventory(1);
         itemConnector.linkedInventory = inventory;
     }
@@ -60,11 +56,16 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     }
 
     @Override
+    public int getEnergyCapacity() {
+        return BlockBreaker.ENERGY_CAPACITY;
+    }
+
+    @Override
     public void tick() {
         powerConnector.maintainEnergy(this);
         itemConnector.attemptDirectItemExport();
 
-        if (!hasSufficientEnergy(RF_COST) || inventory.getItems()[0] != null) {
+        if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE) || inventory.getItems()[0] != null) {
             return;
         }
 
@@ -90,7 +91,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.x >> 4, location.z >> 4)) {
             player.sendBlockDamage(blockLocation, blockDamage);
         }
-        consumeEnergy(RF_COST);
+        consumeEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE);
     }
 
 }

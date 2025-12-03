@@ -16,6 +16,12 @@ import org.joml.Vector3f;
 
 public class Windmill extends Structure {
 
+    public static int ENERGY_CAPACITY = 75;
+
+    public static int ENERGY_PRODUCTION = 3_000;
+
+    public static int ENERGY_MAXIMUM_OUTPUT = 100;
+
     public static final float MAXIMUM_SPEED = 1.85f * (float) Math.PI / 3f;
 
     public Windmill() {
@@ -36,10 +42,18 @@ public class Windmill extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new WindmillInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f()),
-          new StructureComponentDef("in_power", new Vector3f(), new StructureConnectorDef(
+          new StructureComponentDef("out_energy", new Vector3f(), new StructureConnectorDef(
             Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.mask()
           ))
         }), direction);
+    }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
+        ENERGY_PRODUCTION = config.getInt("energy_settings.production", ENERGY_PRODUCTION);
+        ENERGY_MAXIMUM_OUTPUT = config.getInt("energy_settings.maximum_output", ENERGY_MAXIMUM_OUTPUT);
     }
 
 }

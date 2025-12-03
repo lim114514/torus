@@ -16,6 +16,8 @@ import org.joml.Vector3f;
 
 public class FluidTank extends Structure {
 
+    public static int FLUID_CAPACITY = 96000;
+
     public FluidTank() {
         super(TorusPlugin.DEFAULT_PACK, "fluid_tank", "Fluid Tank", FluidTankInstance.class);
         portableData.add("fluid");
@@ -40,15 +42,21 @@ public class FluidTank extends Structure {
         return new FluidTankInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
             new StructureComponentDef("base", new Vector3f()),
-            new StructureComponentDef("input", new Vector3f(0f, 3f, 0f), new StructureConnectorDef(
+            new StructureComponentDef("in_fluid", new Vector3f(0f, 3f, 0f), new StructureConnectorDef(
               Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()
             )),
-            new StructureComponentDef("output", new Vector3f(0f, 0f, -1f), new StructureConnectorDef(
+            new StructureComponentDef("out_fluid", new Vector3f(0f, 0f, -1f), new StructureConnectorDef(
               Connector.Matter.FLUID, Connector.FlowDirection.OUT, direction.mask()
             )),
             new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f)),
           }
         ), direction);
+    }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        FLUID_CAPACITY = config.getInt("fluid_settings.capacity", FLUID_CAPACITY);
     }
 
 }

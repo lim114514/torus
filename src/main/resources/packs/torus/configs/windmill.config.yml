@@ -1,0 +1,18 @@
+general_settings:
+  enabled: true
+  display_name: "Windmill"
+  # When machine is placed on a block, it will be offset by this vector.
+  # This vector is facing the positive Z direction. Rotation will be automatically applied.
+  placement_offset: [0, 0, 0]
+  # If set to true, structure can be broken only with a hammer.
+  heavy: true
+  portable_data: [ "energy" ]
+
+energy_settings:
+  production: 75 # (default: 75)
+  capacity: 5000 # (default: 5000)
+  maximum_output: 100 # (default: 100)
+
+info_hologram:
+  offset: [0, 0, 0] # Location of the TextDisplay relative to the structure
+  translation: [1.2, 0, 0] # Translation applied to TextDisplay

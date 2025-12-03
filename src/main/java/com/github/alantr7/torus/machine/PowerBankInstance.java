@@ -14,9 +14,6 @@ import org.bukkit.util.Transformation;
 public class PowerBankInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
-    protected int energyCapacity = 20_000;
-
-    @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     Connector connector;
@@ -32,7 +29,8 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     @Override
     protected void setup() {
         connector = getConnector("power_connector");
-        connector.maximumInput = 500;
+        connector.maximumInput = PowerBank.ENERGY_MAXIMUM_INPUT;
+        connector.maximumOutput = PowerBank.ENERGY_MAXIMUM_OUTPUT;
     }
 
     @Override
@@ -52,8 +50,13 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         energyAtLastTick = storedEnergy.get();
     }
 
+    @Override
+    public int getEnergyCapacity() {
+        return PowerBank.ENERGY_CAPACITY;
+    }
+
     public void updateModel() {
-        float ratio = (float) storedEnergy.get() / (float) energyCapacity;
+        float ratio = (float) storedEnergy.get() / PowerBank.ENERGY_CAPACITY;
         float height = 1.125f * ratio;
 
         ItemDisplay entity = this.model.getPart("progress").entityReferences.getFirst().getEntity();

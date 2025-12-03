@@ -1,0 +1,18 @@
+general_settings:
+  enabled: true
+  display_name: "Ore Crusher"
+  # When machine is placed on a block, it will be offset by this vector.
+  # This vector is facing the positive Z direction. Rotation will be automatically applied.
+  placement_offset: [0, 0, 0]
+  # If set to true, structure can be broken only with a hammer.
+  heavy: true
+  portable_data: [ "energy" ]
+
+energy_settings:
+  capacity: 15000 # (default: 15000)
+  consumption: 300 # (default: 300)
+  maximum_input: 500 # (default: 500)
+
+info_hologram:
+  offset: [0, 0, -1] # Location of the TextDisplay relative to the structure
+  translation: [1.2, 0, 0] # Translation applied to TextDisplay

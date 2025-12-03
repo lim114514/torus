@@ -15,6 +15,12 @@ import org.joml.Vector3f;
 
 public class BlockBreaker extends Structure {
 
+    public static int ENERGY_CAPACITY = 50;
+
+    public static int ENERGY_MAXIMUM_INPUT = 100;
+
+    public static int ENERGY_CONSUMPTION_ON_MINE = 25;
+
     public BlockBreaker() {
         super(TorusPlugin.DEFAULT_PACK, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
         isHeavy = false;
@@ -34,6 +40,12 @@ public class BlockBreaker extends Structure {
               Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.DOWN.mask()
             )) }
         ), direction);
+    }
+
+    @Override
+    protected void loadConfig() {
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
+        ENERGY_CONSUMPTION_ON_MINE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MINE);
     }
 
 }

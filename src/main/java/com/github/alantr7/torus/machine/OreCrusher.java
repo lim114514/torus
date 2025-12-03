@@ -19,7 +19,11 @@ public class OreCrusher extends Structure {
 
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
-    public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
+    public static int ENERGY_CAPACITY = 15_000;
+
+    public static int ENERGY_CONSUMPTION = 300;
+
+    public static int ENERGY_MAXIMUM_INPUT = 500;
 
     public OreCrusher() {
         super(TorusPlugin.DEFAULT_PACK, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
@@ -60,4 +64,12 @@ public class OreCrusher extends Structure {
           }
         ), direction);
     }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
+        ENERGY_CONSUMPTION = config.getInt("energy_settings.consumption", ENERGY_CONSUMPTION);
+    }
+
 }

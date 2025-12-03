@@ -16,7 +16,15 @@ import org.joml.Vector3f;
 
 public class Pump extends Structure {
 
-    public static final int MAX_LENGTH = 32;
+    public static int ENERGY_CAPACITY = 500;
+
+    public static int ENERGY_CONSUMPTION = 50;
+
+    public static int ENERGY_MAXIMUM_INPUT = 25;
+
+    public static int FLUID_CAPACITY = 1_000;
+
+    public static int MAXIMUM_PIPE_LENGTH = 32;
 
     public Pump() {
         super(TorusPlugin.DEFAULT_PACK, "pump", "Pump", PumpInstance.class);
@@ -45,6 +53,16 @@ public class Pump extends Structure {
             ))
           }
         ), direction);
+    }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
+        ENERGY_CONSUMPTION = config.getInt("energy_settings.consumption", ENERGY_CONSUMPTION);
+        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
+        FLUID_CAPACITY = config.getInt("fluid_settings.capacity", FLUID_CAPACITY);
+        MAXIMUM_PIPE_LENGTH = config.getInt("special_settings.maximum_pipe_length");
     }
 
 }

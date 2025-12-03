@@ -19,6 +19,7 @@ public class ElectricityMeter extends Structure {
         super(TorusPlugin.DEFAULT_PACK, "electricity_meter", "Electricity Meter", ElectricityMeterInstance.class);
         isHeavy = false;
         portableData.add("total");
+        hologramTranslation = new float[] { 1.4f, 0.1f, 0f };
         modelLocation = new ModelLocation("torus", "electricity_meter");
     }
 

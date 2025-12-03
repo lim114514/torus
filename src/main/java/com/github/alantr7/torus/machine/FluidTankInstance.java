@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -80,14 +81,14 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     @Override
     protected void setup() {
         liquidComponent = getComponent("liquid");
-        input = getConnector("input");
+        input = getConnector("in_fluid");
     }
 
     @Override
     public InspectableData setupInspectableData() {
         return new InspectableData((byte) 2)
           .property("Fluid", () -> getFluid() == null ? "(None)" : getFluid().name())
-          .property("Level", () -> getStoredFluid() + "/" + getFluidCapacity());
+          .property("Level", () -> MathUtils.formatNumber(getStoredFluid()) + "/" + MathUtils.formatNumber(getFluidCapacity()) + " mb");
     }
 
     @Override
@@ -97,7 +98,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     @Override
     public int getFluidCapacity() {
-        return 96_000;
+        return FluidTank.FLUID_CAPACITY;
     }
 
     @Override

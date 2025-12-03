@@ -8,7 +8,6 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
@@ -29,9 +28,6 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     protected Connector energyConnector;
 
-    @Getter
-    protected int energyCapacity = 500;
-
     PumpInstance(LoadContext context) {
         super(context);
     }
@@ -43,7 +39,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     @Override
     protected void setup() {
         energyConnector = getConnector("power_connector");
-        energyConnector.maximumInput = 25;
+        energyConnector.maximumInput = Pump.ENERGY_MAXIMUM_INPUT;
     }
 
     @Override
@@ -70,7 +66,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     @Override
     public void tick() {
         energyConnector.maintainEnergy(this);
-        if (storedEnergy.get() < 50 || amount.get() >= 1000)
+        if (storedEnergy.get() < Pump.ENERGY_CONSUMPTION || amount.get() >= Pump.FLUID_CAPACITY)
             return;
 
         Block block = location.getRelative(0, -1 - length.get(), 0).getBlock();
@@ -79,7 +75,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
         if (liquid.isAir()) {
             if (airTicks++ == 3) {
                 airTicks = 0;
-                if (length.get() < Pump.MAX_LENGTH) {
+                if (length.get() < Pump.MAXIMUM_PIPE_LENGTH) {
                     length.update(length.get() + 1);
                     updateModel();
 
@@ -106,10 +102,15 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
         if (this.fluid.get() != fluid.ordinal())
             return;
 
-        consumeEnergy(50);
+        consumeEnergy(Pump.ENERGY_CONSUMPTION);
 
         block.setType(Material.AIR);
         amount.update(amount.get() + 1000);
+    }
+
+    @Override
+    public int getEnergyCapacity() {
+        return Pump.ENERGY_CAPACITY;
     }
 
     @Override
@@ -119,7 +120,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     @Override
     public int getFluidCapacity() {
-        return 1000;
+        return Pump.FLUID_CAPACITY;
     }
 
     @Override

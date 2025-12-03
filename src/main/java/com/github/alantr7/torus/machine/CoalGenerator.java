@@ -18,6 +18,12 @@ import org.joml.Vector3f;
 
 public class CoalGenerator extends Structure {
 
+    public static int ENERGY_PRODUCTION = 300;
+
+    public static int ENERGY_CAPACITY = 18_000;
+
+    public static int ENERGY_MAXIMUM_OUTPUT = 500;
+
     public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();
     static {
         INPUT_CRITERIA.materials.add(Material.COAL);
@@ -27,6 +33,7 @@ public class CoalGenerator extends Structure {
     public CoalGenerator() {
         super(TorusPlugin.DEFAULT_PACK, "coal_generator", "Coal Generator", CoalGeneratorInstance.class);
         portableData.add("energy");
+        hologramOffset = new float[] { 0f, 0f, 1f };
         modelLocation = new ModelLocation("torus", "coal_generator");
     }
 
@@ -51,6 +58,14 @@ public class CoalGenerator extends Structure {
             "power_connector", new Vector3f(0, 0, 0), new StructureConnectorDef(Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.mask())
           )
         }), direction);
+    }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        ENERGY_PRODUCTION = config.getInt("energy_settings.production", ENERGY_PRODUCTION);
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
+        ENERGY_MAXIMUM_OUTPUT = config.getInt("energy_settings.maximum_output", ENERGY_MAXIMUM_OUTPUT);
     }
 
 }

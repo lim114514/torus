@@ -16,6 +16,12 @@ import org.joml.Vector3f;
 
 public class PowerBank extends Structure {
 
+    public static int ENERGY_CAPACITY = 20_000;
+
+    public static int ENERGY_MAXIMUM_INPUT = 500;
+
+    public static int ENERGY_MAXIMUM_OUTPUT = 500;
+
     public PowerBank() {
         super(TorusPlugin.DEFAULT_PACK, "power_bank", "Power Bank", PowerBankInstance.class);
         portableData.add("energy");
@@ -38,6 +44,14 @@ public class PowerBank extends Structure {
           )),
           new StructureComponentDef("charge", new Vector3f())
         }), direction);
+    }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
+        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
+        ENERGY_MAXIMUM_OUTPUT = config.getInt("energy_settings.maximum_output", ENERGY_MAXIMUM_OUTPUT);
     }
 
 }

@@ -12,7 +12,6 @@ import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,9 +23,6 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
-
-    @Getter
-    private int energyCapacity = 10_000;
 
     protected Connector powerConnector, itemInConnector, waterInConnector, itemOutConnector;
 
@@ -49,20 +45,20 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
         powerConnector.maintainEnergy(this);
         itemOutConnector.attemptDirectItemExport();
 
-        if (water.get() < 1_000) {
+        if (water.get() < OreWasher.FLUID_CAPACITY) {
             waterInConnector.updateNetwork();
-            int consumed = waterInConnector.consumeFluid(Fluid.WATER, 1000 - water.get());
+            int consumed = waterInConnector.consumeFluid(Fluid.WATER, OreWasher.FLUID_CAPACITY - water.get());
             supplyFluid(consumed);
         }
 
         if (recipe != null) {
-            if (!hasSufficientEnergy(OreWasher.ENERGY_CONSUMPTION_PER_TICK) || water.get() < 100) {
+            if (!hasSufficientEnergy(OreWasher.ENERGY_CONSUMPTION) || water.get() < OreWasher.FLUID_CONSUMPTION) {
                 return;
             }
 
             processedTicks++;
-            consumeEnergy(OreWasher.ENERGY_CONSUMPTION_PER_TICK);
-            consumeFluid(100);
+            consumeEnergy(OreWasher.ENERGY_CONSUMPTION);
+            consumeFluid(OreWasher.FLUID_CONSUMPTION);
         } else {
             itemInConnector.updateNetwork();
 
@@ -82,11 +78,16 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     @Override
     protected void setup() {
         powerConnector = getConnector("power_connector");
-        powerConnector.maximumInput = 500;
+        powerConnector.maximumInput = OreWasher.ENERGY_MAXIMUM_INPUT;
         itemInConnector = getConnector("item_connector");
         waterInConnector = getConnector("fluid_connector");
         itemOutConnector = getConnector("out_connector");
         itemOutConnector.linkedInventory = itemOutBuffer;
+    }
+
+    @Override
+    public int getEnergyCapacity() {
+        return OreWasher.ENERGY_CAPACITY;
     }
 
     @Override

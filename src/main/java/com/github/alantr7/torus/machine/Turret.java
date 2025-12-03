@@ -16,6 +16,12 @@ import org.joml.Vector3f;
 
 public class Turret extends Structure {
 
+    public static int ENERGY_CAPACITY = 5_000;
+
+    public static int ENERGY_CONSUMPTION = 250;
+
+    public static int ENERGY_MAXIMUM_INPUT = 100;
+
     public Turret() {
         super(TorusPlugin.DEFAULT_PACK, "turret", "Laser Turret", TurretInstance.class);
         portableData.add("energy");
@@ -41,4 +47,13 @@ public class Turret extends Structure {
           ))
         }), direction);
     }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
+        ENERGY_CONSUMPTION = config.getInt("energy_settings.consumption", ENERGY_CONSUMPTION);
+        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
+    }
+
 }

@@ -17,9 +17,17 @@ import org.joml.Vector3f;
 
 public class OreWasher extends Structure {
 
-    public static final int ENERGY_CONSUMPTION_PER_TICK = 300;
-
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
+
+    public static int ENERGY_CAPACITY = 10_000;
+
+    public static int ENERGY_CONSUMPTION = 300;
+
+    public static int ENERGY_MAXIMUM_INPUT = 500;
+
+    public static int FLUID_CAPACITY = 1_000;
+
+    public static int FLUID_CONSUMPTION = 100;
 
     public OreWasher() {
         super(TorusPlugin.DEFAULT_PACK, "ore_washer", "Ore Washer", OreWasherInstance.class);
@@ -55,4 +63,15 @@ public class OreWasher extends Structure {
           }
         ), direction);
     }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
+        ENERGY_CONSUMPTION = config.getInt("energy_settings.consumption", ENERGY_CONSUMPTION);
+        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
+        FLUID_CAPACITY = config.getInt("fluid_settings.capacity", FLUID_CAPACITY);
+        FLUID_CONSUMPTION = config.getInt("fluid_settings.consumption", FLUID_CONSUMPTION);
+    }
+
 }

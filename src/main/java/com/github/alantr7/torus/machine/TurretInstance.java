@@ -31,8 +31,6 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 
     protected Connector inItem;
 
-    protected boolean hasAmmo;
-
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
@@ -49,15 +47,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     @Override
     public void tick() {
         inEnergy.maintainEnergy(this);
-//        if (!hasAmmo) {
-//            if (!inItem.consumeItems(Turret.AMMO_CRITERIA, 1, true).isEmpty()) {
-//                hasAmmo = true;
-//            } else {
-//                return;
-//            }
-//        }
-
-        if (getStoredEnergy().get() < 250)
+        if (getStoredEnergy().get() < Turret.ENERGY_CONSUMPTION)
             return;
 
         Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), 5, 1.5, 5, e -> (e instanceof Monster || e instanceof Slime) && !e.getScoreboardTags().contains("torus_entity"));
@@ -68,7 +58,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
         if (target == null || target.isDead() || target.getHealth() == 0)
             return;
 
-        consumeEnergy(250);
+        consumeEnergy(Turret.ENERGY_CONSUMPTION);
 
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
             location.world.getBukkit().playSound(location.toBukkit().add(.5, 0, .5), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.2f);
@@ -101,8 +91,6 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
             Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), this::updateHeadRotation, 8);
             Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), this::updateHeadRotation, 12);
             Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), this::updateHeadRotation, 16);
-
-            hasAmmo = false;
         }, (int) (Math.random() * 5));
     }
 
@@ -115,12 +103,13 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     protected void setup() throws SetupException {
         head = requireComponent("head");
         inEnergy = requireConnector("in_energy");
+        inEnergy.maximumInput = Turret.ENERGY_MAXIMUM_INPUT;
         inItem = requireConnector("in_item");
     }
 
     @Override
     public int getEnergyCapacity() {
-        return 5_000;
+        return Turret.ENERGY_CAPACITY;
     }
 
 }

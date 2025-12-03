@@ -49,7 +49,6 @@ public class ElectricityMeterInstance extends StructureInstance implements Energ
     @Override
     public InspectableData setupInspectableData() {
         return new InspectableData((byte) 2)
-          .translate(1.4f, 0.1f, 0f)
           .property("Transfer", () -> ChatColor.GREEN.toString() + getFlowMeter().getSupplied() + ChatColor.GRAY + " RF/s")
           .property("Total", () -> MathUtils.formatNumber(totalTransferred.get()) + " RF");
     }

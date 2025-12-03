@@ -27,6 +27,8 @@ public abstract class Structure {
 
     public String name;
 
+    public boolean isEnabled;
+
     public int numericId = -1;
 
     public String configResource;
@@ -40,7 +42,7 @@ public abstract class Structure {
     @Getter
     protected byte[] size;
 
-    protected byte[] offset;
+    protected byte[] offset = { 0, 0, 0 };
 
     public boolean isHeavy = true;
 
@@ -160,6 +162,7 @@ public abstract class Structure {
 
     protected void loadConfig() {
         name = config.getString("general_settings.display_name", this.name);
+        isEnabled = config.getBoolean("general_settings.enabled", true);
         isHeavy = config.getBoolean("general_settings.heavy", this.isHeavy);
 
         List<Byte> placementOffset = config.getByteList("general_settings.placement_offset");

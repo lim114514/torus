@@ -23,9 +23,6 @@ import java.util.List;
 public class CoalGeneratorInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
-    protected int energyCapacity = 18_000;
-
-    @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     protected Connector inputConnector;
@@ -46,7 +43,7 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     protected void setup() throws MissingDataException {
         inputConnector = requireConnector("item_connector");
         outputConnector = requireConnector("power_connector");
-        outputConnector.maximumOutput = 500;
+        outputConnector.maximumOutput = CoalGenerator.ENERGY_MAXIMUM_OUTPUT;
 
         chimneyPosition = MathUtils.rotateVectors(new float[] { 1.125f - .5f, 1.8f, 0.8125f - .5f }, direction.rotH, direction.rotV);
     }
@@ -62,8 +59,8 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
             remainingBurnTicks = 30;
         }
 
-        if (storedEnergy.get() < energyCapacity) {
-            supplyEnergy(300);
+        if (storedEnergy.get() < CoalGenerator.ENERGY_CAPACITY) {
+            supplyEnergy(CoalGenerator.ENERGY_PRODUCTION);
             remainingBurnTicks--;
 
             location.world.getBukkit().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, location.getBlock().getLocation().add(chimneyPosition[0], chimneyPosition[1], chimneyPosition[2]).add(.5, 1, .5), 0, 0, .075f, 0);
@@ -74,9 +71,13 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     }
 
     @Override
+    public int getEnergyCapacity() {
+        return CoalGenerator.ENERGY_CAPACITY;
+    }
+
+    @Override
     public InspectableData setupInspectableData() {
         return new InspectableData((byte) 1)
-          .offset(0, 0, 1)
           .property("RF", InspectableData.TEMPLATE_RF.apply(this));
     }
 

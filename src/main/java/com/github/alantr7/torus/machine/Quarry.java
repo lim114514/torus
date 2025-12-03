@@ -25,9 +25,9 @@ public class Quarry extends Structure {
         BLOCK_BLACKLIST.add(Material.BEDROCK);
     }
 
-    public static int CONSUME_ON_MOVE = 50;
+    public static int ENERGY_CONSUMPTION_ON_MOVE = 50;
 
-    public static int CONSUME_ON_MINE = 150;
+    public static int ENERGY_CONSUMPTION_ON_MINE = 150;
 
     public Quarry() {
         super(TorusPlugin.DEFAULT_PACK, "quarry", "Quarry", QuarryInstance.class);
@@ -95,8 +95,8 @@ public class Quarry extends Structure {
     @Override
     protected void loadConfig() {
         super.loadConfig();
-        CONSUME_ON_MINE = config.getInt("energy_settings.consume_on_mine", CONSUME_ON_MINE);
-        CONSUME_ON_MOVE = config.getInt("energy_settings.consume_on_mine", CONSUME_ON_MOVE);
+        ENERGY_CONSUMPTION_ON_MINE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MINE);
+        ENERGY_CONSUMPTION_ON_MOVE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MOVE);
     }
 
 }

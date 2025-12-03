@@ -40,4 +40,5 @@ public class PowerPole extends Structure {
           new StructureComponentDef("base", new Vector3f())
         }), direction);
     }
+
 }

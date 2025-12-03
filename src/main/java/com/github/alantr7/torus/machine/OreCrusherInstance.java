@@ -31,9 +31,6 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    @Getter
-    protected int energyCapacity = 20_000;
-
     protected float angle;
 
     private CrusherRecipe recipe;
@@ -64,14 +61,14 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
                 recipe = null;
                 processedTicks = 0;
             } else {
-                if (!hasSufficientEnergy(OreCrusher.ENERGY_CONSUMPTION_PER_TICK)) {
+                if (!hasSufficientEnergy(OreCrusher.ENERGY_CONSUMPTION)) {
                     return;
                 }
 
                 processedTicks++;
                 angle += (120) / 180f * (float) Math.PI;
                 updateModel();
-                consumeEnergy(OreCrusher.ENERGY_CONSUMPTION_PER_TICK);
+                consumeEnergy(OreCrusher.ENERGY_CONSUMPTION);
             }
         }
 
@@ -103,7 +100,12 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         itemOutConnector = getConnector("out_connector");
         itemOutConnector.linkedInventory = itemOutBuffer;
         energyConnector = getConnector("power_connector");
-        energyConnector.maximumInput = 500;
+        energyConnector.maximumInput = OreCrusher.ENERGY_MAXIMUM_INPUT;
+    }
+
+    @Override
+    public int getEnergyCapacity() {
+        return OreCrusher.ENERGY_CONSUMPTION;
     }
 
     @Override
