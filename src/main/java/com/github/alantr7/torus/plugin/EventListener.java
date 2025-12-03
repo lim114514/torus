@@ -7,7 +7,6 @@ import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.TorusItem;
-import com.github.alantr7.torus.machine.WireConnectorInstance;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.player.TorusPlayer;
 import com.github.alantr7.torus.structure.data.DataContainer;
@@ -90,7 +89,7 @@ public class EventListener implements Listener {
                     ByteArrayReader dataContainerReader = new ByteArrayReader(
                       structureData.get(new NamespacedKey(TorusPlugin.getInstance(), "data_container"), PersistentDataType.BYTE_ARRAY)
                     );
-                    DataContainer.overwrite(structure.dataContainer, DataContainer.fromBytes(dataContainerReader, strings), structure.structure.itemDropDataWhitelist);
+                    DataContainer.overwrite(structure.dataContainer, DataContainer.fromBytes(dataContainerReader, strings), structure.structure.portableData);
                 }
 
                 structure.setOwnerId(event.getPlayer().getUniqueId());

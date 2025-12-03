@@ -2,7 +2,6 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelLocation;
-import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -11,9 +10,6 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import com.github.alantr7.torus.model.PartModelElementItemDisplayRenderer;
-import com.github.alantr7.torus.model.PartModelTemplate;
-import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -22,7 +18,7 @@ public class BlockBreaker extends Structure {
     public BlockBreaker() {
         super(TorusPlugin.DEFAULT_PACK, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
         isHeavy = false;
-        itemDropDataWhitelist.add("energy");
+        portableData.add("energy");
         modelLocation = new ModelLocation("torus", "block_breaker");
     }
 

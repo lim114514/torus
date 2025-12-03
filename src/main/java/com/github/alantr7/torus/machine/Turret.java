@@ -18,7 +18,7 @@ public class Turret extends Structure {
 
     public Turret() {
         super(TorusPlugin.DEFAULT_PACK, "turret", "Laser Turret", TurretInstance.class);
-        itemDropDataWhitelist.add("energy");
+        portableData.add("energy");
         modelLocation = new ModelLocation("torus", "turret");
     }
 

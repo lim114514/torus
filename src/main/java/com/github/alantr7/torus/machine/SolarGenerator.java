@@ -11,17 +11,20 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
-import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-import java.io.File;
-
 public class SolarGenerator extends Structure {
+
+    public static int ENERGY_PRODUCTION = 50;
+
+    public static int ENERGY_CAPACITY = 2000;
+
+    public static int ENERGY_MAXIMUM_OUTPUT = 100;
 
     public SolarGenerator() {
         super(TorusPlugin.DEFAULT_PACK, "solar_generator", "Solar Generator", SolarGeneratorInstance.class);
-        itemDropDataWhitelist.add("energy");
+        portableData.add("energy");
         modelLocation = new ModelLocation("torus", "solar_generator");
     }
 
@@ -43,6 +46,14 @@ public class SolarGenerator extends Structure {
             Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.getOpposite().mask()
           ))
         }), direction);
+    }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        ENERGY_PRODUCTION = config.getInt("energy_settings.production", ENERGY_PRODUCTION);
+        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_PRODUCTION);
+        ENERGY_MAXIMUM_OUTPUT = config.getInt("energy_settings.maximum_output", ENERGY_PRODUCTION);
     }
 
 }

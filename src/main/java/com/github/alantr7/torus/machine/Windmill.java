@@ -3,9 +3,6 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelLocation;
-import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.PartModelElementItemDisplayRenderer;
-import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -14,7 +11,6 @@ import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
 import com.github.alantr7.torus.structure.component.Connector;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
-import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -24,7 +20,7 @@ public class Windmill extends Structure {
 
     public Windmill() {
         super(TorusPlugin.DEFAULT_PACK, "windmill", "Windmill", WindmillInstance.class);
-        itemDropDataWhitelist.add("energy");
+        portableData.add("energy");
         modelLocation = new ModelLocation("torus", "windmill");
     }
 

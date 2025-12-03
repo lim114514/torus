@@ -59,7 +59,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         if (drillPosition != null) {
             Block ore = drillPosition.getRelative(0, -1, 0).getBlock();
             if (!ore.getType().isAir() && !ore.isLiquid() && !Quarry.BLOCK_BLACKLIST.contains(ore.getType())) {
-                if (storedEnergy.get() < 150)
+                if (storedEnergy.get() < Quarry.CONSUME_ON_MINE)
                     return;
 
                 for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.toBukkit().getChunk())) {
@@ -79,12 +79,12 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
                 }
 
                 breakingTicks++;
-                consumeEnergy(150);
+                consumeEnergy(Quarry.CONSUME_ON_MINE);
                 return;
             }
         }
 
-        if (hasSufficientEnergy(50)) {
+        if (hasSufficientEnergy(Quarry.CONSUME_ON_MOVE)) {
             advance();
         }
     }
@@ -105,7 +105,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
             return;
         }
 
-        consumeEnergy(50);
+        consumeEnergy(Quarry.CONSUME_ON_MOVE);
 
         byte dir = level.get() % 2 == 0 ? 1 : (byte) (-1);
         horizontalPosition.update((byte) (horizontalPosition.get() + dir));
@@ -186,8 +186,6 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         byte[] controllerPosition = MathUtils.rotateVectors(new byte[] { 0, 0, -6 }, direction);
         data.inspectableBlocks.add(location.getRelative(controllerPosition[0], 0, controllerPosition[2]));
-        data.hologramOffset[2] = -6;
-
         return data;
     }
 

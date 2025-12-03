@@ -10,9 +10,11 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class Structure {
@@ -21,9 +23,15 @@ public abstract class Structure {
 
     public final String namespacedId;
 
-    public final String name;
+    public final String id;
+
+    public String name;
 
     public int numericId = -1;
+
+    public String configResource;
+
+    public YamlConfiguration config;
 
     protected final Class<? extends StructureInstance> instanceClass;
 
@@ -40,7 +48,11 @@ public abstract class Structure {
 
     public boolean isOmnidirectional = false;
 
-    public Set<String> itemDropDataWhitelist = new HashSet<>();
+    public Set<String> portableData = new HashSet<>();
+
+    public float[] hologramOffset = {0f, 0f, 0f};
+
+    public float[] hologramTranslation = {1.4f, 0.8f, 0f};
 
     @Getter @Setter
     private ModelTemplate model;
@@ -49,9 +61,11 @@ public abstract class Structure {
 
     public Structure(TorusPack pack, String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.pack = pack;
+        this.id = id;
         this.namespacedId = pack.id + ":" + id;
         this.name = name;
         this.instanceClass = instanceClass;
+        this.configResource = "packs/" + pack.id + "/configs/" + id + ".config.yml";
 
         ByteArrayBuilder builder = new ByteArrayBuilder();
         createBounds(builder);
@@ -143,5 +157,22 @@ public abstract class Structure {
     }
 
     protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction);
+
+    protected void loadConfig() {
+        name = config.getString("general_settings.display_name", this.name);
+        isHeavy = config.getBoolean("general_settings.heavy", this.isHeavy);
+
+        List<Byte> placementOffset = config.getByteList("general_settings.placement_offset");
+        if (placementOffset.size() == 3) {
+            for (int i = 0; i < 3; i++) {
+                this.offset[i] = placementOffset.get(i);
+            }
+        }
+
+        List<String> portableData = config.getStringList("general_settings.portable_data");
+        if (!portableData.isEmpty()) {
+            this.portableData = new HashSet<>(portableData);
+        }
+    }
 
 }

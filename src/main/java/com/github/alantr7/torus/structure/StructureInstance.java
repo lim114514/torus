@@ -129,7 +129,7 @@ public abstract class StructureInstance {
     }
 
     public void spawnInspectionTooltip() {
-        float[] offset = MathUtils.rotateVectors(inspectableData.hologramOffset, direction.rotH, 0);
+        float[] offset = MathUtils.rotateVectors(structure.hologramOffset, direction.rotH, 0);
         inspectionHologram = location.world.getBukkit().spawn(location.toBukkitCentered().add(offset[0], offset[1], offset[2]), TextDisplay.class);
         inspectionHologram.setBillboard(Display.Billboard.CENTER);
         inspectionHologram.setPersistent(false);
@@ -141,7 +141,7 @@ public abstract class StructureInstance {
 
         Transformation transformation = inspectionHologram.getTransformation();
         transformation.getScale().set(0.7f, 0.7f, 0.7f);
-        transformation.getTranslation().set(inspectableData.hologramTranslation);
+        transformation.getTranslation().set(structure.hologramTranslation);
         inspectionHologram.setTransformation(transformation);
     }
 
@@ -247,18 +247,18 @@ public abstract class StructureInstance {
             return null;
 
         ItemStack item = torusItem.toItemStack().clone();
-        if (!includeData || structure.itemDropDataWhitelist.isEmpty())
+        if (!includeData || structure.portableData.isEmpty())
             return item;
 
         ItemMeta meta = item.getItemMeta();
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
-        if (!structure.itemDropDataWhitelist.isEmpty()) {
+        if (!structure.portableData.isEmpty()) {
             List<String> lore = meta.getLore();
             lore.add("");
             lore.add(ChatColor.GRAY + "Data:");
             dataContainer.getEntries().forEach((key, data) -> {
-                if (!structure.itemDropDataWhitelist.contains(key)) // TODO: Iterate through whitelist instead
+                if (!structure.portableData.contains(key)) // TODO: Iterate through whitelist instead
                     return;
 
                 lore.add(ChatColor.GRAY + " " + key + ": " + ChatColor.WHITE + (data.get().getClass().isArray() ? "array" : data.get()));

@@ -17,7 +17,7 @@ public class MainConfig {
     public static List<String> WORLD_BLACKLIST = new ArrayList<>(Collections.singletonList("world_nether"));
 
     @ConfigOption(path = "customization.enable_model_editing")
-    public static Boolean CUSTOMIZATION_ENABLE_MODEL_EDITING = false;
+    public static boolean CUSTOMIZATION_ENABLE_MODEL_EDITING = false;
 
     @ConfigOption(path = "logs.world_save")
     public static boolean LOGS_WORLD_SAVE = true;

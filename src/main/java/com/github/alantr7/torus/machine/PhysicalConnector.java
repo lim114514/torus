@@ -20,8 +20,8 @@ public class PhysicalConnector extends Structure {
         super(TorusPlugin.DEFAULT_PACK, "connector", "Connector", PhysicalConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
-        itemDropDataWhitelist.add("flow");
-        itemDropDataWhitelist.add("filter");
+        portableData.add("flow");
+        portableData.add("filter");
         modelLocation = new ModelLocation("torus", "connector");
     }
 

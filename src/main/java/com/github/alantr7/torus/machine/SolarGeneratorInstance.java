@@ -14,9 +14,6 @@ import lombok.Getter;
 public class SolarGeneratorInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
-    protected int energyCapacity = 2000;
-
-    @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     public SolarGeneratorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
@@ -29,13 +26,19 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
 
     @Override
     protected void setup() {
+        getConnector("out_energy").maximumOutput = SolarGenerator.ENERGY_MAXIMUM_OUTPUT;
     }
 
     @Override
     public void tick() {
-        if (storedEnergy.get() < energyCapacity) {
-            supplyEnergy((int) (50 * calculateEfficiency()));
+        if (storedEnergy.get() < SolarGenerator.ENERGY_CAPACITY) {
+            supplyEnergy((int) (SolarGenerator.ENERGY_PRODUCTION * calculateEfficiency()));
         }
+    }
+
+    @Override
+    public int getEnergyCapacity() {
+        return SolarGenerator.ENERGY_CAPACITY;
     }
 
     @Override

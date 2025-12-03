@@ -10,8 +10,10 @@ import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.ModelLoader;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.util.*;
@@ -126,6 +128,36 @@ public class StructureRegistry {
             saveQuery.add(structure);
         }
 
+        File configFile = new File(structure.pack.configsDirectory, structure.id + ".config.yml");
+
+        // Save default config if it exists
+        if (!configFile.exists()) {
+            try {
+                InputStream is = TorusPlugin.getInstance().getResource(structure.configResource);
+                if (is != null) {
+                    is.close();
+                    TorusPlugin.getInstance().saveResource(structure.configResource, false);
+                }
+            } catch (Exception | Error e) {
+                TorusLogger.error(Category.GENERAL, "Could not save the default config for '" + structure.id + "'");
+                e.printStackTrace();
+            }
+        }
+
+        if (configFile.exists()) {
+            try {
+                try {
+                    structure.config = YamlConfiguration.loadConfiguration(configFile);
+                    structure.loadConfig();
+                } catch (Exception | Error e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception | Error e) {
+                TorusLogger.error(Category.MODELS, "Invalid configuration for structure '" + structure.id + "'");
+                e.printStackTrace();
+            }
+        }
+
         if (structure.modelLocation != null) {
             try {
                 if (MainConfig.CUSTOMIZATION_ENABLE_MODEL_EDITING || !structure.modelLocation.pack.equals("torus")) {
@@ -134,7 +166,7 @@ public class StructureRegistry {
                     structure.setModel(ModelLoader.loadInternalTorusModel(structure.modelLocation.id));
                 }
             } catch (Exception | Error e) {
-                TorusLogger.error(Category.STRUCTURES, "Could not load model for " + structure.namespacedId);
+                TorusLogger.error(Category.MODELS, "Could not load model for " + structure.namespacedId);
                 e.printStackTrace();
             }
         }

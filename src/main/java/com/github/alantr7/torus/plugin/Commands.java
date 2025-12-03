@@ -131,7 +131,7 @@ public class Commands {
               return;
           }
 
-          TorusPlugin.getInstance().saveResource("packs/torus/structures/" + structure.modelLocation.id + ".model.yml", true);
+          TorusPlugin.getInstance().saveResource("packs/torus/models/" + structure.modelLocation.id + ".model.yml", true);
           ctx.respond("Model successfully exported.");
       });
 

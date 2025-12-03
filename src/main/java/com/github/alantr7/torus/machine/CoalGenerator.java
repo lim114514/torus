@@ -26,7 +26,7 @@ public class CoalGenerator extends Structure {
 
     public CoalGenerator() {
         super(TorusPlugin.DEFAULT_PACK, "coal_generator", "Coal Generator", CoalGeneratorInstance.class);
-        itemDropDataWhitelist.add("energy");
+        portableData.add("energy");
         modelLocation = new ModelLocation("torus", "coal_generator");
     }
 

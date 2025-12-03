@@ -25,9 +25,13 @@ public class Quarry extends Structure {
         BLOCK_BLACKLIST.add(Material.BEDROCK);
     }
 
+    public static int CONSUME_ON_MOVE = 50;
+
+    public static int CONSUME_ON_MINE = 150;
+
     public Quarry() {
         super(TorusPlugin.DEFAULT_PACK, "quarry", "Quarry", QuarryInstance.class);
-        itemDropDataWhitelist.add("energy");
+        portableData.add("energy");
         offset = new byte[] {0, 0, -6};
         modelLocation = new ModelLocation("torus", "quarry");
     }
@@ -86,6 +90,13 @@ public class Quarry extends Structure {
             new StructureComponentDef("gantry_z", new Vector3f()),
           }
         ), direction);
+    }
+
+    @Override
+    protected void loadConfig() {
+        super.loadConfig();
+        CONSUME_ON_MINE = config.getInt("energy_settings.consume_on_mine", CONSUME_ON_MINE);
+        CONSUME_ON_MOVE = config.getInt("energy_settings.consume_on_mine", CONSUME_ON_MOVE);
     }
 
 }
