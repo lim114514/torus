@@ -62,7 +62,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
 
     @Override
     protected void setup() throws SetupException {
-        getConnector("out_energy").maximumOutput = Windmill.ENERGY_MAXIMUM_OUTPUT;
+        getSocket("out_energy").maximumOutput = Windmill.ENERGY_MAXIMUM_OUTPUT;
         efficiency = (float) Math.pow(Math.E, -8f/(location.y / 8f + 8f)) * 1.15505059f;
         angle = (float) (Math.random() * Math.PI / 2f) * efficiency;
     }

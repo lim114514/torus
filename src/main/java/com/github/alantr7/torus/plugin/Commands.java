@@ -173,8 +173,8 @@ public class Commands {
           ctx.respond("\n");
           ctx.respond(ChatColor.GOLD + "Structure ID: " + ChatColor.RESET + structure.structure.namespacedId);
           ctx.respond(ChatColor.GOLD + "Owner ID: " + structure.getOwnerId());
-          ctx.respond(ChatColor.GOLD + "Sockets: (" + structure.getConnectors().size() + ")");
-          for (Socket socket : structure.getConnectors()) {
+          ctx.respond(ChatColor.GOLD + "Sockets: (" + structure.getSockets().size() + ")");
+          for (Socket socket : structure.getSockets()) {
               ctx.respond("  - " + ChatColor.YELLOW + socket.getComponent().absoluteLocation + ":");
               ctx.respond("    - Matter: " + ChatColor.GRAY + socket.matter);
               ctx.respond("    - Flow: " + ChatColor.GRAY + socket.getFlowDirection());
@@ -207,7 +207,7 @@ public class Commands {
               return;
           }
 
-          for (Socket socket : structure.getConnectors()) {
+          for (Socket socket : structure.getSockets()) {
               ctx.respond(socket.getComponent().name + "  " + socket.getComponent().absoluteLocation + " (" + socket.matter + ")" + ":");
               for (Socket.Connection connection : socket.networkConnections) {
                   ctx.respond("   - " + connection.structure.structure.name + " (" + connection.socket.getComponent().absoluteLocation + ")");

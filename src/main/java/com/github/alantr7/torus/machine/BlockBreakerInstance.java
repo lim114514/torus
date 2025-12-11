@@ -42,8 +42,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     @Override
     protected void setup() {
-        powerSocket = getConnector("power_connector");
-        itemSocket = getConnector("item_connector");
+        powerSocket = getSocket("power_connector");
+        itemSocket = getSocket("item_connector");
         powerSocket.maximumInput = BlockBreaker.ENERGY_MAXIMUM_INPUT;
         inventory = new CustomStructureInventory(1);
         itemSocket.linkedInventory = inventory;

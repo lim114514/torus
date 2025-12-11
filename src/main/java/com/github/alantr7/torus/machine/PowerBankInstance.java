@@ -28,7 +28,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
 
     @Override
     protected void setup() {
-        socket = getConnector("power_connector");
+        socket = getSocket("power_connector");
         socket.maximumInput = PowerBank.ENERGY_MAXIMUM_INPUT;
         socket.maximumOutput = PowerBank.ENERGY_MAXIMUM_OUTPUT;
     }

@@ -41,8 +41,8 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
 
     @Override
     protected void setup() throws MissingDataException {
-        inputSocket = requireConnector("item_connector");
-        outputSocket = requireConnector("power_connector");
+        inputSocket = requireSocket("item_connector");
+        outputSocket = requireSocket("power_connector");
         outputSocket.maximumOutput = CoalGenerator.ENERGY_MAXIMUM_OUTPUT;
 
         chimneyPosition = MathUtils.rotateVectors(new float[] { 1.125f - .5f, 1.8f, 0.8125f - .5f }, direction.rotH, direction.rotV);

@@ -46,7 +46,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     @Override
     protected void setup() {
-        socket = getConnector("connector");
+        socket = getSocket("connector");
         updateCriteria(getFilter());
         updateModel();
     }
@@ -74,7 +74,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
             // Check if this interface connects to a connector
             if (possibleConnection != null) {
-                Socket socket = possibleConnection.getConnector(location, Socket.Matter.ITEM);
+                Socket socket = possibleConnection.getSocket(location, Socket.Matter.ITEM);
                 if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                     hasConnected = true;
                     shouldUpdateModel = true;

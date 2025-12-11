@@ -16,7 +16,7 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.structure.inspection.InspectableProperty;
 import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.world.ConnectorLocation;
+import com.github.alantr7.torus.world.SocketLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
@@ -61,9 +61,9 @@ public abstract class StructureInstance {
 
     protected Map<String, StructureComponent> components = new HashMap<>();
 
-    protected Map<ConnectorLocation, Socket> connectors = new HashMap<>();
+    protected Map<SocketLocation, Socket> sockets = new HashMap<>();
 
-    protected Map<String, Socket> connectorsByName = new HashMap<>();
+    protected Map<String, Socket> socketsByName = new HashMap<>();
 
     private byte[] bounds;
 
@@ -103,14 +103,14 @@ public abstract class StructureInstance {
             );
             components.put(componentDef.name, component);
 
-            if (componentDef.connectorDef != null) {
-                Socket socket = new Socket(components.get(componentDef.name), componentDef.connectorDef.allowedConnections(), componentDef.connectorDef.matter(), componentDef.connectorDef.direction());
+            if (componentDef.socketDef != null) {
+                Socket socket = new Socket(components.get(componentDef.name), componentDef.socketDef.allowedConnections(), componentDef.socketDef.matter(), componentDef.socketDef.direction());
                 socket.structure = this;
 
-                connectorsByName.put(componentDef.name, socket);
+                socketsByName.put(componentDef.name, socket);
                 for (Direction possibleDirection : Direction.values()) {
                     if (socket.isConnectableFrom(possibleDirection)) {
-                        connectors.put(new ConnectorLocation(component.absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
+                        sockets.put(new SocketLocation(component.absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
                     }
                 }
             }
@@ -168,24 +168,24 @@ public abstract class StructureInstance {
         return components.values();
     }
 
-    public Socket getConnector(BlockLocation location, Socket.Matter matter) {
-        return connectors.get(new ConnectorLocation(location, matter));
+    public Socket getSocket(BlockLocation location, Socket.Matter matter) {
+        return sockets.get(new SocketLocation(location, matter));
     }
 
-    public Socket getConnector(String name) {
-        return connectorsByName.get(name);
+    public Socket getSocket(String name) {
+        return socketsByName.get(name);
     }
 
-    public Socket requireConnector(String name) throws MissingDataException {
-        Socket socket = connectorsByName.get(name);
+    public Socket requireSocket(String name) throws MissingDataException {
+        Socket socket = socketsByName.get(name);
         if (socket == null)
-            throw new MissingDataException("Connector by name '" + name + "' could not be found.");
+            throw new MissingDataException("Socket by name '" + name + "' could not be found.");
 
         return socket;
     }
 
-    public Collection<Socket> getConnectors() {
-        return connectors.values();
+    public Collection<Socket> getSockets() {
+        return sockets.values();
     }
 
     private void setOccupiedChunks() {
@@ -314,7 +314,7 @@ public abstract class StructureInstance {
         buffer.writeU1(direction.ordinal());
 
         // Components Length + Connectors Length
-        buffer.writeU1((components.size() << 4) | connectors.size());
+        buffer.writeU1((components.size() << 4) | sockets.size());
         // Components
         components.forEach((name, component) -> {
             // Name
@@ -326,7 +326,7 @@ public abstract class StructureInstance {
         });
 
         // Connectors
-        connectors.forEach((l, connector) -> {
+        sockets.forEach((l, connector) -> {
             // Linked component
             buffer.writeU1(keys.pool(connector.getComponent().name));
 
@@ -366,7 +366,7 @@ public abstract class StructureInstance {
         int connectorsLength = counts & 0x0f;
 
         Map<String, StructureComponent> components = new HashMap<>(componentsLength);
-        Map<ConnectorLocation, Socket> connectors = new HashMap<>(connectorsLength);
+        Map<SocketLocation, Socket> sockets = new HashMap<>(connectorsLength);
 
         for (int i = 0; i < componentsLength; i++) {
             // Name
@@ -399,7 +399,7 @@ public abstract class StructureInstance {
 
                 for (Direction possibleDirection : Direction.values()) {
                     if (socket.isConnectableFrom(possibleDirection)) {
-                        connectors.put(new ConnectorLocation(component.absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
+                        sockets.put(new SocketLocation(component.absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
                     }
                 }
             } else {
@@ -424,10 +424,10 @@ public abstract class StructureInstance {
             StructureInstance instance = constructor.newInstance(new LoadContext(structure, location, Direction.values()[direction], dataContainer));
             dataContainer.structure = instance;
             instance.components.putAll(components);
-            instance.connectors.putAll(connectors);
-            connectors.forEach((l, c) -> {
+            instance.sockets.putAll(sockets);
+            sockets.forEach((l, c) -> {
                 c.structure = instance;
-                instance.connectorsByName.put(c.getComponent().name, c);
+                instance.socketsByName.put(c.getComponent().name, c);
             });
 
             return instance;

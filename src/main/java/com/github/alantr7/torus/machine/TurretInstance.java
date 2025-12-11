@@ -102,9 +102,9 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     @Override
     protected void setup() throws SetupException {
         head = requireComponent("head");
-        inEnergy = requireConnector("in_energy");
+        inEnergy = requireSocket("in_energy");
         inEnergy.maximumInput = Turret.ENERGY_MAXIMUM_INPUT;
-        inItem = requireConnector("in_item");
+        inItem = requireSocket("in_item");
     }
 
     @Override

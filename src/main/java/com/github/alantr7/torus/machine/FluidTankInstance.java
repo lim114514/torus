@@ -81,7 +81,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     @Override
     protected void setup() {
         liquidComponent = getComponent("liquid");
-        input = getConnector("in_fluid");
+        input = getSocket("in_fluid");
     }
 
     @Override

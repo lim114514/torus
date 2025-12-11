@@ -9,7 +9,7 @@ import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
-import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
+import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.jetbrains.annotations.NotNull;
@@ -50,13 +50,13 @@ public class OreCrusher extends Structure {
         return new OreCrusherInstance(location, new StructureBodyDef(
           new StructureComponentDef[]{
             new StructureComponentDef("body", new Vector3f()),
-            new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), new StructureConnectorDef(
+            new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), new StructureSocketDef(
               Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getLeft().mask()
             )),
-            new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), new StructureConnectorDef(
+            new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), new StructureSocketDef(
               Socket.Matter.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
-            new StructureComponentDef("out_connector", new Vector3f(1, 0, 0), new StructureConnectorDef(
+            new StructureComponentDef("out_connector", new Vector3f(1, 0, 0), new StructureSocketDef(
               Socket.Matter.ITEM, Socket.FlowDirection.OUT, direction.getRight().mask()
             )),
             new StructureComponentDef("wheel_left", new Vector3f()),

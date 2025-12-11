@@ -8,7 +8,7 @@ import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
-import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
+import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.jetbrains.annotations.NotNull;
@@ -39,13 +39,13 @@ public class BlastFurnace extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new BlastFurnaceInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f(0f, 0f, 0f)),
-          new StructureComponentDef("in_item", new Vector3f(0, 4, 1), new StructureConnectorDef(
+          new StructureComponentDef("in_item", new Vector3f(0, 4, 1), new StructureSocketDef(
             Socket.Matter.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
           )),
-          new StructureComponentDef("out_item", new Vector3f(1, 0, 0), new StructureConnectorDef(
+          new StructureComponentDef("out_item", new Vector3f(1, 0, 0), new StructureSocketDef(
             Socket.Matter.ITEM, Socket.FlowDirection.OUT, direction.mask()
           )),
-          new StructureComponentDef("out_slug", new Vector3f(-1, 0, 0), new StructureConnectorDef(
+          new StructureComponentDef("out_slug", new Vector3f(-1, 0, 0), new StructureSocketDef(
             Socket.Matter.ITEM, Socket.FlowDirection.OUT, direction.mask()
           ))
         }), direction);

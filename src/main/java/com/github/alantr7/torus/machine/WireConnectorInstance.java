@@ -146,7 +146,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
             return connections.keySet();
 
         List<BlockLocation> nodes = new ArrayList<>(connections.keySet());
-        nodes.addAll(getConnector("base").getConnectedNodes());
+        nodes.addAll(getSocket("base").getConnectedNodes());
 
         return nodes;
     }
@@ -163,7 +163,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
 
         // Check if this cable connects to a connector
         if (possibleConnection != null) {
-            Socket socket = possibleConnection.getConnector(location, Socket.Matter.ENERGY);
+            Socket socket = possibleConnection.getSocket(location, Socket.Matter.ENERGY);
             if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
                 socket.setConnected(direction.getOpposite(), true);
@@ -178,7 +178,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
             cable.updateModel();
         }
 
-        getConnector("base").setConnected(direction, hasConnected);
+        getSocket("base").setConnected(direction, hasConnected);
     }
 
     private Slime spawnSlime() {

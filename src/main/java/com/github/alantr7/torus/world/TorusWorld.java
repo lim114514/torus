@@ -201,7 +201,7 @@ public class TorusWorld {
         }
 
         // Connect to structures next to it if possible
-        else instance.getConnectors().forEach((connector) -> {
+        else instance.getSockets().forEach((connector) -> {
             for (Direction direction : Direction.values()) {
                 if (connector.isConnectableFrom(direction)) {
                     StructureInstance neighbor = connector.getComponent().absoluteLocation.getRelative(direction).getStructure();
@@ -214,7 +214,7 @@ public class TorusWorld {
                     }
 
                     Socket neighborSocket;
-                    if ((neighborSocket = neighbor.getConnector(connector.getComponent().absoluteLocation, connector.matter)) != null) {
+                    if ((neighborSocket = neighbor.getSocket(connector.getComponent().absoluteLocation, connector.matter)) != null) {
                         if (neighborSocket.isConnectableFrom(direction.getOpposite())) {
                             connector.setConnected(direction, true);
                             neighborSocket.setConnected(direction.getOpposite(), true);
@@ -263,7 +263,7 @@ public class TorusWorld {
                             iii.updateConnections();
                         }
                     } else if (cable.isConnected(direction)) {
-                        Socket socket = neighbor.getConnector(instance.location, cable.getType());
+                        Socket socket = neighbor.getSocket(instance.location, cable.getType());
                         if (socket != null) {
                             socket.setConnected(direction.getOpposite(), false);
                         }
@@ -274,7 +274,7 @@ public class TorusWorld {
         }
 
         // Update all cables around connectors
-        else instance.getConnectors().forEach((connector) -> {
+        else instance.getSockets().forEach((connector) -> {
             for (Direction direction : Direction.values()) {
                 if (connector.isConnectableFrom(direction)) {
                     if (connector.getComponent().absoluteLocation.getRelative(direction).getStructure() instanceof CableInstance cable) {

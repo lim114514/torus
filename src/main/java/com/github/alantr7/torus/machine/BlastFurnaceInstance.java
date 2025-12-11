@@ -178,9 +178,9 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
 
     @Override
     protected void setup() {
-        inputSocket = getConnector("in_item");
-        itemOutputSocket = getConnector("out_item");
-        slugOutputSocket = getConnector("out_slug");
+        inputSocket = getSocket("in_item");
+        itemOutputSocket = getSocket("out_item");
+        slugOutputSocket = getSocket("out_slug");
 
         itemOutputSocket.linkedInventory = new BukkitStructureInventory(inventory);
         itemOutputSocket.linkedInventoryAllowedSlots = new int[]{16};

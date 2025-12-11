@@ -69,7 +69,7 @@ public class CableInstance extends StructureInstance implements Connectable, Con
 
         // Check if this cable connects to a connector
         if (possibleConnection != null) {
-            Socket socket = possibleConnection.getConnector(location, getType());
+            Socket socket = possibleConnection.getSocket(location, getType());
             if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
                 shouldUpdateModel = true;

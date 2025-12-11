@@ -173,9 +173,9 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         gantryX = getComponent("gantry_x");
         gantryZ = getComponent("gantry_z");
 
-        inSocket = getConnector("in_energy");
+        inSocket = getSocket("in_energy");
         inSocket.maximumInput = 350;
-        outSocket = getConnector("out_item");
+        outSocket = getSocket("out_item");
         outSocket.linkedInventory = outBuffer;
     }
 

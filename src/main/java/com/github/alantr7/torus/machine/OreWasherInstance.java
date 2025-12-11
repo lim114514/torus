@@ -77,11 +77,11 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Override
     protected void setup() {
-        powerSocket = getConnector("power_connector");
+        powerSocket = getSocket("power_connector");
         powerSocket.maximumInput = OreWasher.ENERGY_MAXIMUM_INPUT;
-        itemInSocket = getConnector("item_connector");
-        waterInSocket = getConnector("fluid_connector");
-        itemOutSocket = getConnector("out_connector");
+        itemInSocket = getSocket("item_connector");
+        waterInSocket = getSocket("fluid_connector");
+        itemOutSocket = getSocket("out_connector");
         itemOutSocket.linkedInventory = itemOutBuffer;
     }
 

@@ -39,10 +39,10 @@ public class ElectricityMeterInstance extends StructureInstance implements Energ
 
     @Override
     protected void setup() throws SetupException {
-        inEnergy = requireConnector("in_energy");
+        inEnergy = requireSocket("in_energy");
         inEnergy.maximumInput = Integer.MAX_VALUE;
 
-        outEnergy = requireConnector("out_energy");
+        outEnergy = requireSocket("out_energy");
         outEnergy.maximumOutput = Integer.MAX_VALUE;
     }
 

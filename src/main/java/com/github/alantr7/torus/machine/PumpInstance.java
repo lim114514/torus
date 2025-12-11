@@ -38,7 +38,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     @Override
     protected void setup() {
-        energySocket = getConnector("power_connector");
+        energySocket = getSocket("power_connector");
         energySocket.maximumInput = Pump.ENERGY_MAXIMUM_INPUT;
     }
 

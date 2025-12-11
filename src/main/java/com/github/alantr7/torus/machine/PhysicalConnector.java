@@ -9,7 +9,7 @@ import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
-import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
+import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.component.Socket;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -37,7 +37,7 @@ public class PhysicalConnector extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         StructureBodyDef body = new StructureBodyDef(
           new StructureComponentDef[]{
-            new StructureComponentDef("connector", new Vector3f(), new StructureConnectorDef(
+            new StructureComponentDef("connector", new Vector3f(), new StructureSocketDef(
               Socket.Matter.ITEM, Socket.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false)
             )),
             new StructureComponentDef("cable", new Vector3f()),

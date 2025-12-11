@@ -26,7 +26,7 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
 
     @Override
     protected void setup() {
-        getConnector("out_energy").maximumOutput = SolarGenerator.ENERGY_MAXIMUM_OUTPUT;
+        getSocket("out_energy").maximumOutput = SolarGenerator.ENERGY_MAXIMUM_OUTPUT;
     }
 
     @Override

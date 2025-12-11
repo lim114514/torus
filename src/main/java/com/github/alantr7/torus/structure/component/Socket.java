@@ -115,7 +115,7 @@ public class Socket implements Connectable, Conductor {
                 continue;
             }
 
-            Socket neighborSocket = neighbor.getConnector(component.absoluteLocation, matter);
+            Socket neighborSocket = neighbor.getSocket(component.absoluteLocation, matter);
             if (neighborSocket != null) {
                 networkConnections.add(new Connection(neighbor, neighborSocket));
                 closedDirectionsCount++;
@@ -159,7 +159,7 @@ public class Socket implements Connectable, Conductor {
                     continue;
                 }
 
-                Socket socket = neighbor.getConnector(start, matter);
+                Socket socket = neighbor.getSocket(start, matter);
                 if (socket != null) {
                     networkConnections.add(new Connection(neighbor, socket));
                     closed.add(neighborLoc);

@@ -96,10 +96,10 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         leftWheel = getComponent("wheel_left");
         rightWheel = getComponent("wheel_right");
 
-        itemInSocket = getConnector("item_connector");
-        itemOutSocket = getConnector("out_connector");
+        itemInSocket = getSocket("item_connector");
+        itemOutSocket = getSocket("out_connector");
         itemOutSocket.linkedInventory = itemOutBuffer;
-        energySocket = getConnector("power_connector");
+        energySocket = getSocket("power_connector");
         energySocket.maximumInput = OreCrusher.ENERGY_MAXIMUM_INPUT;
     }
 
