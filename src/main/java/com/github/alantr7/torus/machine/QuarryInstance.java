@@ -62,19 +62,23 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
                 if (storedEnergy.get() < Quarry.ENERGY_CONSUMPTION_ON_MINE)
                     return;
 
-                for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.toBukkit().getChunk())) {
-                    player.sendBlockDamage(ore.getLocation(), Math.min(1, (breakingTicks) / 3f));
-                }
                 if (breakingTicks == 4) {
                     breakingTicks = 0;
                     for (ItemStack drop : ore.getDrops(new ItemStack(Material.IRON_PICKAXE))) {
                         outBuffer.addItem(drop.clone());
                         break;
                     }
+
+                    ore.getWorld().playSound(ore.getLocation(), ore.getBlockSoundGroup().getBreakSound(), 0.75f, 1f);
                     ore.setType(Material.AIR);
 
                     for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.toBukkit().getChunk())) {
                         player.sendBlockDamage(ore.getLocation(), 0);
+                    }
+                } else {
+                    ore.getWorld().playSound(ore.getLocation(), ore.getBlockSoundGroup().getHitSound(), 0.75f, 1f);
+                    for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.toBukkit().getChunk())) {
+                        player.sendBlockDamage(ore.getLocation(), Math.min(1, (breakingTicks) / 3f));
                     }
                 }
 

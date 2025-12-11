@@ -15,6 +15,7 @@ import com.github.alantr7.torus.structure.component.Socket;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -65,9 +66,11 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         powerSocket.maintainEnergy(this);
         itemSocket.attemptDirectItemExport();
 
-        if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE) || inventory.getItems()[0] != null) {
+        if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE) || inventory.getItems()[0] != null)
             return;
-        }
+
+        if (location.world.getStructure(location.getRelative(direction)) != null)
+            return;
 
         Location blockLocation = location.getRelative(direction).toBukkit();
         Block block = blockLocation.getBlock();
@@ -80,12 +83,15 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
                 inventory.addItem(drop.clone());
                 break;
             }
-            block.setType(Material.AIR);
 
             blockDamage = 0;
             breakingTicks = 0;
+            blockLocation.getWorld().playSound(blockLocation, block.getBlockSoundGroup().getBreakSound(), 0.75f, 1f);
+
+            block.setType(Material.AIR);
         } else {
             blockDamage = (float) breakingTicks / 3;
+            blockLocation.getWorld().playSound(blockLocation, block.getBlockSoundGroup().getHitSound(), 0.75f, 1f);
         }
 
         for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.x >> 4, location.z >> 4)) {
