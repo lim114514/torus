@@ -8,7 +8,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -27,9 +27,9 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 
     protected StructureComponent head;
 
-    protected Connector inEnergy;
+    protected Socket inEnergy;
 
-    protected Connector inItem;
+    protected Socket inItem;
 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);

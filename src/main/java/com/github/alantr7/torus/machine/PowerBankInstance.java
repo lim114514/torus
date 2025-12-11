@@ -4,7 +4,7 @@ import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    Connector connector;
+    Socket socket;
 
     public PowerBankInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.POWER_BANK, location, bodyDef, direction);
@@ -28,9 +28,9 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
 
     @Override
     protected void setup() {
-        connector = getConnector("power_connector");
-        connector.maximumInput = PowerBank.ENERGY_MAXIMUM_INPUT;
-        connector.maximumOutput = PowerBank.ENERGY_MAXIMUM_OUTPUT;
+        socket = getConnector("power_connector");
+        socket.maximumInput = PowerBank.ENERGY_MAXIMUM_INPUT;
+        socket.maximumOutput = PowerBank.ENERGY_MAXIMUM_OUTPUT;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     int energyAtLastTick;
     @Override
     public void tick() {
-        connector.maintainEnergy(this);
+        socket.maintainEnergy(this);
         if (energyAtLastTick != storedEnergy.get()) {
             updateModel();
         }

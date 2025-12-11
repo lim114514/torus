@@ -7,7 +7,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     protected StructureComponent liquidComponent;
 
-    protected Connector input;
+    protected Socket input;
 
     protected Data<Integer> fluid = dataContainer.persist("fluid", Data.Type.INT, -1);
 

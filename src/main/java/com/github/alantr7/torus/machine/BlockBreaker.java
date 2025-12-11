@@ -9,7 +9,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -34,10 +34,10 @@ public class BlockBreaker extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("body", new Vector3f(0, 0, 0)),
             new StructureComponentDef("power_connector", new Vector3f(0, 0, 0), new StructureConnectorDef(
-              Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask()
+              Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
             )),
             new StructureComponentDef("item_connector", new Vector3f(0, 0, 0), new StructureConnectorDef(
-              Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.DOWN.mask()
+              Socket.Matter.ITEM, Socket.FlowDirection.OUT, Direction.DOWN.mask()
             )) }
         ), direction);
     }

@@ -10,7 +10,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
@@ -25,8 +25,8 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected Connector inputConnector;
-    protected Connector outputConnector;
+    protected Socket inputSocket;
+    protected Socket outputSocket;
 
     protected int remainingBurnTicks;
     protected float[] chimneyPosition;
@@ -41,9 +41,9 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
 
     @Override
     protected void setup() throws MissingDataException {
-        inputConnector = requireConnector("item_connector");
-        outputConnector = requireConnector("power_connector");
-        outputConnector.maximumOutput = CoalGenerator.ENERGY_MAXIMUM_OUTPUT;
+        inputSocket = requireConnector("item_connector");
+        outputSocket = requireConnector("power_connector");
+        outputSocket.maximumOutput = CoalGenerator.ENERGY_MAXIMUM_OUTPUT;
 
         chimneyPosition = MathUtils.rotateVectors(new float[] { 1.125f - .5f, 1.8f, 0.8125f - .5f }, direction.rotH, direction.rotV);
     }
@@ -51,8 +51,8 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     @Override
     public void tick() {
         if (remainingBurnTicks == 0) {
-            inputConnector.updateNetwork();
-            List<ItemStack> fuel = inputConnector.consumeItems(CoalGenerator.INPUT_CRITERIA, 1, true);
+            inputSocket.updateNetwork();
+            List<ItemStack> fuel = inputSocket.consumeItems(CoalGenerator.INPUT_CRITERIA, 1, true);
             if (fuel.isEmpty())
                 return;
 

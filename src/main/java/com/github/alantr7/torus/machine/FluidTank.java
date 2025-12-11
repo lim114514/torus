@@ -10,7 +10,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -43,10 +43,10 @@ public class FluidTank extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("base", new Vector3f()),
             new StructureComponentDef("in_fluid", new Vector3f(0f, 3f, 0f), new StructureConnectorDef(
-              Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()
+              Socket.Matter.FLUID, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
             new StructureComponentDef("out_fluid", new Vector3f(0f, 0f, -1f), new StructureConnectorDef(
-              Connector.Matter.FLUID, Connector.FlowDirection.OUT, direction.mask()
+              Socket.Matter.FLUID, Socket.FlowDirection.OUT, direction.mask()
             )),
             new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f)),
           }

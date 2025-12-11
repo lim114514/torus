@@ -11,7 +11,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -163,16 +163,16 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
 
         // Check if this cable connects to a connector
         if (possibleConnection != null) {
-            Connector connector = possibleConnection.getConnector(location, Connector.Matter.ENERGY);
-            if (connector != null && connector.isConnectableFrom(direction.getOpposite())) {
+            Socket socket = possibleConnection.getConnector(location, Socket.Matter.ENERGY);
+            if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
-                connector.setConnected(direction.getOpposite(), true);
+                socket.setConnected(direction.getOpposite(), true);
                 possibleConnection.save();
             }
         }
 
         // Check if this cable connects to another cable
-        if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Connector.Matter.ENERGY) {
+        if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Socket.Matter.ENERGY) {
             hasConnected = true;
             cable.setConnected(direction.getOpposite(), true);
             cable.updateModel();

@@ -20,7 +20,7 @@ import com.github.alantr7.torus.world.ConnectorLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.world.TorusChunk;
@@ -61,9 +61,9 @@ public abstract class StructureInstance {
 
     protected Map<String, StructureComponent> components = new HashMap<>();
 
-    protected Map<ConnectorLocation, Connector> connectors = new HashMap<>();
+    protected Map<ConnectorLocation, Socket> connectors = new HashMap<>();
 
-    protected Map<String, Connector> connectorsByName = new HashMap<>();
+    protected Map<String, Socket> connectorsByName = new HashMap<>();
 
     private byte[] bounds;
 
@@ -104,13 +104,13 @@ public abstract class StructureInstance {
             components.put(componentDef.name, component);
 
             if (componentDef.connectorDef != null) {
-                Connector connector = new Connector(components.get(componentDef.name), componentDef.connectorDef.allowedConnections(), componentDef.connectorDef.matter(), componentDef.connectorDef.direction());
-                connector.structure = this;
+                Socket socket = new Socket(components.get(componentDef.name), componentDef.connectorDef.allowedConnections(), componentDef.connectorDef.matter(), componentDef.connectorDef.direction());
+                socket.structure = this;
 
-                connectorsByName.put(componentDef.name, connector);
+                connectorsByName.put(componentDef.name, socket);
                 for (Direction possibleDirection : Direction.values()) {
-                    if (connector.isConnectableFrom(possibleDirection)) {
-                        connectors.put(new ConnectorLocation(component.absoluteLocation.getRelative(possibleDirection), connector.matter), connector);
+                    if (socket.isConnectableFrom(possibleDirection)) {
+                        connectors.put(new ConnectorLocation(component.absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
                     }
                 }
             }
@@ -168,23 +168,23 @@ public abstract class StructureInstance {
         return components.values();
     }
 
-    public Connector getConnector(BlockLocation location, Connector.Matter matter) {
+    public Socket getConnector(BlockLocation location, Socket.Matter matter) {
         return connectors.get(new ConnectorLocation(location, matter));
     }
 
-    public Connector getConnector(String name) {
+    public Socket getConnector(String name) {
         return connectorsByName.get(name);
     }
 
-    public Connector requireConnector(String name) throws MissingDataException {
-        Connector connector = connectorsByName.get(name);
-        if (connector == null)
+    public Socket requireConnector(String name) throws MissingDataException {
+        Socket socket = connectorsByName.get(name);
+        if (socket == null)
             throw new MissingDataException("Connector by name '" + name + "' could not be found.");
 
-        return connector;
+        return socket;
     }
 
-    public Collection<Connector> getConnectors() {
+    public Collection<Socket> getConnectors() {
         return connectors.values();
     }
 
@@ -366,7 +366,7 @@ public abstract class StructureInstance {
         int connectorsLength = counts & 0x0f;
 
         Map<String, StructureComponent> components = new HashMap<>(componentsLength);
-        Map<ConnectorLocation, Connector> connectors = new HashMap<>(connectorsLength);
+        Map<ConnectorLocation, Socket> connectors = new HashMap<>(connectorsLength);
 
         for (int i = 0; i < componentsLength; i++) {
             // Name
@@ -393,13 +393,13 @@ public abstract class StructureInstance {
             int flowDirection = data & 0x0f;
             int matterOrdinal = (data >> 4) & 0x0f;
 
-            if (matterOrdinal < Connector.Matter.values().length && flowDirection < Connector.FlowDirection.values().length) {
-                Connector connector = new Connector(component, allowedConnections, Connector.Matter.values()[matterOrdinal], Connector.FlowDirection.values()[flowDirection]);
-                connector.setConnections(connections);
+            if (matterOrdinal < Socket.Matter.values().length && flowDirection < Socket.FlowDirection.values().length) {
+                Socket socket = new Socket(component, allowedConnections, Socket.Matter.values()[matterOrdinal], Socket.FlowDirection.values()[flowDirection]);
+                socket.setConnections(connections);
 
                 for (Direction possibleDirection : Direction.values()) {
-                    if (connector.isConnectableFrom(possibleDirection)) {
-                        connectors.put(new ConnectorLocation(component.absoluteLocation.getRelative(possibleDirection), connector.matter), connector);
+                    if (socket.isConnectableFrom(possibleDirection)) {
+                        connectors.put(new ConnectorLocation(component.absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
                     }
                 }
             } else {

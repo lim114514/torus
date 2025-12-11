@@ -5,7 +5,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -26,7 +26,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected Connector energyConnector;
+    protected Socket energySocket;
 
     PumpInstance(LoadContext context) {
         super(context);
@@ -38,8 +38,8 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     @Override
     protected void setup() {
-        energyConnector = getConnector("power_connector");
-        energyConnector.maximumInput = Pump.ENERGY_MAXIMUM_INPUT;
+        energySocket = getConnector("power_connector");
+        energySocket.maximumInput = Pump.ENERGY_MAXIMUM_INPUT;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     @Override
     public void tick() {
-        energyConnector.maintainEnergy(this);
+        energySocket.maintainEnergy(this);
         if (storedEnergy.get() < Pump.ENERGY_CONSUMPTION || amount.get() >= Pump.FLUID_CAPACITY)
             return;
 

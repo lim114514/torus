@@ -15,7 +15,7 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Material;
@@ -30,11 +30,11 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     protected Data<byte[]> filterInternal = dataContainer.persist("filter", Data.Type.BYTE_ARRAY, new byte[0]);
 
-    protected Connector connector;
+    protected Socket socket;
 
     protected ItemCriteria inputCriteria = null;
 
-    public PhysicalConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Connector.FlowDirection flowDirection) {
+    public PhysicalConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Socket.FlowDirection flowDirection) {
         super(Structures.CONNECTOR, location, bodyDef, direction);
         flowDirectionData.update(flowDirection.ordinal());
         save();
@@ -46,7 +46,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     @Override
     protected void setup() {
-        connector = getConnector("connector");
+        socket = getConnector("connector");
         updateCriteria(getFilter());
         updateModel();
     }
@@ -59,13 +59,13 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     public void updateConnections() {
         if (TorusWorld.isItemContainer(location.getRelative(direction.getOpposite()))) {
-            connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
+            socket.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
         }
 
-        int connections = connector.getConnections();
+        int connections = socket.getConnections();
         boolean shouldUpdateModel = false;
         for (Direction direction : Direction.values()) {
-            if (!connector.isConnectableFrom(direction)) {
+            if (!socket.isConnectableFrom(direction)) {
                 continue;
             }
 
@@ -74,18 +74,18 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
             // Check if this interface connects to a connector
             if (possibleConnection != null) {
-                Connector connector = possibleConnection.getConnector(location, Connector.Matter.ITEM);
-                if (connector != null && connector.isConnectableFrom(direction.getOpposite())) {
+                Socket socket = possibleConnection.getConnector(location, Socket.Matter.ITEM);
+                if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                     hasConnected = true;
                     shouldUpdateModel = true;
 
-                    connector.setConnected(direction.getOpposite(), true);
+                    socket.setConnected(direction.getOpposite(), true);
                     possibleConnection.save();
                 }
             }
 
             // Check if this interface connects to another cable
-            if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Connector.Matter.ITEM) {
+            if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Socket.Matter.ITEM) {
                 hasConnected = true;
                 shouldUpdateModel = true;
 
@@ -93,15 +93,15 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
                 cable.updateModel();
             }
 
-            if (hasConnected != connector.isConnected(direction))
+            if (hasConnected != socket.isConnected(direction))
                 shouldUpdateModel = true;
 
-            connector.setConnected(direction, hasConnected);
+            socket.setConnected(direction, hasConnected);
         }
 
         if (shouldUpdateModel) {
             updateModel();
-        } else if (connector.getConnections() != connections) {
+        } else if (socket.getConnections() != connections) {
             save();
         }
     }
@@ -109,13 +109,13 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     public void updateModel() {
         PartModelTemplate model = new PartModelTemplate("cable");
         for (Direction direction : Direction.values()) {
-            if (connector.isConnected(direction)) {
+            if (socket.isConnected(direction)) {
                 model.add(EnergyCable.MODELS_ITEM[direction.ordinal()]);
             }
         }
 
         // Add a cable that goes into the connected structure (only if there are other cables around)
-        if (connector.getConnections() != 0) {
+        if (socket.getConnections() != 0) {
             model.add(EnergyCable.MODELS_ITEM[direction.getOpposite().ordinal()]);
         }
 
@@ -127,16 +127,16 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     @Override
     public void tick() {
         if (TorusWorld.isItemContainer(location.getRelative(direction.getOpposite()))) {
-            connector.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
+            socket.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
         } else {
             return;
         }
 
-        if (getFlowDirection() != Connector.FlowDirection.IN && getFlowDirection() != Connector.FlowDirection.ALL)
+        if (getFlowDirection() != Socket.FlowDirection.IN && getFlowDirection() != Socket.FlowDirection.ALL)
             return;
 
-        connector.updateNetwork();
-        connector.consumeItems(inputCriteria, 4, false).forEach(connector.linkedInventory::addItem);
+        socket.updateNetwork();
+        socket.consumeItems(inputCriteria, 4, false).forEach(socket.linkedInventory::addItem);
     }
 
     public ItemReference[] getFilter() {
@@ -190,18 +190,18 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     public void handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
         TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
         if (item != null && item.namespacedId.equals("torus:screwdriver")) {
-            flowDirectionData.update(getFlowDirection() == Connector.FlowDirection.IN ? Connector.FlowDirection.OUT.ordinal() : Connector.FlowDirection.IN.ordinal());
-            connector.setFlowDirection(getFlowDirection());
+            flowDirectionData.update(getFlowDirection() == Socket.FlowDirection.IN ? Socket.FlowDirection.OUT.ordinal() : Socket.FlowDirection.IN.ordinal());
+            socket.setFlowDirection(getFlowDirection());
 
-            event.getPlayer().sendMessage("Flow direction changed to: " + connector.getFlowDirection());
+            event.getPlayer().sendMessage("Flow direction changed to: " + socket.getFlowDirection());
             return;
         }
 
         new InventoryInterfaceFilterEditGUI(event.getPlayer(), this).open();
     }
 
-    public Connector.FlowDirection getFlowDirection() {
-        return Connector.FlowDirection.values()[flowDirectionData.get()];
+    public Socket.FlowDirection getFlowDirection() {
+        return Socket.FlowDirection.values()[flowDirectionData.get()];
     }
 
 }

@@ -9,7 +9,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -40,7 +40,7 @@ public class PowerBank extends Structure {
           new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef(
             "power_connector", new Vector3f(0, 1, 0), new StructureConnectorDef(
-            Connector.Matter.ENERGY, Connector.FlowDirection.ALL, Direction.UP.mask()
+            Socket.Matter.ENERGY, Socket.FlowDirection.ALL, Direction.UP.mask()
           )),
           new StructureComponentDef("charge", new Vector3f())
         }), direction);

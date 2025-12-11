@@ -11,7 +11,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.bukkit.Bukkit;
@@ -27,9 +27,9 @@ import java.util.List;
 
 public class BlastFurnaceInstance extends StructureInstance implements Inspectable {
 
-    protected Connector inputConnector;
+    protected Socket inputSocket;
 
-    protected Connector itemOutputConnector, slugOutputConnector;
+    protected Socket itemOutputSocket, slugOutputSocket;
 
     public Inventory inventory = Bukkit.createInventory(null, 27, "Blast Furnace");
 
@@ -53,7 +53,7 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
 
     @Override
     public void tick() {
-        itemOutputConnector.attemptDirectItemExport();
+        itemOutputSocket.attemptDirectItemExport();
 
         if (recipe != null) {
             if (isActive && processedTicks++ >= recipe.smeltDuration) {
@@ -178,12 +178,12 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
 
     @Override
     protected void setup() {
-        inputConnector = getConnector("in_item");
-        itemOutputConnector = getConnector("out_item");
-        slugOutputConnector = getConnector("out_slug");
+        inputSocket = getConnector("in_item");
+        itemOutputSocket = getConnector("out_item");
+        slugOutputSocket = getConnector("out_slug");
 
-        itemOutputConnector.linkedInventory = new BukkitStructureInventory(inventory);
-        itemOutputConnector.linkedInventoryAllowedSlots = new int[]{16};
+        itemOutputSocket.linkedInventory = new BukkitStructureInventory(inventory);
+        itemOutputSocket.linkedInventoryAllowedSlots = new int[]{16};
         updateRecipeDisplay();
     }
 

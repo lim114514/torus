@@ -8,7 +8,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +43,7 @@ public class Windmill extends Structure {
         return new WindmillInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef("out_energy", new Vector3f(), new StructureConnectorDef(
-            Connector.Matter.ENERGY, Connector.FlowDirection.OUT, direction.mask()
+            Socket.Matter.ENERGY, Socket.FlowDirection.OUT, direction.mask()
           ))
         }), direction);
     }

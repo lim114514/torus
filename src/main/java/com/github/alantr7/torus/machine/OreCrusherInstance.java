@@ -6,7 +6,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
@@ -22,7 +22,7 @@ import java.util.List;
 public class OreCrusherInstance extends StructureInstance implements Inspectable, EnergyContainer {
 
     protected StructureComponent leftWheel, rightWheel;
-    protected Connector energyConnector, itemInConnector, itemOutConnector;
+    protected Socket energySocket, itemInSocket, itemOutSocket;
 
     protected CustomStructureInventory itemOutBuffer = new CustomStructureInventory(1);
 
@@ -45,12 +45,12 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
     @Override
     public void tick() {
-        energyConnector.maintainEnergy(this);
-        itemOutConnector.attemptDirectItemExport();
+        energySocket.maintainEnergy(this);
+        itemOutSocket.attemptDirectItemExport();
 
         if (recipe == null) {
-            itemInConnector.updateNetwork();
-            List<ItemStack> items = itemInConnector.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
+            itemInSocket.updateNetwork();
+            List<ItemStack> items = itemInSocket.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
                 this.recipe = TorusPlugin.getInstance().getRecipeManager().getCrusherRecipeByIngredient(items.getFirst());
             }
@@ -96,11 +96,11 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         leftWheel = getComponent("wheel_left");
         rightWheel = getComponent("wheel_right");
 
-        itemInConnector = getConnector("item_connector");
-        itemOutConnector = getConnector("out_connector");
-        itemOutConnector.linkedInventory = itemOutBuffer;
-        energyConnector = getConnector("power_connector");
-        energyConnector.maximumInput = OreCrusher.ENERGY_MAXIMUM_INPUT;
+        itemInSocket = getConnector("item_connector");
+        itemOutSocket = getConnector("out_connector");
+        itemOutSocket.linkedInventory = itemOutBuffer;
+        energySocket = getConnector("power_connector");
+        energySocket.maximumInput = OreCrusher.ENERGY_MAXIMUM_INPUT;
     }
 
     @Override

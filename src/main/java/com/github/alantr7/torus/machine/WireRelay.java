@@ -7,7 +7,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ public class WireRelay extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new WireConnectorInstance(WireConnectorInstance.Type.RELAY, location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f(), new StructureConnectorDef(Connector.Matter.ENERGY, Connector.FlowDirection.ALL, 0))
+          new StructureComponentDef("base", new Vector3f(), new StructureConnectorDef(Socket.Matter.ENERGY, Socket.FlowDirection.ALL, 0))
         }), direction);
     }
 

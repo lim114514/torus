@@ -10,7 +10,7 @@ import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connectable;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,8 +26,8 @@ public class CableInstance extends StructureInstance implements Connectable, Con
 
     boolean shouldUpdateModel;
 
-    public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Connector.Matter type) {
-        super(type == Connector.Matter.ENERGY ? Structures.ENERGY_CABLE : type == Connector.Matter.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
+    public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Socket.Matter type) {
+        super(type == Socket.Matter.ENERGY ? Structures.ENERGY_CABLE : type == Socket.Matter.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
         this.type.update(type.ordinal());
     }
 
@@ -69,12 +69,12 @@ public class CableInstance extends StructureInstance implements Connectable, Con
 
         // Check if this cable connects to a connector
         if (possibleConnection != null) {
-            Connector connector = possibleConnection.getConnector(location, getType());
-            if (connector != null && connector.isConnectableFrom(direction.getOpposite())) {
+            Socket socket = possibleConnection.getConnector(location, getType());
+            if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
                 shouldUpdateModel = true;
 
-                connector.setConnected(direction.getOpposite(), true);
+                socket.setConnected(direction.getOpposite(), true);
                 possibleConnection.save();
             }
         }
@@ -128,8 +128,8 @@ public class CableInstance extends StructureInstance implements Connectable, Con
         this.connections.update(connections);
     }
 
-    public Connector.Matter getType() {
-        return Connector.Matter.values()[type.get()];
+    public Socket.Matter getType() {
+        return Socket.Matter.values()[type.get()];
     }
 
     @Override

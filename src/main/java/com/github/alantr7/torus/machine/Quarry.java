@@ -9,7 +9,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -78,10 +78,10 @@ public class Quarry extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("base", new Vector3f()),
             new StructureComponentDef("in_energy", new Vector3f(0, 0, -6), new StructureConnectorDef(
-              Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getLeft().mask()
+              Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getLeft().mask()
             )),
             new StructureComponentDef("out_item", new Vector3f(0, 0, -6), new StructureConnectorDef(
-              Connector.Matter.ITEM, Connector.FlowDirection.OUT, Direction.UP.mask()
+              Socket.Matter.ITEM, Socket.FlowDirection.OUT, Direction.UP.mask()
             )),
             new StructureComponentDef("head", new Vector3f()),
             new StructureComponentDef("feed", new Vector3f()),

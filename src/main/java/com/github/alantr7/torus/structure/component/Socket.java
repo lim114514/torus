@@ -14,7 +14,6 @@ import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Connector implements Connectable, Conductor {
+public class Socket implements Connectable, Conductor {
 
     public StructureInstance structure;
 
@@ -80,7 +79,7 @@ public class Connector implements Connectable, Conductor {
     @Getter
     protected StructureComponent component;
 
-    public Connector(StructureComponent component, int allowedConnections, Matter matter, FlowDirection direction) {
+    public Socket(StructureComponent component, int allowedConnections, Matter matter, FlowDirection direction) {
         this.component = component;
         this.allowedConnections = allowedConnections;
         this.flowDirection = direction;
@@ -116,9 +115,9 @@ public class Connector implements Connectable, Conductor {
                 continue;
             }
 
-            Connector neighborConnector = neighbor.getConnector(component.absoluteLocation, matter);
-            if (neighborConnector != null) {
-                networkConnections.add(new Connection(neighbor, neighborConnector));
+            Socket neighborSocket = neighbor.getConnector(component.absoluteLocation, matter);
+            if (neighborSocket != null) {
+                networkConnections.add(new Connection(neighbor, neighborSocket));
                 closedDirectionsCount++;
             }
         }
@@ -160,13 +159,13 @@ public class Connector implements Connectable, Conductor {
                     continue;
                 }
 
-                Connector connector = neighbor.getConnector(start, matter);
-                if (connector != null) {
-                    networkConnections.add(new Connection(neighbor, connector));
+                Socket socket = neighbor.getConnector(start, matter);
+                if (socket != null) {
+                    networkConnections.add(new Connection(neighbor, socket));
                     closed.add(neighborLoc);
 
-                    connector.networkConnections = networkConnections;
-                    connector.networkUpdateTick = component.absoluteLocation.world.getTicks();
+                    socket.networkConnections = networkConnections;
+                    socket.networkUpdateTick = component.absoluteLocation.world.getTicks();
                 }
             }
 
@@ -180,17 +179,17 @@ public class Connector implements Connectable, Conductor {
     public int consumeEnergy(int amount) {
         int original = amount;
         for (Connection conn : networkConnections) {
-            if (conn.connector == this)
+            if (conn.socket == this)
                 continue;
 
-            if (conn.connector.matter != Matter.ENERGY)
+            if (conn.socket.matter != Matter.ENERGY)
                 continue;
 
-            if (conn.connector.flowDirection != FlowDirection.OUT && conn.connector.flowDirection != FlowDirection.ALL)
+            if (conn.socket.flowDirection != FlowDirection.OUT && conn.socket.flowDirection != FlowDirection.ALL)
                 continue;
 
             EnergyContainer capacitor = (EnergyContainer) conn.structure;
-            amount -= capacitor.consumeEnergy(Math.min(amount, conn.connector.maximumOutput));;
+            amount -= capacitor.consumeEnergy(Math.min(amount, conn.socket.maximumOutput));;
 
             if (amount == 0)
                 break;
@@ -205,7 +204,7 @@ public class Connector implements Connectable, Conductor {
 
         updateNetwork();
 
-        if (networkConnections.isEmpty() || (networkConnections.size() == 1 && networkConnections.getFirst().connector == this))
+        if (networkConnections.isEmpty() || (networkConnections.size() == 1 && networkConnections.getFirst().socket == this))
             return 0;
 
         return container.supplyEnergy(
@@ -216,20 +215,20 @@ public class Connector implements Connectable, Conductor {
     public int consumeFluid(Fluid fluid, int amount) {
         int original = amount;
         for (Connection conn : networkConnections) {
-            if (conn.connector == this)
+            if (conn.socket == this)
                 continue;
 
-            if (conn.connector.matter != Matter.FLUID)
+            if (conn.socket.matter != Matter.FLUID)
                 continue;
 
-            if (conn.connector.flowDirection != FlowDirection.OUT && conn.connector.flowDirection != FlowDirection.ALL)
+            if (conn.socket.flowDirection != FlowDirection.OUT && conn.socket.flowDirection != FlowDirection.ALL)
                 continue;
 
             FluidContainer container = (FluidContainer) conn.structure;
             if (container.getFluid() != fluid)
                 continue;
 
-            amount -= container.consumeFluid(Math.min(amount, conn.connector.maximumOutput));
+            amount -= container.consumeFluid(Math.min(amount, conn.socket.maximumOutput));
 
             if (amount == 0)
                 break;
@@ -254,21 +253,21 @@ public class Connector implements Connectable, Conductor {
         }
 
         for (Connection conn : networkConnections) {
-            if (conn.connector == this)
+            if (conn.socket == this)
                 continue;
 
-            if (conn.connector.matter != Matter.ITEM)
+            if (conn.socket.matter != Matter.ITEM)
                 continue;
 
-            if (conn.connector.flowDirection != FlowDirection.OUT && conn.connector.flowDirection != FlowDirection.ALL)
+            if (conn.socket.flowDirection != FlowDirection.OUT && conn.socket.flowDirection != FlowDirection.ALL)
                 continue;
 
-            StructureInventory inventory = conn.connector.linkedInventory;
+            StructureInventory inventory = conn.socket.linkedInventory;
             if (inventory == null)
                 continue;
 
             ItemStack[] items = inventory.getItems();
-            if (!consumeItems(criteria, amount1, onlyFirst, items, conn.connector.linkedInventoryAllowedSlots, result))
+            if (!consumeItems(criteria, amount1, onlyFirst, items, conn.socket.linkedInventoryAllowedSlots, result))
                 break;
         }
 
@@ -341,11 +340,11 @@ public class Connector implements Connectable, Conductor {
 
         public final StructureInstance structure;
 
-        public final Connector connector;
+        public final Socket socket;
 
-        public Connection(StructureInstance structure, Connector connector) {
+        public Connection(StructureInstance structure, Socket socket) {
             this.structure = structure;
-            this.connector = connector;
+            this.socket = socket;
         }
 
     }

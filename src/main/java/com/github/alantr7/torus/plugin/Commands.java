@@ -14,7 +14,7 @@ import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusWorld;
@@ -173,12 +173,12 @@ public class Commands {
           ctx.respond("\n");
           ctx.respond(ChatColor.GOLD + "Structure ID: " + ChatColor.RESET + structure.structure.namespacedId);
           ctx.respond(ChatColor.GOLD + "Owner ID: " + structure.getOwnerId());
-          ctx.respond(ChatColor.GOLD + "Connectors: (" + structure.getConnectors().size() + ")");
-          for (Connector connector : structure.getConnectors()) {
-              ctx.respond("  - " + ChatColor.YELLOW + connector.getComponent().absoluteLocation + ":");
-              ctx.respond("    - Matter: " + ChatColor.GRAY + connector.matter);
-              ctx.respond("    - Flow: " + ChatColor.GRAY + connector.getFlowDirection());
-              ctx.respond("    - Connections: " + ChatColor.GRAY + connector.getConnections());
+          ctx.respond(ChatColor.GOLD + "Sockets: (" + structure.getConnectors().size() + ")");
+          for (Socket socket : structure.getConnectors()) {
+              ctx.respond("  - " + ChatColor.YELLOW + socket.getComponent().absoluteLocation + ":");
+              ctx.respond("    - Matter: " + ChatColor.GRAY + socket.matter);
+              ctx.respond("    - Flow: " + ChatColor.GRAY + socket.getFlowDirection());
+              ctx.respond("    - Connections: " + ChatColor.GRAY + socket.getConnections());
           }
       });
 
@@ -207,10 +207,10 @@ public class Commands {
               return;
           }
 
-          for (Connector connector : structure.getConnectors()) {
-              ctx.respond(connector.getComponent().name + "  " + connector.getComponent().absoluteLocation + " (" + connector.matter + ")" + ":");
-              for (Connector.Connection connection : connector.networkConnections) {
-                  ctx.respond("   - " + connection.structure.structure.name + " (" + connection.connector.getComponent().absoluteLocation + ")");
+          for (Socket socket : structure.getConnectors()) {
+              ctx.respond(socket.getComponent().name + "  " + socket.getComponent().absoluteLocation + " (" + socket.matter + ")" + ":");
+              for (Socket.Connection connection : socket.networkConnections) {
+                  ctx.respond("   - " + connection.structure.structure.name + " (" + connection.socket.getComponent().absoluteLocation + ")");
               }
           }
 

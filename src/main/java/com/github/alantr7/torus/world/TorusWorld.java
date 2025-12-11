@@ -7,7 +7,7 @@ import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
 import com.github.alantr7.torus.machine.WireConnectorInstance;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import lombok.Getter;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -187,12 +187,12 @@ public class TorusWorld {
                         }
                     }
                     else if (instance.location.getRelative(direction).getStructure() instanceof PhysicalConnectorInstance iii) {
-                        if (cable.getType() == Connector.Matter.ITEM) {
+                        if (cable.getType() == Socket.Matter.ITEM) {
                             iii.updateConnections();
                         }
                     }
                     else if (instance.location.getRelative(direction).getStructure() instanceof WireConnectorInstance wci) {
-                        if (cable.getType() == Connector.Matter.ENERGY) {
+                        if (cable.getType() == Socket.Matter.ENERGY) {
                             wci.updateConnections();
                         }
                     }
@@ -213,11 +213,11 @@ public class TorusWorld {
                         continue;
                     }
 
-                    Connector neighborConnector;
-                    if ((neighborConnector = neighbor.getConnector(connector.getComponent().absoluteLocation, connector.matter)) != null) {
-                        if (neighborConnector.isConnectableFrom(direction.getOpposite())) {
+                    Socket neighborSocket;
+                    if ((neighborSocket = neighbor.getConnector(connector.getComponent().absoluteLocation, connector.matter)) != null) {
+                        if (neighborSocket.isConnectableFrom(direction.getOpposite())) {
                             connector.setConnected(direction, true);
-                            neighborConnector.setConnected(direction.getOpposite(), true);
+                            neighborSocket.setConnected(direction.getOpposite(), true);
                         }
                     }
                 }
@@ -259,13 +259,13 @@ public class TorusWorld {
                             cable1.updateConnections();
                         }
                     } else if (instance.location.getRelative(direction).getStructure() instanceof PhysicalConnectorInstance iii) {
-                        if (cable.getType() == Connector.Matter.ITEM) {
+                        if (cable.getType() == Socket.Matter.ITEM) {
                             iii.updateConnections();
                         }
                     } else if (cable.isConnected(direction)) {
-                        Connector connector = neighbor.getConnector(instance.location, cable.getType());
-                        if (connector != null) {
-                            connector.setConnected(direction.getOpposite(), false);
+                        Socket socket = neighbor.getConnector(instance.location, cable.getType());
+                        if (socket != null) {
+                            socket.setConnected(direction.getOpposite(), false);
                         }
                         neighbor.save();
                     }

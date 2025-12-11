@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.structure.builder;
 
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 
-public record StructureConnectorDef(Connector.Matter matter, Connector.FlowDirection direction, int allowedConnections) {
+public record StructureConnectorDef(Socket.Matter matter, Socket.FlowDirection direction, int allowedConnections) {
 }

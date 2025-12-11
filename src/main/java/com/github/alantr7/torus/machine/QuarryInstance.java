@@ -8,7 +8,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
@@ -35,7 +35,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     protected StructureInventory outBuffer = new CustomStructureInventory(1);
 
-    protected Connector inConnector, outConnector;
+    protected Socket inSocket, outSocket;
 
     protected int breakingTicks;
 
@@ -53,8 +53,8 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     @Override
     public void tick() {
-        inConnector.maintainEnergy(this);
-        outConnector.attemptDirectItemExport();
+        inSocket.maintainEnergy(this);
+        outSocket.attemptDirectItemExport();
 
         if (drillPosition != null) {
             Block ore = drillPosition.getRelative(0, -1, 0).getBlock();
@@ -173,10 +173,10 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         gantryX = getComponent("gantry_x");
         gantryZ = getComponent("gantry_z");
 
-        inConnector = getConnector("in_energy");
-        inConnector.maximumInput = 350;
-        outConnector = getConnector("out_item");
-        outConnector.linkedInventory = outBuffer;
+        inSocket = getConnector("in_energy");
+        inSocket.maximumInput = 350;
+        outSocket = getConnector("out_item");
+        outSocket.linkedInventory = outBuffer;
     }
 
     @Override

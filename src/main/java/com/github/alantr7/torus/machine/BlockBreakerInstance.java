@@ -11,7 +11,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,9 +24,9 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected Connector powerConnector;
+    protected Socket powerSocket;
 
-    protected Connector itemConnector;
+    protected Socket itemSocket;
 
     protected StructureInventory inventory;
 
@@ -42,11 +42,11 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     @Override
     protected void setup() {
-        powerConnector = getConnector("power_connector");
-        itemConnector = getConnector("item_connector");
-        powerConnector.maximumInput = BlockBreaker.ENERGY_MAXIMUM_INPUT;
+        powerSocket = getConnector("power_connector");
+        itemSocket = getConnector("item_connector");
+        powerSocket.maximumInput = BlockBreaker.ENERGY_MAXIMUM_INPUT;
         inventory = new CustomStructureInventory(1);
-        itemConnector.linkedInventory = inventory;
+        itemSocket.linkedInventory = inventory;
     }
 
     @Override
@@ -62,8 +62,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     @Override
     public void tick() {
-        powerConnector.maintainEnergy(this);
-        itemConnector.attemptDirectItemExport();
+        powerSocket.maintainEnergy(this);
+        itemSocket.attemptDirectItemExport();
 
         if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE) || inventory.getItems()[0] != null) {
             return;

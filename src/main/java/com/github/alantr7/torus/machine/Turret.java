@@ -9,7 +9,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -40,10 +40,10 @@ public class Turret extends Structure {
           new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef("head", new Vector3f()),
           new StructureComponentDef("in_item", new Vector3f(), new StructureConnectorDef(
-            Connector.Matter.ITEM, Connector.FlowDirection.IN, direction.getOpposite().mask()
+            Socket.Matter.ITEM, Socket.FlowDirection.IN, direction.getOpposite().mask()
           )),
           new StructureComponentDef("in_energy", new Vector3f(), new StructureConnectorDef(
-            Connector.Matter.ENERGY, Connector.FlowDirection.IN, Direction.DOWN.mask()
+            Socket.Matter.ENERGY, Socket.FlowDirection.IN, Direction.DOWN.mask()
           ))
         }), direction);
     }

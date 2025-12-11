@@ -7,7 +7,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -16,9 +16,9 @@ import org.bukkit.ChatColor;
 
 public class ElectricityMeterInstance extends StructureInstance implements EnergyContainer {
 
-    protected Connector inEnergy;
+    protected Socket inEnergy;
 
-    protected Connector outEnergy;
+    protected Socket outEnergy;
 
     protected Data<Integer> dummyStoredEnergy = new Data<>(dataContainer, Data.Type.INT, 0);
 

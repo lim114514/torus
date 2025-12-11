@@ -10,7 +10,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureConnectorDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -49,16 +49,16 @@ public class OreWasher extends Structure {
           new StructureComponentDef[] {
             new StructureComponentDef("body", new Vector3f()),
             new StructureComponentDef("item_connector", new Vector3f(0f, 1f, 0f), new StructureConnectorDef(
-              Connector.Matter.ITEM, Connector.FlowDirection.IN, Direction.UP.mask()
+              Socket.Matter.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
             new StructureComponentDef("out_connector", new Vector3f(0f, 0, 0f), new StructureConnectorDef(
-              Connector.Matter.ITEM, Connector.FlowDirection.OUT, direction.mask()
+              Socket.Matter.ITEM, Socket.FlowDirection.OUT, direction.mask()
             )),
             new StructureComponentDef("power_connector", new Vector3f(0f, 0, 1f), new StructureConnectorDef(
-              Connector.Matter.ENERGY, Connector.FlowDirection.IN, direction.getOpposite().mask()
+              Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
             )),
             new StructureComponentDef("fluid_connector", new Vector3f(0f, 0, 1f), new StructureConnectorDef(
-              Connector.Matter.FLUID, Connector.FlowDirection.IN, Direction.UP.mask()
+              Socket.Matter.FLUID, Socket.FlowDirection.IN, Direction.UP.mask()
             ))
           }
         ), direction);

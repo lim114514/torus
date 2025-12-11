@@ -6,7 +6,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.WasherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Connector;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
@@ -24,7 +24,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected Connector powerConnector, itemInConnector, waterInConnector, itemOutConnector;
+    protected Socket powerSocket, itemInSocket, waterInSocket, itemOutSocket;
 
     protected StructureInventory itemOutBuffer = new CustomStructureInventory(1);
 
@@ -42,12 +42,12 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Override
     public void tick() {
-        powerConnector.maintainEnergy(this);
-        itemOutConnector.attemptDirectItemExport();
+        powerSocket.maintainEnergy(this);
+        itemOutSocket.attemptDirectItemExport();
 
         if (water.get() < OreWasher.FLUID_CAPACITY) {
-            waterInConnector.updateNetwork();
-            int consumed = waterInConnector.consumeFluid(Fluid.WATER, OreWasher.FLUID_CAPACITY - water.get());
+            waterInSocket.updateNetwork();
+            int consumed = waterInSocket.consumeFluid(Fluid.WATER, OreWasher.FLUID_CAPACITY - water.get());
             supplyFluid(consumed);
         }
 
@@ -60,9 +60,9 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
             consumeEnergy(OreWasher.ENERGY_CONSUMPTION);
             consumeFluid(OreWasher.FLUID_CONSUMPTION);
         } else {
-            itemInConnector.updateNetwork();
+            itemInSocket.updateNetwork();
 
-            List<ItemStack> items = itemInConnector.consumeItems(OreWasher.INPUT_CRITERIA, 1, true);
+            List<ItemStack> items = itemInSocket.consumeItems(OreWasher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
                 recipe = TorusPlugin.getInstance().getRecipeManager().getWasherRecipeByIngredient(items.getFirst());
             }
@@ -77,12 +77,12 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Override
     protected void setup() {
-        powerConnector = getConnector("power_connector");
-        powerConnector.maximumInput = OreWasher.ENERGY_MAXIMUM_INPUT;
-        itemInConnector = getConnector("item_connector");
-        waterInConnector = getConnector("fluid_connector");
-        itemOutConnector = getConnector("out_connector");
-        itemOutConnector.linkedInventory = itemOutBuffer;
+        powerSocket = getConnector("power_connector");
+        powerSocket.maximumInput = OreWasher.ENERGY_MAXIMUM_INPUT;
+        itemInSocket = getConnector("item_connector");
+        waterInSocket = getConnector("fluid_connector");
+        itemOutSocket = getConnector("out_connector");
+        itemOutSocket.linkedInventory = itemOutBuffer;
     }
 
     @Override
