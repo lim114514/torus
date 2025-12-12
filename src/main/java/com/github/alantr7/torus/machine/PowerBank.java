@@ -39,8 +39,8 @@ public class PowerBank extends Structure {
         return new PowerBankInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef(
-            "power_connector", new Vector3f(0, 1, 0), new StructureSocketDef(
-            Socket.Matter.ENERGY, Socket.FlowDirection.ALL, Direction.UP.mask()
+            "power_connector", new Vector3f(0, 0, 0), new StructureSocketDef(
+            Socket.Matter.ENERGY, Socket.FlowDirection.ALL, direction.getOpposite().mask()
           )),
           new StructureComponentDef("charge", new Vector3f())
         }), direction);

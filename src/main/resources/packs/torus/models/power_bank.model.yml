@@ -2,12 +2,13 @@ base:
   - item_display,cyan_terracotta,0,0.75,0,0.75,1.5,0.75,0,0,0
   - item_display,white_stained_glass,0,0.72125,-0.378125,0.1875,1.1875,0.0625,0,0,0
   - item_display,gray_concrete,0,0.72125,-0.38375,0.125,1.12,0.0625,0,0,0
+  - item_display,gray_concrete,0,0.5,0.4375,0.5,0.5,0.125,0,0,0
 
-progress:
+coil:
+  - item_display,gray_wool,0,1.6875,0,0.125,0.4375,0.125,0,0,0
+  - item_display,waxed_cut_copper_slab,0,1.625,0,0.325,0.1875,0.325,0,0,0
+  - item_display,waxed_cut_copper_slab,0,1.78375,0,0.325,0.1875,0.325,0,0,0
+  - item_display,waxed_cut_copper_slab,0,1.9375,0,0.325,0.1875,0.325,0,0,0
+
+charge:
   - item_display,cyan_concrete,0,0.1675,-0.38475,0.12,0.0011,0.0625,0,0,0
-
-connector:
-  - item_display,gray_wool,0,1.75,0,0.2,0.5,0.2,0,0,0
-  - item_display,waxed_cut_copper_slab,0,1.625,0,0.375,0.1875,0.375,0,0,0
-  - item_display,waxed_cut_copper_slab,0,1.78375,0,0.375,0.1875,0.375,0,0,0
-  - item_display,waxed_cut_copper_slab,0,1.9375,0,0.375,0.1875,0.375,0,0,0
