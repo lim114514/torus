@@ -27,7 +27,6 @@ Resource pack use is **recommended**, although not necessary, for easier item di
 - Sprinkler
 - Rain Collector
 - Smeltery (probably replace Blast Furnace with it)
-- Pump with extendable pipe
 - Biofuel Generator <br>
   ...and more! Suggestions are welcome on my [Discord server](https://discord.gg/Zn4DDmUnPg).
 
