@@ -8,7 +8,7 @@ public class ConfigManager {
 
     public void initialize() {
         File directory = new File(TorusPlugin.getInstance().getDataFolder(), "packs");
-        if (!directory.exists()) {
+        if (!directory.exists() || !new File(directory, "recipes").exists()) {
             savePresetPack();
         }
 

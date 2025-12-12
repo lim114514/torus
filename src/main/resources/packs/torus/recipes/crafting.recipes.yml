@@ -111,6 +111,17 @@ steel_ingot_from_nuggets:
   ingredients:
     N: "torus:steel_nugget"
 
+windmill_blade:
+  type: CRAFTING
+  result: "torus:windmill_blade"
+  shape:
+    - "SWW"
+    - "SWW"
+    - "S  "
+  ingredients:
+    S: "minecraft:stick"
+    W: "minecraft:white_wool"
+
 # Networking
 power_pole:
   type: CRAFTING

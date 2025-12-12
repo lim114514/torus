@@ -61,6 +61,7 @@ public class TorusItemManager {
         registerItem(new TorusItem("torus:circuit_board", Category.COMPONENTS, null, Material.PAPER, "Circuit Board", Collections.emptyList()));
         registerItem(new TorusItem("torus:motor", Category.COMPONENTS, null, new HeadData("http://textures.minecraft.net/texture/8cbca012f67e54de9aee72ff424e056c2ae58de5eacc949ab2bcd9683cec"), "Motor", Collections.emptyList()));
         registerItem(new TorusItem("torus:generator", Category.COMPONENTS, null, new HeadData("http://textures.minecraft.net/texture/7b6a3366d21618e244c1a8e49f32feae2924aeaf985c9d16b0b430ccb2a88ffa"), "Generator", Collections.emptyList()));
+        registerItem(new TorusItem("torus:windmill_blade", Category.COMPONENTS, null, Material.WHITE_BANNER, "Windmill Blade", Collections.emptyList()));
     }
 
     {
