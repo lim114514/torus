@@ -44,6 +44,7 @@ public class BlockBreaker extends Structure {
 
     @Override
     protected void loadConfig() {
+        super.loadConfig();
         ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
         ENERGY_CONSUMPTION_ON_MINE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MINE);
     }

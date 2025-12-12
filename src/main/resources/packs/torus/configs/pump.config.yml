@@ -20,5 +20,5 @@ special_settings:
   maximum_pipe_length: 32 # (default: 32)
 
 info_hologram:
-  offset: [0, 0, 0] # Location of the TextDisplay relative to the structure
+  offset: [0, 1, 0] # Location of the TextDisplay relative to the structure
   translation: [1.2, 0, 0] # Translation applied to TextDisplay

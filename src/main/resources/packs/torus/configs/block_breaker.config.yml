@@ -15,4 +15,4 @@ energy_settings:
 
 info_hologram:
   offset: [0, 0, 0] # Location of the TextDisplay relative to the structure
-  translation: [1.2, 0, 0] # Translation applied to TextDisplay
+  translation: [1.5, 0, 0] # Translation applied to TextDisplay

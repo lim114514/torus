@@ -182,6 +182,7 @@ public abstract class Structure {
     protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction);
 
     protected void loadConfig() {
+        // General Settings
         name = config.getString("general_settings.display_name", this.name);
         isEnabled = config.getBoolean("general_settings.enabled", true);
         isHeavy = config.getBoolean("general_settings.heavy", this.isHeavy);
@@ -196,6 +197,21 @@ public abstract class Structure {
         List<String> portableData = config.getStringList("general_settings.portable_data");
         if (!portableData.isEmpty()) {
             this.portableData = new HashSet<>(portableData);
+        }
+
+        // Info Hologram Settings
+        List<Byte> hologramOffset = config.getByteList("info_hologram.offset");
+        if (hologramOffset.size() == 3) {
+            for (int i = 0; i < 3; i++) {
+                this.hologramOffset[i] = hologramOffset.get(i);
+            }
+        }
+
+        List<Float> hologramTranslation = config.getFloatList("info_hologram.translation");
+        if (hologramTranslation.size() == 3) {
+            for (int i = 0; i < 3; i++) {
+                this.hologramTranslation[i] = hologramTranslation.get(i);
+            }
         }
     }
 
