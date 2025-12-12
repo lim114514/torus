@@ -31,6 +31,8 @@ public class Quarry extends Structure {
 
     public static int ENERGY_MAXIMUM_INPUT = 350;
 
+    public static int MAXIMUM_DEPTH = 64;
+
     public Quarry() {
         super(TorusPlugin.DEFAULT_PACK, "quarry", "Quarry", QuarryInstance.class);
         portableData.add("energy");
@@ -100,6 +102,7 @@ public class Quarry extends Structure {
         ENERGY_CONSUMPTION_ON_MINE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MINE);
         ENERGY_CONSUMPTION_ON_MOVE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MOVE);
         ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
+        MAXIMUM_DEPTH = config.getInt("special_settings.maximum_depth", MAXIMUM_DEPTH);
     }
 
 }

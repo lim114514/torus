@@ -123,7 +123,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
             horizontalPosition.update((byte) 0);
         }
 
-        level.update((byte) Math.min(level.get(), 64));
+        level.update((byte) Math.min(level.get(), Quarry.MAXIMUM_DEPTH));
         horizontalPosition.update((byte) (horizontalPosition.get() % 81));
     }
 

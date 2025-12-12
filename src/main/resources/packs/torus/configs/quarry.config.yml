@@ -14,6 +14,9 @@ energy_settings:
   capacity: 2000 # (default: 2000)
   maximum_input: 350 # (default: 350)
 
+special_settings:
+  maximum_depth: 64 # (default: 64)
+
 info_hologram:
   offset: [0, 0, -6] # Location of the TextDisplay relative to the structure
   translation: [1.2, 0, 0] # Translation applied to TextDisplay
