@@ -155,6 +155,10 @@ public class TorusRegion {
                     if (structure != null) {
                         Structure.place(structure);
                         chunk._placeStructureWithOccupations(structure);
+
+                        if (structure.isCorrupted) {
+                            System.err.println("Corrupted structure, but still loaded it.");
+                        }
                     } else {
                         System.err.println("Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + basePointer);
                     }

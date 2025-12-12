@@ -5,11 +5,13 @@ import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -124,25 +126,44 @@ public abstract class Structure {
     public static void place(StructureInstance instance) {
         try {
             instance.setup();
+            if (instance instanceof Inspectable inspectable) {
+                instance.inspectableData = inspectable.setupInspectableData();
+            }
+        } catch (Exception exc) {
+            instance.isCorrupted = true;
+            instance.inspectableData = new InspectableData((byte) 0);
+            exc.printStackTrace();
+        }
+
+        setupModel(instance);
+        setupInspectionTooltip(instance);
+    }
+
+    private static void setupModel(StructureInstance instance) {
+        try {
             ModelTemplate modelTemplate = instance.structure.getModel();
             if (modelTemplate != null) {
                 instance.model = modelTemplate.toModel(instance.location, instance.direction);
             }
             instance.handleModelInit();
-            if (instance instanceof Inspectable inspectable) {
-                instance.inspectableData = inspectable.setupInspectableData();
-                if (instance.inspectableData.inspectableBlocks.isEmpty()) {
-                    byte[] bounds = instance.getBounds();
-                    for (int i = 0; i < bounds.length; i += 3) {
-                        instance.inspectableData.inspectableBlocks.add(instance.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]));
-                    }
-                }
-
-                instance.spawnInspectionTooltip();
-            }
-        } catch (SetupException exc) {
-            instance.isCorrupted = true;
+        } catch (Exception exc) {
             exc.printStackTrace();
+        }
+    }
+
+    private static void setupInspectionTooltip(StructureInstance instance) {
+        if (!instance.isCorrupted && !(instance instanceof Inspectable)) {
+            return;
+        }
+        if (instance.inspectableData.inspectableBlocks.isEmpty()) {
+            byte[] bounds = instance.getBounds();
+            for (int i = 0; i < bounds.length; i += 3) {
+                instance.inspectableData.inspectableBlocks.add(instance.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]));
+            }
+        }
+        instance.spawnInspectionTooltip();
+        if (instance.isCorrupted) {
+            instance.inspectionHologram.setText(ChatColor.RED + "Corrupted Structure\n" + StructureInstance.COLOR_PROPERTY + "Try to place it again");
         }
     }
 

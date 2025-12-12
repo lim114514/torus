@@ -209,9 +209,12 @@ public abstract class StructureInstance {
 
     public abstract void tick();
 
-    private static final ChatColor COLOR_STRUCTURE_NAME = ChatColor.of("#ff8854");
-    private static final ChatColor COLOR_PROPERTY = ChatColor.of("#cfcfcf");
+    static final ChatColor COLOR_STRUCTURE_NAME = ChatColor.of("#ff8854");
+    static final ChatColor COLOR_PROPERTY = ChatColor.of("#cfcfcf");
     public final void updateInspectionHologram() {
+        if (isCorrupted)
+            return;
+
         StringBuilder parent = new StringBuilder();
         parent.append(COLOR_STRUCTURE_NAME).append(ChatColor.BOLD).append(structure.name).append("\n");
         for (InspectableProperty var : inspectableData.properties) {
