@@ -16,7 +16,7 @@ import lombok.Getter;
 
 import java.io.File;
 
-@JavaPlugin(name = "Torus", version = "0.4.2", apiVersion = "1.21")
+@JavaPlugin(name = "Torus", version = "0.5.0", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
 @SoftDepends("ProtocolLib")
 public class TorusPlugin extends BukkitPlugin {
