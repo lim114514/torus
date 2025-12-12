@@ -12,7 +12,7 @@ energy_settings:
   consumption_on_move: 30
   consumption_on_mine: 50
   capacity: 2000 # (default: 2000)
-  maximum_input: 100 # (default: 100)
+  maximum_input: 350 # (default: 350)
 
 info_hologram:
   offset: [0, 0, -6] # Location of the TextDisplay relative to the structure

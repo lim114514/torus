@@ -123,7 +123,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
             horizontalPosition.update((byte) 0);
         }
 
-        level.update((byte) Math.min(level.get(), 120));
+        level.update((byte) Math.min(level.get(), 64));
         horizontalPosition.update((byte) (horizontalPosition.get() % 81));
     }
 
@@ -178,7 +178,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         gantryZ = getComponent("gantry_z");
 
         inSocket = getSocket("in_energy");
-        inSocket.maximumInput = 350;
+        inSocket.maximumInput = Quarry.ENERGY_MAXIMUM_INPUT;
         outSocket = getSocket("out_item");
         outSocket.linkedInventory = outBuffer;
     }
