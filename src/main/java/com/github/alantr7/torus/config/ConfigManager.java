@@ -7,6 +7,7 @@ import java.io.File;
 public class ConfigManager {
 
     public void initialize() {
+        TorusPlugin.getInstance().getRecipeManager().reset();
         File directory = new File(TorusPlugin.getInstance().getDataFolder(), "packs");
         if (!directory.exists() || !new File(directory, "recipes").exists()) {
             savePresetPack();
@@ -20,7 +21,7 @@ public class ConfigManager {
             if (!file.isDirectory())
                 continue;
 
-            ConfigPackLoader loader = new ConfigPackLoader(file);
+            PackLoader loader = new PackLoader(file);
             loader.load();
         }
     }

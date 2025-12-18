@@ -16,7 +16,7 @@ import org.joml.Vector3f;
 public class WireConnector extends Structure {
 
     public WireConnector() {
-        super(TorusPlugin.DEFAULT_PACK, "wire_connector", "Wire Connector", WireConnectorInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "wire_connector", "Wire Connector", WireConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         isOmnidirectional = true;

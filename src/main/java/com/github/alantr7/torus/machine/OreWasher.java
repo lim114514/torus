@@ -30,7 +30,7 @@ public class OreWasher extends Structure {
     public static int FLUID_CONSUMPTION = 100;
 
     public OreWasher() {
-        super(TorusPlugin.DEFAULT_PACK, "ore_washer", "Ore Washer", OreWasherInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "ore_washer", "Ore Washer", OreWasherInstance.class);
         portableData.add("energy");
         portableData.add("fluid");
         modelLocation = new ModelLocation("torus", "ore_washer");

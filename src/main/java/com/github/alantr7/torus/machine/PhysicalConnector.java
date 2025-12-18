@@ -17,7 +17,7 @@ import org.joml.Vector3f;
 public class PhysicalConnector extends Structure {
 
     public PhysicalConnector() {
-        super(TorusPlugin.DEFAULT_PACK, "connector", "Connector", PhysicalConnectorInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "connector", "Connector", PhysicalConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         portableData.add("flow");

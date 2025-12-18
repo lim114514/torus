@@ -34,7 +34,7 @@ public class Quarry extends Structure {
     public static int MAXIMUM_DEPTH = 64;
 
     public Quarry() {
-        super(TorusPlugin.DEFAULT_PACK, "quarry", "Quarry", QuarryInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "quarry", "Quarry", QuarryInstance.class);
         portableData.add("energy");
         offset = new byte[] {0, 0, -6};
         modelLocation = new ModelLocation("torus", "quarry");

@@ -3,23 +3,19 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelLocation;
-import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.PartModelElementItemDisplayRenderer;
-import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
-import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class PowerPole extends Structure {
 
     public PowerPole() {
-        super(TorusPlugin.DEFAULT_PACK, "power_pole", "Power Pole", PowerPoleInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "power_pole", "Power Pole", PowerPoleInstance.class);
         isHeavy = false;
         modelLocation = new ModelLocation("torus", "power_pole");
     }

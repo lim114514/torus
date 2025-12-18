@@ -85,7 +85,7 @@ public class InventoryInterfaceFilterEditGUI extends GUI {
                     continue;
                 }
 
-                filter[j] = TorusPlugin.getInstance().getItemManager().createItemReference(itemStack);
+                filter[j] = TorusPlugin.getInstance().getItemRegistry().createItemReference(itemStack);
                 break;
             }
             iii.setFilter(filter);

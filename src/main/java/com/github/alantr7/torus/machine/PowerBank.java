@@ -23,7 +23,7 @@ public class PowerBank extends Structure {
     public static int ENERGY_MAXIMUM_OUTPUT = 500;
 
     public PowerBank() {
-        super(TorusPlugin.DEFAULT_PACK, "power_bank", "Power Bank", PowerBankInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "power_bank", "Power Bank", PowerBankInstance.class);
         portableData.add("energy");
         modelLocation = new ModelLocation("torus", "power_bank");
     }

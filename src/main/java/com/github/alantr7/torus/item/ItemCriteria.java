@@ -17,7 +17,7 @@ public class ItemCriteria {
         if (materials.contains(item.getType()))
             return true;
 
-        TorusItem torusItem = TorusPlugin.getInstance().getItemManager().getItemByItemStack(item);
+        TorusItem torusItem = TorusPlugin.getInstance().getItemRegistry().getItemByItemStack(item);
         return torusItem != null && ids.contains(torusItem.namespacedId);
     }
 

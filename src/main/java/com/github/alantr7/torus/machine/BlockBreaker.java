@@ -22,7 +22,7 @@ public class BlockBreaker extends Structure {
     public static int ENERGY_CONSUMPTION_ON_MINE = 25;
 
     public BlockBreaker() {
-        super(TorusPlugin.DEFAULT_PACK, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
         isHeavy = false;
         portableData.add("energy");
         modelLocation = new ModelLocation("torus", "block_breaker");

@@ -17,7 +17,7 @@ import org.joml.Vector3f;
 public class BlastFurnace extends Structure {
 
     public BlastFurnace() {
-        super(TorusPlugin.DEFAULT_PACK, "blast_furnace", "Blast Furnace", BlastFurnaceInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", "Blast Furnace", BlastFurnaceInstance.class);
         isInteractable = true;
         modelLocation = new ModelLocation("torus", "blast_furnace");
     }

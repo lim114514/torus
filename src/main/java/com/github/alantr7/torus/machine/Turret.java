@@ -23,7 +23,7 @@ public class Turret extends Structure {
     public static int ENERGY_MAXIMUM_INPUT = 100;
 
     public Turret() {
-        super(TorusPlugin.DEFAULT_PACK, "turret", "Laser Turret", TurretInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "turret", "Laser Turret", TurretInstance.class);
         portableData.add("energy");
         modelLocation = new ModelLocation("torus", "turret");
     }

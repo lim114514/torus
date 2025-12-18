@@ -16,7 +16,7 @@ import org.joml.Vector3f;
 public class WireRelay extends Structure {
 
     public WireRelay() {
-        super(TorusPlugin.DEFAULT_PACK, "wire_relay", "Wire Relay", WireConnectorInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "wire_relay", "Wire Relay", WireConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         modelLocation = new ModelLocation("torus", "wire_relay");

@@ -20,17 +20,15 @@ import org.bukkit.inventory.ShapedRecipe;
 import java.io.File;
 import java.util.*;
 
-public class ConfigPackLoader {
+public class PackLoader {
 
     public final File packDirectory;
 
-    public ConfigPackLoader(File packDirectory) {
+    public PackLoader(File packDirectory) {
         this.packDirectory = packDirectory;
     }
 
     public void load() {
-        TorusPlugin.getInstance().getRecipeManager().reset();
-
         File[] files = new File(packDirectory, "recipes").listFiles();
         if (files == null)
             return;

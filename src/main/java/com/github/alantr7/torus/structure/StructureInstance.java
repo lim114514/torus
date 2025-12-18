@@ -245,7 +245,7 @@ public abstract class StructureInstance {
     }
 
     public ItemStack toItem(boolean includeData) {
-        TorusItem torusItem = TorusPlugin.getInstance().getItemManager().getItemByStructure(structure);
+        TorusItem torusItem = TorusPlugin.getInstance().getItemRegistry().getItemByStructure(structure);
         if (torusItem == null)
             return null;
 

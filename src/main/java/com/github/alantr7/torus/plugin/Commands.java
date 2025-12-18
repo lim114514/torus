@@ -36,9 +36,9 @@ public class Commands {
       .parameter("{target}", Evaluator.PLAYER, p -> p.tabComplete(args -> Bukkit.getOnlinePlayers().stream().map(Player::getName).toList()))
       .parameter("{item}", p -> p.tabComplete((args) -> {
           if (args.length > 2 && !"torus:".startsWith(args[2]) && !args[2].startsWith("torus:")) {
-              return TorusPlugin.getInstance().getItemManager().getItemIds().stream().map(id -> id.substring("torus:".length())).toList();
+              return TorusPlugin.getInstance().getItemRegistry().getItemIds().stream().map(id -> id.substring("torus:".length())).toList();
           }
-          return TorusPlugin.getInstance().getItemManager().getItemIds();
+          return TorusPlugin.getInstance().getItemRegistry().getItemIds();
       }))
       .parameter("{amount}", Evaluator.INTEGER, p -> p.defaultValue(ctx -> 1))
       .permission(Permissions.COMMAND_GIVE)
@@ -50,7 +50,7 @@ public class Commands {
               return;
           }
 
-          TorusItem item = TorusPlugin.getInstance().getItemManager().getItemById((String) ctx.getArgument("item"));
+          TorusItem item = TorusPlugin.getInstance().getItemRegistry().getItemById((String) ctx.getArgument("item"));
           if (item == null) {
               ctx.respond(ChatColor.RED + "Specified item does not exist.");
               return;
@@ -79,13 +79,13 @@ public class Commands {
       .parameter("recipe")
       .parameter("{item}", p -> p.tabComplete((args) -> {
             if (args.length > 2 && !"torus:".startsWith(args[2]) && !args[2].startsWith("torus:")) {
-                return TorusPlugin.getInstance().getItemManager().getItemIds().stream().map(id -> id.substring("torus:".length())).toList();
+                return TorusPlugin.getInstance().getItemRegistry().getItemIds().stream().map(id -> id.substring("torus:".length())).toList();
             }
-            return TorusPlugin.getInstance().getItemManager().getItemIds();
+            return TorusPlugin.getInstance().getItemRegistry().getItemIds();
         }))
       .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_RECIPE)
       .executes(ctx -> {
-          TorusItem item = TorusPlugin.getInstance().getItemManager().getItemById((String) ctx.getArgument("item"));
+          TorusItem item = TorusPlugin.getInstance().getItemRegistry().getItemById((String) ctx.getArgument("item"));
           if (item == null) {
               ctx.respond(ChatColor.RED + "Specified item does not exist.");
               return;

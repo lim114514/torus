@@ -19,7 +19,7 @@ public class ItemReference {
 
     @Nullable
     public ItemStack getItem() {
-        return TorusPlugin.getInstance().getItemManager().getItemStackByReference(this);
+        return TorusPlugin.getInstance().getItemRegistry().getItemStackByReference(this);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ItemReference {
     }
 
     public static ItemReference create(ItemStack stack) {
-        return TorusPlugin.getInstance().getItemManager().createItemReference(stack);
+        return TorusPlugin.getInstance().getItemRegistry().createItemReference(stack);
     }
 
     public static boolean compare(ItemStack stack1, ItemStack stack2) {

@@ -16,7 +16,7 @@ import org.joml.Vector3f;
 public class ElectricityMeter extends Structure {
 
     public ElectricityMeter() {
-        super(TorusPlugin.DEFAULT_PACK, "electricity_meter", "Electricity Meter", ElectricityMeterInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "electricity_meter", "Electricity Meter", ElectricityMeterInstance.class);
         isHeavy = false;
         portableData.add("total");
         hologramTranslation = new float[] { 1.4f, 0.1f, 0f };

@@ -26,7 +26,7 @@ public class ItemCable extends Structure {
     }
 
     public ItemCable() {
-        super(TorusPlugin.DEFAULT_PACK, "item_cable", "Item Cable", CableInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "item_cable", "Item Cable", CableInstance.class);
         isHeavy = false;
     }
 

@@ -26,7 +26,7 @@ public class FluidPipe extends Structure {
     }
 
     public FluidPipe() {
-        super(TorusPlugin.DEFAULT_PACK, "fluid_pipe", "Fluid Pipe", CableInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "fluid_pipe", "Fluid Pipe", CableInstance.class);
         isHeavy = false;
     }
 

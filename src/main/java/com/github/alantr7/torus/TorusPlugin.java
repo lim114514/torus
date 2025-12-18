@@ -5,16 +5,16 @@ import com.github.alantr7.bukkitplugin.annotations.generative.JavaPlugin;
 import com.github.alantr7.bukkitplugin.annotations.generative.SoftDepends;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocate;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocations;
-import com.github.alantr7.torus.api.TorusPack;
+import com.github.alantr7.torus.addon.TorusAddonManager;
+import com.github.alantr7.torus.api.TorusAPI;
+import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.config.ConfigManager;
-import com.github.alantr7.torus.item.TorusItemManager;
+import com.github.alantr7.torus.item.TorusItemRegistry;
 import com.github.alantr7.torus.player.TorusPlayerManager;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
-
-import java.io.File;
 
 @JavaPlugin(name = "Torus", version = "0.5.0", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
@@ -24,10 +24,13 @@ public class TorusPlugin extends BukkitPlugin {
     @Getter
     static TorusPlugin instance;
 
-    public static TorusPack DEFAULT_PACK;
+    public static TorusAddon DEFAULT_ADDON;
 
     @Getter
-    protected final TorusItemManager itemManager;
+    protected final TorusAddonManager addonManager;
+
+    @Getter
+    protected final TorusItemRegistry itemRegistry;
 
     @Getter
     protected final ConfigManager configManager = new ConfigManager();
@@ -36,9 +39,13 @@ public class TorusPlugin extends BukkitPlugin {
 
     public TorusPlugin() {
         instance = this;
-        DEFAULT_PACK = new TorusPack("torus", "Torus (Default)");
+        addonManager = new TorusAddonManager();
 
-        itemManager = new TorusItemManager();
+        DEFAULT_ADDON = TorusAPI.newAddon(this, "torus")
+          .name("Torus (Default)")
+          .register();
+
+        itemRegistry = new TorusItemRegistry();
         checkPaperAPI();
     }
 

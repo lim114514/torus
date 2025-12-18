@@ -27,7 +27,7 @@ public class Pump extends Structure {
     public static int MAXIMUM_PIPE_LENGTH = 32;
 
     public Pump() {
-        super(TorusPlugin.DEFAULT_PACK, "pump", "Pump", PumpInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "pump", "Pump", PumpInstance.class);
         portableData.add("energy");
         portableData.add("fluid");
         portableData.add("amount");

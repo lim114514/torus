@@ -28,7 +28,7 @@ public class ItemBrowserMainGUI extends GUI {
     @Override
     protected void fill(Inventory inventory) {
         int slot = 0;
-        for (Category category : TorusPlugin.getInstance().getItemManager().getCategories()) {
+        for (Category category : TorusPlugin.getInstance().getItemRegistry().getCategories()) {
             ItemStack display = category.display.clone();
             ItemMeta meta = display.getItemMeta();
             meta.setDisplayName(ChatColor.WHITE + category.name);

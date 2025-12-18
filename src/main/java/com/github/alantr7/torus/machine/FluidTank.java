@@ -19,7 +19,7 @@ public class FluidTank extends Structure {
     public static int FLUID_CAPACITY = 96000;
 
     public FluidTank() {
-        super(TorusPlugin.DEFAULT_PACK, "fluid_tank", "Fluid Tank", FluidTankInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "fluid_tank", "Fluid Tank", FluidTankInstance.class);
         portableData.add("fluid");
         portableData.add("stored");
         modelLocation = new ModelLocation("torus", "fluid_tank");

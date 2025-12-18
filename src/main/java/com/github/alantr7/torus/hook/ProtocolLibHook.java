@@ -50,7 +50,7 @@ public class ProtocolLibHook {
                 if (instance == null)
                     return;
 
-                TorusItem item = TorusPlugin.getInstance().getItemManager().getItemByStructure(instance.structure);
+                TorusItem item = TorusPlugin.getInstance().getItemRegistry().getItemByStructure(instance.structure);
                 if (item == null)
                     return;
 

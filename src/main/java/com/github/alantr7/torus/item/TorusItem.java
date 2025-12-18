@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.item;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.structure.Structure;
 import lombok.Getter;
 import org.bukkit.ChatColor;
@@ -17,6 +18,8 @@ import java.util.function.Consumer;
 
 public class TorusItem {
 
+    public final TorusAddon addon;
+
     public final String namespacedId;
 
     public final Category category;
@@ -31,16 +34,17 @@ public class TorusItem {
     @Getter
     protected Structure structure;
 
-    public TorusItem(String namespacedId, Category category, Structure structure, HeadData data, String name, List<String> lore) {
-        this(namespacedId, category, structure, data.stack.clone(), name, lore);
+    public TorusItem(TorusAddon addon, String id, Category category, Structure structure, HeadData data, String name, List<String> lore) {
+        this(addon, id, category, structure, data.stack.clone(), name, lore);
     }
 
-    public TorusItem(String namespacedId, Category category, Structure structure, Material material, String name, List<String> lore) {
-        this(namespacedId, category, structure, new ItemStack(material), name, lore);
+    public TorusItem(TorusAddon addon, String id, Category category, Structure structure, Material material, String name, List<String> lore) {
+        this(addon, id, category, structure, new ItemStack(material), name, lore);
     }
 
-    public TorusItem(String namespacedId, Category category, Structure structure, ItemStack stack, String name, List<String> lore) {
-        this.namespacedId = namespacedId;
+    public TorusItem(TorusAddon addon, String id, Category category, Structure structure, ItemStack stack, String name, List<String> lore) {
+        this.addon = addon;
+        this.namespacedId = addon.id + ":" + id;
         this.category = category;
         this.name = name;
         this.structure = structure;
@@ -93,11 +97,11 @@ public class TorusItem {
     }
 
     public static TorusItem getById(String id) {
-        return TorusPlugin.getInstance().getItemManager().getItemById(id);
+        return TorusPlugin.getInstance().getItemRegistry().getItemById(id);
     }
 
     public static TorusItem getByItemStack(ItemStack stack) {
-        return TorusPlugin.getInstance().getItemManager().getItemByItemStack(stack);
+        return TorusPlugin.getInstance().getItemRegistry().getItemByItemStack(stack);
     }
 
     public static boolean is(ItemStack stack, String namespacedId) {

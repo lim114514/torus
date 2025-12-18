@@ -26,7 +26,7 @@ public class OreCrusher extends Structure {
     public static int ENERGY_MAXIMUM_INPUT = 500;
 
     public OreCrusher() {
-        super(TorusPlugin.DEFAULT_PACK, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
         portableData.add("energy");
         modelLocation = new ModelLocation("torus", "ore_crusher");

@@ -23,7 +23,7 @@ public class SolarGenerator extends Structure {
     public static int ENERGY_MAXIMUM_OUTPUT = 100;
 
     public SolarGenerator() {
-        super(TorusPlugin.DEFAULT_PACK, "solar_generator", "Solar Generator", SolarGeneratorInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "solar_generator", "Solar Generator", SolarGeneratorInstance.class);
         portableData.add("energy");
         modelLocation = new ModelLocation("torus", "solar_generator");
     }
