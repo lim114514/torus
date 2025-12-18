@@ -5,16 +5,18 @@ import com.github.alantr7.bukkitplugin.annotations.generative.JavaPlugin;
 import com.github.alantr7.bukkitplugin.annotations.generative.SoftDepends;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocate;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocations;
+import com.github.alantr7.torus.addon.DefaultAddonLifecycleAdapter;
 import com.github.alantr7.torus.addon.TorusAddonManager;
 import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.config.ConfigManager;
-import com.github.alantr7.torus.item.TorusItemRegistry;
+import com.github.alantr7.torus.item.ItemRegistry;
 import com.github.alantr7.torus.player.TorusPlayerManager;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 @JavaPlugin(name = "Torus", version = "0.5.0", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
@@ -30,7 +32,7 @@ public class TorusPlugin extends BukkitPlugin {
     protected final TorusAddonManager addonManager;
 
     @Getter
-    protected final TorusItemRegistry itemRegistry;
+    protected final ItemRegistry itemRegistry;
 
     @Getter
     protected final ConfigManager configManager = new ConfigManager();
@@ -45,13 +47,16 @@ public class TorusPlugin extends BukkitPlugin {
           .name("Torus (Default)")
           .register();
 
-        itemRegistry = new TorusItemRegistry();
+        TorusAPI.getAddonLifecycle().subscribe(DEFAULT_ADDON, new DefaultAddonLifecycleAdapter(DEFAULT_ADDON));
+
+        itemRegistry = new ItemRegistry();
         checkPaperAPI();
     }
 
     @Override
     protected void onPluginEnable() {
         configManager.initialize();
+        Bukkit.getScheduler().runTaskLater(this, () -> addonManager.getLifecycle().start(), 1L);
     }
 
     @Override

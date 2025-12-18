@@ -1,0 +1,21 @@
+package com.github.alantr7.torus.api.addon;
+
+import com.github.alantr7.torus.item.ItemRegistry;
+import com.github.alantr7.torus.recipe.TorusRecipeManager;
+import com.github.alantr7.torus.structure.StructureRegistry;
+
+public abstract class LifecycleAdapter {
+
+    protected final TorusAddon addon;
+
+    public LifecycleAdapter(TorusAddon addon) {
+        this.addon = addon;
+    }
+
+    public void registerStructures(StructureRegistry registry) {}
+
+    public void registerItems(ItemRegistry registry) {}
+
+    public void registerRecipes(TorusRecipeManager registry) {}
+
+}

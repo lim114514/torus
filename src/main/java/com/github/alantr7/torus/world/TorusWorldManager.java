@@ -31,7 +31,7 @@ public class TorusWorldManager implements Listener {
 
     private final Map<UUID, TorusWorld> worlds = new HashMap<>();
 
-    @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
+    @InvokePeriodically(interval = 0, limit = 1, delay = 2L)
     void initialize() {
         for (World world : Bukkit.getWorlds()) {
             if (MainConfig.WORLD_BLACKLIST.contains(world.getName()))

@@ -20,7 +20,7 @@ import java.util.Set;
 
 public abstract class Structure {
 
-    public final TorusAddon pack;
+    public final TorusAddon addon;
 
     public final String namespacedId;
 
@@ -62,13 +62,13 @@ public abstract class Structure {
 
     public ModelLocation modelLocation;
 
-    public Structure(TorusAddon pack, String id, String name, Class<? extends StructureInstance> instanceClass) {
-        this.pack = pack;
+    public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {
+        this.addon = addon;
         this.id = id;
-        this.namespacedId = pack.id + ":" + id;
+        this.namespacedId = addon.id + ":" + id;
         this.name = name;
         this.instanceClass = instanceClass;
-        this.configResource = "packs/" + pack.id + "/configs/" + id + ".config.yml";
+        this.configResource = "packs/" + addon.id + "/configs/" + id + ".config.yml";
 
         ByteArrayBuilder builder = new ByteArrayBuilder();
         createBounds(builder);

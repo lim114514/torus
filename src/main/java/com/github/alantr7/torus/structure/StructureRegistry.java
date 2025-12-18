@@ -34,7 +34,6 @@ public class StructureRegistry {
     @Invoke(Invoke.Schedule.BEFORE_PLUGIN_ENABLE)
     private void init() {
         load();
-        registerInternalStructures();
     }
 
     private void load() {
@@ -87,34 +86,6 @@ public class StructureRegistry {
         }
     }
 
-    public void registerInternalStructures() {
-        registerAndInitialize(Structures.BLAST_FURNACE);
-        registerAndInitialize(Structures.BLOCK_BREAKER);
-        registerAndInitialize(Structures.PUMP);
-        registerAndInitialize(Structures.ORE_CRUSHER);
-        registerAndInitialize(Structures.ORE_WASHER);
-        registerAndInitialize(Structures.QUARRY);
-
-        registerAndInitialize(Structures.ENERGY_CABLE);
-        registerAndInitialize(Structures.ITEM_CABLE);
-        registerAndInitialize(Structures.FLUID_CABLE);
-
-        registerAndInitialize(Structures.POWER_POLE);
-        registerAndInitialize(Structures.CONNECTOR);
-        registerAndInitialize(Structures.WIRE_CONNECTOR);
-        registerAndInitialize(Structures.WIRE_RELAY);
-        registerAndInitialize(Structures.ELECTRICITY_METER);
-
-        registerAndInitialize(Structures.POWER_BANK);
-        registerAndInitialize(Structures.FLUID_TANK);
-
-        registerAndInitialize(Structures.TURRET);
-
-        registerAndInitialize(Structures.COAL_GENERATOR);
-        registerAndInitialize(Structures.SOLAR_GENERATOR);
-        registerAndInitialize(Structures.WINDMILL);
-    }
-
     public void registerAndInitialize(Structure structure) {
         if (structure.numericId != -1) {
             throw new RuntimeException("Structure must not have numeric id already assigned when registering it");
@@ -128,7 +99,7 @@ public class StructureRegistry {
             saveQuery.add(structure);
         }
 
-        File configFile = new File(structure.pack.configsDirectory, structure.id + ".config.yml");
+        File configFile = new File(structure.addon.configsDirectory, structure.id + ".config.yml");
 
         // Save default config if it exists
         if (!configFile.exists()) {
