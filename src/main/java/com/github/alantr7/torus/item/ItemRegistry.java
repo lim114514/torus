@@ -2,7 +2,6 @@ package com.github.alantr7.torus.item;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
-import com.github.alantr7.torus.structure.Structures;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -18,13 +17,13 @@ public class ItemRegistry {
     private final Map<String, Category> categories = new LinkedHashMap<>();
 
     {
-        categories.put("resources", Category.RESOURCES);
-        categories.put("generators", Category.GENERATORS);
-        categories.put("machines", Category.MACHINES);
-        categories.put("network", Category.NETWORK);
-        categories.put("components", Category.COMPONENTS);
-        categories.put("storage", Category.STORAGE);
-        categories.put("tools", Category.TOOLS);
+        categories.put("torus:resources", Category.RESOURCES);
+        categories.put("torus:generators", Category.GENERATORS);
+        categories.put("torus:machines", Category.MACHINES);
+        categories.put("torus:network", Category.NETWORK);
+        categories.put("torus:components", Category.COMPONENTS);
+        categories.put("torus:storage", Category.STORAGE);
+        categories.put("torus:tools", Category.TOOLS);
     }
 
     public void clear() {
@@ -33,8 +32,8 @@ public class ItemRegistry {
 
     public void registerItem(TorusItem item) {
         registry.put(item.namespacedId, item);
-        if (item.category != null) {
-            item.category.items.add(item);
+        for (Category category : item.categories) {
+            category.items.add(item);
         }
     }
 
@@ -91,6 +90,10 @@ public class ItemRegistry {
 
     public Collection<TorusItem> getItems() {
         return registry.values();
+    }
+
+    public Category getCategory(String id) {
+        return categories.get(id);
     }
 
     public Collection<Category> getCategories() {

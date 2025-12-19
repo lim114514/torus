@@ -16,7 +16,7 @@ public class TorusAddon {
 
     public final File rootDirectory;
 
-    public final File configsDirectory, modelsDirectory, recipesDirectory;
+    public final File configsDirectory, modelsDirectory, itemsDirectory, recipesDirectory;
 
     public int externalConfigsFlags;
 
@@ -25,8 +25,9 @@ public class TorusAddon {
         this.id = id;
         this.name = name;
         this.rootDirectory = new File(new File(TorusPlugin.getInstance().getDataFolder(), "packs"), id);
-        this.configsDirectory = new File(rootDirectory, "configs");
+        this.configsDirectory = new File(rootDirectory, "structures");
         this.modelsDirectory = new File(rootDirectory, "models");
+        this.itemsDirectory = new File(rootDirectory, "items");
         this.recipesDirectory = new File(rootDirectory, "recipes");
     }
 

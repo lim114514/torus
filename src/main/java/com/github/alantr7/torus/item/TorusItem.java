@@ -22,7 +22,7 @@ public class TorusItem {
 
     public final String namespacedId;
 
-    public final Category category;
+    public final Category[] categories;
 
     public final String name;
 
@@ -34,18 +34,18 @@ public class TorusItem {
     @Getter
     protected Structure structure;
 
-    public TorusItem(TorusAddon addon, String id, Category category, Structure structure, HeadData data, String name, List<String> lore) {
-        this(addon, id, category, structure, data.stack.clone(), name, lore);
+    public TorusItem(TorusAddon addon, String id, Category[] categories, Structure structure, HeadData data, String name, List<String> lore) {
+        this(addon, id, categories, structure, data.stack.clone(), name, lore);
     }
 
-    public TorusItem(TorusAddon addon, String id, Category category, Structure structure, Material material, String name, List<String> lore) {
-        this(addon, id, category, structure, new ItemStack(material), name, lore);
+    public TorusItem(TorusAddon addon, String id, Category[] categories, Structure structure, Material material, String name, List<String> lore) {
+        this(addon, id, categories, structure, new ItemStack(material), name, lore);
     }
 
-    public TorusItem(TorusAddon addon, String id, Category category, Structure structure, ItemStack stack, String name, List<String> lore) {
+    public TorusItem(TorusAddon addon, String id, Category[] categories, Structure structure, ItemStack stack, String name, List<String> lore) {
         this.addon = addon;
         this.namespacedId = addon.id + ":" + id;
-        this.category = category;
+        this.categories = categories;
         this.name = name;
         this.structure = structure;
         this.itemStack = stack;
