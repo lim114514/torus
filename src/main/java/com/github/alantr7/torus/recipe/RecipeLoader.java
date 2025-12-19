@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.recipe;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.log.Category;
@@ -19,51 +20,41 @@ import java.util.*;
 
 public class RecipeLoader {
 
-    public final File recipesDirectory;
-
-    public RecipeLoader(File recipesDirectory) {
-        this.recipesDirectory = recipesDirectory;
-    }
-
-    public void load() {
-        File[] files = recipesDirectory.listFiles();
+    public static void load(TorusAddon addon) {
+        File[] files = addon.recipesDirectory.listFiles();
         if (files == null)
             return;
 
         for (File file : files) {
-            if (file.getName().endsWith(".recipes.yml")) {
-                handleRecipeFile(file);
-            }
-            else {
+            if (!file.getName().endsWith(".recipes.yml")) {
                 TorusLogger.error(Category.RECIPES, "Config type for file not recognized: " + file.getName());
-            }
-        }
-    }
-
-    private void handleRecipeFile(File file) {
-        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (String recipeId : config.getKeys(false)) {
-            ConfigurationSection section = config.getConfigurationSection(recipeId);
-            String rawRecipeType = section.getString("type");
-
-            if (rawRecipeType == null) {
-                TorusLogger.error(Category.RECIPES, "Recipe type can not be null.");
                 continue;
             }
 
-            switch (rawRecipeType) {
-                case "CRAFTING" ->  loadCraftingRecipe(section, recipeId);
-                case "SMELTING" ->  loadSmeltingRecipe(section, recipeId);
-                case "CRUSHING" ->  loadCrushingRecipe(section, recipeId);
-                case "WASHING" ->   loadWasherRecipe(section, recipeId);
-                case "BLASTING" ->  loadBlastFurnaceRecipe(section, recipeId);
+            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+            for (String recipeId : config.getKeys(false)) {
+                ConfigurationSection section = config.getConfigurationSection(recipeId);
+                String rawRecipeType = section.getString("type");
 
-                default -> TorusLogger.error(Category.RECIPES, "Invalid recipe type: " + rawRecipeType);
+                if (rawRecipeType == null) {
+                    TorusLogger.error(Category.RECIPES, "Recipe type can not be null.");
+                    continue;
+                }
+
+                switch (rawRecipeType) {
+                    case "CRAFTING" ->  loadCraftingRecipe(section, recipeId);
+                    case "SMELTING" ->  loadSmeltingRecipe(section, recipeId);
+                    case "CRUSHING" ->  loadCrushingRecipe(section, recipeId);
+                    case "WASHING" ->   loadWasherRecipe(section, recipeId);
+                    case "BLASTING" ->  loadBlastFurnaceRecipe(section, recipeId);
+
+                    default -> TorusLogger.error(Category.RECIPES, "Invalid recipe type: " + rawRecipeType);
+                }
             }
         }
     }
 
-    private void loadCraftingRecipe(ConfigurationSection section, String recipeId) {
+    private static void loadCraftingRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
             TorusLogger.error(Category.RECIPES,  "Recipe result can not be null.");
@@ -128,7 +119,7 @@ public class RecipeLoader {
         }
     }
 
-    private void loadSmeltingRecipe(ConfigurationSection section, String recipeId) {
+    private static void loadSmeltingRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
             TorusLogger.error(Category.RECIPES,  "Recipe result can not be null.");
@@ -165,7 +156,7 @@ public class RecipeLoader {
         }
     }
 
-    private void loadCrushingRecipe(ConfigurationSection section, String recipeId) {
+    private static void loadCrushingRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
             TorusLogger.error(Category.RECIPES, "Recipe result can not be null.");
@@ -215,7 +206,7 @@ public class RecipeLoader {
         }
     }
 
-    private void loadWasherRecipe(ConfigurationSection section, String recipeId) {
+    private static void loadWasherRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
             TorusLogger.error(Category.RECIPES, "Recipe result can not be null.");
@@ -265,7 +256,7 @@ public class RecipeLoader {
         }
     }
 
-    private void loadBlastFurnaceRecipe(ConfigurationSection section, String recipeId) {
+    private static void loadBlastFurnaceRecipe(ConfigurationSection section, String recipeId) {
         String rawResult = section.getString("result");
         if (rawResult == null) {
             TorusLogger.error(Category.RECIPES, "Recipe result can not be null.");

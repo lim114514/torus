@@ -22,11 +22,12 @@ public class TorusItem {
 
     public final String namespacedId;
 
-    public final Category[] categories;
+    @Getter
+    protected Category[] categories;
 
     public final String name;
 
-    protected final ItemStack itemStack;
+    protected ItemStack baseItem;
 
     @Getter
     protected final Set<Keyed> recipes = new HashSet<>();
@@ -45,12 +46,51 @@ public class TorusItem {
     public TorusItem(TorusAddon addon, String id, Category[] categories, Structure structure, ItemStack stack, String name, List<String> lore) {
         this.addon = addon;
         this.namespacedId = addon.id + ":" + id;
-        this.categories = categories;
         this.name = name;
         this.structure = structure;
-        this.itemStack = stack;
+        this.categories = categories;
+        setBaseItem(stack, name, lore);
+    }
 
-        ItemMeta meta = itemStack.getItemMeta();
+    public boolean isPlaceable() {
+        return structure != null;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+        updateMeta(meta ->
+            meta.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING, namespacedId)
+        );
+    }
+
+    public void setCategories(Category[] categories) {
+        for (Category category : this.categories) {
+            category.items.remove(this);
+        }
+        this.categories = categories;
+        for (Category category : categories) {
+            category.items.add(this);
+        }
+    }
+
+    public boolean hasRecipes() {
+        return !recipes.isEmpty();
+    }
+
+    private void updateMeta(Consumer<ItemMeta> consumer) {
+        ItemMeta meta = baseItem.getItemMeta();
+        consumer.accept(meta);
+
+        baseItem.setItemMeta(meta);
+    }
+
+    public ItemStack toItemStack() {
+        return baseItem;
+    }
+
+    public void setBaseItem(ItemStack itemStack, String name, List<String> lore) {
+        baseItem = itemStack.clone();
+        ItemMeta meta = baseItem.getItemMeta();
         meta.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING, namespacedId);
         meta.setDisplayName(ChatColor.WHITE + name);
 
@@ -67,33 +107,7 @@ public class TorusItem {
         CustomModelDataComponent component = meta.getCustomModelDataComponent();
         component.setStrings(Collections.singletonList(namespacedId));
         meta.setCustomModelDataComponent(component);
-        itemStack.setItemMeta(meta);
-    }
-
-    public boolean isPlaceable() {
-        return structure != null;
-    }
-
-    public void setStructure(Structure structure) {
-        this.structure = structure;
-        updateMeta(meta ->
-            meta.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING, namespacedId)
-        );
-    }
-
-    public boolean hasRecipes() {
-        return !recipes.isEmpty();
-    }
-
-    private void updateMeta(Consumer<ItemMeta> consumer) {
-        ItemMeta meta = itemStack.getItemMeta();
-        consumer.accept(meta);
-
-        itemStack.setItemMeta(meta);
-    }
-
-    public ItemStack toItemStack() {
-        return itemStack;
+        baseItem.setItemMeta(meta);
     }
 
     public static TorusItem getById(String id) {

@@ -1,8 +1,10 @@
 package com.github.alantr7.torus.api.addon;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.item.ItemConfigLoader;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.recipe.RecipeLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,14 +32,20 @@ public class Lifecycle {
                 break;
 
             case LOAD_ITEMS:
-                for (LifecycleAdapter adapter : adapters.values())
+                for (LifecycleAdapter adapter : adapters.values()) {
                     adapter.registerItems(TorusPlugin.getInstance().getItemRegistry());
+                    if (adapter.addon.allowsExternalConfig(ConfigType.ITEMS))
+                        ItemConfigLoader.load(adapter.addon);
+                }
                 TorusLogger.info(Category.GENERAL, "Item registration lifecycle completed.");
                 break;
 
             case LOAD_RECIPES:
-                for (LifecycleAdapter adapter : adapters.values())
+                for (LifecycleAdapter adapter : adapters.values()) {
                     adapter.registerRecipes(TorusPlugin.getInstance().getRecipeRegistry());
+                    if (adapter.addon.allowsExternalConfig(ConfigType.RECIPES))
+                        RecipeLoader.load(adapter.addon);
+                }
                 TorusLogger.info(Category.GENERAL, "Recipe registration lifecycle completed.");
                 break;
         }

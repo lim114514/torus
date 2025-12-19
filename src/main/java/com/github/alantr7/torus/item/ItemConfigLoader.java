@@ -13,9 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public class ItemLoader {
+public class ItemConfigLoader {
 
     public static void load(TorusAddon addon) {
         File[] files = addon.itemsDirectory.listFiles();
@@ -25,6 +24,12 @@ public class ItemLoader {
         for (File file : files) {
             FileConfiguration yaml = YamlConfiguration.loadConfiguration(file);
             for (String itemId : yaml.getKeys(false)) {
+                TorusItem torusItem = TorusPlugin.getInstance().getItemRegistry().getItemById(addon.id + ":" + itemId);
+                if (torusItem == null) {
+                    TorusLogger.error(com.github.alantr7.torus.log.Category.ITEMS, "Item with ID '%s' not found.".formatted(itemId));
+                    continue;
+                }
+
                 ConfigurationSection data = yaml.getConfigurationSection(itemId);
                 if (!data.isString("base")) {
                     TorusLogger.error(com.github.alantr7.torus.log.Category.ITEMS, "Base item is not set.");
@@ -34,13 +39,12 @@ public class ItemLoader {
                 ItemReference base = ItemReference.parse(data.getString("base"));
                 String headTexture = data.getString("head_texture_url");
                 String name = data.getString("name");
-                String structureId = data.getString("structure");
                 List<String> categoriesRaw = data.getStringList("categories");
                 List<String> lore = data.getStringList("lore");
 
                 ItemStack baseItem = base.getItem();
                 if (baseItem == null) {
-                    TorusLogger.error(com.github.alantr7.torus.log.Category.ITEMS, "Base item not found.");
+                    TorusLogger.error(com.github.alantr7.torus.log.Category.ITEMS, "Base item with ID '%s' not found.".formatted(data.getString("base")));
                     continue;
                 }
 
@@ -55,22 +59,10 @@ public class ItemLoader {
                     categories.add(category);
                 }
 
-                Structure structure;
-                if (structureId != null) {
-                    structure = TorusPlugin.getInstance().getStructureRegistry().getStructure(structureId);
-                    if (structure == null) {
-                        TorusLogger.error(com.github.alantr7.torus.log.Category.ITEMS, "Structure not found.");
-                        continue;
-                    }
-                } else {
-                    structure = null;
-                }
-
-                TorusItem item = baseItem.getType() == Material.PLAYER_HEAD
-                  ? new TorusItem(addon, itemId, categories.toArray(Category[]::new), structure, new HeadData(headTexture), name, lore)
-                  : new TorusItem(addon, itemId, categories.toArray(Category[]::new), structure, base.getItem(), name, lore);
-
-                TorusPlugin.getInstance().getItemRegistry().registerItem(item);
+                torusItem.setCategories(categories.toArray(Category[]::new));
+                torusItem.setBaseItem(
+                  baseItem.getType() == Material.PLAYER_HEAD ? new HeadData(headTexture).stack : base.getItem(), name, lore
+                );
             }
         }
     }
