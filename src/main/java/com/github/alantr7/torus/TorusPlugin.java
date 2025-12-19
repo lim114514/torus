@@ -8,8 +8,8 @@ import com.github.alantr7.bukkitplugin.annotations.relocate.Relocations;
 import com.github.alantr7.torus.addon.DefaultAddonLifecycleAdapter;
 import com.github.alantr7.torus.addon.TorusAddonManager;
 import com.github.alantr7.torus.api.TorusAPI;
+import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.api.addon.TorusAddon;
-import com.github.alantr7.torus.config.ConfigManager;
 import com.github.alantr7.torus.item.ItemRegistry;
 import com.github.alantr7.torus.player.TorusPlayerManager;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
@@ -34,9 +34,6 @@ public class TorusPlugin extends BukkitPlugin {
     @Getter
     protected final ItemRegistry itemRegistry;
 
-    @Getter
-    protected final ConfigManager configManager = new ConfigManager();
-
     private static boolean usesPaperAPI;
 
     public TorusPlugin() {
@@ -45,6 +42,7 @@ public class TorusPlugin extends BukkitPlugin {
 
         DEFAULT_ADDON = TorusAPI.newAddon(this, "torus")
           .name("Torus (Default)")
+          .allowExternalConfigurations(ConfigType.STRUCTURE, ConfigType.MODEL, ConfigType.ITEMS, ConfigType.RECIPES)
           .register();
 
         TorusAPI.getAddonLifecycle().subscribe(DEFAULT_ADDON, new DefaultAddonLifecycleAdapter(DEFAULT_ADDON));
@@ -55,7 +53,6 @@ public class TorusPlugin extends BukkitPlugin {
 
     @Override
     protected void onPluginEnable() {
-        configManager.initialize();
         Bukkit.getScheduler().runTaskLater(this, () -> addonManager.getLifecycle().start(), 1L);
     }
 

@@ -1,13 +1,10 @@
-package com.github.alantr7.torus.config;
+package com.github.alantr7.torus.recipe;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import com.github.alantr7.torus.recipe.BlastFurnaceRecipe;
-import com.github.alantr7.torus.recipe.CrusherRecipe;
-import com.github.alantr7.torus.recipe.RecipeResult;
-import com.github.alantr7.torus.recipe.WasherRecipe;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,16 +17,16 @@ import org.bukkit.inventory.ShapedRecipe;
 import java.io.File;
 import java.util.*;
 
-public class PackLoader {
+public class RecipeLoader {
 
-    public final File packDirectory;
+    public final File recipesDirectory;
 
-    public PackLoader(File packDirectory) {
-        this.packDirectory = packDirectory;
+    public RecipeLoader(File recipesDirectory) {
+        this.recipesDirectory = recipesDirectory;
     }
 
     public void load() {
-        File[] files = new File(packDirectory, "recipes").listFiles();
+        File[] files = recipesDirectory.listFiles();
         if (files == null)
             return;
 
@@ -63,7 +60,6 @@ public class PackLoader {
 
                 default -> TorusLogger.error(Category.RECIPES, "Invalid recipe type: " + rawRecipeType);
             }
-
         }
     }
 

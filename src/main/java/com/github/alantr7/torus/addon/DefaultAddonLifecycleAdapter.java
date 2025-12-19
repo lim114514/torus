@@ -105,7 +105,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
 
     @Override
     public void registerRecipes(TorusRecipeManager registry) {
-
+        super.registerRecipes(registry);
     }
 
 }

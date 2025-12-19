@@ -6,6 +6,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
@@ -99,39 +100,37 @@ public class StructureRegistry {
             saveQuery.add(structure);
         }
 
-        File configFile = new File(structure.addon.configsDirectory, structure.id + ".config.yml");
+        if (structure.addon.allowsExternalConfig(ConfigType.STRUCTURE)) {
+            File configFile = new File(structure.addon.configsDirectory, structure.id + ".config.yml");
 
-        // Save default config if it exists
-        if (!configFile.exists()) {
-            try {
-                InputStream is = TorusPlugin.getInstance().getResource(structure.configResource);
-                if (is != null) {
-                    is.close();
-                    TorusPlugin.getInstance().saveResource(structure.configResource, false);
+            // Save default config if it exists
+            if (!configFile.exists()) {
+                try {
+                    InputStream is = TorusPlugin.getInstance().getResource(structure.configResource);
+                    if (is != null) {
+                        is.close();
+                        TorusPlugin.getInstance().saveResource(structure.configResource, false);
+                    }
+                } catch (Exception | Error e) {
+                    TorusLogger.error(Category.GENERAL, "Could not save the default config for '" + structure.id + "'");
+                    e.printStackTrace();
                 }
-            } catch (Exception | Error e) {
-                TorusLogger.error(Category.GENERAL, "Could not save the default config for '" + structure.id + "'");
-                e.printStackTrace();
             }
-        }
 
-        if (configFile.exists()) {
-            try {
+            if (configFile.exists()) {
                 try {
                     structure.config = YamlConfiguration.loadConfiguration(configFile);
                     structure.loadConfig();
                 } catch (Exception | Error e) {
+                    TorusLogger.error(Category.MODELS, "Invalid configuration for structure '" + structure.id + "'");
                     e.printStackTrace();
                 }
-            } catch (Exception | Error e) {
-                TorusLogger.error(Category.MODELS, "Invalid configuration for structure '" + structure.id + "'");
-                e.printStackTrace();
             }
         }
 
         if (structure.modelLocation != null) {
             try {
-                if (MainConfig.CUSTOMIZATION_ENABLE_MODEL_EDITING || !structure.modelLocation.pack.equals("torus")) {
+                if (structure.addon.allowsExternalConfig(ConfigType.MODEL) && (MainConfig.CUSTOMIZATION_ENABLE_MODEL_EDITING || !structure.modelLocation.pack.equals("torus"))) {
                     structure.setModel(ModelLoader.load(structure.modelLocation.pack, structure.modelLocation.id));
                 } else {
                     structure.setModel(ModelLoader.loadInternalTorusModel(structure.modelLocation.id));

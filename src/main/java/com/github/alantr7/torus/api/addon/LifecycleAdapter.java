@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.api.addon;
 
 import com.github.alantr7.torus.item.ItemRegistry;
+import com.github.alantr7.torus.recipe.RecipeLoader;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.StructureRegistry;
 
@@ -14,8 +15,15 @@ public abstract class LifecycleAdapter {
 
     public void registerStructures(StructureRegistry registry) {}
 
-    public void registerItems(ItemRegistry registry) {}
+    public void registerItems(ItemRegistry registry) {
 
-    public void registerRecipes(TorusRecipeManager registry) {}
+    }
+
+    public void registerRecipes(TorusRecipeManager registry) {
+        if (!addon.allowsExternalConfig(ConfigType.RECIPES))
+            return;
+
+        new RecipeLoader(addon.recipesDirectory).load();
+    }
 
 }
