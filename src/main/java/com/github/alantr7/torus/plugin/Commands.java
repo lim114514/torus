@@ -113,8 +113,12 @@ public class Commands {
       .parameter("reload")
       .permission(Permissions.COMMAND_RELOAD)
       .executes(ctx -> {
-          TorusPlugin.getInstance().getConfigManager().initialize();
-          ctx.respond(ChatColor.YELLOW + "Configurations reloaded.");
+          TorusPlugin.getInstance().getItemRegistry().clear();
+          TorusPlugin.getInstance().getRecipeRegistry().clear();
+          TorusAPI.getAddonLifecycle().run(LifecycleAction.LOAD_ITEMS);
+          TorusAPI.getAddonLifecycle().run(LifecycleAction.LOAD_RECIPES);
+
+          ctx.respond("Items and recipes reloaded.");
       });
 
     @CommandHandler Command exportPreset = CommandBuilder.using("torus")
