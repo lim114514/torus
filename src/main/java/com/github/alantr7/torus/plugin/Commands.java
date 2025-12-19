@@ -123,7 +123,7 @@ public class Commands {
 
     @CommandHandler Command exportPreset = CommandBuilder.using("torus")
       .parameter("export_preset")
-      .parameter("{preset}", p -> p.tabComplete("default_recipes"))
+      .parameter("{preset}", p -> p.tabComplete("default/recipes", "default/items_configs"))
       .permission(Permissions.COMMAND_USE_PRESET)
       .executes(ctx -> {
           String preset = (String) ctx.getArgument("preset");
@@ -132,7 +132,7 @@ public class Commands {
               return;
           }
 
-          if (preset.equalsIgnoreCase("default_recipes")) {
+          if (preset.equalsIgnoreCase("default/recipes")) {
               TorusPlugin.getInstance().saveResource("packs/torus/recipes/blasting.recipes.yml", true);
               TorusPlugin.getInstance().saveResource("packs/torus/recipes/crafting.recipes.yml", true);
               TorusPlugin.getInstance().saveResource("packs/torus/recipes/crusher.recipes.yml", true);
@@ -140,6 +140,18 @@ public class Commands {
               TorusPlugin.getInstance().saveResource("packs/torus/recipes/washer.recipes.yml", true);
 
               ctx.respond("Recipes preset saved. Use /torus reload to apply changes.");
+              return;
+          }
+
+          if (preset.equalsIgnoreCase("default/items_configs")) {
+              TorusPlugin.getInstance().saveResource("packs/torus/items/generators.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/items/machines.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/items/network.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/items/resources.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/items/storage.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/items/tools.yml", true);
+
+              ctx.respond("Items configs preset saved. Use /torus reload to apply changes.");
               return;
           }
 

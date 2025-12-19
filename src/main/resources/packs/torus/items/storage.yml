@@ -1,0 +1,9 @@
+power_bank:
+  base: "minecraft:paper"
+  name: "Power Bank"
+  categories: [ "torus:storage" ]
+
+fluid_tank:
+  base: "minecraft:paper"
+  name: "Fluid Tank"
+  categories: [ "torus:storage" ]

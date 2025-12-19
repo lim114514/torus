@@ -54,6 +54,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "coal_generator", new Category[]{Category.GENERATORS}, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "windmill", new Category[]{Category.GENERATORS}, Structures.WINDMILL, Material.PAPER, "Windmill", Collections.emptyList()));
 
+        // Machines
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "turret", new Category[]{Category.MACHINES}, Structures.TURRET, Material.PAPER, "Turret", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "blast_furnace", new Category[]{Category.MACHINES}, Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "block_breaker", new Category[]{Category.MACHINES}, Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList()));
