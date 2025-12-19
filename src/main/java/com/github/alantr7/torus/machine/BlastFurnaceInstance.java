@@ -74,7 +74,7 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
 
         if (recipeLookup) {
             this.recipe = null;
-            for (BlastFurnaceRecipe recipe : TorusPlugin.getInstance().getRecipeManager().getBlastFurnaceRecipes()) {
+            for (BlastFurnaceRecipe recipe : TorusPlugin.getInstance().getRecipeRegistry().getBlastFurnaceRecipes()) {
                 if (canUseRecipe(recipe)) {
                     this.recipe = recipe;
                     break;

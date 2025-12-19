@@ -27,6 +27,10 @@ public class ItemRegistry {
         categories.put("tools", Category.TOOLS);
     }
 
+    public void clear() {
+        registry.clear();
+    }
+
     public void registerItem(TorusItem item) {
         registry.put(item.namespacedId, item);
         if (item.category != null) {

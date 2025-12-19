@@ -8,6 +8,8 @@ import com.github.alantr7.bukkitplugin.commands.factory.CommandBuilder;
 import com.github.alantr7.bukkitplugin.commands.registry.Command;
 import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.TorusAPI;
+import com.github.alantr7.torus.api.addon.LifecycleAction;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
@@ -97,7 +99,7 @@ public class Commands {
           }
 
           Keyed recipe = item.getRecipes().iterator().next();
-          GUI viewer = TorusPlugin.getInstance().getRecipeManager().createRecipeViewer((Player) ctx.getExecutor(), recipe);
+          GUI viewer = TorusPlugin.getInstance().getRecipeRegistry().createRecipeViewer((Player) ctx.getExecutor(), recipe);
 
           if (viewer == null) {
               ctx.respond(ChatColor.RED + "This recipe can not be previewed.");
@@ -113,6 +115,31 @@ public class Commands {
       .executes(ctx -> {
           TorusPlugin.getInstance().getConfigManager().initialize();
           ctx.respond(ChatColor.YELLOW + "Configurations reloaded.");
+      });
+
+    @CommandHandler Command exportPreset = CommandBuilder.using("torus")
+      .parameter("export_preset")
+      .parameter("{preset}", p -> p.tabComplete("default_recipes"))
+      .permission(Permissions.COMMAND_USE_PRESET)
+      .executes(ctx -> {
+          String preset = (String) ctx.getArgument("preset");
+          if (preset == null) {
+              ctx.respond("Invalid preset specified.");
+              return;
+          }
+
+          if (preset.equalsIgnoreCase("default_recipes")) {
+              TorusPlugin.getInstance().saveResource("packs/torus/recipes/blasting.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/recipes/crafting.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/recipes/crusher.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/recipes/smelting.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("packs/torus/recipes/washer.recipes.yml", true);
+
+              ctx.respond("Recipes preset saved. Use /torus reload to apply changes.");
+              return;
+          }
+
+          ctx.respond("Invalid preset specified.");
       });
 
     @CommandHandler Command exportModel = CommandBuilder.using("torus")

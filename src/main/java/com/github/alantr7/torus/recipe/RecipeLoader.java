@@ -122,7 +122,7 @@ public class RecipeLoader {
             }
         }
 
-        TorusPlugin.getInstance().getRecipeManager().registerBukkitRecipe(recipe);
+        TorusPlugin.getInstance().getRecipeRegistry().registerBukkitRecipe(recipe);
         if (MainConfig.LOGS_RECIPE_LOAD) {
             TorusLogger.info(Category.RECIPES, "Loaded crafting recipe: " + recipeId);
         }
@@ -155,7 +155,7 @@ public class RecipeLoader {
             return;
         }
 
-        TorusPlugin.getInstance().getRecipeManager().registerBukkitRecipe(new FurnaceRecipe(
+        TorusPlugin.getInstance().getRecipeRegistry().registerBukkitRecipe(new FurnaceRecipe(
           new NamespacedKey(TorusPlugin.getInstance(), recipeId),
           result,
           new RecipeChoice.ExactChoice(ingredient), 0f, section.getInt("duration"))
@@ -204,7 +204,7 @@ public class RecipeLoader {
             rangeMax = 1;
         }
 
-        TorusPlugin.getInstance().getRecipeManager().registerCrusherRecipe(new CrusherRecipe(
+        TorusPlugin.getInstance().getRecipeRegistry().registerCrusherRecipe(new CrusherRecipe(
           recipeId,
           ingredientReference,
           new RecipeResult(resultItem, rangeMin, rangeMax),
@@ -254,7 +254,7 @@ public class RecipeLoader {
             return;
         }
 
-        TorusPlugin.getInstance().getRecipeManager().registerWasherRecipe(new WasherRecipe(
+        TorusPlugin.getInstance().getRecipeRegistry().registerWasherRecipe(new WasherRecipe(
           recipeId,
           ingredientReference,
           new RecipeResult(resultItem, rangeMin, rangeMax),
@@ -315,7 +315,7 @@ public class RecipeLoader {
             ingredients[i] = ingredientReference;
         }
 
-        TorusPlugin.getInstance().getRecipeManager().registerBlastFurnaceRecipe(new BlastFurnaceRecipe(
+        TorusPlugin.getInstance().getRecipeRegistry().registerBlastFurnaceRecipe(new BlastFurnaceRecipe(
           recipeId,
           ingredients,
           new RecipeResult(resultItem, rangeMin, rangeMax),

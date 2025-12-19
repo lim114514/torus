@@ -64,7 +64,7 @@ public class TorusPlugin extends BukkitPlugin {
         return getSingleton(StructureRegistry.class);
     }
 
-    public TorusRecipeManager getRecipeManager() {
+    public TorusRecipeManager getRecipeRegistry() {
         return getSingleton(TorusRecipeManager.class);
     }
 

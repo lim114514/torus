@@ -6,6 +6,7 @@ import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import lombok.Getter;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,10 @@ public class TorusAddonManager {
     public void registerAddon(TorusAddon addon) {
         addonsByPlugin.put(addon.plugin.getName().toLowerCase(), addon);
         TorusLogger.info(Category.GENERAL, "Registered addon " + addon.name);
+    }
+
+    public Collection<TorusAddon> getAddons() {
+        return addonsByPlugin.values();
     }
 
 }

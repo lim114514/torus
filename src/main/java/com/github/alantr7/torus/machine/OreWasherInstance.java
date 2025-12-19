@@ -64,7 +64,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
             List<ItemStack> items = itemInSocket.consumeItems(OreWasher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
-                recipe = TorusPlugin.getInstance().getRecipeManager().getWasherRecipeByIngredient(items.getFirst());
+                recipe = TorusPlugin.getInstance().getRecipeRegistry().getWasherRecipeByIngredient(items.getFirst());
             }
         }
 

@@ -52,7 +52,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
             itemInSocket.updateNetwork();
             List<ItemStack> items = itemInSocket.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
-                this.recipe = TorusPlugin.getInstance().getRecipeManager().getCrusherRecipeByIngredient(items.getFirst());
+                this.recipe = TorusPlugin.getInstance().getRecipeRegistry().getCrusherRecipeByIngredient(items.getFirst());
             }
         } else {
             if (processedTicks >= recipe.crushTicks) {

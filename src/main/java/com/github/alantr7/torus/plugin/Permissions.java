@@ -16,6 +16,9 @@ public class Permissions {
     @Permission(allowed = Permission.Allowed.OP, description = "Permission for using /torus reload")
     public static final String COMMAND_RELOAD = "torus.command.reload";
 
+    @Permission(allowed = Permission.Allowed.OP, description = "Permission for using /torus use_preset")
+    public static final String COMMAND_USE_PRESET = "torus.command.use_preset";
+
     @Permission(allowed = Permission.Allowed.OP, description = "Permission for using /torus export_model")
     public static final String COMMAND_EXPORT_MODEL = "torus.command.export_model";
 

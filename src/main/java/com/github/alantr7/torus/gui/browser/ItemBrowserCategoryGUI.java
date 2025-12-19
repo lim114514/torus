@@ -4,7 +4,6 @@ import com.github.alantr7.bukkitplugin.gui.ClickType;
 import com.github.alantr7.bukkitplugin.gui.CloseInitiator;
 import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.gui.recipeview.ViewCraftingRecipeGUI;
 import com.github.alantr7.torus.item.Category;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.plugin.Permissions;
@@ -13,7 +12,6 @@ import org.bukkit.Keyed;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -61,7 +59,7 @@ public class ItemBrowserCategoryGUI extends GUI {
 
                 registerInteractionCallback(slot, ClickType.RIGHT, () -> {
                     Keyed recipe = item.getRecipes().iterator().next();
-                    GUI viewer = TorusPlugin.getInstance().getRecipeManager().createRecipeViewer(getPlayer(), recipe);
+                    GUI viewer = TorusPlugin.getInstance().getRecipeRegistry().createRecipeViewer(getPlayer(), recipe);
 
                     if (viewer == null) {
                         getPlayer().sendMessage(ChatColor.RED + "This recipe can not be previewed.");

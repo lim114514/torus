@@ -2,7 +2,6 @@ package com.github.alantr7.torus.recipe;
 
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bukkitplugin.gui.GUI;
-import com.github.alantr7.torus.gui.browser.ItemBrowserCategoryGUI;
 import com.github.alantr7.torus.gui.recipeview.ViewCraftingRecipeGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
@@ -10,7 +9,6 @@ import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.machine.OreCrusher;
 import com.github.alantr7.torus.machine.OreWasher;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +29,7 @@ public class TorusRecipeManager {
 
     private final Map<String, BlastFurnaceRecipe> blastFurnaceRecipes = new HashMap<>();
 
-    public void reset() {
+    public void clear() {
         for (Keyed recipe : recipesRegisteredToBukkit) {
             Bukkit.removeRecipe(recipe.getKey());
         }
