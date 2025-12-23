@@ -6,6 +6,7 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
 import com.github.alantr7.torus.machine.WireConnectorInstance;
+import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Socket;
 import lombok.Getter;
@@ -153,7 +154,9 @@ public class TorusWorld {
                 try {
                     s.tick();
                 } catch (Exception e) {
+                    TorusLogger.error(Category.STRUCTURES, "Encountered an error whilst ticking a structure - marked it as corrupted.");
                     e.printStackTrace();
+                    s.corrupt();
                 }
             }));
         });

@@ -150,7 +150,7 @@ public abstract class Structure {
         }
     }
 
-    private static void setupInspectionTooltip(StructureInstance instance) {
+    static void setupInspectionTooltip(StructureInstance instance) {
         if (!instance.isCorrupted && !(instance instanceof Inspectable)) {
             return;
         }

@@ -228,6 +228,14 @@ public abstract class StructureInstance {
 
     protected abstract void setup() throws SetupException;
 
+    public void corrupt() {
+        isCorrupted = true;
+        if (inspectionHologram != null) {
+            inspectionHologram.remove();
+        }
+        Structure.setupInspectionTooltip(this);
+    }
+
     public void destroy() {};
 
     @Nullable
