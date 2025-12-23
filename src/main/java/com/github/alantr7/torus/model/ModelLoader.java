@@ -1,9 +1,6 @@
 package com.github.alantr7.torus.model;
 
-import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.HeadData;
-import com.github.alantr7.torus.log.Category;
-import com.github.alantr7.torus.log.TorusLogger;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,8 +9,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -26,48 +21,6 @@ public class ModelLoader {
     private static final Pattern ITEM_PATTERN = Pattern.compile("[a-zA-Z0-9_.\\-]+(\\[[a-zA-Z0-9_=,]+])?");
 
     private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9]+");
-
-    public static ModelTemplate load(String pack, String id) {
-        File file = new File(TorusPlugin.getInstance().getDataFolder(), "configs/" + pack + "/models/" + id + ".model.yml");
-        if (!file.exists()) {
-            if (!pack.equals("torus"))
-                return null;
-
-            return loadInternalTorusModel(id);
-        }
-
-        if (!pack.equals("torus"))
-            return load(file);
-
-        ModelTemplate template = load(file);
-        ModelTemplate internal = loadInternalTorusModel(id);
-
-        if (internal == null)
-            return template;
-
-        // Check if all model parts exist in the custom model
-        for (String part : internal.partsByName.keySet()) {
-            if (!template.partsByName.containsKey(part)) {
-                TorusLogger.error(Category.MODELS, "'" + id + "' model is missing part '" + part + "'");
-                return internal;
-            }
-        }
-
-        return template;
-    }
-
-    public static ModelTemplate loadInternalTorusModel(String id) {
-        InputStream is = TorusPlugin.getInstance().getResource("configs/torus/models/" + id + ".model.yml");
-        if (is == null)
-            return null;
-
-        try (InputStreamReader isr = new InputStreamReader(is)) {
-            return load(YamlConfiguration.loadConfiguration(isr));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public static ModelTemplate load(File file) {
         return load(YamlConfiguration.loadConfiguration(file));

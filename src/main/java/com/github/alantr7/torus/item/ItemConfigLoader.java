@@ -61,7 +61,7 @@ public class ItemConfigLoader {
 
                 torusItem.setCategories(categories.toArray(Category[]::new));
                 torusItem.setBaseItem(
-                  baseItem.getType() == Material.PLAYER_HEAD ? new HeadData(headTexture).stack : base.getItem(), name, lore
+                  baseItem.getType() == Material.PLAYER_HEAD && headTexture != null ? new HeadData(headTexture).stack : base.getItem(), name, lore
                 );
             }
         }
