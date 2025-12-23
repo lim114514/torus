@@ -4,7 +4,7 @@ base:
   - item_display,light_gray_concrete,0,2.0625,0,0.4375,1.5,0.4375,0,0,0
   - item_display,light_gray_concrete,0,3.3125,0,0.3125,1.8125,0.3125,0,0,0
   - item_display,dispenser,0,3.75,0,0.6875,0.6875,0.875,180,0,0
-  - item_display,end_rod,0,3.75,-0.5,1,1,1,0,90,0
+  - item_display,end_rod,0,3.75,-0.5,1,1,1,90,0,0
 
 blade_1:
   - item_display,iron_block,0,3.75,-0.6875,1.875,0.375,0.25,0,0,0
