@@ -5,7 +5,9 @@ import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.event.PlayerStructurePlaceEvent;
 import com.github.alantr7.torus.config.MainConfig;
+import com.github.alantr7.torus.event.EventUtils;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.player.TorusPlayer;
@@ -74,6 +76,9 @@ public class EventListener implements Listener {
           : Direction.fromBlockFace(event.getBlockFace());
 
         if (torusItem.getStructure().isPlaceableAt(location, direction)) {
+            if (!EventUtils.callStructurePrePlaceEvent(event.getPlayer(), torusItem.getStructure(), location, direction)) {
+                return;
+            }
             StructureInstance structure = torusItem.getStructure().place(location, direction);
             if (structure != null) {
                 PersistentDataContainer structureData = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(TorusPlugin.getInstance(), "structure_data"), PersistentDataType.TAG_CONTAINER);
@@ -99,11 +104,17 @@ public class EventListener implements Listener {
                 if (event.getPlayer().getGameMode() == GameMode.SURVIVAL || event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
                     item.setAmount(item.getAmount() - 1);
                 }
+                EventUtils.callStructurePlaceEvent(event.getPlayer(), structure);
             }
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to place the structure here.");
         }
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    void onMachinePlace(PlayerStructurePlaceEvent event) {
+        event.getPlayer().asBukkit().sendMessage("You placed " + event.getStructure().structure.id);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -174,6 +185,9 @@ public class EventListener implements Listener {
         }
 
         if (instance.testOwnership(event.getPlayer())) {
+            if (!EventUtils.callStructureBreakEvent(event.getPlayer(), instance)) {
+                return;
+            }
             if (event.getPlayer().getGameMode() == GameMode.SURVIVAL || event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
                 ItemStack drop = instance.toItem(true);
                 if (drop != null) {
@@ -281,11 +295,6 @@ public class EventListener implements Listener {
                 return;
             }
         }
-    }
-
-    @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
-    void registerEvents(@Inject TorusPlugin plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
 }
