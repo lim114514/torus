@@ -4,6 +4,8 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.world.Direction;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Transformation;
@@ -28,13 +30,13 @@ public class PartModelTemplate {
     }
 
     public PartModel build(Location location, Direction direction) {
-        List<ItemDisplay> entities = new ArrayList<>();
+        List<Display> entities = new ArrayList<>();
         ItemDisplay parent = location.getWorld().spawn(location, ItemDisplay.class);
 
         for (PartModelElementItemDisplayRenderer part : parts) {
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
 
-            ItemDisplay entity = location.getWorld().spawn(location, ItemDisplay.class);
+            Display entity = location.getWorld().spawn(location, ItemDisplay.class);
             transformEntity(entity, rotatedOffset, part, direction.rotH, direction.rotV);
 
             parent.addPassenger(entity);
@@ -45,13 +47,13 @@ public class PartModelTemplate {
     }
 
     public PartModel recycle(PartModel model, Location location, float rotH, float rotV) {
-        List<ItemDisplay> entities = new ArrayList<>();
+        List<Display> entities = new ArrayList<>();
         int entityIdx = 0;
         for (; entityIdx < parts.size(); entityIdx++) {
             PartModelElementItemDisplayRenderer part = parts.get(entityIdx);
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
 
-            ItemDisplay entity;
+            Display entity;
             if (entityIdx < model.entityReferences.size()) {
                 entity = model.entityReferences.get(entityIdx).getEntity();
                 entity.teleport(location);
@@ -73,9 +75,13 @@ public class PartModelTemplate {
         return new PartModel(this, model.parent, entities.stream().map(EntityReference::new).toList());
     }
 
-    private void transformEntity(ItemDisplay entity, Vector3f translation, PartModelElementItemDisplayRenderer part, float rotH, float rotV) {
+    private void transformEntity(Display entity, Vector3f translation, PartModelElementItemDisplayRenderer part, float rotH, float rotV) {
         entity.setPersistent(false);
-        entity.setItemStack(part.itemStack.clone());
+        if (entity instanceof BlockDisplay blockDisplay) {
+            blockDisplay.setBlock(part.itemStack.clone().getType().createBlockData());
+        } else if (entity instanceof ItemDisplay itemDisplay) {
+            itemDisplay.setItemStack(part.itemStack.clone());
+        }
         entity.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "purpose"), PersistentDataType.STRING, "structure_model");
 
         Transformation transformation = entity.getTransformation();

@@ -11,6 +11,7 @@ import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
@@ -35,7 +36,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
     @Override
     public void tick() {
         model.getPart("blade_1").entityReferences.forEach(ref -> {
-            ItemDisplay entity = ref.getEntity();
+            Display entity = ref.getEntity();
             Transformation transform = entity.getTransformation();
 
             Quaternionf rotation = transform.getLeftRotation();
@@ -46,7 +47,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
             entity.setInterpolationDuration(20);
         });
         model.getPart("blade_2").entityReferences.forEach(ref -> {
-            ItemDisplay entity = ref.getEntity();
+            Display entity = ref.getEntity();
             Transformation transform = entity.getTransformation();
 
             Quaternionf rotation = transform.getLeftRotation();

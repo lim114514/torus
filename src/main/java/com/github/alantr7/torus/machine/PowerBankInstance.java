@@ -8,6 +8,7 @@ import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.util.Transformation;
 
@@ -59,7 +60,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         float ratio = (float) storedEnergy.get() / PowerBank.ENERGY_CAPACITY;
         float height = 1.125f * ratio;
 
-        ItemDisplay entity = this.model.getPart("charge").entityReferences.getFirst().getEntity();
+        Display entity = this.model.getPart("charge").entityReferences.getFirst().getEntity();
         Transformation transformation = entity.getTransformation();
         transformation.getScale().y = height;
         transformation.getTranslation().y = 0.1675f + height / 2f;

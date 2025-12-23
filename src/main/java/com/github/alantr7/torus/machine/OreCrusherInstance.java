@@ -12,6 +12,7 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
@@ -76,14 +77,14 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
     public void updateModel() {
         model.getPart("wheel_left").entityReferences.forEach(ref -> {
-            ItemDisplay display = ref.getEntity();
+            Display display = ref.getEntity();
             Transformation transformation = display.getTransformation();
             display.setTransformation(new Transformation(transformation.getTranslation(), new AxisAngle4f(angle * 0.9f, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(20);
         });
         model.getPart("wheel_right").entityReferences.forEach(ref -> {
-            ItemDisplay display = ref.getEntity();
+            Display display = ref.getEntity();
             Transformation transformation = display.getTransformation();
             display.setTransformation(new Transformation(transformation.getTranslation(), new AxisAngle4f(angle, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
             display.setInterpolationDelay(0);

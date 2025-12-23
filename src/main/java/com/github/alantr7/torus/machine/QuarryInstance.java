@@ -17,6 +17,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -162,7 +163,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         drillLength.update(len);
 
-        ItemDisplay drillModel = model.getPart("feed").entityReferences.getFirst().getEntity();
+        Display drillModel = model.getPart("feed").entityReferences.getFirst().getEntity();
         Transformation transform = drillModel.getTransformation();
         transform.getTranslation().y = structure.getModel().partsByName.get("feed").parts.getFirst().offset[1] + len / 2f - 1.5f;
         transform.getScale().y = len + f;
