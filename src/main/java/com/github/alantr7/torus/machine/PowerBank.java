@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.ModelLocation;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
@@ -25,7 +25,10 @@ public class PowerBank extends Structure {
     public PowerBank() {
         super(TorusPlugin.DEFAULT_ADDON, "power_bank", "Power Bank", PowerBankInstance.class);
         portableData.add("energy");
-        modelLocation = new ModelLocation("torus", "power_bank");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/power_bank.model.yml",
+          addon.classpathContainer, "configs/torus/models/power_bank.model.yml"
+        );
     }
 
     @Override

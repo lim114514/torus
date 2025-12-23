@@ -1,8 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
-import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -27,7 +27,10 @@ public class Windmill extends Structure {
     public Windmill() {
         super(TorusPlugin.DEFAULT_ADDON, "windmill", "Windmill", WindmillInstance.class);
         portableData.add("energy");
-        modelLocation = new ModelLocation("torus", "windmill");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/windmill.model.yml",
+          addon.classpathContainer, "configs/torus/models/windmill.model.yml"
+        );
     }
 
     @Override

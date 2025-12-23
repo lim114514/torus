@@ -7,15 +7,12 @@ import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.ConfigType;
-import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.ModelLoader;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -129,15 +126,14 @@ public class StructureRegistry {
         }
 
         if (structure.modelLocation != null) {
-            try {
-                if (structure.addon.allowsExternalConfig(ConfigType.MODEL) && (MainConfig.CUSTOMIZATION_ENABLE_MODEL_EDITING || !structure.modelLocation.pack.equals("torus"))) {
-                    structure.setModel(ModelLoader.load(structure.modelLocation.pack, structure.modelLocation.id));
-                } else {
-                    structure.setModel(ModelLoader.loadInternalTorusModel(structure.modelLocation.id));
+            InputStream modelResource = structure.modelLocation.getResource();
+            if (modelResource != null) {
+                try (Reader reader = new InputStreamReader(modelResource)) {
+                    structure.setModel(ModelLoader.load(YamlConfiguration.loadConfiguration(reader)));
+                } catch (Exception | Error e) {
+                    TorusLogger.error(Category.MODELS, "Could not load model for " + structure.namespacedId);
+                    e.printStackTrace();
                 }
-            } catch (Exception | Error e) {
-                TorusLogger.error(Category.MODELS, "Could not load model for " + structure.namespacedId);
-                e.printStackTrace();
             }
         }
 

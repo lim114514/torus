@@ -1,9 +1,9 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
-import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -33,7 +33,10 @@ public class OreWasher extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "ore_washer", "Ore Washer", OreWasherInstance.class);
         portableData.add("energy");
         portableData.add("fluid");
-        modelLocation = new ModelLocation("torus", "ore_washer");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/ore_washer.model.yml",
+          addon.classpathContainer, "configs/torus/models/ore_washer.model.yml"
+        );
     }
 
     @Override

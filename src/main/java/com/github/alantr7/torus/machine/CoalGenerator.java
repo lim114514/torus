@@ -1,9 +1,9 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
-import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -34,7 +34,10 @@ public class CoalGenerator extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "coal_generator", "Coal Generator", CoalGeneratorInstance.class);
         portableData.add("energy");
         hologramOffset = new float[] { 0f, 0f, 1f };
-        modelLocation = new ModelLocation("torus", "coal_generator");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/coal_generator.model.yml",
+          addon.classpathContainer, "configs/torus/models/coal_generator.model.yml"
+        );
     }
 
     @Override

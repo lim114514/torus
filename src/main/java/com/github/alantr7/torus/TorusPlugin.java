@@ -32,7 +32,7 @@ public class TorusPlugin extends BukkitPlugin {
     protected final TorusAddonManager addonManager;
 
     @Getter
-    protected final ItemRegistry itemRegistry;
+    protected ItemRegistry itemRegistry;
 
     private static boolean usesPaperAPI;
 
@@ -40,19 +40,19 @@ public class TorusPlugin extends BukkitPlugin {
         instance = this;
         addonManager = new TorusAddonManager();
 
+        checkPaperAPI();
+    }
+
+    @Override
+    protected void onPluginEnable() {
         DEFAULT_ADDON = TorusAPI.newAddon(this, "torus")
           .name("Torus (Default)")
           .allowExternalConfigurations(ConfigType.STRUCTURE, ConfigType.MODEL, ConfigType.ITEMS, ConfigType.RECIPES)
           .register();
 
         TorusAPI.getAddonLifecycle().subscribe(DEFAULT_ADDON, new DefaultAddonLifecycleAdapter(DEFAULT_ADDON));
-
         itemRegistry = new ItemRegistry();
-        checkPaperAPI();
-    }
 
-    @Override
-    protected void onPluginEnable() {
         Bukkit.getScheduler().runTaskLater(this, () -> addonManager.getLifecycle().start(), 1L);
     }
 

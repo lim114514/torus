@@ -1,8 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
-import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -17,7 +17,10 @@ public class PowerPole extends Structure {
     public PowerPole() {
         super(TorusPlugin.DEFAULT_ADDON, "power_pole", "Power Pole", PowerPoleInstance.class);
         isHeavy = false;
-        modelLocation = new ModelLocation("torus", "power_pole");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/power_pole.model.yml",
+          addon.classpathContainer, "configs/torus/models/power_pole.model.yml"
+        );
     }
 
     @Override

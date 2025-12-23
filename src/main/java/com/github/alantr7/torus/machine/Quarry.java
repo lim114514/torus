@@ -1,8 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
-import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -37,7 +37,10 @@ public class Quarry extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "quarry", "Quarry", QuarryInstance.class);
         portableData.add("energy");
         offset = new byte[] {0, 0, -6};
-        modelLocation = new ModelLocation("torus", "quarry");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/quarry.model.yml",
+          addon.classpathContainer, "configs/torus/models/quarry.model.yml"
+        );
     }
 
     @Override

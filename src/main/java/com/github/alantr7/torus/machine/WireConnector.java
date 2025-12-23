@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.ModelLocation;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -20,7 +20,10 @@ public class WireConnector extends Structure {
         isInteractable = true;
         isHeavy = false;
         isOmnidirectional = true;
-        modelLocation = new ModelLocation("torus", "wire_connector");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/wire_connector.model.yml",
+          addon.classpathContainer, "configs/torus/models/wire_connector.model.yml"
+        );
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.api.addon;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.Container;
 import com.github.alantr7.torus.math.MathUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,6 +14,10 @@ public class TorusAddon {
     public final String id;
 
     public final String name;
+
+    public final Container externalContainer;
+
+    public final Container classpathContainer;
 
     public final File rootDirectory;
 
@@ -29,6 +34,8 @@ public class TorusAddon {
         this.modelsDirectory = new File(rootDirectory, "models");
         this.itemsDirectory = new File(rootDirectory, "items");
         this.recipesDirectory = new File(rootDirectory, "recipes");
+        this.externalContainer = Container.addonConfigs(this);
+        this.classpathContainer = Container.classpath(plugin);
     }
 
     public boolean allowsExternalConfig(ConfigType configType) {

@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.ModelLocation;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -25,7 +25,10 @@ public class BlockBreaker extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
         isHeavy = false;
         portableData.add("energy");
-        modelLocation = new ModelLocation("torus", "block_breaker");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/block_breaker.config.yml",
+          addon.classpathContainer, "configs/torus/models/block_breaker.model.yml"
+        );
     }
 
     @Override

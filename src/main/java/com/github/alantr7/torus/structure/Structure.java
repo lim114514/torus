@@ -1,8 +1,8 @@
 package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.api.addon.TorusAddon;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.math.MathUtils;
-import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -60,7 +60,7 @@ public abstract class Structure {
     @Getter @Setter
     private ModelTemplate model;
 
-    public ModelLocation modelLocation;
+    public ResourceLocation modelLocation;
 
     public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.addon = addon;

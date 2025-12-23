@@ -1,8 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.item.ItemCriteria;
-import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
@@ -29,7 +29,10 @@ public class OreCrusher extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
         portableData.add("energy");
-        modelLocation = new ModelLocation("torus", "ore_crusher");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/ore_crusher.model.yml",
+          addon.classpathContainer, "configs/torus/models/ore_crusher.model.yml"
+        );
     }
 
     @Override

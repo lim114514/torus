@@ -1,8 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
-import com.github.alantr7.torus.model.ModelLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -19,7 +19,10 @@ public class BlastFurnace extends Structure {
     public BlastFurnace() {
         super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", "Blast Furnace", BlastFurnaceInstance.class);
         isInteractable = true;
-        modelLocation = new ModelLocation("torus", "blast_furnace");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/blast_furnace.model.yml",
+          addon.classpathContainer, "configs/torus/models/blast_furnace.model.yml"
+        );
     }
 
     @Override

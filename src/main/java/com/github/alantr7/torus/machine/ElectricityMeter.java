@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.ModelLocation;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -20,7 +20,10 @@ public class ElectricityMeter extends Structure {
         isHeavy = false;
         portableData.add("total");
         hologramTranslation = new float[] { 1.4f, 0.1f, 0f };
-        modelLocation = new ModelLocation("torus", "electricity_meter");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/electricity_meter.model.yml",
+          addon.classpathContainer, "configs/torus/models/electricity_meter.model.yml"
+        );
     }
 
     @Override

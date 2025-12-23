@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.ModelLocation;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -31,7 +31,10 @@ public class Pump extends Structure {
         portableData.add("energy");
         portableData.add("fluid");
         portableData.add("amount");
-        modelLocation = new ModelLocation("torus", "pump");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/pump.model.yml",
+          addon.classpathContainer, "configs/torus/models/pump.model.yml"
+        );
     }
 
     @Override

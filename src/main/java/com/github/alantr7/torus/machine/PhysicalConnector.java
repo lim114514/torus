@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.ModelLocation;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
@@ -22,7 +22,10 @@ public class PhysicalConnector extends Structure {
         isHeavy = false;
         portableData.add("flow");
         portableData.add("filter");
-        modelLocation = new ModelLocation("torus", "connector");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/connector.model.yml",
+          addon.classpathContainer, "configs/torus/models/connector.model.yml"
+        );
     }
 
     @Override

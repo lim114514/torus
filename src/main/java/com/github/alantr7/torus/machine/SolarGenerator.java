@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.*;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -25,7 +25,10 @@ public class SolarGenerator extends Structure {
     public SolarGenerator() {
         super(TorusPlugin.DEFAULT_ADDON, "solar_generator", "Solar Generator", SolarGeneratorInstance.class);
         portableData.add("energy");
-        modelLocation = new ModelLocation("torus", "solar_generator");
+        modelLocation = new ResourceLocation(
+          addon.externalContainer, "models/solar_generator.model.yml",
+          addon.classpathContainer, "configs/torus/models/solar_generator.model.yml"
+        );
     }
 
     @Override

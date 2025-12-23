@@ -169,12 +169,12 @@ public class Commands {
               return;
           }
 
-          if (structure.modelLocation == null || !structure.modelLocation.pack.equals("torus")) {
+          if (!structure.addon.id.equals("torus") || structure.modelLocation == null) {
               ctx.respond("You can not edit the model of this structure");
               return;
           }
 
-          TorusPlugin.getInstance().saveResource("configs/torus/models/" + structure.modelLocation.id + ".model.yml", true);
+          TorusPlugin.getInstance().saveResource("configs/torus/models/" + structure.modelLocation.relativePath + ".model.yml", true);
           ctx.respond("Model successfully exported.");
       });
 

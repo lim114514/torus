@@ -1,0 +1,59 @@
+package com.github.alantr7.torus.api.resource;
+
+import com.github.alantr7.torus.api.addon.ConfigType;
+import com.github.alantr7.torus.api.addon.TorusAddon;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Objects;
+import java.util.function.Function;
+
+public class Container {
+
+    public final int type;
+
+    public final String root;
+
+    public final Function<String, InputStream> resourceGetFunction;
+
+    private Container(int type, String root, Function<String, InputStream> resourceGetFunction) {
+        this.type = type;
+        this.root = root;
+        this.resourceGetFunction = resourceGetFunction;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Container container = (Container) o;
+        return type == container.type && Objects.equals(root, container.root);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, root);
+    }
+
+    public static Container classpath(JavaPlugin plugin) {
+        return new Container(0, "~" + plugin.getName(), plugin::getResource);
+    }
+
+    public static Container addonConfigs(TorusAddon addon) {
+        return new Container(1, addon.rootDirectory.getPath(), path -> {
+            File file = new File(addon.rootDirectory, path);
+            if (!file.exists()) {
+                return null;
+            }
+
+            try (InputStream is = new FileInputStream(file)) {
+                return is;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
+    }
+
+}
