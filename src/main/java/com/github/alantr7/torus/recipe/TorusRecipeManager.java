@@ -2,6 +2,7 @@ package com.github.alantr7.torus.recipe;
 
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bukkitplugin.gui.GUI;
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.gui.recipeview.ViewCraftingRecipeGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
@@ -31,7 +32,7 @@ public class TorusRecipeManager {
 
     public void clear() {
         for (Keyed recipe : recipesRegisteredToBukkit) {
-            Bukkit.removeRecipe(recipe.getKey());
+            Bukkit.removeRecipe(recipe.getKey(), false);
         }
         recipesRegisteredToBukkit.clear();
         crusherRecipes.clear();
@@ -49,10 +50,14 @@ public class TorusRecipeManager {
     }
 
     public <R extends Recipe & Keyed> void registerBukkitRecipe(R recipe) {
-        Bukkit.removeRecipe(recipe.getKey());
-        Bukkit.addRecipe(recipe);
+        if (TorusPlugin.usesPaperAPI()) {
+            Bukkit.removeRecipe(recipe.getKey(), false);
+            Bukkit.addRecipe(recipe, false);
+        } else {
+            Bukkit.removeRecipe(recipe.getKey());
+            Bukkit.addRecipe(recipe);
+        }
         recipesRegisteredToBukkit.add(recipe);
-
         trackTorusItemRecipe(recipe.getResult(), recipe);
     }
 
@@ -118,14 +123,7 @@ public class TorusRecipeManager {
 
     @Nullable
     public <R extends Keyed> GUI createRecipeViewer(Player player, R recipe) {
-        GUI viewer;
-        if (recipe instanceof ShapedRecipe shaped) {
-            viewer = new ViewCraftingRecipeGUI(shaped, player);
-        } else {
-            return null;
-        }
-
-        return viewer;
+        return (recipe instanceof ShapedRecipe shaped) ? new ViewCraftingRecipeGUI(shaped, player) : null;
     }
 
 }

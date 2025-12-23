@@ -5,6 +5,7 @@ import com.github.alantr7.torus.item.ItemConfigLoader;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.recipe.RecipeLoader;
+import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,9 @@ public class Lifecycle {
                     adapter.registerRecipes(TorusPlugin.getInstance().getRecipeRegistry());
                     if (adapter.addon.allowsExternalConfig(ConfigType.RECIPES))
                         RecipeLoader.load(adapter.addon);
+                }
+                if (TorusPlugin.usesPaperAPI()) {
+                    Bukkit.updateRecipes();
                 }
                 TorusLogger.info(Category.GENERAL, "Recipe registration lifecycle completed.");
                 break;
