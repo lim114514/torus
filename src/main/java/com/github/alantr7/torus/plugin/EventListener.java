@@ -149,16 +149,18 @@ public class EventListener implements Listener {
         if (!TorusPlugin.getInstance().getWorldManager().isWorldSupported(event.getPlayer().getWorld()))
             return;
 
-        TorusPlayer player = TorusPlayer.get(event.getPlayer());
-        if (player.interactionCooldownExpiry > System.currentTimeMillis())
-            return;
-
         TorusWorld world = TorusPlugin.getInstance().getWorldManager().getWorld(event.getPlayer().getWorld());
         BlockLocation loc = new BlockLocation(event.getClickedBlock().getLocation());
 
         StructureInstance instance = world.getStructure(loc);
         if (instance == null)
             return;
+
+        TorusPlayer player = TorusPlayer.get(event.getPlayer());
+        if (player.interactionCooldownExpiry > System.currentTimeMillis()) {
+            event.setCancelled(true);
+            return;
+        }
 
         player.interactionCooldownExpiry = System.currentTimeMillis() + 200;
 
