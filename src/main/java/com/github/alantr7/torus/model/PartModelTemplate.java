@@ -46,20 +46,44 @@ public class PartModelTemplate {
         return new PartModel(this, parent, entities.stream().map(EntityReference::new).toList());
     }
 
-    // TODO: Separate block displays from entity displays somehow
     public PartModel recycle(PartModel model, Location location, float rotH, float rotV) {
         List<Display> entities = new ArrayList<>();
-        int entityIdx = 0;
+        List<ItemDisplay> itemDisplays = new ArrayList<>();
+        List<BlockDisplay> blockDisplays = new ArrayList<>();
+
+        for (EntityReference ref : model.entityReferences) {
+            Display entity = ref.getEntity();
+            if (entity instanceof ItemDisplay itemDisplay) {
+                itemDisplays.add(itemDisplay);
+            }
+            else if (entity instanceof BlockDisplay blockDisplay) {
+                blockDisplays.add(blockDisplay);
+            }
+        }
+
+        byte entityIdx = 0;
+        byte blockDisplayIdx = 0;
+        byte itemDisplayIdx = 0;
         for (; entityIdx < parts.size(); entityIdx++) {
             PartModelElementDisplayRenderer part = parts.get(entityIdx);
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
 
             Display entity;
-            if (entityIdx < model.entityReferences.size()) {
-                entity = model.entityReferences.get(entityIdx).getEntity();
-                entity.teleport(location);
-            } else {
-                entity = location.getWorld().spawn(location, part.entityType);
+            if (part.entityType == ItemDisplay.class) {
+                if (itemDisplayIdx < itemDisplays.size()) {
+                    entity = itemDisplays.get(itemDisplayIdx++);
+                    entity.teleport(location);
+                } else {
+                    entity = location.getWorld().spawn(location, part.entityType);
+                }
+            }
+            else {
+                if (blockDisplayIdx < blockDisplays.size()) {
+                    entity = blockDisplays.get(blockDisplayIdx++);
+                    entity.teleport(location);
+                } else {
+                    entity = location.getWorld().spawn(location, part.entityType);
+                }
             }
 
             transformEntity(entity, rotatedOffset, part, rotH, rotV);
