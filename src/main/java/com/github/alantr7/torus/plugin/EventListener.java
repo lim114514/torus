@@ -112,11 +112,6 @@ public class EventListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler
-    void onMachinePlace(PlayerStructurePlaceEvent event) {
-        event.getPlayer().asBukkit().sendMessage("You placed " + event.getStructure().structure.id);
-    }
-
     @EventHandler(priority = EventPriority.HIGH)
     void onMachineInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
