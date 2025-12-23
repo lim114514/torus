@@ -1,7 +1,12 @@
 package com.github.alantr7.torus.model;
 
 import com.github.alantr7.torus.item.HeadData;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Skull;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -33,9 +38,24 @@ public class ModelLoader {
             PartModelTemplate partModelTemplate = new PartModelTemplate(partName);
             List<String> elements = yaml.getStringList(partName);
             for (String rawElement : elements) {
-                PartModelElementItemDisplayRenderer renderer = parseElement(rawElement);
-                if (renderer != null) {
-                    partModelTemplate.add(renderer);
+                Matcher matcher = ITEM_PATTERN.matcher(rawElement);
+                String rendererType = nextString(rawElement, matcher);
+
+                if (rendererType == null) {
+                    TorusLogger.error(Category.MODELS, "Renderer type is null.");
+                    continue;
+                }
+
+                PartModelElementDisplayRenderer renderer = switch (rendererType) {
+                    case "item_display" -> parseElementWithItemDisplayRenderer(matcher, rawElement);
+                    case "block_display" -> parseElementWithBlockDisplayRenderer(matcher, rawElement);
+                    default -> null;
+                };
+
+                if (renderer == null) {
+                    TorusLogger.error(Category.MODELS, "Invalid renderer type: " + rendererType);
+                } else {
+                    partModelTemplate.parts.add(renderer);
                 }
             }
 
@@ -45,10 +65,7 @@ public class ModelLoader {
         return template;
     }
 
-    public static PartModelElementItemDisplayRenderer parseElement(String raw) {
-        Matcher matcher = ITEM_PATTERN.matcher(raw);
-        nextString(raw, matcher);
-
+    public static PartModelElementItemDisplayRenderer parseElementWithItemDisplayRenderer(Matcher matcher, String raw) {
         String rawMaterial = nextString(raw, matcher);
         Material material;
 
@@ -96,6 +113,43 @@ public class ModelLoader {
 
         itemStack.setItemMeta(itemMeta);
         return new PartModelElementItemDisplayRenderer(itemStack, offsetScaleRotation);
+    }
+
+    public static PartModelElementBlockDisplayRenderer parseElementWithBlockDisplayRenderer(Matcher matcher, String raw) {
+        String rawMaterial = nextString(raw, matcher);
+        Material material;
+
+        Map<String, String> attributes = new HashMap<>();
+        int attributesPosition = rawMaterial.indexOf("[");
+        if (attributesPosition != -1) {
+            material = Material.valueOf(rawMaterial.substring(0, attributesPosition).toUpperCase());
+
+            Matcher attributeMatcher = ATTRIBUTE_PATTERN.matcher(rawMaterial.substring(attributesPosition + 1, rawMaterial.length() - 1));
+            while (attributeMatcher.find()) {
+                String attributeNameValue = rawMaterial.substring(attributesPosition + 1 + attributeMatcher.start(), attributesPosition + 1 + attributeMatcher.end());
+                int attributeValueSeparatorPosition = attributeNameValue.indexOf("=");
+
+                attributes.put(attributeNameValue.substring(0, attributeValueSeparatorPosition), attributeNameValue.substring(attributeValueSeparatorPosition + 1));
+            }
+        } else {
+            material = Material.valueOf(rawMaterial.toUpperCase());
+        }
+
+        float[] offsetScaleRotation = {
+          Float.parseFloat(nextString(raw, matcher)),
+          Float.parseFloat(nextString(raw, matcher)),
+          Float.parseFloat(nextString(raw, matcher)),
+
+          Float.parseFloat(nextString(raw, matcher)),
+          Float.parseFloat(nextString(raw, matcher)),
+          Float.parseFloat(nextString(raw, matcher)),
+
+          Float.parseFloat(nextString(raw, matcher)),
+          Float.parseFloat(nextString(raw, matcher)),
+          Float.parseFloat(nextString(raw, matcher)),
+        };
+
+        return new PartModelElementBlockDisplayRenderer(material.createBlockData(), offsetScaleRotation);
     }
 
     private static String nextString(String string, Matcher matcher) {

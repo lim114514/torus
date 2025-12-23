@@ -23,9 +23,9 @@ public class PartModelTemplate {
         this.name = name;
     }
 
-    public final List<PartModelElementItemDisplayRenderer> parts = new ArrayList<>();
+    public final List<PartModelElementDisplayRenderer> parts = new ArrayList<>();
 
-    public void add(PartModelElementItemDisplayRenderer part) {
+    public void add(PartModelElementDisplayRenderer part) {
         parts.add(part);
     }
 
@@ -33,10 +33,10 @@ public class PartModelTemplate {
         List<Display> entities = new ArrayList<>();
         ItemDisplay parent = location.getWorld().spawn(location, ItemDisplay.class);
 
-        for (PartModelElementItemDisplayRenderer part : parts) {
+        for (PartModelElementDisplayRenderer part : parts) {
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
 
-            Display entity = location.getWorld().spawn(location, ItemDisplay.class);
+            Display entity = location.getWorld().spawn(location, part.entityType);
             transformEntity(entity, rotatedOffset, part, direction.rotH, direction.rotV);
 
             parent.addPassenger(entity);
@@ -46,11 +46,12 @@ public class PartModelTemplate {
         return new PartModel(this, parent, entities.stream().map(EntityReference::new).toList());
     }
 
+    // TODO: Separate block displays from entity displays somehow
     public PartModel recycle(PartModel model, Location location, float rotH, float rotV) {
         List<Display> entities = new ArrayList<>();
         int entityIdx = 0;
         for (; entityIdx < parts.size(); entityIdx++) {
-            PartModelElementItemDisplayRenderer part = parts.get(entityIdx);
+            PartModelElementDisplayRenderer part = parts.get(entityIdx);
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
 
             Display entity;
@@ -58,7 +59,7 @@ public class PartModelTemplate {
                 entity = model.entityReferences.get(entityIdx).getEntity();
                 entity.teleport(location);
             } else {
-                entity = location.getWorld().spawn(location, ItemDisplay.class);
+                entity = location.getWorld().spawn(location, part.entityType);
             }
 
             transformEntity(entity, rotatedOffset, part, rotH, rotV);
@@ -75,12 +76,12 @@ public class PartModelTemplate {
         return new PartModel(this, model.parent, entities.stream().map(EntityReference::new).toList());
     }
 
-    private void transformEntity(Display entity, Vector3f translation, PartModelElementItemDisplayRenderer part, float rotH, float rotV) {
+    private void transformEntity(Display entity, Vector3f translation, PartModelElementDisplayRenderer part, float rotH, float rotV) {
         entity.setPersistent(false);
-        if (entity instanceof BlockDisplay blockDisplay) {
-            blockDisplay.setBlock(part.itemStack.clone().getType().createBlockData());
-        } else if (entity instanceof ItemDisplay itemDisplay) {
-            itemDisplay.setItemStack(part.itemStack.clone());
+        if (part.entityType == ItemDisplay.class) {
+            ((ItemDisplay) entity).setItemStack(((PartModelElementItemDisplayRenderer) part).itemStack.clone());
+        } else if (part.entityType == BlockDisplay.class) {
+            ((BlockDisplay) entity).setBlock(((PartModelElementBlockDisplayRenderer) part).blockData.clone());
         }
         entity.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "purpose"), PersistentDataType.STRING, "structure_model");
 
