@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Config("config.yml")
+@Config("configs/config.yml")
 public class MainConfig {
 
     @ConfigOption(path = "config_version")
