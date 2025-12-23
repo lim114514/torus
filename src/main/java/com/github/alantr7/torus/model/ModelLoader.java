@@ -28,7 +28,7 @@ public class ModelLoader {
     private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9]+");
 
     public static ModelTemplate load(String pack, String id) {
-        File file = new File(TorusPlugin.getInstance().getDataFolder(), "packs/" + pack + "/models/" + id + ".model.yml");
+        File file = new File(TorusPlugin.getInstance().getDataFolder(), "configs/" + pack + "/models/" + id + ".model.yml");
         if (!file.exists()) {
             if (!pack.equals("torus"))
                 return null;
@@ -57,7 +57,7 @@ public class ModelLoader {
     }
 
     public static ModelTemplate loadInternalTorusModel(String id) {
-        InputStream is = TorusPlugin.getInstance().getResource("packs/torus/models/" + id + ".model.yml");
+        InputStream is = TorusPlugin.getInstance().getResource("configs/torus/models/" + id + ".model.yml");
         if (is == null)
             return null;
 

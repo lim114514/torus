@@ -68,7 +68,7 @@ public abstract class Structure {
         this.namespacedId = addon.id + ":" + id;
         this.name = name;
         this.instanceClass = instanceClass;
-        this.configResource = "packs/" + addon.id + "/configs/" + id + ".config.yml";
+        this.configResource = "configs/" + addon.id + "/configs/" + id + ".config.yml";
 
         ByteArrayBuilder builder = new ByteArrayBuilder();
         createBounds(builder);

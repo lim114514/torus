@@ -133,23 +133,23 @@ public class Commands {
           }
 
           if (preset.equalsIgnoreCase("default/recipes")) {
-              TorusPlugin.getInstance().saveResource("packs/torus/recipes/blasting.recipes.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/recipes/crafting.recipes.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/recipes/crusher.recipes.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/recipes/smelting.recipes.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/recipes/washer.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/recipes/blasting.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/recipes/crafting.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/recipes/crusher.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/recipes/smelting.recipes.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/recipes/washer.recipes.yml", true);
 
               ctx.respond("Recipes preset saved. Use /torus reload to apply changes.");
               return;
           }
 
           if (preset.equalsIgnoreCase("default/items_configs")) {
-              TorusPlugin.getInstance().saveResource("packs/torus/items/generators.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/items/machines.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/items/network.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/items/resources.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/items/storage.yml", true);
-              TorusPlugin.getInstance().saveResource("packs/torus/items/tools.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/items/generators.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/items/machines.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/items/network.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/items/resources.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/items/storage.yml", true);
+              TorusPlugin.getInstance().saveResource("configs/torus/items/tools.yml", true);
 
               ctx.respond("Items configs preset saved. Use /torus reload to apply changes.");
               return;
@@ -174,7 +174,7 @@ public class Commands {
               return;
           }
 
-          TorusPlugin.getInstance().saveResource("packs/torus/models/" + structure.modelLocation.id + ".model.yml", true);
+          TorusPlugin.getInstance().saveResource("configs/torus/models/" + structure.modelLocation.id + ".model.yml", true);
           ctx.respond("Model successfully exported.");
       });
 

@@ -24,7 +24,7 @@ public class TorusAddon {
         this.plugin = plugin;
         this.id = id;
         this.name = name;
-        this.rootDirectory = new File(new File(TorusPlugin.getInstance().getDataFolder(), "packs"), id);
+        this.rootDirectory = new File(new File(TorusPlugin.getInstance().getDataFolder(), "configs"), id);
         this.configsDirectory = new File(rootDirectory, "structures");
         this.modelsDirectory = new File(rootDirectory, "models");
         this.itemsDirectory = new File(rootDirectory, "items");
