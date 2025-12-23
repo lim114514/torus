@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.api.resource;
 
-import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,16 +42,14 @@ public class Container {
     public static Container addonConfigs(TorusAddon addon) {
         return new Container(1, addon.rootDirectory.getPath(), path -> {
             File file = new File(addon.rootDirectory, path);
-            if (!file.exists()) {
-                return null;
+            if (file.exists()) {
+                try {
+                    return new FileInputStream(file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-            try (InputStream is = new FileInputStream(file)) {
-                return is;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
+            return null;
         });
     }
 
