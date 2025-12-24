@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -12,7 +13,6 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 
@@ -35,7 +35,8 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
 
     @Override
     public void tick() {
-        model.getPart("blade_1").entityReferences.forEach(ref -> {
+        // TODO: Abstraction
+        ((DisplayEntitiesPartModel) model.getPart("blade_1")).entityReferences.forEach(ref -> {
             Display entity = ref.getEntity();
             Transformation transform = entity.getTransformation();
 
@@ -46,7 +47,8 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
             entity.setInterpolationDelay(0);
             entity.setInterpolationDuration(20);
         });
-        model.getPart("blade_2").entityReferences.forEach(ref -> {
+        // TODO: Abstraction
+        ((DisplayEntitiesPartModel) model.getPart("blade_2")).entityReferences.forEach(ref -> {
             Display entity = ref.getEntity();
             Transformation transform = entity.getTransformation();
 

@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
@@ -13,7 +14,6 @@ import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
@@ -76,14 +76,15 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     }
 
     public void updateModel() {
-        model.getPart("wheel_left").entityReferences.forEach(ref -> {
+        // TODO: Abstraction
+        ((DisplayEntitiesPartModel) model.getPart("wheel_left")).entityReferences.forEach(ref -> {
             Display display = ref.getEntity();
             Transformation transformation = display.getTransformation();
             display.setTransformation(new Transformation(transformation.getTranslation(), new AxisAngle4f(angle * 0.9f, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(20);
         });
-        model.getPart("wheel_right").entityReferences.forEach(ref -> {
+        ((DisplayEntitiesPartModel) model.getPart("wheel_right")).entityReferences.forEach(ref -> {
             Display display = ref.getEntity();
             Transformation transformation = display.getTransformation();
             display.setTransformation(new Transformation(transformation.getTranslation(), new AxisAngle4f(angle, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));

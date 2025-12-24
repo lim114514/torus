@@ -1,12 +1,10 @@
-package com.github.alantr7.torus.model;
+package com.github.alantr7.torus.model.de_provider;
 
 import com.github.alantr7.torus.item.HeadData;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import org.bukkit.Bukkit;
+import com.github.alantr7.torus.model.ModelTemplate;
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Skull;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +33,7 @@ public class ModelLoader {
         ModelTemplate template = new ModelTemplate(yaml.getInt("model_version", 1));
 
         for (String partName : yaml.getKeys(false)) {
-            PartModelTemplate partModelTemplate = new PartModelTemplate(partName);
+            DisplayEntitiesPartModelTemplate partModelTemplate = new DisplayEntitiesPartModelTemplate(partName);
             List<String> elements = yaml.getStringList(partName);
             for (String rawElement : elements) {
                 Matcher matcher = ITEM_PATTERN.matcher(rawElement);

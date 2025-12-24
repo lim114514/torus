@@ -9,7 +9,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import com.github.alantr7.torus.model.ModelLoader;
+import com.github.alantr7.torus.model.de_provider.ModelLoader;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;

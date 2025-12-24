@@ -209,6 +209,9 @@ public abstract class StructureInstance {
 
     public abstract void tick();
 
+    public void tickModel() {
+    }
+
     static final ChatColor COLOR_STRUCTURE_NAME = ChatColor.of("#ff8854");
     static final ChatColor COLOR_PROPERTY = ChatColor.of("#cfcfcf");
     public final void updateInspectionHologram() {

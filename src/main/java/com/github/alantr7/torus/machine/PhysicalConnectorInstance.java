@@ -5,6 +5,7 @@ import com.github.alantr7.torus.gui.structure.InventoryInterfaceFilterEditGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -12,7 +13,6 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Socket;
@@ -107,7 +107,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     }
 
     public void updateModel() {
-        PartModelTemplate model = new PartModelTemplate("cable");
+        DisplayEntitiesPartModelTemplate model = new DisplayEntitiesPartModelTemplate("cable");
         for (Direction direction : Direction.values()) {
             if (socket.isConnected(direction)) {
                 model.add(EnergyCable.MODELS_ITEM[direction.ordinal()]);

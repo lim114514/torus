@@ -1,4 +1,4 @@
-package com.github.alantr7.torus.model;
+package com.github.alantr7.torus.model.de_provider;
 
 import org.bukkit.entity.Display;
 import org.joml.Quaternionf;

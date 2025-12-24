@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -12,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,13 +45,15 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     @Override
     public void handleModelInit() {
-        Display pipe = model.getPart("pipe").entityReferences.getFirst().getEntity();
+        // TODO: Abstraction
+        Display pipe = ((DisplayEntitiesPartModel) model.getPart("pipe")).entityReferences.getFirst().getEntity();
         pipe.setTeleportDuration(20);
         updateModel();
     }
 
     private void updateModel() {
-        Display pipe = model.getPart("pipe").entityReferences.getFirst().getEntity();
+        // TODO: Abstraction
+        Display pipe = ((DisplayEntitiesPartModel) model.getPart("pipe")).entityReferences.getFirst().getEntity();
         if (pipe != null) {
             Transformation transformation = pipe.getTransformation();
             transformation.getScale().set(.1875f, length.get(), .1875f);

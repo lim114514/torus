@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
@@ -18,7 +20,6 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
@@ -96,11 +97,12 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     @Override
     public void handleModelInit() {
-        model.getPart("head").parent.setTeleportDuration(10);
-        model.getPart("feed").parent.setTeleportDuration(10);
-        model.getPart("drill_bit").parent.setTeleportDuration(10);
-        model.getPart("gantry_x").parent.setTeleportDuration(10);
-        model.getPart("gantry_z").parent.setTeleportDuration(10);
+        // TODO: Abstraction
+        ((DisplayEntitiesPartModel) model.getPart("head")).parent.setTeleportDuration(10);
+        ((DisplayEntitiesPartModel) model.getPart("feed")).parent.setTeleportDuration(10);
+        ((DisplayEntitiesPartModel) model.getPart("drill_bit")).parent.setTeleportDuration(10);
+        ((DisplayEntitiesPartModel) model.getPart("gantry_x")).parent.setTeleportDuration(10);
+        ((DisplayEntitiesPartModel) model.getPart("gantry_z")).parent.setTeleportDuration(10);
     }
 
     public void advance() {
@@ -163,9 +165,10 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         drillLength.update(len);
 
-        Display drillModel = model.getPart("feed").entityReferences.getFirst().getEntity();
+        // TODO: Abstraction
+        Display drillModel = ((DisplayEntitiesPartModel) model.getPart("feed")).entityReferences.getFirst().getEntity();
         Transformation transform = drillModel.getTransformation();
-        transform.getTranslation().y = structure.getModel().partsByName.get("feed").parts.getFirst().offset[1] + len / 2f - 1.5f;
+        transform.getTranslation().y = ((DisplayEntitiesPartModelTemplate) structure.getModel().partsByName.get("feed")).parts.getFirst().offset[1] + len / 2f - 1.5f;
         transform.getScale().y = len + f;
         drillModel.setTransformation(transform);
     }

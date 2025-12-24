@@ -1,12 +1,12 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Connectable;
@@ -95,7 +95,8 @@ public class CableInstance extends StructureInstance implements Connectable, Con
     }
 
     public void updateModel() {
-        PartModelTemplate model = new PartModelTemplate("base");
+        // TODO: Abstraction
+        DisplayEntitiesPartModelTemplate model = new DisplayEntitiesPartModelTemplate("base");
         if (connections.get() == 0) {
             model.add(CABLE_MODELS[type.get()][6]);
         }
