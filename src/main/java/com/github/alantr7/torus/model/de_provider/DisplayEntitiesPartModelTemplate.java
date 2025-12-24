@@ -20,7 +20,11 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
     public final List<PartModelElementDisplayRenderer> parts = new ArrayList<>();
 
     public DisplayEntitiesPartModelTemplate(String name) {
-        super(name);
+        this(name, new Vector3f(.5f, 0, .5f));
+    }
+
+    public DisplayEntitiesPartModelTemplate(String name, Vector3f offset) {
+        super(name, offset);
     }
 
     public void add(PartModelElementDisplayRenderer part) {

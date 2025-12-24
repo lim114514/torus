@@ -168,7 +168,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         // TODO: Abstraction
         Display drillModel = ((DisplayEntitiesPartModel) model.getPart("feed")).entityReferences.getFirst().getEntity();
         Transformation transform = drillModel.getTransformation();
-        transform.getTranslation().y = ((DisplayEntitiesPartModelTemplate) structure.getModel().partsByName.get("feed")).parts.getFirst().offset[1] + len / 2f - 1.5f;
+        transform.getTranslation().y = ((DisplayEntitiesPartModelTemplate) structure.getModel().parts.get("feed")).parts.getFirst().offset[1] + len / 2f - 1.5f;
         transform.getScale().y = len + f;
         drillModel.setTransformation(transform);
     }

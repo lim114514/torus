@@ -11,27 +11,20 @@ public class ModelTemplate {
 
     public final int version;
 
-    public final Map<PartModelTemplate, Vector3f> parts = new HashMap<>();
-
-    public final Map<String, PartModelTemplate> partsByName = new HashMap<>();
+    public final Map<String, PartModelTemplate> parts = new HashMap<>();
 
     public ModelTemplate(int version) {
         this.version = version;
     }
 
     public void add(PartModelTemplate template) {
-        add(template, new Vector3f(.5f, 0, .5f));
-    }
-
-    public void add(PartModelTemplate template, Vector3f offset) {
-        parts.put(template, offset);
-        partsByName.put(template.name, template);
+        parts.put(template.name, template);
     }
 
     public Model toModel(BlockLocation location, Direction direction) {
         Model model = new Model();
-        parts.forEach((part, offset) -> {
-            model.parts.put(part.name, part.build(location.toBukkit().add(offset.x, offset.y, offset.z), direction));
+        parts.forEach((name, part) -> {
+            model.parts.put(name, part.build(location.toBukkit().add(part.offset.x, part.offset.y, part.offset.z), direction));
         });
 
         return model;
