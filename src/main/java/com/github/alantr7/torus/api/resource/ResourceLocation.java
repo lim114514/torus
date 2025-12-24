@@ -2,6 +2,7 @@ package com.github.alantr7.torus.api.resource;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class ResourceLocation {
@@ -30,8 +31,8 @@ public class ResourceLocation {
     }
 
     @Nullable
-    public InputStream getResource() {
-        InputStream primary = container.resourceGetFunction.apply(relativePath);
+    public Resource getResource() {
+        Resource primary = container.resourceGetFunction.apply(relativePath);
         if (primary != null)
             return primary;
 

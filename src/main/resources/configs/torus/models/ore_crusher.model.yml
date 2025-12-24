@@ -1,7 +1,7 @@
 model_version: 2
 
 base:
-  renderer: BLOCK_DISPLAYS
+  renderer: DISPLAY_ENTITIES
   elements:
     - item_display,cyan_terracotta,0,1.5625,0,1,1.25,1,0,0,0
     - item_display,cyan_terracotta,0,0.8125,0,1.375,0.25,1.375,0,0,0
@@ -31,26 +31,26 @@ base:
     - item_display,polished_tuff,-2.25,1.5,0,0.25,0.375,0.4375,0,0,0
 
 in_item:
-  renderer: BLOCK_DISPLAYS
+  renderer: DISPLAY_ENTITIES
   elements:
     - item_display,gray_concrete,0,2.9375,0,0.625,0.125,0.625,0,0,0
 
 out_item:
-  renderer: BLOCK_DISPLAYS
+  renderer: DISPLAY_ENTITIES
   elements:
     - item_display,gray_concrete,1.4375,0.5,0,0.125,0.625,0.625,0,0,0
 
 in_energy:
-  renderer: BLOCK_DISPLAYS
+  renderer: DISPLAY_ENTITIES
   elements:
     - item_display,gray_concrete,-2.4375,1.5,0,0.125,0.625,0.625,0,0,0
 
 wheel_left:
-  renderer: BLOCK_DISPLAYS
+  renderer: DISPLAY_ENTITIES
   elements:
     - item_display,structure_void,0,1.5625,-0.875,1.25,1.25,2.4375,0,0,0
 
 wheel_right:
-  renderer: BLOCK_DISPLAYS
+  renderer: DISPLAY_ENTITIES
   elements:
     - item_display,structure_void,-1.8125,1.5,-0.875,0.75,0.75,2.4375,0,0,0

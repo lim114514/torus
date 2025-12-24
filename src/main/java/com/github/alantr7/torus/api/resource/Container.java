@@ -15,9 +15,9 @@ public class Container {
 
     public final String root;
 
-    public final Function<String, InputStream> resourceGetFunction;
+    public final Function<String, Resource> resourceGetFunction;
 
-    private Container(int type, String root, Function<String, InputStream> resourceGetFunction) {
+    private Container(int type, String root, Function<String, Resource> resourceGetFunction) {
         this.type = type;
         this.root = root;
         this.resourceGetFunction = resourceGetFunction;
@@ -36,7 +36,10 @@ public class Container {
     }
 
     public static Container classpath(JavaPlugin plugin) {
-        return new Container(0, "~" + plugin.getName(), plugin::getResource);
+        return new Container(0, "~" + plugin.getName(), path -> {
+            InputStream stream = plugin.getResource(path);
+            return stream != null ? new Resource(null, stream) : null;
+        });
     }
 
     public static Container addonConfigs(TorusAddon addon) {
@@ -44,7 +47,7 @@ public class Container {
             File file = new File(addon.rootDirectory, path);
             if (file.exists()) {
                 try {
-                    return new FileInputStream(file);
+                    return new Resource(file, new FileInputStream(file));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
