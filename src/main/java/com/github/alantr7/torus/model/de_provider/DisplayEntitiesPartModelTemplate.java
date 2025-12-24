@@ -33,6 +33,8 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
 
     @Override
     public PartModel build(Location location, Direction direction) {
+        location = location.clone().add(offset.x, offset.y, offset.z);
+
         List<Display> entities = new ArrayList<>();
         ItemDisplay parent = location.getWorld().spawn(location, ItemDisplay.class);
 

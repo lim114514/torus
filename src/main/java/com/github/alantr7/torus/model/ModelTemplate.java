@@ -24,7 +24,7 @@ public class ModelTemplate {
     public Model toModel(BlockLocation location, Direction direction) {
         Model model = new Model();
         parts.forEach((name, part) -> {
-            model.parts.put(name, part.build(location.toBukkit().add(part.offset.x, part.offset.y, part.offset.z), direction));
+            model.parts.put(name, part.build(location.toBukkit(), direction));
         });
 
         return model;
