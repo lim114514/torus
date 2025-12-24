@@ -4,6 +4,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.AddonBuilder;
 import com.github.alantr7.torus.api.addon.Lifecycle;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.model.ModelLoader;
 import com.github.alantr7.torus.structure.Structure;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,6 +29,10 @@ public class TorusAPI {
 
     public static Structure getStructureById(String namespacedId) {
         return TorusPlugin.getInstance().getStructureRegistry().getStructure(namespacedId);
+    }
+
+    public static ModelLoader getModelLoader() {
+        return TorusPlugin.getInstance().getModelLoader();
     }
 
 }

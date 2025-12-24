@@ -3,15 +3,16 @@ package com.github.alantr7.torus.model.de_provider;
 import com.github.alantr7.torus.item.HeadData;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.PartModelTemplate;
+import com.github.alantr7.torus.model.RendererConfigLoader;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -19,48 +20,43 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ModelLoader {
+public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
 
     private static final Pattern ITEM_PATTERN = Pattern.compile("[a-zA-Z0-9_.\\-]+(\\[[a-zA-Z0-9_=,]+])?");
 
     private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9]+");
 
-    public static ModelTemplate load(File file) {
-        return load(YamlConfiguration.loadConfiguration(file));
+    public DisplayEntitiesRendererConfigLoader() {
+        super("display_entities");
     }
 
-    public static ModelTemplate load(FileConfiguration yaml) {
-        ModelTemplate template = new ModelTemplate(yaml.getInt("model_version", 1));
+    @Override
+    public @Nullable PartModelTemplate load(ConfigurationSection section, String name, Vector3f offset) {
+        DisplayEntitiesPartModelTemplate partModelTemplate = new DisplayEntitiesPartModelTemplate(name, offset);
+        List<String> elements = section.getStringList("elements");
+        for (String rawElement : elements) {
+            Matcher matcher = ITEM_PATTERN.matcher(rawElement);
+            String rendererType = nextString(rawElement, matcher);
 
-        for (String partName : yaml.getKeys(false)) {
-            DisplayEntitiesPartModelTemplate partModelTemplate = new DisplayEntitiesPartModelTemplate(partName);
-            List<String> elements = yaml.getStringList(partName);
-            for (String rawElement : elements) {
-                Matcher matcher = ITEM_PATTERN.matcher(rawElement);
-                String rendererType = nextString(rawElement, matcher);
-
-                if (rendererType == null) {
-                    TorusLogger.error(Category.MODELS, "Renderer type is null.");
-                    continue;
-                }
-
-                PartModelElementDisplayRenderer renderer = switch (rendererType) {
-                    case "item_display" -> parseElementWithItemDisplayRenderer(matcher, rawElement);
-                    case "block_display" -> parseElementWithBlockDisplayRenderer(matcher, rawElement);
-                    default -> null;
-                };
-
-                if (renderer == null) {
-                    TorusLogger.error(Category.MODELS, "Invalid renderer type: " + rendererType);
-                } else {
-                    partModelTemplate.parts.add(renderer);
-                }
+            if (rendererType == null) {
+                TorusLogger.error(Category.MODELS, "Renderer type is null.");
+                continue;
             }
 
-            template.add(partModelTemplate);
+            PartModelElementDisplayRenderer renderer = switch (rendererType) {
+                case "item_display" -> parseElementWithItemDisplayRenderer(matcher, rawElement);
+                case "block_display" -> parseElementWithBlockDisplayRenderer(matcher, rawElement);
+                default -> null;
+            };
+
+            if (renderer == null) {
+                TorusLogger.error(Category.MODELS, "Invalid renderer type: " + rendererType);
+            } else {
+                partModelTemplate.parts.add(renderer);
+            }
         }
 
-        return template;
+        return partModelTemplate;
     }
 
     public static PartModelElementItemDisplayRenderer parseElementWithItemDisplayRenderer(Matcher matcher, String raw) {
@@ -150,7 +146,7 @@ public class ModelLoader {
         return new PartModelElementBlockDisplayRenderer(material.createBlockData(), offsetScaleRotation);
     }
 
-    private static String nextString(String string, Matcher matcher) {
+    public static String nextString(String string, Matcher matcher) {
         if (matcher.find())
             return string.substring(matcher.start(), matcher.end());
 

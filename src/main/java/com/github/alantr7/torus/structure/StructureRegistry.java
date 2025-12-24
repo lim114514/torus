@@ -9,7 +9,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import com.github.alantr7.torus.model.de_provider.ModelLoader;
+import com.github.alantr7.torus.model.ModelLoader;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -129,7 +129,7 @@ public class StructureRegistry {
             InputStream modelResource = structure.modelLocation.getResource();
             if (modelResource != null) {
                 try (Reader reader = new InputStreamReader(modelResource)) {
-                    structure.setModel(ModelLoader.load(YamlConfiguration.loadConfiguration(reader)));
+                    structure.setModel(TorusPlugin.getInstance().getModelLoader().load(YamlConfiguration.loadConfiguration(reader)));
                 } catch (Exception | Error e) {
                     TorusLogger.error(Category.MODELS, "Could not load model for " + structure.namespacedId);
                     e.printStackTrace();

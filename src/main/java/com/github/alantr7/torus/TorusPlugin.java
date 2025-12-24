@@ -11,6 +11,7 @@ import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.item.ItemRegistry;
+import com.github.alantr7.torus.model.ModelLoader;
 import com.github.alantr7.torus.player.TorusPlayerManager;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.StructureRegistry;
@@ -74,6 +75,10 @@ public class TorusPlugin extends BukkitPlugin {
 
     public TorusPlayerManager getPlayerManager() {
         return getSingleton(TorusPlayerManager.class);
+    }
+
+    public ModelLoader getModelLoader() {
+        return getSingleton(ModelLoader.class);
     }
 
     public static boolean usesPaperAPI() {
