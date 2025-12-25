@@ -68,7 +68,7 @@ public class ModelLoader {
                 if (!offsetRaw.isEmpty()) {
                     TorusLogger.error(Category.MODELS, "Invalid offset: " + Arrays.toString(offsetRaw.toArray(Float[]::new)));
                 }
-                offset = new Vector3f();
+                offset = rendererId.equals("display_entities") ? new Vector3f(.5f, 0, .5f) : new Vector3f();
             } else {
                 offset = new Vector3f(offsetRaw.get(0), offsetRaw.get(1), offsetRaw.get(2));
             }
