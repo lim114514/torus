@@ -148,7 +148,7 @@ public class TorusWorld {
             region.chunks.values()
               .forEach(chunk -> chunk.structures.values()
                 .forEach(s -> {
-                if (s.isCorrupted || !s.isFullyLoaded())
+                if (s.isCorrupted || s.isVirtual())
                     return;
 
                 try {

@@ -199,9 +199,13 @@ public abstract class StructureInstance {
         this.occupiedChunks = positions.stream().map(v -> new int[]{v.x, v.y}).toArray(int[][]::new);
     }
 
-    public boolean isFullyLoaded() {
+    /**
+     * Structures that are loaded, but chunks that they belong to are not, are marked as virtual.
+     * @return true if structure is virtual, false if physical
+     */
+    public boolean isVirtual() {
         for (int[] chunkPos : occupiedChunks) {
-            if (location.world.getChunkAt(chunkPos[0], chunkPos[1]) == null)
+            if (location.world.getChunkAt(chunkPos[0], chunkPos[1]) != null)
                 return false;
         }
         return true;
