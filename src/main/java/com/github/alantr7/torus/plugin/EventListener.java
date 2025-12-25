@@ -125,7 +125,8 @@ public class EventListener implements Listener {
         if (player.interactionCooldownExpiry > System.currentTimeMillis())
             return;
 
-        StructureInstance structure = new BlockLocation(event.getClickedBlock().getLocation()).getStructure();
+        BlockLocation clickedBlockLocation = new BlockLocation(event.getClickedBlock().getLocation());
+        StructureInstance structure = clickedBlockLocation.getStructure();
         if (structure != null) {
             player.interactionCooldownExpiry = System.currentTimeMillis() + 200;
 
@@ -139,9 +140,10 @@ public class EventListener implements Listener {
             }
 
             if (structure.structure.isInteractable && structure.testOwnership(event.getPlayer())) {
-                structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
+                if (EventUtils.callStructureInteractEvent(event.getPlayer(), structure, clickedBlockLocation)) {
+                    structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
+                }
                 player.placementCooldownExpiry = System.currentTimeMillis() + 200;
-
                 event.setCancelled(true);
             }
         }

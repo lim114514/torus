@@ -25,7 +25,7 @@ public class PlayerStructurePrePlaceEvent extends Event implements Cancellable {
 
     private final Direction direction;
 
-    @Getter @Setter
+    @Setter
     private boolean isCancelled;
 
     public PlayerStructurePrePlaceEvent(TorusPlayer player, Structure structure, BlockLocation location, Direction direction) {

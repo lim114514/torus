@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.event;
 
 import com.github.alantr7.torus.api.event.PlayerStructureBreakEvent;
+import com.github.alantr7.torus.api.event.PlayerStructureInteractEvent;
 import com.github.alantr7.torus.api.event.PlayerStructurePlaceEvent;
 import com.github.alantr7.torus.api.event.PlayerStructurePrePlaceEvent;
 import com.github.alantr7.torus.player.TorusPlayer;
@@ -23,6 +24,13 @@ public class EventUtils {
     public static void callStructurePlaceEvent(Player player, StructureInstance structure) {
         PlayerStructurePlaceEvent event = new PlayerStructurePlaceEvent(TorusPlayer.get(player), structure);
         Bukkit.getPluginManager().callEvent(event);
+    }
+
+    public static boolean callStructureInteractEvent(Player player, StructureInstance instance, BlockLocation clickedBlock) {
+        PlayerStructureInteractEvent event = new PlayerStructureInteractEvent(TorusPlayer.get(player), instance, clickedBlock);
+        Bukkit.getPluginManager().callEvent(event);
+
+        return !event.isCancelled();
     }
 
     public static boolean callStructureBreakEvent(Player player, StructureInstance structure) {
