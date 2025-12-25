@@ -36,19 +36,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
     @Override
     public void tick() {
         // TODO: Abstraction
-        ((DisplayEntitiesPartModel) model.getPart("blade_1")).entityReferences.forEach(ref -> {
-            Display entity = ref.getEntity();
-            Transformation transform = entity.getTransformation();
-
-            Quaternionf rotation = transform.getLeftRotation();
-            rotation.setAngleAxis(angle, 0, 0, 1);
-
-            entity.setTransformation(transform);
-            entity.setInterpolationDelay(0);
-            entity.setInterpolationDuration(20);
-        });
-        // TODO: Abstraction
-        ((DisplayEntitiesPartModel) model.getPart("blade_2")).entityReferences.forEach(ref -> {
+        ((DisplayEntitiesPartModel) model.getPart("blades")).entityReferences.forEach(ref -> {
             Display entity = ref.getEntity();
             Transformation transform = entity.getTransformation();
 
@@ -61,6 +49,11 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
         });
         angle += Windmill.MAXIMUM_SPEED * efficiency;
         supplyEnergy((int) (efficiency * 75));
+    }
+
+    @Override
+    public void tickModel() {
+        super.tickModel();
     }
 
     @Override
