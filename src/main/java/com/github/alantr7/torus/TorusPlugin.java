@@ -19,9 +19,9 @@ import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
-@JavaPlugin(name = "Torus", version = "0.5.1", apiVersion = "1.21")
+@JavaPlugin(name = "Torus", version = "0.5.2", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
-@SoftDepends("ProtocolLib")
+@SoftDepends({"ProtocolLib", "ModelEngine"})
 public class TorusPlugin extends BukkitPlugin {
 
     @Getter
