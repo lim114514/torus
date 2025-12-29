@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.integration.modelengine.model_provider;
 
 import com.github.alantr7.torus.model.PartModel;
+import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -10,8 +11,11 @@ public class ModelEnginePartModel extends PartModel {
 
     public final ModeledEntity entity;
 
-    public ModelEnginePartModel(ModeledEntity entity) {
+    public final ActiveModel activeModel;
+
+    public ModelEnginePartModel(ModeledEntity entity, ActiveModel activeModel) {
         this.entity = entity;
+        this.activeModel = activeModel;
     }
 
     @Override

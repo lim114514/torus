@@ -16,9 +16,12 @@ public class ModelEnginePartModelTemplate extends PartModelTemplate {
 
     public final String modelId;
 
-    public ModelEnginePartModelTemplate(String name, Vector3f offset, String modelId) {
+    public String animation;
+
+    public ModelEnginePartModelTemplate(String name, Vector3f offset, String modelId, String animation) {
         super(name, offset);
         this.modelId = modelId;
+        this.animation = animation;
     }
 
     @Override
@@ -43,7 +46,13 @@ public class ModelEnginePartModelTemplate extends PartModelTemplate {
         ModeledEntity modeledEntity = ModelEngineAPI.getOrCreateModeledEntity(stand);
         ActiveModel model = ModelEngineAPI.createActiveModel(blueprint);
         modeledEntity.addModel(model, true);
-        return new ModelEnginePartModel(modeledEntity);
+
+        ModelEnginePartModel part = new ModelEnginePartModel(modeledEntity, model);
+        if (animation != null) {
+            part.setAnimation(new ModelEngineAnimation(part, animation));
+        }
+
+        return part;
     }
 
     @Override

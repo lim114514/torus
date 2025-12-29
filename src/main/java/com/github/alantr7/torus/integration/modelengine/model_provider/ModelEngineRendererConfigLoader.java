@@ -22,7 +22,7 @@ public class ModelEngineRendererConfigLoader extends RendererConfigLoader {
             return null;
         }
 
-        return new ModelEnginePartModelTemplate(part, offset, blueprintId);
+        return new ModelEnginePartModelTemplate(part, offset, blueprintId, section.getString("animation"));
     }
 
 }
