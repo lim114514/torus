@@ -4,6 +4,7 @@ import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -144,7 +145,13 @@ public abstract class Structure {
             if (modelTemplate != null) {
                 instance.model = modelTemplate.toModel(instance.location, instance.direction);
             }
+
             instance.handleModelInit();
+
+            // Load default animations if Torus structure
+            if (instance.structure.addon.id.equals("torus")) {
+                DisplayEntitiesDefaultAnimations.apply(instance);
+            }
         } catch (Exception exc) {
             exc.printStackTrace();
         }

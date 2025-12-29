@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -12,12 +13,10 @@ import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
-import org.bukkit.entity.Display;
-import org.bukkit.util.Transformation;
-import org.joml.Quaternionf;
 
 public class WindmillInstance extends StructureInstance implements EnergyContainer {
 
+    @Getter
     float efficiency;
 
     @Getter
@@ -31,36 +30,16 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
         super(Structures.WINDMILL, location, bodyDef, direction);
     }
 
-    float angle;
 
     @Override
     public void tick() {
-        // TODO: Abstraction
-        ((DisplayEntitiesPartModel) model.getPart("blades")).entityReferences.forEach(ref -> {
-            Display entity = ref.getEntity();
-            Transformation transform = entity.getTransformation();
-
-            Quaternionf rotation = transform.getLeftRotation();
-            rotation.setAngleAxis(angle, 0, 0, 1);
-
-            entity.setTransformation(transform);
-            entity.setInterpolationDelay(0);
-            entity.setInterpolationDuration(20);
-        });
-        angle += Windmill.MAXIMUM_SPEED * efficiency;
         supplyEnergy((int) (efficiency * 75));
-    }
-
-    @Override
-    public void tickModel() {
-        super.tickModel();
     }
 
     @Override
     protected void setup() throws SetupException {
         getSocket("out_energy").maximumOutput = Windmill.ENERGY_MAXIMUM_OUTPUT;
         efficiency = (float) Math.pow(Math.E, -8f/(location.y / 8f + 8f)) * 1.15505059f;
-        angle = (float) (Math.random() * Math.PI / 2f) * efficiency;
     }
 
     @Override

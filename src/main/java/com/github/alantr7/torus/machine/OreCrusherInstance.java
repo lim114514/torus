@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
@@ -13,10 +12,7 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
-import org.bukkit.entity.Display;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Transformation;
-import org.joml.AxisAngle4f;
 
 import java.util.List;
 
@@ -32,7 +28,9 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected float angle;
+    public float wheelsAngle;
+
+    public boolean wheelsSpinning = false;
 
     private CrusherRecipe recipe;
 
@@ -48,6 +46,8 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     public void tick() {
         energySocket.maintainEnergy(this);
         itemOutSocket.attemptDirectItemExport();
+
+        wheelsSpinning = false;
 
         if (recipe == null) {
             itemInSocket.updateNetwork();
@@ -67,30 +67,12 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
                 }
 
                 processedTicks++;
-                angle += (120) / 180f * (float) Math.PI;
-                updateModel();
+                wheelsAngle += (120) / 180f * (float) Math.PI;
+                wheelsSpinning = true;
                 consumeEnergy(OreCrusher.ENERGY_CONSUMPTION);
             }
         }
 
-    }
-
-    public void updateModel() {
-        // TODO: Abstraction
-        ((DisplayEntitiesPartModel) model.getPart("wheel_left")).entityReferences.forEach(ref -> {
-            Display display = ref.getEntity();
-            Transformation transformation = display.getTransformation();
-            display.setTransformation(new Transformation(transformation.getTranslation(), new AxisAngle4f(angle * 0.9f, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
-            display.setInterpolationDelay(0);
-            display.setInterpolationDuration(20);
-        });
-        ((DisplayEntitiesPartModel) model.getPart("wheel_right")).entityReferences.forEach(ref -> {
-            Display display = ref.getEntity();
-            Transformation transformation = display.getTransformation();
-            display.setTransformation(new Transformation(transformation.getTranslation(), new AxisAngle4f(angle, 0, 0, 1f), transformation.getScale(), new AxisAngle4f(transformation.getRightRotation())));
-            display.setInterpolationDelay(0);
-            display.setInterpolationDuration(20);
-        });
     }
 
     @Override
