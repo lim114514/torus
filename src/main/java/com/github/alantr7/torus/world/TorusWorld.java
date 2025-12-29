@@ -153,6 +153,9 @@ public class TorusWorld {
 
                 try {
                     s.tick();
+                    if (s.isModelUpdateScheduled()) {
+                        s.updateModel();
+                    }
                     for (PartModel part : s.model.parts.values()) {
                         if (part.getAnimation() != null) {
                             part.getAnimation().tick();

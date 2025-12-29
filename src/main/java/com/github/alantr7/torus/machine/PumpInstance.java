@@ -48,10 +48,10 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
         // TODO: Abstraction
         Display pipe = ((DisplayEntitiesPartModel) model.getPart("pipe")).entityReferences.getFirst().getEntity();
         pipe.setTeleportDuration(20);
-        updateModel();
+        updatePipe();
     }
 
-    private void updateModel() {
+    private void updatePipe() {
         // TODO: Abstraction
         Display pipe = ((DisplayEntitiesPartModel) model.getPart("pipe")).entityReferences.getFirst().getEntity();
         if (pipe != null) {
@@ -80,7 +80,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
                 airTicks = 0;
                 if (length.get() < Pump.MAXIMUM_PIPE_LENGTH) {
                     length.update(length.get() + 1);
-                    updateModel();
+                    updatePipe();
 
                     return;
                 }

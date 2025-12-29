@@ -15,6 +15,7 @@ import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.structure.inspection.InspectableProperty;
+import com.github.alantr7.torus.structure.state.StructureState;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.SocketLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -55,6 +56,9 @@ public abstract class StructureInstance {
 
     public final DataContainer dataContainer;
 
+    @Getter
+    protected final StructureState state;
+
     public boolean isCorrupted;
 
     public boolean isDirty = false;
@@ -71,6 +75,9 @@ public abstract class StructureInstance {
 
     public Model model = new Model();
 
+    @Getter
+    private boolean isModelUpdateScheduled;
+
     public TextDisplay inspectionHologram;
 
     public InspectableData inspectableData;
@@ -83,6 +90,7 @@ public abstract class StructureInstance {
         this.location = context.location();
         this.direction = context.direction();
         this.dataContainer = context.data();
+        this.state = new StructureState(this);
         setOccupiedChunks();
         flowMeter = new FlowMeter(context.location().world);
     }
@@ -93,6 +101,7 @@ public abstract class StructureInstance {
         this.direction = direction;
         this.dataContainer = new DataContainer();
         this.dataContainer.structure = this;
+        this.state = new StructureState(this);
 
         for (StructureComponentDef componentDef : bodyDef.components()) {
             MathUtils.applyRotation(componentDef.offset, direction.rotH);
@@ -126,6 +135,15 @@ public abstract class StructureInstance {
         model.parts.values().forEach(PartModel::remove);
         if (inspectionHologram != null)
             inspectionHologram.remove();
+    }
+
+    public void updateModel() {
+        // TODO: Implement state-based models
+        isModelUpdateScheduled = false;
+    }
+
+    public void scheduleModelUpdate() {
+        isModelUpdateScheduled = true;
     }
 
     public void spawnInspectionTooltip() {
