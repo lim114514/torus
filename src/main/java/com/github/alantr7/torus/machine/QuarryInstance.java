@@ -95,16 +95,6 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         }
     }
 
-    @Override
-    public void handleModelInit() {
-        // TODO: Abstraction
-        ((DisplayEntitiesPartModel) model.getPart("head")).parent.setTeleportDuration(10);
-        ((DisplayEntitiesPartModel) model.getPart("feed")).parent.setTeleportDuration(10);
-        ((DisplayEntitiesPartModel) model.getPart("drill_bit")).parent.setTeleportDuration(10);
-        ((DisplayEntitiesPartModel) model.getPart("gantry_x")).parent.setTeleportDuration(10);
-        ((DisplayEntitiesPartModel) model.getPart("gantry_z")).parent.setTeleportDuration(10);
-    }
-
     public void advance() {
         byte z = (byte) (horizontalPosition.get() / 9);
         byte x = z % 2 == 0 ? (byte) (horizontalPosition.get() % 9) : (byte) (8 - horizontalPosition.get() % 9);

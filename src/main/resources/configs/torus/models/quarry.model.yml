@@ -43,6 +43,7 @@ in_item:
 
 head:
   renderer: DISPLAY_ENTITIES
+  teleport_duration: 10
   elements:
     - item_display,white_terracotta,0,4.6875,0,0.5,1.6875,0.5,0,0,0
     - item_display,cyan_terracotta,0,5.625,0,0.25,0.1875,0.25,0,0,0
@@ -57,20 +58,24 @@ head:
 
 feed:
   renderer: DISPLAY_ENTITIES
+  teleport_duration: 10
   elements:
     - item_display,light_gray_terracotta,0,2.125,0,0.1875,3.25,0.1875,0,0,0
 
 drill_bit:
   renderer: DISPLAY_ENTITIES
+  teleport_duration: 10
   elements:
     - item_display,quartz_block,0,0.375,0,0.125,0.25,0.125,0,0,0
 
 gantry_x:
   renderer: DISPLAY_ENTITIES
+  teleport_duration: 10
   elements:
     - item_display,cyan_terracotta,0,4.5,0,10,0.25,0.25,0,0,0
 
 gantry_z:
   renderer: DISPLAY_ENTITIES
+  teleport_duration: 10
   elements:
     - item_display,cyan_terracotta,0,4.5,0,0.25,0.25,10,0,0,0
