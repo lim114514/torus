@@ -1,7 +1,5 @@
 package com.github.alantr7.torus.model;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,16 +1,15 @@
 package com.github.alantr7.torus.model;
 
-import com.github.alantr7.torus.TorusPlugin;
-import io.papermc.paper.entity.TeleportFlag;
+import com.github.alantr7.torus.model.animation.Animation;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.entity.Display;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.player.PlayerTeleportEvent;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class PartModel {
+
+    @Getter @Setter
+    private @Nullable Animation animation;
 
     public abstract void teleport(Location location);
 
