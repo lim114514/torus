@@ -19,12 +19,15 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
 
     public final List<PartModelElementDisplayRenderer> parts = new ArrayList<>();
 
+    public final int teleportDuration;
+
     public DisplayEntitiesPartModelTemplate(String name) {
-        this(name, new Vector3f(.5f, 0, .5f));
+        this(name, new Vector3f(.5f, 0, .5f), 0);
     }
 
-    public DisplayEntitiesPartModelTemplate(String name, Vector3f offset) {
+    public DisplayEntitiesPartModelTemplate(String name, Vector3f offset, int teleportDuration) {
         super(name, offset);
+        this.teleportDuration = teleportDuration;
     }
 
     public void add(PartModelElementDisplayRenderer part) {
@@ -37,6 +40,7 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
 
         List<Display> entities = new ArrayList<>();
         ItemDisplay parent = location.getWorld().spawn(location, ItemDisplay.class);
+        parent.setTeleportDuration(teleportDuration);
 
         for (PartModelElementDisplayRenderer part : parts) {
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);

@@ -32,7 +32,7 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
 
     @Override
     public @Nullable PartModelTemplate load(ConfigurationSection section, String name, Vector3f offset) {
-        DisplayEntitiesPartModelTemplate partModelTemplate = new DisplayEntitiesPartModelTemplate(name, offset);
+        DisplayEntitiesPartModelTemplate partModelTemplate = new DisplayEntitiesPartModelTemplate(name, offset, section.getInt("teleport_duration", 0));
         List<String> elements = section.getStringList("elements");
         for (String rawElement : elements) {
             Matcher matcher = ITEM_PATTERN.matcher(rawElement);
@@ -63,7 +63,7 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
         String rawMaterial = nextString(raw, matcher);
         Material material;
 
-        Map<String, String> attributes = new HashMap<>();
+        Map<String, String> itemAttributes = new HashMap<>();
         int attributesPosition = rawMaterial.indexOf("[");
         if (attributesPosition != -1) {
             material = Material.valueOf(rawMaterial.substring(0, attributesPosition).toUpperCase());
@@ -73,7 +73,7 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
                 String attributeNameValue = rawMaterial.substring(attributesPosition + 1 + attributeMatcher.start(), attributesPosition + 1 + attributeMatcher.end());
                 int attributeValueSeparatorPosition = attributeNameValue.indexOf("=");
 
-                attributes.put(attributeNameValue.substring(0, attributeValueSeparatorPosition), attributeNameValue.substring(attributeValueSeparatorPosition + 1));
+                itemAttributes.put(attributeNameValue.substring(0, attributeValueSeparatorPosition), attributeNameValue.substring(attributeValueSeparatorPosition + 1));
             }
         } else {
             material = Material.valueOf(rawMaterial.toUpperCase());
@@ -93,15 +93,15 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
           Float.parseFloat(nextString(raw, matcher)),
         };
 
-        ItemStack itemStack = (material == Material.PLAYER_HEAD && attributes.containsKey("texture"))
-          ? HeadData.create("http://textures.minecraft.net/texture/" + attributes.get("texture"))
+        ItemStack itemStack = (material == Material.PLAYER_HEAD && itemAttributes.containsKey("texture"))
+          ? HeadData.create("http://textures.minecraft.net/texture/" + itemAttributes.get("texture"))
           : new ItemStack(material);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if (attributes.containsKey("model")) {
+        if (itemAttributes.containsKey("model")) {
             CustomModelDataComponent customModelDataComponent = itemMeta.getCustomModelDataComponent();
-            customModelDataComponent.setStrings(Collections.singletonList(attributes.get("model")));
+            customModelDataComponent.setStrings(Collections.singletonList(itemAttributes.get("model")));
             itemMeta.setCustomModelDataComponent(customModelDataComponent);
         }
 
