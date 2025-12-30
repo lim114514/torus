@@ -38,9 +38,6 @@ public class DisplayEntitiesDefaultAnimations {
     public static final BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation> ORE_CRUSHER_WHEEL_LEFT_ROT = (structure, part) -> new Animation() {
         @Override
         public void tick() {
-            if (!((OreCrusherInstance) structure).wheelsSpinning)
-                return;
-
             part.entityReferences.forEach(ref -> {
                 Display display = ref.getEntity();
                 Transformation transformation = display.getTransformation();
@@ -54,9 +51,6 @@ public class DisplayEntitiesDefaultAnimations {
     public static final BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation> ORE_CRUSHER_WHEEL_RIGHT_ROT = (structure, part) -> new Animation() {
         @Override
         public void tick() {
-            if (!((OreCrusherInstance) structure).wheelsSpinning)
-                return;
-
             part.entityReferences.forEach(ref -> {
                 Display display = ref.getEntity();
                 Transformation transformation = display.getTransformation();

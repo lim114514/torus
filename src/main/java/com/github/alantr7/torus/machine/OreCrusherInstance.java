@@ -16,6 +16,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+import static com.github.alantr7.torus.machine.OreCrusher.STATE_WORKING;
+
 public class OreCrusherInstance extends StructureInstance implements Inspectable, EnergyContainer {
 
     protected StructureComponent leftWheel, rightWheel;
@@ -29,8 +31,6 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     public float wheelsAngle;
-
-    public boolean wheelsSpinning = false;
 
     private CrusherRecipe recipe;
 
@@ -47,20 +47,20 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         energySocket.maintainEnergy(this);
         itemOutSocket.attemptDirectItemExport();
 
-        wheelsSpinning = false;
-
         if (recipe == null) {
             itemInSocket.updateNetwork();
             List<ItemStack> items = itemInSocket.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
                 this.recipe = TorusPlugin.getInstance().getRecipeRegistry().getCrusherRecipeByIngredient(items.getFirst());
             }
+            state.set(STATE_WORKING, false);
         } else {
             if (processedTicks >= recipe.crushTicks) {
                 ItemStack result = recipe.result.asResult();
                 itemOutBuffer.addItem(result);
                 recipe = null;
                 processedTicks = 0;
+                state.set(STATE_WORKING, false);
             } else {
                 if (!hasSufficientEnergy(OreCrusher.ENERGY_CONSUMPTION)) {
                     return;
@@ -68,7 +68,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
                 processedTicks++;
                 wheelsAngle += (120) / 180f * (float) Math.PI;
-                wheelsSpinning = true;
+                state.set(STATE_WORKING, true);
                 consumeEnergy(OreCrusher.ENERGY_CONSUMPTION);
             }
         }

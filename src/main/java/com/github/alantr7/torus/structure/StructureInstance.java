@@ -11,6 +11,7 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.model.*;
+import com.github.alantr7.torus.model.controller.ModelCase;
 import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
@@ -138,7 +139,13 @@ public abstract class StructureInstance {
     }
 
     public void updateModel() {
-        // TODO: Implement state-based models
+        ModelCase modelCase = structure.getModelController().getModel(state);
+        if (modelCase == null) {
+            // TODO: Set empty model
+        } else {
+            model = modelCase.template.toModel(location, direction);
+        }
+
         isModelUpdateScheduled = false;
     }
 

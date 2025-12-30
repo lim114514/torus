@@ -4,8 +4,10 @@ import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.controller.ModelController;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.state.State;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -16,6 +18,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +42,9 @@ public abstract class Structure {
 
     protected final Class<? extends StructureInstance> instanceClass;
 
+    @Getter
+    protected final Set<State<?>> allowedStates = new LinkedHashSet<>();
+
     protected byte[] bounds = { 0, 0, 0 };
 
     @Getter
@@ -59,8 +65,13 @@ public abstract class Structure {
     public float[] hologramTranslation = {1.4f, 0.8f, 0f};
 
     @Getter @Setter
+    @Deprecated(forRemoval = true)
     private ModelTemplate model;
 
+    @Getter @Setter
+    private ModelController modelController;
+
+    @Deprecated(forRemoval = true)
     public ResourceLocation modelLocation;
 
     public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {

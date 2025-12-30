@@ -3,6 +3,8 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.structure.state.State;
+import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
@@ -25,6 +27,8 @@ public class OreCrusher extends Structure {
 
     public static int ENERGY_MAXIMUM_INPUT = 500;
 
+    public static final State<Boolean> STATE_WORKING = new State<>("working", StateType.BOOLEAN, false);
+
     public OreCrusher() {
         super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
@@ -33,6 +37,7 @@ public class OreCrusher extends Structure {
           addon.externalContainer, "models/ore_crusher.model.yml",
           addon.classpathContainer, "configs/torus/models/ore_crusher.model.yml"
         );
+        allowedStates.add(STATE_WORKING);
     }
 
     @Override

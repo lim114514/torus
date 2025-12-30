@@ -33,7 +33,11 @@ public class ModelEnginePartModelTemplate extends PartModelTemplate {
         Vector3f offset = new Vector3f(this.offset.x, this.offset.y, this.offset.z);
         MathUtils.applyRotation(offset, direction.rotH);
 
-        ArmorStand stand = location.getWorld().spawn(location.clone().add(offset.x, offset.y, offset.z).add(.5f, 0, .5f), ArmorStand.class);
+        Location baseEntityLocation = location.clone().add(offset.x, offset.y, offset.z).add(.5, 0, .5);
+        baseEntityLocation.setYaw(direction.getOpposite().rotH);
+        baseEntityLocation.setPitch(direction.rotV);
+
+        ArmorStand stand = location.getWorld().spawn(baseEntityLocation, ArmorStand.class);
         stand.setGravity(false);
         stand.setVisible(false);
         stand.addScoreboardTag("torus_entity");
@@ -41,7 +45,6 @@ public class ModelEnginePartModelTemplate extends PartModelTemplate {
         stand.setInvulnerable(true);
         stand.setPersistent(false);
         stand.setAI(false);
-        stand.setRotation(direction.getOpposite().rotH, direction.rotV);
 
         ModeledEntity modeledEntity = ModelEngineAPI.getOrCreateModeledEntity(stand);
         ActiveModel model = ModelEngineAPI.createActiveModel(blueprint);
