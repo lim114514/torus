@@ -13,7 +13,11 @@ import com.github.alantr7.torus.structure.component.Socket;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-import static com.github.alantr7.torus.machine.EnergyCable.MODELS_FLUID;
+import static com.github.alantr7.torus.machine.EnergyCable.*;
+import static com.github.alantr7.torus.machine.EnergyCable.STATE_DOWN;
+import static com.github.alantr7.torus.machine.EnergyCable.STATE_SOUTH;
+import static com.github.alantr7.torus.machine.EnergyCable.STATE_UP;
+import static com.github.alantr7.torus.machine.EnergyCable.STATE_WEST;
 
 public class FluidPipe extends Structure {
 
@@ -28,6 +32,12 @@ public class FluidPipe extends Structure {
     public FluidPipe() {
         super(TorusPlugin.DEFAULT_ADDON, "fluid_pipe", "Fluid Pipe", CableInstance.class);
         isHeavy = false;
+        allowedStates.add(STATE_NORTH);
+        allowedStates.add(STATE_EAST);
+        allowedStates.add(STATE_SOUTH);
+        allowedStates.add(STATE_WEST);
+        allowedStates.add(STATE_UP);
+        allowedStates.add(STATE_DOWN);
     }
 
     @Override

@@ -24,8 +24,6 @@ public class CableInstance extends StructureInstance implements Connectable, Con
 
     protected Data<Integer> type = dataContainer.persist("type", Data.Type.INT, 0);
 
-    boolean shouldUpdateModel;
-
     public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Socket.Matter type) {
         super(type == Socket.Matter.ENERGY ? Structures.ENERGY_CABLE : type == Socket.Matter.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
         this.type.update(type.ordinal());
@@ -53,11 +51,6 @@ public class CableInstance extends StructureInstance implements Connectable, Con
         updateConnection(Direction.UP);
         updateConnection(Direction.DOWN);
 
-        if (shouldUpdateModel) {
-            updateModel();
-            shouldUpdateModel = false;
-        }
-
         if (getConnections() != connections) {
             save();
         }
@@ -72,8 +65,8 @@ public class CableInstance extends StructureInstance implements Connectable, Con
             Socket socket = possibleConnection.getSocket(location, getType());
             if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
-                shouldUpdateModel = true;
 
+                state.set(getStateFromDirection(direction.getOpposite()), true);
                 socket.setConnected(direction.getOpposite(), true);
                 possibleConnection.save();
             }
@@ -82,18 +75,17 @@ public class CableInstance extends StructureInstance implements Connectable, Con
         // Check if this cable connects to another cable
         if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == getType()) {
             hasConnected = true;
-            shouldUpdateModel = true;
 
+            state.set(getStateFromDirection(direction), true);
+            cable.state.set(getStateFromDirection(direction.getOpposite()), true);
             cable.setConnected(direction.getOpposite(), true);
             cable.updateModel();
         }
 
-        if (hasConnected != isConnected(direction))
-            shouldUpdateModel = true;
-
         setConnected(direction, hasConnected);
     }
 
+    @Override
     public void updateModel() {
         // TODO: Abstraction
         DisplayEntitiesPartModelTemplate model = new DisplayEntitiesPartModelTemplate("base");
