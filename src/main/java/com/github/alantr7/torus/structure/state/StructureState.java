@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class StructureState {
 
@@ -14,6 +15,10 @@ public class StructureState {
 
     public StructureState(StructureInstance structure) {
         this.structure = structure;
+    }
+
+    public Set<Map.Entry<String, Object>> getEntries() {
+        return data.entrySet();
     }
 
     @SuppressWarnings("unchecked")

@@ -223,6 +223,10 @@ public class Commands {
           ctx.respond("\n");
           ctx.respond(ChatColor.GOLD + "Structure ID: " + ChatColor.RESET + structure.structure.namespacedId);
           ctx.respond(ChatColor.GOLD + "Owner ID: " + structure.getOwnerId());
+          ctx.respond(ChatColor.GOLD + "State:");
+          for (var entry : structure.getState().getEntries()) {
+              ctx.respond("  - " + entry.getKey() + ": " + entry.getValue());
+          }
           ctx.respond(ChatColor.GOLD + "Sockets: (" + structure.getSockets().size() + ")");
           for (Socket socket : structure.getSockets()) {
               ctx.respond("  - " + ChatColor.YELLOW + socket.getComponent().absoluteLocation + ":");
