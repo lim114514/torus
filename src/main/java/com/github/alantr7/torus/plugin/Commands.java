@@ -10,6 +10,7 @@ import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.LifecycleAction;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
@@ -169,12 +170,18 @@ public class Commands {
               return;
           }
 
-          if (!structure.addon.id.equals("torus") || structure.modelLocation == null) {
+          if (!structure.addon.id.equals("torus")) {
               ctx.respond("You can not edit the model of this structure");
               return;
           }
 
-          TorusPlugin.getInstance().saveResource(structure.modelLocation.fallbackRelativePath, true);
+          ResourceLocation modelLocation = new ResourceLocation(structure.addon.classpathContainer, "configs/torus/models/" + structure.id + ".model.yml");
+          if (!modelLocation.exists()) {
+              ctx.respond("You can not edit the model of this structure");
+              return;
+          }
+
+          TorusPlugin.getInstance().saveResource(modelLocation.relativePath, true);
           ctx.respond("Model successfully exported.");
       });
 
