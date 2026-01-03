@@ -126,16 +126,6 @@ public class StructureRegistry {
             }
         }
 
-        if (structure.modelLocation != null) {
-            Resource modelResource = structure.modelLocation.getResource();
-            if (modelResource != null) {
-                ModelTemplate model = TorusPlugin.getInstance().getModelLoader().load(modelResource);
-                if (model != null) {
-                    structure.setModel(model);
-                }
-            }
-        }
-
         loaded.put(structure.namespacedId, structure);
         loadedByNumericIds.put(structure.numericId, structure);
     }

@@ -13,6 +13,8 @@ public class ModelTemplate {
 
     public final Map<String, PartModelTemplate> parts = new HashMap<>();
 
+    public static final ModelTemplate EMPTY = new ModelTemplate(1);
+
     public ModelTemplate(int version) {
         this.version = version;
     }
@@ -22,7 +24,7 @@ public class ModelTemplate {
     }
 
     public Model toModel(BlockLocation location, Direction direction) {
-        Model model = new Model();
+        Model model = new Model(this);
         parts.forEach((name, part) -> {
             model.parts.put(name, part.build(location.toBukkit(), direction));
         });

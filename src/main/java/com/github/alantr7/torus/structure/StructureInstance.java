@@ -29,6 +29,7 @@ import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
@@ -74,7 +75,7 @@ public abstract class StructureInstance {
 
     private int[][] occupiedChunks;
 
-    public Model model = new Model();
+    public Model model = new Model(ModelTemplate.EMPTY);
 
     @Getter
     private boolean isModelUpdateScheduled;
@@ -129,11 +130,12 @@ public abstract class StructureInstance {
         flowMeter = new FlowMeter(location.world);
     }
 
+    @Deprecated(forRemoval = true)
     public void handleModelInit() {
     }
 
     public void handleModelDestroy() {
-        model.parts.values().forEach(PartModel::remove);
+        model.remove();
         if (inspectionHologram != null)
             inspectionHologram.remove();
     }
@@ -144,6 +146,22 @@ public abstract class StructureInstance {
             // TODO: Set empty model
         } else {
             model = modelCase.template.toModel(location, direction);
+            if (model == null || model.template != ModelTemplate.EMPTY) {
+                if (model != null)
+                    model.remove();
+
+                model = ModelTemplate.EMPTY.toModel(location, direction);
+            }
+        } else {
+            // TODO: Check if old model matches the new one
+            if (model != null) {
+                if (model.template != modelCase.template) {
+                    model.remove();
+                    model = modelCase.template.toModel(location, direction);
+                }
+            } else {
+                model = modelCase.template.toModel(location, direction);
+            }
         }
 
         isModelUpdateScheduled = false;

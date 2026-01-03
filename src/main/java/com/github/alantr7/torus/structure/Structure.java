@@ -1,26 +1,35 @@
 package com.github.alantr7.torus.structure;
 
+import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.TorusAddon;
+import com.github.alantr7.torus.api.resource.Resource;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.ModelType;
+import com.github.alantr7.torus.model.controller.ModelCase;
 import com.github.alantr7.torus.model.controller.ModelController;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.structure.state.State;
+import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class Structure {
 
@@ -43,7 +52,7 @@ public abstract class Structure {
     protected final Class<? extends StructureInstance> instanceClass;
 
     @Getter
-    protected final Set<State<?>> allowedStates = new LinkedHashSet<>();
+    protected final Map<String, State<?>> allowedStates = new HashMap<>();
 
     protected byte[] bounds = { 0, 0, 0 };
 
@@ -156,11 +165,12 @@ public abstract class Structure {
         setupInspectionTooltip(instance);
     }
 
+    @Deprecated(forRemoval = true)
     private static void setupModel(StructureInstance instance) {
         try {
-            ModelTemplate modelTemplate = instance.structure.getModel();
-            if (modelTemplate != null) {
-                instance.model = modelTemplate.toModel(instance.location, instance.direction);
+            ModelCase modelCase = instance.structure.getModelController().getModel(instance.state);
+            if (modelCase != null) {
+                instance.model = modelCase.template.toModel(instance.location, instance.direction);
             }
 
             instance.handleModelInit();
@@ -236,6 +246,113 @@ public abstract class Structure {
                 this.hologramTranslation[i] = hologramTranslation.get(i);
             }
         }
+
+        // Model Controller
+        TorusLogger.info(Category.MODELS, "Loading model controller for: " + id);
+        loadModelController();
+        TorusLogger.info(Category.MODELS, "Loaded model controller: " + modelController);
+    }
+
+    private static final Pattern STATE_CONFIG_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9]+");
+    private static final Map<StateType<?>, Function<String, Object>> stateParsers = Map.of(
+      StateType.BOOLEAN,    Boolean::parseBoolean,
+      StateType.INT,        Integer::parseInt
+    );
+
+    @SuppressWarnings({"unchecked", "deprecation"})
+    protected void loadModelController() {
+        ConfigurationSection modelControllerSection = config.getConfigurationSection("model_controller");
+        if (modelControllerSection == null)
+            return;
+
+        String rawModelType = modelControllerSection.getString("type");
+        ConfigurationSection casesSection = modelControllerSection.getConfigurationSection("cases");
+
+        if (rawModelType == null || casesSection == null)
+            return;
+
+        ModelType modelType;
+        if (rawModelType.equalsIgnoreCase("SINGLEPART")) {
+            modelType = ModelType.SINGLEPART;
+        } else if (rawModelType.equalsIgnoreCase("MULTIPART")) {
+            modelType = ModelType.MULTIPART;
+        } else return;
+
+        LinkedList<ModelCase> cases = new LinkedList<>();
+
+        for (String rawStateSet : casesSection.getKeys(false)) {
+            ConfigurationSection caseSection = casesSection.getConfigurationSection(rawStateSet);
+            String rawModel = caseSection.getString("model");
+            String animations = caseSection.getString("animations");
+
+            Map<State<Object>, Object> states = new HashMap<>();
+
+            // Load state conditions
+            if (rawStateSet.startsWith("state[")) {
+                int stateStartPos = rawStateSet.indexOf('[');
+                String rawStates = rawStateSet.substring(stateStartPos + 1, rawStateSet.length() - 1);
+
+                Bukkit.broadcastMessage("Raw states: " + rawStates);
+                Matcher stateMatcher = STATE_CONFIG_PATTERN.matcher(rawStateSet);
+                while (stateMatcher.find()) {
+                    String[] stateKeyValuePair = rawStateSet.substring(stateMatcher.start(), stateMatcher.end()).split("=");
+
+                    String key = stateKeyValuePair[0];
+                    String rawValue = stateKeyValuePair[1];
+
+                    State<?> state = allowedStates.get(key);
+                    if (state == null) {
+                        Bukkit.broadcastMessage("Unrecognized state: " + key);
+                        continue;
+                    }
+
+                    Function<String, Object> parser = stateParsers.get(state.type);
+                    if (parser == null) {
+                        Bukkit.broadcastMessage("There is no parser for state type: " + state.type);
+                        continue;
+                    }
+
+                    Object value;
+                    try {
+                        value = parser.apply(rawValue);
+                    } catch (Exception e) {
+                        continue;
+                    }
+
+                    states.put((State<Object>) state, value);
+                }
+            }
+
+            if (rawModel == null) {
+                TorusLogger.error(Category.MODELS, "Model path is not set.");
+                continue;
+            }
+
+            ResourceLocation modelLocation = new ResourceLocation(
+              addon.externalContainer, "models/" + rawModel,
+              addon.classpathContainer, "configs/torus/models/" + rawModel
+            );
+
+            Resource modelResource = modelLocation.getResource();
+            if (modelResource == null) {
+                TorusLogger.error(Category.MODELS, "Model does not exist at set path.");
+                continue;
+            }
+
+            ModelTemplate template = TorusAPI.getModelLoader().load(modelResource);
+            if (template == null) {
+                TorusLogger.error(Category.MODELS, "Could not load model template.");
+                continue;
+            }
+
+            if (rawStateSet.equals("fallback")) {
+                cases.addLast(new ModelCase(states, template, animations));
+            } else {
+                cases.add(Math.max(0, cases.size() - 1), new ModelCase(states, template, animations));
+            }
+        }
+
+        setModelController(new ModelController(modelType, cases));
     }
 
 }
