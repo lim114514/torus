@@ -33,11 +33,7 @@ public class OreCrusher extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
         portableData.add("energy");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/ore_crusher.model.yml",
-          addon.classpathContainer, "configs/torus/models/ore_crusher.model.yml"
-        );
-        allowedStates.add(STATE_WORKING);
+        registerState(STATE_WORKING);
     }
 
     @Override

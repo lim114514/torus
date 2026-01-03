@@ -32,12 +32,12 @@ public class FluidPipe extends Structure {
     public FluidPipe() {
         super(TorusPlugin.DEFAULT_ADDON, "fluid_pipe", "Fluid Pipe", CableInstance.class);
         isHeavy = false;
-        allowedStates.add(STATE_NORTH);
-        allowedStates.add(STATE_EAST);
-        allowedStates.add(STATE_SOUTH);
-        allowedStates.add(STATE_WEST);
-        allowedStates.add(STATE_UP);
-        allowedStates.add(STATE_DOWN);
+        registerState(STATE_NORTH);
+        registerState(STATE_EAST);
+        registerState(STATE_SOUTH);
+        registerState(STATE_WEST);
+        registerState(STATE_UP);
+        registerState(STATE_DOWN);
     }
 
     @Override

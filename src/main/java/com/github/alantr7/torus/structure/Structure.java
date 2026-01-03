@@ -69,7 +69,9 @@ public abstract class Structure {
     private ModelTemplate model;
 
     @Getter @Setter
-    private ModelController modelController;
+    private ModelController modelController = new ModelController(ModelType.SINGLEPART, Collections.singleton(new ModelCase(
+      Collections.emptyMap(), ModelTemplate.EMPTY, null
+    )));
 
     @Deprecated(forRemoval = true)
     public ResourceLocation modelLocation;
@@ -106,6 +108,10 @@ public abstract class Structure {
         }
 
         size = new byte[] { (byte) (max[0] - min[0] + 1), (byte) (max[1] - min[1] + 1), (byte) (max[2] - min[2] + 1) };
+    }
+
+    protected void registerState(State<?> state) {
+        this.allowedStates.put(state.key, state);
     }
 
     protected void createBounds(ByteArrayBuilder builder) {

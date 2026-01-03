@@ -85,6 +85,8 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         itemOutSocket.linkedInventory = itemOutBuffer;
         energySocket = getSocket("power_connector");
         energySocket.maximumInput = OreCrusher.ENERGY_MAXIMUM_INPUT;
+
+        state.set(STATE_WORKING, false, false);
     }
 
     @Override

@@ -22,11 +22,17 @@ public class StructureState {
     }
 
     public <T> void set(State<T> state, @NotNull T value) {
+        set(state, value, true);
+    }
+
+    public <T> void set(State<T> state, @NotNull T value, boolean triggerModelUpdate) {
         if (value.equals(data.get(state.key)))
             return;
 
         data.put(state.key, value);
-        structure.scheduleModelUpdate();
+        if (triggerModelUpdate) {
+            structure.scheduleModelUpdate();
+        }
     }
 
 }
