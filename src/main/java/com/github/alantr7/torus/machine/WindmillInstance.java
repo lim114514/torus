@@ -14,6 +14,8 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
 
+import static com.github.alantr7.torus.machine.Windmill.STATE_ACTIVE;
+
 public class WindmillInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
@@ -40,6 +42,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
     protected void setup() throws SetupException {
         getSocket("out_energy").maximumOutput = Windmill.ENERGY_MAXIMUM_OUTPUT;
         efficiency = (float) Math.pow(Math.E, -8f/(location.y / 8f + 8f)) * 1.15505059f;
+        state.set(STATE_ACTIVE, efficiency != 0, false);
     }
 
     @Override

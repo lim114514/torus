@@ -7,3 +7,9 @@ general_settings:
   # If set to true, structure can be broken only with a hammer.
   heavy: false
   portable_data: []
+
+model_controller:
+  type: SINGLEPART
+  cases:
+    fallback:
+      model: "wire_connector.model.yml"

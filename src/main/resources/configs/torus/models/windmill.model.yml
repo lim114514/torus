@@ -12,6 +12,8 @@ base:
 
 blades:
   renderer: DISPLAY_ENTITIES
+  animation_map:
+    active: blades_spin
   elements:
     - item_display,iron_block,0,3.75,-0.6875,1.875,0.375,0.25,0,0,0
     - item_display,iron_block,0,3.75,-0.6875,4.6875,0.1875,0.1875,0,0,0

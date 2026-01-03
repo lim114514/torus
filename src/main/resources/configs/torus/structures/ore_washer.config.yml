@@ -20,3 +20,9 @@ fluid_settings:
 info_hologram:
   offset: [0, 0, 0] # Location of the TextDisplay relative to the structure
   translation: [1.2, 0, 0] # Translation applied to TextDisplay
+
+model_controller:
+  type: SINGLEPART
+  cases:
+    fallback:
+      model: "ore_washer.model.yml"

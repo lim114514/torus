@@ -7,3 +7,9 @@ general_settings:
   # If set to true, structure can be broken only with a hammer.
   heavy: true
   portable_data: []
+
+model_controller:
+  type: SINGLEPART
+  cases:
+    fallback:
+      model: "power_pole.model.yml"

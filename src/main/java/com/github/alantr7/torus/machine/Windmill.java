@@ -9,6 +9,8 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.state.State;
+import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.jetbrains.annotations.NotNull;
@@ -24,13 +26,12 @@ public class Windmill extends Structure {
 
     public static final float MAXIMUM_SPEED = 1.85f * (float) Math.PI / 3f;
 
+    public static final State<Boolean> STATE_ACTIVE = new State<>("active", StateType.BOOLEAN, false);
+
     public Windmill() {
         super(TorusPlugin.DEFAULT_ADDON, "windmill", "Windmill", WindmillInstance.class);
         portableData.add("energy");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/windmill.model.yml",
-          addon.classpathContainer, "configs/torus/models/windmill.model.yml"
-        );
+        registerState(STATE_ACTIVE);
     }
 
     @Override

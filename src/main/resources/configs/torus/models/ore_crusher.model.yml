@@ -47,10 +47,14 @@ in_energy:
 
 wheel_left:
   renderer: DISPLAY_ENTITIES
+  animation_map:
+    working: wheel_left_spin
   elements:
     - item_display,structure_void,0,1.5625,-0.875,1.25,1.25,2.4375,0,0,0
 
 wheel_right:
   renderer: DISPLAY_ENTITIES
+  animation_map:
+    working: wheel_right_spin
   elements:
     - item_display,structure_void,-1.8125,1.5,-0.875,0.75,0.75,2.4375,0,0,0

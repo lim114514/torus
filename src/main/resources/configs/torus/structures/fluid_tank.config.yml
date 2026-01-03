@@ -14,3 +14,9 @@ fluid_settings:
 info_hologram:
   offset: [0, 1, 0] # Location of the TextDisplay relative to the structure
   translation: [2, 0, 1] # Translation applied to TextDisplay
+
+model_controller:
+  type: SINGLEPART
+  cases:
+    fallback:
+      model: "fluid_tank.model.yml"

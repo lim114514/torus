@@ -166,20 +166,10 @@ public abstract class Structure {
         setupInspectionTooltip(instance);
     }
 
-    @Deprecated(forRemoval = true)
     private static void setupModel(StructureInstance instance) {
         try {
-            ModelCase modelCase = instance.structure.getModelController().getModel(instance.state);
-            if (modelCase != null) {
-                instance.model = modelCase.template.toModel(instance.location, instance.direction);
-            }
-
+            instance.updateModel();
             instance.handleModelInit();
-
-            // Load default animations if Torus structure
-            if (instance.structure.addon.id.equals("torus")) {
-                DisplayEntitiesDefaultAnimations.apply(instance);
-            }
         } catch (Exception exc) {
             exc.printStackTrace();
         }

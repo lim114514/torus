@@ -32,7 +32,6 @@ import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
@@ -160,7 +159,7 @@ public abstract class StructureInstance {
 
                     // Load default animations if Torus structure
                     if (structure.addon.id.equals("torus")) {
-                        DisplayEntitiesDefaultAnimations.apply(this);
+                        DisplayEntitiesDefaultAnimations.inject(this);
                     }
                 }
             } else {
@@ -168,7 +167,7 @@ public abstract class StructureInstance {
 
                 // Load default animations if Torus structure
                 if (structure.addon.id.equals("torus")) {
-                    DisplayEntitiesDefaultAnimations.apply(this);
+                    DisplayEntitiesDefaultAnimations.inject(this);
                 }
             }
 

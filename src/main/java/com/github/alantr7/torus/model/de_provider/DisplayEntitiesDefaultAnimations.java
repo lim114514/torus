@@ -12,7 +12,6 @@ import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -68,7 +67,7 @@ public class DisplayEntitiesDefaultAnimations {
       Structures.WINDMILL.id, Map.of("blades", new AbstractMap.SimpleEntry<>("blades_spin", WINDMILL_BLADES_ROT))
     );
 
-    public static void apply(StructureInstance instance) {
+    public static void inject(StructureInstance instance) {
         Map<String, Map.Entry<String, BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation>>> animations = defaultAnimations.get(instance.structure.id);
         if (animations == null)
             return;
