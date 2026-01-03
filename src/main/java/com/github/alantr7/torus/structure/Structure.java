@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.structure;
 
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.api.resource.Resource;
@@ -292,8 +293,7 @@ public abstract class Structure {
                 int stateStartPos = rawStateSet.indexOf('[');
                 String rawStates = rawStateSet.substring(stateStartPos + 1, rawStateSet.length() - 1);
 
-                Bukkit.broadcastMessage("Raw states: " + rawStates);
-                Matcher stateMatcher = STATE_CONFIG_PATTERN.matcher(rawStateSet);
+                Matcher stateMatcher = STATE_CONFIG_PATTERN.matcher(rawStates);
                 while (stateMatcher.find()) {
                     String[] stateKeyValuePair = rawStateSet.substring(stateMatcher.start(), stateMatcher.end()).split("=");
 
@@ -328,21 +328,26 @@ public abstract class Structure {
                 continue;
             }
 
-            ResourceLocation modelLocation = new ResourceLocation(
-              addon.externalContainer, "models/" + rawModel,
-              addon.classpathContainer, "configs/torus/models/" + rawModel
-            );
-
-            Resource modelResource = modelLocation.getResource();
-            if (modelResource == null) {
-                TorusLogger.error(Category.MODELS, "Model does not exist at set path.");
-                continue;
-            }
-
-            ModelTemplate template = TorusAPI.getModelLoader().load(modelResource);
+            ModelTemplate template = TorusPlugin.getInstance().getModelCache().getModel(rawModel);
             if (template == null) {
-                TorusLogger.error(Category.MODELS, "Could not load model template.");
-                continue;
+                ResourceLocation modelLocation = new ResourceLocation(
+                  addon.externalContainer, "models/" + rawModel,
+                  addon.classpathContainer, "configs/torus/models/" + rawModel
+                );
+
+                Resource modelResource = modelLocation.getResource();
+                if (modelResource == null) {
+                    TorusLogger.error(Category.MODELS, "Model does not exist at set path.");
+                    continue;
+                }
+
+                template = TorusAPI.getModelLoader().load(modelResource);
+                if (template == null) {
+                    TorusLogger.error(Category.MODELS, "Could not load model template.");
+                    continue;
+                }
+
+                TorusPlugin.getInstance().getModelCache().save(rawModel, template);
             }
 
             if (rawStateSet.equals("fallback")) {
