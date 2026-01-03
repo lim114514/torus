@@ -27,7 +27,7 @@ public class ResourceLocation {
     }
 
     public boolean exists() {
-        return getResource() == null;
+        return getResource() != null;
     }
 
     @Nullable
