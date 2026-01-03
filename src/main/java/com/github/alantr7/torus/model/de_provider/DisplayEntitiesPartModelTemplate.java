@@ -2,6 +2,8 @@ package com.github.alantr7.torus.model.de_provider;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.*;
+import com.github.alantr7.torus.model.animation.Animation;
+import com.github.alantr7.torus.model.animation.AnimationProvider;
 import com.github.alantr7.torus.world.Direction;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -13,7 +15,9 @@ import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
 
@@ -22,11 +26,11 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
     public final int teleportDuration;
 
     public DisplayEntitiesPartModelTemplate(String name) {
-        this(name, new Vector3f(.5f, 0, .5f), 0);
+        this(name, new Vector3f(.5f, 0, .5f), 0, Collections.emptyMap());
     }
 
-    public DisplayEntitiesPartModelTemplate(String name, Vector3f offset, int teleportDuration) {
-        super(name, offset);
+    public DisplayEntitiesPartModelTemplate(String name, Vector3f offset, int teleportDuration, Map<String, AnimationProvider<PartModel, Animation>> animationMap) {
+        super(name, offset, animationMap);
         this.teleportDuration = teleportDuration;
     }
 

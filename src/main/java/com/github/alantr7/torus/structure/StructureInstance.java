@@ -11,7 +11,10 @@ import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.math.MathUtils;
 import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.model.*;
+import com.github.alantr7.torus.model.animation.Animation;
+import com.github.alantr7.torus.model.animation.AnimationProvider;
 import com.github.alantr7.torus.model.controller.ModelCase;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
 import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
@@ -143,9 +146,6 @@ public abstract class StructureInstance {
     public void updateModel() {
         ModelCase modelCase = structure.getModelController().getModel(state);
         if (modelCase == null) {
-            // TODO: Set empty model
-        } else {
-            model = modelCase.template.toModel(location, direction);
             if (model == null || model.template != ModelTemplate.EMPTY) {
                 if (model != null)
                     model.remove();
@@ -153,14 +153,38 @@ public abstract class StructureInstance {
                 model = ModelTemplate.EMPTY.toModel(location, direction);
             }
         } else {
-            // TODO: Check if old model matches the new one
             if (model != null) {
                 if (model.template != modelCase.template) {
                     model.remove();
                     model = modelCase.template.toModel(location, direction);
+
+                    // Load default animations if Torus structure
+                    if (structure.addon.id.equals("torus")) {
+                        DisplayEntitiesDefaultAnimations.apply(this);
+                    }
                 }
             } else {
                 model = modelCase.template.toModel(location, direction);
+
+                // Load default animations if Torus structure
+                if (structure.addon.id.equals("torus")) {
+                    DisplayEntitiesDefaultAnimations.apply(this);
+                }
+            }
+
+            // Play animation
+            if (modelCase.animations != null) {
+                model.parts.forEach((name, part) -> {
+                    AnimationProvider<PartModel, Animation> animationProvider = model.template.parts.get(name).animationMap.get(modelCase.animations);
+                    if (animationProvider != null) {
+                        part.setAnimation(animationProvider.get(part));
+                    }
+                });
+            }
+
+            // Stop animation if it was playing (and the model didn't change)
+            else {
+                model.parts.forEach((name, part) -> part.setAnimation(null));
             }
         }
 

@@ -11,6 +11,8 @@ import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 
+import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -61,19 +63,19 @@ public class DisplayEntitiesDefaultAnimations {
         }
     };
 
-    private static final Map<String, Map<String, BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation>>> defaultAnimations = Map.of(
-      Structures.ORE_CRUSHER.id, Map.of("wheel_left", ORE_CRUSHER_WHEEL_LEFT_ROT, "wheel_right", ORE_CRUSHER_WHEEL_RIGHT_ROT),
-      Structures.WINDMILL.id, Map.of("blades", WINDMILL_BLADES_ROT)
+    private static final Map<String, Map<String, Map.Entry<String, BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation>>>> defaultAnimations = Map.of(
+      Structures.ORE_CRUSHER.id, Map.of("wheel_left", new AbstractMap.SimpleEntry<>("wheel_left_spin", ORE_CRUSHER_WHEEL_LEFT_ROT), "wheel_right", new AbstractMap.SimpleEntry<>("wheel_right_spin", ORE_CRUSHER_WHEEL_RIGHT_ROT)),
+      Structures.WINDMILL.id, Map.of("blades", new AbstractMap.SimpleEntry<>("blades_spin", WINDMILL_BLADES_ROT))
     );
 
     public static void apply(StructureInstance instance) {
-        Map<String, BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation>> animations = defaultAnimations.get(instance.structure.id);
+        Map<String, Map.Entry<String, BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation>>> animations = defaultAnimations.get(instance.structure.id);
         if (animations == null)
             return;
 
-        animations.forEach((partName, provider) -> {
+        animations.forEach((partName, entry) -> {
             if (instance.model.getPart(partName) instanceof DisplayEntitiesPartModel de) {
-                de.setAnimation(provider.apply(instance, de));
+                de.predefinedAnimations = Map.of(entry.getKey(), entry.getValue().apply(instance, de));
             }
         });
     }

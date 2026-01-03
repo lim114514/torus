@@ -295,20 +295,20 @@ public abstract class Structure {
 
                 Matcher stateMatcher = STATE_CONFIG_PATTERN.matcher(rawStates);
                 while (stateMatcher.find()) {
-                    String[] stateKeyValuePair = rawStateSet.substring(stateMatcher.start(), stateMatcher.end()).split("=");
+                    String[] stateKeyValuePair = rawStates.substring(stateMatcher.start(), stateMatcher.end()).split("=");
 
                     String key = stateKeyValuePair[0];
                     String rawValue = stateKeyValuePair[1];
 
                     State<?> state = allowedStates.get(key);
                     if (state == null) {
-                        Bukkit.broadcastMessage("Unrecognized state: " + key);
+                        TorusLogger.error(Category.MODELS, "Unrecognized state: " + key);
                         continue;
                     }
 
                     Function<String, Object> parser = stateParsers.get(state.type);
                     if (parser == null) {
-                        Bukkit.broadcastMessage("There is no parser for state type: " + state.type);
+                        TorusLogger.error(Category.MODELS, "There is no parser for state type: " + state.type);
                         continue;
                     }
 
@@ -316,6 +316,7 @@ public abstract class Structure {
                     try {
                         value = parser.apply(rawValue);
                     } catch (Exception e) {
+                        TorusLogger.error(Category.MODELS, "Error during parsing: '" + rawValue + "' is not a valid " + state.type);
                         continue;
                     }
 

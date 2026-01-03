@@ -3,8 +3,11 @@ package com.github.alantr7.torus.model.de_provider;
 import com.github.alantr7.torus.item.HeadData;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.RendererConfigLoader;
+import com.github.alantr7.torus.model.animation.Animation;
+import com.github.alantr7.torus.model.animation.AnimationProvider;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +35,24 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
 
     @Override
     public @Nullable PartModelTemplate load(ConfigurationSection section, String name, Vector3f offset) {
-        DisplayEntitiesPartModelTemplate partModelTemplate = new DisplayEntitiesPartModelTemplate(name, offset, section.getInt("teleport_duration", 0));
+        Map<String, AnimationProvider<PartModel, Animation>> animationMap;
+        ConfigurationSection animationMapSection = section.getConfigurationSection("animation_map");
+        if (animationMapSection != null) {
+            animationMap = new HashMap<>();
+            for (String modelAnimation : animationMapSection.getKeys(false)) {
+                String animationId = animationMapSection.getString(modelAnimation);
+                if (animationId == null) {
+                    continue;
+                }
+
+                animationMap.put(modelAnimation, part -> ((DisplayEntitiesPartModel) part).predefinedAnimations.get(animationId));
+            }
+        } else {
+            animationMap = Collections.emptyMap();
+        }
+
+        DisplayEntitiesPartModelTemplate partModelTemplate = new DisplayEntitiesPartModelTemplate(name, offset, section.getInt("teleport_duration", 0), animationMap);
+
         List<String> elements = section.getStringList("elements");
         for (String rawElement : elements) {
             Matcher matcher = ITEM_PATTERN.matcher(rawElement);
