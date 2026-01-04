@@ -2,11 +2,14 @@ package com.github.alantr7.torus.model;
 
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
+import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ModelTemplate {
+
+    public final ModelType modelType;
 
     public final int version;
 
@@ -17,6 +20,11 @@ public class ModelTemplate {
     public static final ModelTemplate EMPTY = new ModelTemplate(1);
 
     public ModelTemplate(int version) {
+        this(ModelType.SINGLEPART, version);
+    }
+
+    public ModelTemplate(ModelType modelType, int version) {
+        this.modelType = modelType;
         this.version = version;
     }
 
@@ -44,39 +52,58 @@ public class ModelTemplate {
 
         ModelTemplate previousTemplate = previous.template;
 
-        Model model = new Model(this);
-        children.forEach((stateSet, child) -> {
-            // Reuse the same parts
-            if (previousTemplate.children.get(stateSet) == child) {
-                previous.parts.forEach((partName, part) -> {
-                    if (partName.startsWith(stateSet + ".")) {
-                        model.parts.put(partName, part);
-                    }
-                });
-            }
-
-            // Generate missing parts
-            else {
-                child.parts.forEach((partName, part) -> {
-                    model.parts.put(stateSet + "." + partName, part.build(location.toBukkit(), direction));
-                });
-            }
-        });
-
-        // Remove old parts that are not used in the new model
-        previousTemplate.children.forEach((stateSet, child) -> {
-            if (children.containsKey(stateSet))
-                return;
-
-            for (String partName : child.parts.keySet()) {
-                PartModel part = previous.parts.get(stateSet + "." + partName);
-                if (part != null) {
-                    part.remove();
+        // Rebuild multi-part models
+        if (modelType == ModelType.MULTIPART) {
+            Model model = new Model(this);
+            children.forEach((stateSet, child) -> {
+                // Reuse the same parts
+                if (previousTemplate.children.get(stateSet) == child) {
+                    previous.parts.forEach((partName, part) -> {
+                        if (partName.startsWith(stateSet + ".")) {
+                            model.parts.put(partName, part);
+                        }
+                    });
                 }
-            }
-        });
 
-        return model;
+                // Generate missing parts
+                else {
+                    child.parts.forEach((partName, part) -> {
+                        model.parts.put(stateSet + "." + partName, part.build(location.toBukkit(), direction));
+                    });
+                }
+            });
+
+            // Remove old parts that are not used in the new model
+            previousTemplate.children.forEach((stateSet, child) -> {
+                if (children.containsKey(stateSet))
+                    return;
+
+                for (String partName : child.parts.keySet()) {
+                    PartModel part = previous.parts.get(stateSet + "." + partName);
+                    if (part != null) {
+                        part.remove();
+                    }
+                }
+            });
+
+            return model;
+        }
+
+        // Rebuild single-part models
+        else {
+            ModelTemplate newModelTemplate = children.values().iterator().next();
+            ModelTemplate previousModelTemplate = previousTemplate.children.values().iterator().next();
+
+            if (newModelTemplate == previousModelTemplate) {
+                Model model = new Model(previousTemplate);
+                model.parts.putAll(previous.parts);
+
+                return model;
+            } else {
+                previous.remove();
+                return toModel(location, direction);
+            }
+        }
     }
 
 }
