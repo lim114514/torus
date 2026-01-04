@@ -2,6 +2,10 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
+import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
+import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
@@ -11,6 +15,7 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.component.Socket;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -25,6 +30,18 @@ public class Pump extends Structure {
     public static int FLUID_CAPACITY = 1_000;
 
     public static int MAXIMUM_PIPE_LENGTH = 32;
+
+    static ModelTemplate MODEL_PIPE = new ModelTemplate(1);
+    static {
+        DisplayEntitiesPartModelTemplate part = new DisplayEntitiesPartModelTemplate("pipe");
+        part.add(new PartModelElementItemDisplayRenderer(
+          Material.LIGHT_BLUE_TERRACOTTA,
+          new Vector3f(0, 0, 0),
+          new Vector3f(0.1875f, 2, 0.1875f),
+          0, 0
+        ));
+        MODEL_PIPE.add(part);
+    }
 
     public Pump() {
         super(TorusPlugin.DEFAULT_ADDON, "pump", "Pump", PumpInstance.class);

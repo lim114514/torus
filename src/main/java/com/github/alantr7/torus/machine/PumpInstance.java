@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +29,8 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
     protected Socket energySocket;
+
+    protected ItemDisplay pipeDisplay;
 
     PumpInstance(LoadContext context) {
         super(context);
@@ -45,23 +48,24 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     @Override
     public void handleModelInit() {
-        // TODO: Abstraction
-        Display pipe = ((DisplayEntitiesPartModel) model.getPart("pipe")).entityReferences.getFirst().getEntity();
-        pipe.setTeleportDuration(20);
+        pipeDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) Pump.MODEL_PIPE.toModel(location, direction).parts.get("pipe")).entityReferences.getFirst().getEntity();
+        pipeDisplay.setTeleportDuration(20);
         updatePipe();
     }
 
+    @Override
+    public void handleModelDestroy() {
+        super.handleModelDestroy();
+        pipeDisplay.remove();
+    }
+
     private void updatePipe() {
-        // TODO: Abstraction
-        Display pipe = ((DisplayEntitiesPartModel) model.getPart("pipe")).entityReferences.getFirst().getEntity();
-        if (pipe != null) {
-            Transformation transformation = pipe.getTransformation();
-            transformation.getScale().set(.1875f, length.get(), .1875f);
-            pipe.setTransformation(transformation);
-            pipe.setInterpolationDelay(0);
-            pipe.setInterpolationDuration(20);
-            pipe.teleport(location.toBukkitCentered().add(0, .2f - length.get() / 2f, 0));
-        }
+        Transformation transformation = pipeDisplay.getTransformation();
+        transformation.getScale().set(.1875f, length.get(), .1875f);
+        pipeDisplay.setTransformation(transformation);
+        pipeDisplay.setInterpolationDelay(0);
+        pipeDisplay.setInterpolationDuration(20);
+        pipeDisplay.teleport(location.toBukkitCentered().add(0, .2f - length.get() / 2f, 0));
     }
 
     private int airTicks = 0;

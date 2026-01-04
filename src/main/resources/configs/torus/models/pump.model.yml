@@ -17,8 +17,3 @@ in_energy:
   renderer: DISPLAY_ENTITIES
   elements:
     - item_display,gray_concrete,0,1.5,0.4375,0.625,0.625,0.125,0,0,0
-
-pipe:
-  renderer: DISPLAY_ENTITIES
-  elements:
-    - item_display,light_blue_terracotta,0,0,0,0.1875,2,0.1875,0,0,0
