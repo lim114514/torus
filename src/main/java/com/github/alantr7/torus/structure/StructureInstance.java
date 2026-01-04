@@ -191,6 +191,7 @@ public abstract class StructureInstance {
     }
 
     public void scheduleModelUpdate() {
+        TorusPlugin.getInstance().getModelManager().scheduleModelUpdate(this);
         isModelUpdateScheduled = true;
     }
 
