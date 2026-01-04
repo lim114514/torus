@@ -19,6 +19,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -48,6 +49,11 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     protected DisplayEntitiesPartModel feedModel;
     protected ItemDisplay feedDisplay;
 
+    private static final ItemStack INTERNAL_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
+    static {
+        INTERNAL_PICKAXE.addEnchantment(Enchantment.SILK_TOUCH, 1);
+    }
+
     QuarryInstance(LoadContext context) {
         super(context);
     }
@@ -69,7 +75,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
                 if (breakingTicks == 4) {
                     breakingTicks = 0;
-                    for (ItemStack drop : ore.getDrops(new ItemStack(Material.IRON_PICKAXE))) {
+                    for (ItemStack drop : ore.getDrops(INTERNAL_PICKAXE)) {
                         outBuffer.addItem(drop.clone());
                         break;
                     }
