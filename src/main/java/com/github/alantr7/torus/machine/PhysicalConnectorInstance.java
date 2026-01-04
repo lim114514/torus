@@ -110,13 +110,13 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
         DisplayEntitiesPartModelTemplate model = new DisplayEntitiesPartModelTemplate("cable");
         for (Direction direction : Direction.values()) {
             if (socket.isConnected(direction)) {
-                model.add(EnergyCable.MODELS_ITEM[direction.ordinal()]);
+//                model.add(EnergyCable.MODELS_ITEM[direction.ordinal()]);
             }
         }
 
         // Add a cable that goes into the connected structure (only if there are other cables around)
         if (socket.getConnections() != 0) {
-            model.add(EnergyCable.MODELS_ITEM[direction.getOpposite().ordinal()]);
+//            model.add(EnergyCable.MODELS_ITEM[direction.getOpposite().ordinal()]);
         }
 
         this.model.parts.put("cable", this.model.parts.containsKey("cable")

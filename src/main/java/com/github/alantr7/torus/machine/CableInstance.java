@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -35,11 +34,15 @@ public class CableInstance extends StructureInstance implements Connectable, Con
 
     @Override
     protected void setup() {
+        for (Direction direction : Direction.values()) {
+            if (isConnected(direction)) {
+                state.set(getStateFromDirection(direction), true, false);
+            }
+        }
     }
 
     @Override
-    public void handleModelInit() {
-        updateModel();
+    public void tick() {
     }
 
     public void updateConnections() {
@@ -79,31 +82,9 @@ public class CableInstance extends StructureInstance implements Connectable, Con
             state.set(getStateFromDirection(direction), true);
             cable.state.set(getStateFromDirection(direction.getOpposite()), true);
             cable.setConnected(direction.getOpposite(), true);
-            cable.updateModel();
         }
 
         setConnected(direction, hasConnected);
-    }
-
-    @Override
-    public void updateModel() {
-        // TODO: Abstraction
-        DisplayEntitiesPartModelTemplate model = new DisplayEntitiesPartModelTemplate("base");
-        if (connections.get() == 0) {
-            model.add(CABLE_MODELS[type.get()][6]);
-        }
-
-        for (Direction direction : Direction.values()) {
-            if (isConnected(direction)) {
-                model.add(CABLE_MODELS[type.get()][direction.ordinal()]);
-            }
-        }
-
-        this.model.parts.put("base", model.recycle(this.model.getPart("base"), location.getBlock().getLocation().add(.5, 0, .5), direction.rotH, direction.rotV));
-    }
-
-    @Override
-    public void tick() {
     }
 
     @Override
@@ -114,6 +95,12 @@ public class CableInstance extends StructureInstance implements Connectable, Con
     @Override
     public int getConnections() {
         return connections.get();
+    }
+
+    @Override
+    public void setConnected(Direction direction, boolean connected) {
+        Connectable.super.setConnected(direction, connected);
+        state.set(getStateFromDirection(direction), connected);
     }
 
     @Override

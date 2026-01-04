@@ -1,0 +1,6 @@
+model_version: 2
+
+base:
+  renderer: DISPLAY_ENTITIES
+  elements:
+    - item_display,gray_wool,0.25,0.5,0,0.5,0.2,0.2,0,0,0

@@ -17,14 +17,6 @@ import static com.github.alantr7.torus.machine.EnergyCable.*;
 
 public class ItemCable extends Structure {
 
-    static ModelTemplate INITIAL_MODEL = new ModelTemplate(1);
-    static {
-        DisplayEntitiesPartModelTemplate part = new DisplayEntitiesPartModelTemplate("base");
-        part.add(MODELS_ITEM[0]);
-
-        INITIAL_MODEL.add(part);
-    }
-
     public ItemCable() {
         super(TorusPlugin.DEFAULT_ADDON, "item_cable", "Item Cable", CableInstance.class);
         isHeavy = false;
@@ -34,11 +26,6 @@ public class ItemCable extends Structure {
         registerState(STATE_WEST);
         registerState(STATE_UP);
         registerState(STATE_DOWN);
-    }
-
-    @Override
-    public ModelTemplate getModel() {
-        return INITIAL_MODEL;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.model.ModelTemplate;
-import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -21,14 +19,6 @@ import static com.github.alantr7.torus.machine.EnergyCable.STATE_WEST;
 
 public class FluidPipe extends Structure {
 
-    static ModelTemplate INITIAL_MODEL = new ModelTemplate(1);
-    static {
-        DisplayEntitiesPartModelTemplate part = new DisplayEntitiesPartModelTemplate("base");
-        part.add(MODELS_FLUID[0]);
-
-        INITIAL_MODEL.add(part);
-    }
-
     public FluidPipe() {
         super(TorusPlugin.DEFAULT_ADDON, "fluid_pipe", "Fluid Pipe", CableInstance.class);
         isHeavy = false;
@@ -38,11 +28,6 @@ public class FluidPipe extends Structure {
         registerState(STATE_WEST);
         registerState(STATE_UP);
         registerState(STATE_DOWN);
-    }
-
-    @Override
-    public ModelTemplate getModel() {
-        return INITIAL_MODEL;
     }
 
     @Override
