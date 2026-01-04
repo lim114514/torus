@@ -12,6 +12,7 @@ import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import org.bukkit.Material;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
@@ -27,12 +28,38 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     protected Data<Integer> stored = dataContainer.persist("stored", Data.Type.INT, 0);
 
+    protected ItemDisplay fluidDisplay;
+
     FluidTankInstance(LoadContext context) {
         super(context);
     }
 
     public FluidTankInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.FLUID_TANK, location, bodyDef, direction);
+    }
+
+    @Override
+    protected void setup() {
+        liquidComponent = getComponent("liquid");
+        input = getSocket("in_fluid");
+    }
+
+    @Override
+    public InspectableData setupInspectableData() {
+        return new InspectableData((byte) 2)
+          .property("Fluid", () -> getFluid() == null ? "(None)" : getFluid().name())
+          .property("Level", () -> MathUtils.formatNumber(getStoredFluid()) + "/" + MathUtils.formatNumber(getFluidCapacity()) + " mb");
+    }
+
+    @Override
+    public void handleModelInit() {
+        fluidDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) FluidTank.MODEL_FLUID.toModel(location, direction).parts.get("fluid")).entityReferences.getFirst().getEntity();
+    }
+
+    @Override
+    public void handleModelDestroy() {
+        super.handleModelDestroy();
+        fluidDisplay.remove();
     }
 
     @Override
@@ -58,18 +85,16 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
             }
         }
 
-        updateLiquidModel();
+        updateFluidDisplay();
     }
 
-    public void updateLiquidModel() {
+    public void updateFluidDisplay() {
         float height = (float) stored.get() / getFluidCapacity() * 2.1f;
-        // TODO: Abstraction
-        ItemDisplay display = (ItemDisplay) ((DisplayEntitiesPartModel) model.getPart("liquid")).entityReferences.getFirst().getEntity();
-        if ((display.getItemStack().getType() == Material.BLUE_CONCRETE && fluid.get() != Fluid.WATER.ordinal()) || (display.getItemStack().getType() == Material.ORANGE_CONCRETE && fluid.get() != Fluid.LAVA.ordinal())) {
-            display.setItemStack(new ItemStack(fluid.get() == Fluid.WATER.ordinal() ? Material.BLUE_CONCRETE : Material.ORANGE_CONCRETE));
+        if ((fluidDisplay.getItemStack().getType() == Material.BLUE_CONCRETE && fluid.get() != Fluid.WATER.ordinal()) || (fluidDisplay.getItemStack().getType() == Material.ORANGE_CONCRETE && fluid.get() != Fluid.LAVA.ordinal())) {
+            fluidDisplay.setItemStack(new ItemStack(fluid.get() == Fluid.WATER.ordinal() ? Material.BLUE_CONCRETE : Material.ORANGE_CONCRETE));
         }
 
-        Transformation transformation = display.getTransformation();
+        Transformation transformation = fluidDisplay.getTransformation();
 
         Vector3f translation = transformation.getTranslation();
         translation.y = 1.265f + height / 2f;
@@ -77,20 +102,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
         Vector3f scale = transformation.getScale();
         scale.y = height;
 
-        display.setTransformation(transformation);
-    }
-
-    @Override
-    protected void setup() {
-        liquidComponent = getComponent("liquid");
-        input = getSocket("in_fluid");
-    }
-
-    @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 2)
-          .property("Fluid", () -> getFluid() == null ? "(None)" : getFluid().name())
-          .property("Level", () -> MathUtils.formatNumber(getStoredFluid()) + "/" + MathUtils.formatNumber(getFluidCapacity()) + " mb");
+        fluidDisplay.setTransformation(transformation);
     }
 
     @Override
