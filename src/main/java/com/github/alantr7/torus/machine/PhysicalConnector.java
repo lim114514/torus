@@ -1,7 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.api.resource.ResourceLocation;
+import com.github.alantr7.torus.structure.state.State;
+import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.MathUtils;
@@ -16,16 +17,25 @@ import org.joml.Vector3f;
 
 public class PhysicalConnector extends Structure {
 
+    public static final State<Boolean> STATE_FRONT  = new State<>("front",  StateType.BOOLEAN, false);
+    public static final State<Boolean> STATE_RIGHT  = new State<>("right",   StateType.BOOLEAN, false);
+    public static final State<Boolean> STATE_BACK   = new State<>("back",  StateType.BOOLEAN, false);
+    public static final State<Boolean> STATE_LEFT   = new State<>("left",   StateType.BOOLEAN, false);
+    public static final State<Boolean> STATE_UP     = new State<>("up",     StateType.BOOLEAN, false);
+    public static final State<Boolean> STATE_DOWN   = new State<>("down",   StateType.BOOLEAN, false);
+
     public PhysicalConnector() {
         super(TorusPlugin.DEFAULT_ADDON, "connector", "Connector", PhysicalConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
+        registerState(STATE_FRONT);
+        registerState(STATE_RIGHT);
+        registerState(STATE_BACK);
+        registerState(STATE_LEFT);
+        registerState(STATE_UP);
+        registerState(STATE_DOWN);
         portableData.add("flow");
         portableData.add("filter");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/connector.model.yml",
-          addon.classpathContainer, "configs/torus/models/connector.model.yml"
-        );
     }
 
     @Override
@@ -48,6 +58,17 @@ public class PhysicalConnector extends Structure {
         );
 
         return new PhysicalConnectorInstance(location, body, direction, Socket.FlowDirection.IN);
+    }
+
+    static State<Boolean> getStateFromDirection(Direction direction) {
+        return switch (direction) {
+            case NORTH -> STATE_FRONT;
+            case EAST -> STATE_RIGHT;
+            case SOUTH -> STATE_BACK;
+            case WEST -> STATE_LEFT;
+            case UP -> STATE_UP;
+            case DOWN -> STATE_DOWN;
+        };
     }
 
 }

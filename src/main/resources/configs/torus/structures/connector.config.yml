@@ -15,7 +15,19 @@ info_hologram:
   translation: [1.2, 0, 0] # Translation applied to TextDisplay
 
 model_controller:
-  type: SINGLEPART
+  type: MULTIPART
   cases:
     fallback:
-      model: "connector.model.yml"
+      model: "connector_socket.model.yml"
+    state[front=true]:
+      model: "item_cable_north.model.yml"
+    state[right=true]:
+      model: "item_cable_east.model.yml"
+    state[back=true]:
+      model: "item_cable_south.model.yml"
+    state[left=true]:
+      model: "item_cable_west.model.yml"
+    state[up=true]:
+      model: "item_cable_up.model.yml"
+    state[down=true]:
+      model: "item_cable_down.model.yml"

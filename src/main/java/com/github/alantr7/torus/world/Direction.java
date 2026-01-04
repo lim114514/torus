@@ -56,6 +56,19 @@ public enum Direction {
         return getRight().getOpposite();
     }
 
+    public Direction relativeTo(Direction north) {
+        if (this == UP || this == DOWN)
+            return this;
+
+        int rotH = (this.rotH - north.rotH + 360) % 360;
+        for (Direction dir : values()) {
+            if (dir.rotH == rotH)
+                return dir;
+        }
+
+        return north;
+    }
+
     public static Direction fromBlockFace(BlockFace face) {
         return switch (face) {
             case NORTH -> NORTH;

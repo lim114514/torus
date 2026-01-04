@@ -5,7 +5,6 @@ import com.github.alantr7.torus.gui.structure.InventoryInterfaceFilterEditGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
-import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -23,6 +22,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 
 import java.nio.charset.StandardCharsets;
+
+import static com.github.alantr7.torus.machine.PhysicalConnector.*;
 
 public class PhysicalConnectorInstance extends StructureInstance implements Inspectable {
 
@@ -48,7 +49,16 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     protected void setup() {
         socket = getSocket("connector");
         updateCriteria(getFilter());
-        updateModel();
+
+        for (Direction direction : Direction.values()) {
+            if (socket.isConnected(direction)) {
+                state.set(getStateFromDirection(direction.relativeTo(this.direction)), true, false);
+            }
+        }
+
+        if (socket.getConnections() != 0) {
+            state.set(STATE_BACK, true, false);
+        }
     }
 
     @Override
@@ -63,7 +73,6 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
         }
 
         int connections = socket.getConnections();
-        boolean shouldUpdateModel = false;
         for (Direction direction : Direction.values()) {
             if (!socket.isConnectableFrom(direction)) {
                 continue;
@@ -72,12 +81,11 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
             StructureInstance possibleConnection = location.getRelative(direction).getStructure();
             boolean hasConnected = false;
 
-            // Check if this interface connects to a connector
+            // Check if this interface connects to a socket
             if (possibleConnection != null) {
                 Socket socket = possibleConnection.getSocket(location, Socket.Matter.ITEM);
                 if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                     hasConnected = true;
-                    shouldUpdateModel = true;
 
                     socket.setConnected(direction.getOpposite(), true);
                     possibleConnection.save();
@@ -87,41 +95,21 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
             // Check if this interface connects to another cable
             if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Socket.Matter.ITEM) {
                 hasConnected = true;
-                shouldUpdateModel = true;
 
                 cable.setConnected(direction.getOpposite(), true);
-                cable.updateModel();
             }
 
-            if (hasConnected != socket.isConnected(direction))
-                shouldUpdateModel = true;
-
+            state.set(getStateFromDirection(direction.relativeTo(this.direction)), hasConnected);
             socket.setConnected(direction, hasConnected);
         }
 
-        if (shouldUpdateModel) {
-            updateModel();
-        } else if (socket.getConnections() != connections) {
+        if (socket.getConnections() != 0) {
+            state.set(STATE_BACK, true);
+        }
+
+        if (socket.getConnections() != connections) {
             save();
         }
-    }
-
-    public void updateModel() {
-        DisplayEntitiesPartModelTemplate model = new DisplayEntitiesPartModelTemplate("cable");
-        for (Direction direction : Direction.values()) {
-            if (socket.isConnected(direction)) {
-//                model.add(EnergyCable.MODELS_ITEM[direction.ordinal()]);
-            }
-        }
-
-        // Add a cable that goes into the connected structure (only if there are other cables around)
-        if (socket.getConnections() != 0) {
-//            model.add(EnergyCable.MODELS_ITEM[direction.getOpposite().ordinal()]);
-        }
-
-        this.model.parts.put("cable", this.model.parts.containsKey("cable")
-            ? model.recycle(this.model.getPart("cable"), location.toBukkitCentered(), Direction.NORTH.rotH, Direction.NORTH.rotV)
-            : model.build(location.toBukkitCentered(), Direction.NORTH));
     }
 
     @Override
