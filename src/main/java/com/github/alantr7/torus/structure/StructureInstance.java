@@ -13,7 +13,7 @@ import com.github.alantr7.torus.math.StringPool;
 import com.github.alantr7.torus.model.*;
 import com.github.alantr7.torus.model.animation.Animation;
 import com.github.alantr7.torus.model.animation.AnimationProvider;
-import com.github.alantr7.torus.model.controller.ModelCase;
+import com.github.alantr7.torus.model.controller.ModelContainer;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
 import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
@@ -143,8 +143,8 @@ public abstract class StructureInstance {
     }
 
     public void updateModel() {
-        ModelCase modelCase = structure.getModelController().getModel(state);
-        if (modelCase == null) {
+        ModelContainer modelContainer = structure.getModelController().getModel(state);
+        if (modelContainer == null) {
             if (model == null || model.template != ModelTemplate.EMPTY) {
                 if (model != null)
                     model.remove();
@@ -153,9 +153,9 @@ public abstract class StructureInstance {
             }
         } else {
             if (model != null) {
-                if (model.template != modelCase.template) {
+                if (structure.getModelController().type == ModelType.MULTIPART || model.template != modelContainer.matches.getFirst().template) {
                     model.remove();
-                    model = modelCase.template.toModel(location, direction);
+                    model = modelContainer.compositeModel.toModel(location, direction);
 
                     // Load default animations if Torus structure
                     if (structure.addon.id.equals("torus")) {
@@ -163,7 +163,7 @@ public abstract class StructureInstance {
                     }
                 }
             } else {
-                model = modelCase.template.toModel(location, direction);
+                model = modelContainer.compositeModel.toModel(location, direction);
 
                 // Load default animations if Torus structure
                 if (structure.addon.id.equals("torus")) {
@@ -172,18 +172,21 @@ public abstract class StructureInstance {
             }
 
             // Play animation
-            if (modelCase.animations != null) {
-                model.parts.forEach((name, part) -> {
-                    AnimationProvider<PartModel, Animation> animationProvider = model.template.parts.get(name).animationMap.get(modelCase.animations);
-                    if (animationProvider != null) {
-                        part.setAnimation(animationProvider.get(part));
-                    }
-                });
-            }
+            // TODO: Animations for multipart models
+            if (structure.getModelController().type == ModelType.SINGLEPART) {
+                if (modelContainer.matches.getFirst().animations != null) {
+                    model.parts.forEach((name, part) -> {
+                        AnimationProvider<PartModel, Animation> animationProvider = model.template.parts.get(name).animationMap.get(modelContainer.matches.getFirst().animations);
+                        if (animationProvider != null) {
+                            part.setAnimation(animationProvider.get(part));
+                        }
+                    });
+                }
 
-            // Stop animation if it was playing (and the model didn't change)
-            else {
-                model.parts.forEach((name, part) -> part.setAnimation(null));
+                // Stop animation if it was playing (and the model didn't change)
+                else {
+                    model.parts.forEach((name, part) -> part.setAnimation(null));
+                }
             }
         }
 
