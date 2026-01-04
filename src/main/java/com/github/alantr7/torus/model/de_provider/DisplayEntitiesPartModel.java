@@ -26,6 +26,7 @@ public class DisplayEntitiesPartModel extends PartModel {
     public Map<String, Animation> predefinedAnimations = Collections.emptyMap();
 
     public DisplayEntitiesPartModel(PartModelTemplate template, Display parent, List<EntityReference> entityReferences) {
+        super(template.name);
         this.template = template;
         this.parent = parent;
         this.entityReferences = entityReferences;

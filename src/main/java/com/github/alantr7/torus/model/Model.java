@@ -13,8 +13,16 @@ public class Model {
         this.template = template;
     }
 
-    public PartModel getPart(String name) {
-        return parts.get(name);
+    public PartModel getPartById(String id) {
+        return parts.get(id);
+    }
+
+    public PartModel getPartByName(String name) {
+        for (PartModel part : parts.values()) {
+            if (name.equals(part.name))
+                return part;
+        }
+        return null;
     }
 
     public void remove() {

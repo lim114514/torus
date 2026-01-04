@@ -154,18 +154,13 @@ public abstract class StructureInstance {
         } else {
             if (model != null) {
                 model = modelContainer.compositeModel.upgradeModel(this.model, location, direction);
-
-                // Load default animations if Torus structure
-                if (structure.addon.id.equals("torus")) {
-                    DisplayEntitiesDefaultAnimations.inject(this);
-                }
             } else {
                 model = modelContainer.compositeModel.toModel(location, direction);
+            }
 
-                // Load default animations if Torus structure
-                if (structure.addon.id.equals("torus")) {
-                    DisplayEntitiesDefaultAnimations.inject(this);
-                }
+            // Load default animations if Torus structure
+            if (structure.addon.id.equals("torus")) {
+                DisplayEntitiesDefaultAnimations.inject(this);
             }
 
             // Play animation

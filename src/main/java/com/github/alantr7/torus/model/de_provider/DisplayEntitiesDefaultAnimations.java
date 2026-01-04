@@ -73,7 +73,7 @@ public class DisplayEntitiesDefaultAnimations {
             return;
 
         animations.forEach((partName, entry) -> {
-            if (instance.model.getPart(partName) instanceof DisplayEntitiesPartModel de) {
+            if (instance.model.getPartByName(partName) instanceof DisplayEntitiesPartModel de) {
                 de.predefinedAnimations = Map.of(entry.getKey(), entry.getValue().apply(instance, de));
             }
         });

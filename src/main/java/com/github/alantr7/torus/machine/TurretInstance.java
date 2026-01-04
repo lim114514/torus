@@ -96,7 +96,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 
     public void updateHeadRotation() {
         double angle = Math.atan2(target.getLocation().getX() - (location.x + .5), target.getLocation().getZ() - (location.z + .5));
-        structure.getModel().parts.get("head").recycle(model.getPart("head"), location.toBukkit().add(.5, 0, .5), 180f - (float) Math.toDegrees(angle), 0f);
+        structure.getModel().parts.get("head").recycle(model.getPartById("head"), location.toBukkit().add(.5, 0, .5), 180f - (float) Math.toDegrees(angle), 0f);
     }
 
     @Override

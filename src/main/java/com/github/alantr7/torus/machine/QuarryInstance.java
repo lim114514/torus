@@ -1,7 +1,5 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.model.Model;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
@@ -21,7 +19,6 @@ import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -143,15 +140,14 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         byte[] zMoverPosition = new byte[] {(byte) (-position0[0] + 4), 0, 0};
         zMoverPosition = MathUtils.rotateVectors(zMoverPosition, direction);
 
-        // TODO: Fix the "<state>.<part>" access (maybe some aliases? or alter model composition?)
-        model.getPart(".gantry_x").teleport(location.toBukkit().add(.5, 0f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
-        model.getPart(".gantry_z").teleport(location.toBukkit().add(.5, 0f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
+        model.getPartByName("gantry_x").teleport(location.toBukkit().add(.5, 0f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
+        model.getPartByName("gantry_z").teleport(location.toBukkit().add(.5, 0f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
 
         updateDrillLength();
 
         feedModel.teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
-        model.getPart(".drill_bit").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
-        model.getPart(".head").teleport(location.toBukkit().add(.5, 0, .5).add(position[0], 0, position[2]));
+        model.getPartByName("drill_bit").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
+        model.getPartByName("head").teleport(location.toBukkit().add(.5, 0, .5).add(position[0], 0, position[2]));
 
         return true;
     }

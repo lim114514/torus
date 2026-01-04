@@ -51,7 +51,7 @@ public class ModelEnginePartModelTemplate extends PartModelTemplate {
         ActiveModel model = ModelEngineAPI.createActiveModel(blueprint);
         modeledEntity.addModel(model, true);
 
-        return new ModelEnginePartModel(modeledEntity, model);
+        return new ModelEnginePartModel(name, modeledEntity, model);
     }
 
     @Override

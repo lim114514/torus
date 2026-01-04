@@ -13,7 +13,8 @@ public class ModelEnginePartModel extends PartModel {
 
     public final ActiveModel activeModel;
 
-    public ModelEnginePartModel(ModeledEntity entity, ActiveModel activeModel) {
+    public ModelEnginePartModel(String name, ModeledEntity entity, ActiveModel activeModel) {
+        super(name);
         this.entity = entity;
         this.activeModel = activeModel;
     }
