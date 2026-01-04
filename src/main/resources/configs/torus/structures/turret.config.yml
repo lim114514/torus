@@ -1,3 +1,5 @@
+config_version: 2
+
 general_settings:
   enabled: true
   display_name: "Turret"

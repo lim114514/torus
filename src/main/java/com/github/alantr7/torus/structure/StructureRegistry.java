@@ -11,6 +11,7 @@ import com.github.alantr7.torus.api.resource.Resource;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.updater.UpdateUtils_0_5_3;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -118,6 +119,8 @@ public class StructureRegistry {
             if (configFile.exists()) {
                 try {
                     structure.config = YamlConfiguration.loadConfiguration(configFile);
+                    UpdateUtils_0_5_3.updateStructureConfigFromV1ToV2(structure.configResource, configFile, structure.config);
+
                     structure.loadConfig();
                 } catch (Exception | Error e) {
                     TorusLogger.error(Category.MODELS, "Invalid configuration for structure '" + structure.id + "'");
