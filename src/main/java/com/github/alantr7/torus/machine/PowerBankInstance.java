@@ -19,6 +19,8 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
 
     Socket socket;
 
+    Display chargeIndicatorDisplay;
+
     public PowerBankInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.POWER_BANK, location, bodyDef, direction);
     }
@@ -32,6 +34,9 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         socket = getSocket("power_connector");
         socket.maximumInput = PowerBank.ENERGY_MAXIMUM_INPUT;
         socket.maximumOutput = PowerBank.ENERGY_MAXIMUM_OUTPUT;
+
+        chargeIndicatorDisplay = ((DisplayEntitiesPartModel) PowerBank.MODEL_CHARGE_INDICATOR.toModel(location, direction)
+          .parts.get("charge")).entityReferences.getFirst().getEntity();
     }
 
     @Override
@@ -45,10 +50,16 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     public void tick() {
         socket.maintainEnergy(this);
         if (energyAtLastTick != storedEnergy.get()) {
-            updateModel();
+            updateChargeIndicator();
         }
 
         energyAtLastTick = storedEnergy.get();
+    }
+
+    @Override
+    public void handleModelDestroy() {
+        super.handleModelDestroy();
+        chargeIndicatorDisplay.remove();
     }
 
     @Override
@@ -56,16 +67,13 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         return PowerBank.ENERGY_CAPACITY;
     }
 
-    public void updateModel() {
+    private void updateChargeIndicator() {
         float ratio = (float) storedEnergy.get() / PowerBank.ENERGY_CAPACITY;
         float height = 1.125f * ratio;
-
-        // TODO: Abstraction
-        Display entity = ((DisplayEntitiesPartModel) this.model.getPart("charge")).entityReferences.getFirst().getEntity();
-        Transformation transformation = entity.getTransformation();
+        Transformation transformation = chargeIndicatorDisplay.getTransformation();
         transformation.getScale().y = height;
         transformation.getTranslation().y = 0.1675f + height / 2f;
-        entity.setTransformation(transformation);
+        chargeIndicatorDisplay.setTransformation(transformation);
     }
 
 }

@@ -2,6 +2,10 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
+import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
+import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
@@ -11,6 +15,7 @@ import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -21,6 +26,19 @@ public class PowerBank extends Structure {
     public static int ENERGY_MAXIMUM_INPUT = 500;
 
     public static int ENERGY_MAXIMUM_OUTPUT = 500;
+
+    static final ModelTemplate MODEL_CHARGE_INDICATOR = new ModelTemplate(1);
+    static {
+        DisplayEntitiesPartModelTemplate charge = new DisplayEntitiesPartModelTemplate("charge");
+        charge.parts.add(new PartModelElementItemDisplayRenderer(
+          Material.CYAN_CONCRETE,
+          new Vector3f(0, 0.1675f, -0.38475f),
+          new Vector3f(0.12f, 0.0011f, 0.0625f),
+          0f, 0f)
+        );
+
+        MODEL_CHARGE_INDICATOR.add(charge);
+    }
 
     public PowerBank() {
         super(TorusPlugin.DEFAULT_ADDON, "power_bank", "Power Bank", PowerBankInstance.class);
