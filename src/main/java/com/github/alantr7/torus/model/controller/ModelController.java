@@ -34,7 +34,7 @@ public class ModelController {
     }
 
     private ModelTemplate generateCompositeModel(List<ModelCase> matches) {
-        ModelTemplate composite = new ModelTemplate(1);
+        ModelTemplate composite = new ModelTemplate(type, 1);
         for (ModelCase modelCase : matches) {
             modelCase.template.parts.forEach((partName, part) -> {
                 composite.parts.put(modelCase.stateSet + "." + partName, part);
