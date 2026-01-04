@@ -6,6 +6,7 @@ import com.github.alantr7.torus.structure.state.StructureState;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ModelController {
@@ -25,7 +26,7 @@ public class ModelController {
             if (case1.test(state)) {
                 matches.add(case1);
                 if (type == ModelType.SINGLEPART) {
-                    return new ModelContainer(matches, case1.template);
+                    return new ModelContainer(matches, generateCompositeModel(Collections.singletonList(case1)));
                 }
             }
         }
@@ -34,13 +35,11 @@ public class ModelController {
 
     private ModelTemplate generateCompositeModel(List<ModelCase> matches) {
         ModelTemplate composite = new ModelTemplate(1);
-        for (int i = 0; i < matches.size(); i++) {
-            ModelCase modelCase = matches.get(i);
-
-            int finalI = i;
+        for (ModelCase modelCase : matches) {
             modelCase.template.parts.forEach((partName, part) -> {
-                composite.parts.put(finalI + "." + partName, part);
+                composite.parts.put(modelCase.stateSet + "." + partName, part);
             });
+            composite.children.put(modelCase.stateSet, modelCase.template);
         }
 
         return composite;

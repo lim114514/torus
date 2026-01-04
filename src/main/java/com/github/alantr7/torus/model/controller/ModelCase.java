@@ -12,6 +12,8 @@ public class ModelCase {
 
     public final ModelTemplate template;
 
+    public final String stateSet;
+
     // TODO: Support multiple animations
     public final String animations;
 
@@ -19,6 +21,10 @@ public class ModelCase {
         this.conditions = conditions;
         this.template = template;
         this.animations = animations;
+
+        StringBuilder builder = new StringBuilder();
+        conditions.forEach((state, value) -> builder.append(state.key).append("=").append(value).append(";"));
+        stateSet = builder.toString();
     }
 
     public boolean isFallback() {

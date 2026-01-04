@@ -12,7 +12,6 @@ import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.ModelType;
 import com.github.alantr7.torus.model.controller.ModelCase;
 import com.github.alantr7.torus.model.controller.ModelController;
-import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.structure.state.State;
 import com.github.alantr7.torus.structure.state.StateType;
@@ -21,7 +20,6 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -319,7 +317,7 @@ public abstract class Structure {
                 continue;
             }
 
-            ModelTemplate template = TorusPlugin.getInstance().getModelCache().getModel(rawModel);
+            ModelTemplate template = TorusPlugin.getInstance().getModelManager().getCached(rawModel);
             if (template == null) {
                 ResourceLocation modelLocation = new ResourceLocation(
                   addon.externalContainer, "models/" + rawModel,
@@ -338,7 +336,7 @@ public abstract class Structure {
                     continue;
                 }
 
-                TorusPlugin.getInstance().getModelCache().save(rawModel, template);
+                TorusPlugin.getInstance().getModelManager().cache(rawModel, template);
             }
 
             if (rawStateSet.equals("fallback")) {
