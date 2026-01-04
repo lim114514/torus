@@ -141,14 +141,14 @@ public class DataContainer {
     }
 
     public static void overwrite(DataContainer original, DataContainer data, Set<String> whitelist) {
-        for (Map.Entry<String, Data<Object>> entry : original.entries.entrySet()) {
-            if (!whitelist.contains(entry.getKey())) // TODO: Iterate through whitelist instead
+        for (String key : whitelist) {
+            Data<Object> newValue = data.entries.get(key);
+            Data<Object> oldValue = original.entries.get(key);
+
+            if (newValue == null || oldValue == null)
                 continue;
 
-            Data<Object> newValue = data.entries.get(entry.getKey());
-            if (newValue != null) {
-                entry.getValue().value = newValue.value;
-            }
+            oldValue.value = newValue.value;
         }
     }
 
