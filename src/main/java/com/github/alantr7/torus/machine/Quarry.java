@@ -1,8 +1,10 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.math.ByteArrayBuilder;
+import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
+import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -15,6 +17,7 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +35,20 @@ public class Quarry extends Structure {
     public static int ENERGY_MAXIMUM_INPUT = 350;
 
     public static int MAXIMUM_DEPTH = 64;
+
+    static ModelTemplate MODEL_FEED = new ModelTemplate(1);
+    static {
+        DisplayEntitiesPartModelTemplate part = new DisplayEntitiesPartModelTemplate(
+          "feed", new Vector3f(.5f, 0, .5f), 10, Collections.emptyMap()
+        );
+        part.add(new PartModelElementItemDisplayRenderer(
+          Material.LIGHT_GRAY_TERRACOTTA,
+          new Vector3f(0, 2.125f, 0),
+          new Vector3f(0.1875f, 3.25f, 0.1875f),
+          0, 0
+        ));
+        MODEL_FEED.add(part);
+    }
 
     public Quarry() {
         super(TorusPlugin.DEFAULT_ADDON, "quarry", "Quarry", QuarryInstance.class);

@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.model.Model;
+import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
@@ -20,13 +22,14 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 
 public class QuarryInstance extends StructureInstance implements EnergyContainer {
 
-    protected StructureComponent head, feed, bit, gantryX, gantryZ;
+    protected StructureComponent head, bit, gantryX, gantryZ;
 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
@@ -44,6 +47,9 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     protected Data<Byte> horizontalPosition = dataContainer.persist("pos_h", Data.Type.BYTE, (byte) 0);
 
     protected Data<Byte> level = dataContainer.persist("pos_v", Data.Type.BYTE, (byte) 0);
+
+    protected DisplayEntitiesPartModel feedModel;
+    protected ItemDisplay feedDisplay;
 
     QuarryInstance(LoadContext context) {
         super(context);
@@ -137,14 +143,15 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         byte[] zMoverPosition = new byte[] {(byte) (-position0[0] + 4), 0, 0};
         zMoverPosition = MathUtils.rotateVectors(zMoverPosition, direction);
 
-        model.getPart("gantry_x").teleport(location.toBukkit().add(.5, 0f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
-        model.getPart("gantry_z").teleport(location.toBukkit().add(.5, 0f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
+        // TODO: Fix the "<state>.<part>" access (maybe some aliases? or alter model composition?)
+        model.getPart(".gantry_x").teleport(location.toBukkit().add(.5, 0f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
+        model.getPart(".gantry_z").teleport(location.toBukkit().add(.5, 0f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
 
         updateDrillLength();
 
-        model.getPart("feed").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
-        model.getPart("drill_bit").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
-        model.getPart("head").teleport(location.toBukkit().add(.5, 0, .5).add(position[0], 0, position[2]));
+        feedModel.teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
+        model.getPart(".drill_bit").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
+        model.getPart(".head").teleport(location.toBukkit().add(.5, 0, .5).add(position[0], 0, position[2]));
 
         return true;
     }
@@ -155,18 +162,15 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
         drillLength.update(len);
 
-        // TODO: Abstraction
-        Display drillModel = ((DisplayEntitiesPartModel) model.getPart("feed")).entityReferences.getFirst().getEntity();
-        Transformation transform = drillModel.getTransformation();
-        transform.getTranslation().y = ((DisplayEntitiesPartModelTemplate) structure.getModel().parts.get("feed")).parts.getFirst().offset[1] + len / 2f - 1.5f;
+        Transformation transform = feedDisplay.getTransformation();
+        transform.getTranslation().y = ((DisplayEntitiesPartModelTemplate) Quarry.MODEL_FEED.parts.get("feed")).parts.getFirst().offset[1] + len / 2f - 1.5f;
         transform.getScale().y = len + f;
-        drillModel.setTransformation(transform);
+        feedDisplay.setTransformation(transform);
     }
 
     @Override
     protected void setup() {
         head = getComponent("head");
-        feed = getComponent("feed");
         bit = getComponent("drill_bit");
         gantryX = getComponent("gantry_x");
         gantryZ = getComponent("gantry_z");
@@ -175,6 +179,18 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         inSocket.maximumInput = Quarry.ENERGY_MAXIMUM_INPUT;
         outSocket = getSocket("out_item");
         outSocket.linkedInventory = outBuffer;
+    }
+
+    @Override
+    public void handleModelInit() {
+        feedModel = ((DisplayEntitiesPartModel) Quarry.MODEL_FEED.toModel(location, direction).parts.get("feed"));
+        feedDisplay = (ItemDisplay) feedModel.entityReferences.getFirst().getEntity();
+    }
+
+    @Override
+    public void handleModelDestroy() {
+        super.handleModelDestroy();
+        feedDisplay.remove();
     }
 
     @Override
