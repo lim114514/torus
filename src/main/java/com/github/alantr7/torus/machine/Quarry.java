@@ -37,10 +37,6 @@ public class Quarry extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "quarry", "Quarry", QuarryInstance.class);
         portableData.add("energy");
         offset = new byte[] {0, 0, -6};
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/quarry.model.yml",
-          addon.classpathContainer, "configs/torus/models/quarry.model.yml"
-        );
     }
 
     @Override

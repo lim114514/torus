@@ -25,10 +25,6 @@ public class PowerBank extends Structure {
     public PowerBank() {
         super(TorusPlugin.DEFAULT_ADDON, "power_bank", "Power Bank", PowerBankInstance.class);
         portableData.add("energy");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/power_bank.model.yml",
-          addon.classpathContainer, "configs/torus/models/power_bank.model.yml"
-        );
     }
 
     @Override

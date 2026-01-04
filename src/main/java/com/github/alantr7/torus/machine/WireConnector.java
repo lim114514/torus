@@ -20,10 +20,6 @@ public class WireConnector extends Structure {
         isInteractable = true;
         isHeavy = false;
         isOmnidirectional = true;
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/wire_connector.model.yml",
-          addon.classpathContainer, "configs/torus/models/wire_connector.model.yml"
-        );
     }
 
     @Override

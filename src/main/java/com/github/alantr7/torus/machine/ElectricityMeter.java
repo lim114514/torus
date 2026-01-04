@@ -20,10 +20,6 @@ public class ElectricityMeter extends Structure {
         isHeavy = false;
         portableData.add("total");
         hologramTranslation = new float[] { 1.4f, 0.1f, 0f };
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/electricity_meter.model.yml",
-          addon.classpathContainer, "configs/torus/models/electricity_meter.model.yml"
-        );
     }
 
     @Override

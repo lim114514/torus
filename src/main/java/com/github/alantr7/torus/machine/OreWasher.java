@@ -33,10 +33,6 @@ public class OreWasher extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "ore_washer", "Ore Washer", OreWasherInstance.class);
         portableData.add("energy");
         portableData.add("fluid");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/ore_washer.model.yml",
-          addon.classpathContainer, "configs/torus/models/ore_washer.model.yml"
-        );
     }
 
     @Override

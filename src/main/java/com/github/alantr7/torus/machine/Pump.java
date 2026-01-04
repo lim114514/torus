@@ -31,10 +31,6 @@ public class Pump extends Structure {
         portableData.add("energy");
         portableData.add("fluid");
         portableData.add("amount");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/pump.model.yml",
-          addon.classpathContainer, "configs/torus/models/pump.model.yml"
-        );
     }
 
     @Override

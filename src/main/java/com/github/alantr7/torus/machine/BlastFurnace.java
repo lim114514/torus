@@ -19,10 +19,6 @@ public class BlastFurnace extends Structure {
     public BlastFurnace() {
         super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", "Blast Furnace", BlastFurnaceInstance.class);
         isInteractable = true;
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/blast_furnace.model.yml",
-          addon.classpathContainer, "configs/torus/models/blast_furnace.model.yml"
-        );
     }
 
     @Override

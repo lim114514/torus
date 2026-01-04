@@ -34,10 +34,6 @@ public class CoalGenerator extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "coal_generator", "Coal Generator", CoalGeneratorInstance.class);
         portableData.add("energy");
         hologramOffset = new float[] { 0f, 0f, 1f };
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/coal_generator.model.yml",
-          addon.classpathContainer, "configs/torus/models/coal_generator.model.yml"
-        );
     }
 
     @Override

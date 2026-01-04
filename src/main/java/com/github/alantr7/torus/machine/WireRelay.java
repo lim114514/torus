@@ -19,10 +19,6 @@ public class WireRelay extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "wire_relay", "Wire Relay", WireConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/wire_relay.model.yml",
-          addon.classpathContainer, "configs/torus/models/wire_relay.model.yml"
-        );
     }
 
     @Override

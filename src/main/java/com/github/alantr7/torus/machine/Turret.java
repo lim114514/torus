@@ -25,10 +25,6 @@ public class Turret extends Structure {
     public Turret() {
         super(TorusPlugin.DEFAULT_ADDON, "turret", "Laser Turret", TurretInstance.class);
         portableData.add("energy");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/turret.model.yml",
-          addon.classpathContainer, "configs/torus/models/turret.model.yml"
-        );
     }
 
     @Override

@@ -81,9 +81,6 @@ public abstract class Structure {
       Collections.emptyMap(), ModelTemplate.EMPTY, null
     )));
 
-    @Deprecated(forRemoval = true)
-    public ResourceLocation modelLocation;
-
     public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.addon = addon;
         this.id = id;

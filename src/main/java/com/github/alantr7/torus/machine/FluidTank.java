@@ -22,10 +22,6 @@ public class FluidTank extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "fluid_tank", "Fluid Tank", FluidTankInstance.class);
         portableData.add("fluid");
         portableData.add("stored");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/fluid_tank.model.yml",
-          addon.classpathContainer, "configs/torus/models/fluid_tank.model.yml"
-        );
     }
 
     @Override

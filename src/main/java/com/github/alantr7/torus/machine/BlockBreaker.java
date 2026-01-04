@@ -25,10 +25,6 @@ public class BlockBreaker extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
         isHeavy = false;
         portableData.add("energy");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/block_breaker.config.yml",
-          addon.classpathContainer, "configs/torus/models/block_breaker.model.yml"
-        );
     }
 
     @Override

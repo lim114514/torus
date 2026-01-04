@@ -17,10 +17,6 @@ public class PowerPole extends Structure {
     public PowerPole() {
         super(TorusPlugin.DEFAULT_ADDON, "power_pole", "Power Pole", PowerPoleInstance.class);
         isHeavy = false;
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/power_pole.model.yml",
-          addon.classpathContainer, "configs/torus/models/power_pole.model.yml"
-        );
     }
 
     @Override

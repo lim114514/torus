@@ -25,10 +25,6 @@ public class SolarGenerator extends Structure {
     public SolarGenerator() {
         super(TorusPlugin.DEFAULT_ADDON, "solar_generator", "Solar Generator", SolarGeneratorInstance.class);
         portableData.add("energy");
-        modelLocation = new ResourceLocation(
-          addon.externalContainer, "models/solar_generator.model.yml",
-          addon.classpathContainer, "configs/torus/models/solar_generator.model.yml"
-        );
     }
 
     @Override
