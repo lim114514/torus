@@ -15,7 +15,7 @@ base:
     - item_display,smooth_stone,0,2.4375,0,0.4375,0.3125,0.4375,0,0,0
     - item_display,smooth_stone,0,2.1875,0,0.25,0.3125,0.25,0,0,0
 
-    - item_display,end_rod,0,1.5625,-0.625,1,0.75,1,0,90,0
+    - item_display,end_rod,0,1.5625,-0.625,1,0.75,1,90,0,0
 
     - item_display,cyan_terracotta,0,0.125,-0.375,2.75,0.25,0.125,0,0,0
     - item_display,cyan_terracotta,0,0.125,0.375,2.75,0.25,0.125,0,0,0
@@ -27,7 +27,7 @@ base:
     - item_display,weathered_copper,-1.8125,1.5,0,0.6875,0.6875,1.1875,0,0,0
     - item_display,cyan_terracotta,-1.8125,0.6875,0,0.375,0.9375,0.4375,0,0,0
     - item_display,cyan_terracotta,-1.8125,0.125,0,1,0.3125,1.1875,0,0,0
-    - item_display,end_rod,-1.8125,1.5,-0.625,0.75,0.75,0.8125,0,90,0
+    - item_display,end_rod,-1.8125,1.5,-0.625,0.75,0.75,0.8125,90,0,0
     - item_display,polished_tuff,-2.25,1.5,0,0.25,0.375,0.4375,0,0,0
 
 in_item:
