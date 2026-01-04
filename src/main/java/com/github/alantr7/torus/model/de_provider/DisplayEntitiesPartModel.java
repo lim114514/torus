@@ -17,8 +17,6 @@ import java.util.Map;
 
 public class DisplayEntitiesPartModel extends PartModel {
 
-    public final PartModelTemplate template;
-
     public final Display parent;
 
     public final List<EntityReference> entityReferences;
@@ -26,8 +24,7 @@ public class DisplayEntitiesPartModel extends PartModel {
     public Map<String, Animation> predefinedAnimations = Collections.emptyMap();
 
     public DisplayEntitiesPartModel(PartModelTemplate template, Display parent, List<EntityReference> entityReferences) {
-        super(template.name);
-        this.template = template;
+        super(template);
         this.parent = parent;
         this.entityReferences = entityReferences;
     }

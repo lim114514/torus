@@ -8,13 +8,16 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class PartModel {
 
+    public final PartModelTemplate template;
+
     public final String name;
 
     @Getter @Setter
     private @Nullable Animation animation;
 
-    public PartModel(String name) {
-        this.name = name;
+    public PartModel(PartModelTemplate template) {
+        this.template = template;
+        this.name = template.name;
     }
 
     public abstract void teleport(Location location);
