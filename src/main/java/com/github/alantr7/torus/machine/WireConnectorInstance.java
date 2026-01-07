@@ -63,7 +63,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
-    public void destroy() {
+    public void onRemove() {
         connections.forEach((location, conn) -> {
             WireConnectorInstance remote = (WireConnectorInstance) conn.location.getStructure();
             if (remote != null) {
@@ -77,7 +77,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
-    public void handleModelInit() {
+    public void onModelSpawn() {
         connectionCandidate = spawnSlime();
         connections.forEach((loc, conn) -> {
             if (conn.slime == null) {
@@ -96,8 +96,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
-    public void handleModelDestroy() {
-        super.handleModelDestroy();
+    public void onModelDestroy() {
         connections.forEach((loc, conn) -> {
             conn.slime.setLeashHolder(null);
             conn.slime.remove();

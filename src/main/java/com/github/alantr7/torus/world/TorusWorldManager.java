@@ -5,12 +5,8 @@ import com.github.alantr7.bukkitplugin.annotations.core.InvokePeriodically;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.config.MainConfig;
-import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.player.TorusPlayer;
-import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.StructureInstance;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -116,7 +112,7 @@ public class TorusWorldManager implements Listener {
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_DISABLE)
     private void removeModelsOnDisable() {
         worlds.values().forEach(world ->world.regions.values().forEach(region -> region.chunks.values().forEach(chunk -> {
-            chunk.structures.values().forEach(StructureInstance::handleModelDestroy);
+            chunk.structures.values().forEach(StructureInstance::unload);
         })));
     }
 

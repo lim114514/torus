@@ -132,12 +132,15 @@ public abstract class StructureInstance {
         flowMeter = new FlowMeter(location.world);
     }
 
-    @Deprecated(forRemoval = true)
-    public void handleModelInit() {
+    public void onModelSpawn() {
     }
 
-    public void handleModelDestroy() {
+    public void onModelDestroy() {
+    }
+
+    public final void unload() {
         model.remove();
+        onModelDestroy();
         if (inspectionHologram != null)
             inspectionHologram.remove();
     }
@@ -315,7 +318,7 @@ public abstract class StructureInstance {
         Structure.setupInspectionTooltip(this);
     }
 
-    public void destroy() {};
+    public void onRemove() {};
 
     @Nullable
     public UUID getOwnerId() {

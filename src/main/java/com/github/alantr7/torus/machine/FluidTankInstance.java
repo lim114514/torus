@@ -12,7 +12,6 @@ import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import org.bukkit.Material;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
@@ -52,13 +51,12 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     }
 
     @Override
-    public void handleModelInit() {
+    public void onModelSpawn() {
         fluidDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) FluidTank.MODEL_FLUID.toModel(location, direction).parts.get("fluid")).entityReferences.getFirst().getEntity();
     }
 
     @Override
-    public void handleModelDestroy() {
-        super.handleModelDestroy();
+    public void onModelDestroy() {
         fluidDisplay.remove();
     }
 

@@ -7,7 +7,6 @@ import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Socket;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -107,7 +106,7 @@ public class TorusWorld {
 
         TorusChunk torusChunk = region.chunks.remove(new Vector2i(chunk.getX(), chunk.getZ()));
         if (torusChunk != null) {
-            torusChunk.structures.values().forEach(StructureInstance::handleModelDestroy);
+            torusChunk.structures.values().forEach(StructureInstance::unload);
             if (torusChunk.isDirty) {
                 try {
                     region.save();
@@ -249,10 +248,10 @@ public class TorusWorld {
         }
 
         // Remove models
-        instance.handleModelDestroy();
+        instance.unload();
 
         // Run destroy callbacks
-        instance.destroy();
+        instance.onRemove();
     }
 
     void load() {

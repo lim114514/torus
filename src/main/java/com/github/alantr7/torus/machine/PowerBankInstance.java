@@ -57,8 +57,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     }
 
     @Override
-    public void handleModelDestroy() {
-        super.handleModelDestroy();
+    public void onModelDestroy() {
         chargeIndicatorDisplay.remove();
     }
 

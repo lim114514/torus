@@ -12,7 +12,6 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.Nullable;
@@ -47,15 +46,14 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     }
 
     @Override
-    public void handleModelInit() {
+    public void onModelSpawn() {
         pipeDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) Pump.MODEL_PIPE.toModel(location, direction).parts.get("pipe")).entityReferences.getFirst().getEntity();
         pipeDisplay.setTeleportDuration(20);
         updatePipe();
     }
 
     @Override
-    public void handleModelDestroy() {
-        super.handleModelDestroy();
+    public void onModelDestroy() {
         pipeDisplay.remove();
     }
 

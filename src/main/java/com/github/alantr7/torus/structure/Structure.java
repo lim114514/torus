@@ -164,7 +164,7 @@ public abstract class Structure {
     private static void setupModel(StructureInstance instance) {
         try {
             instance.updateModel();
-            instance.handleModelInit();
+            instance.onModelSpawn();
         } catch (Exception exc) {
             exc.printStackTrace();
         }
