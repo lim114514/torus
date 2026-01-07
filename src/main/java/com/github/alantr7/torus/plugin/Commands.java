@@ -159,32 +159,6 @@ public class Commands {
           ctx.respond("Invalid preset specified.");
       });
 
-    @CommandHandler Command exportModel = CommandBuilder.using("torus")
-      .parameter("export_model")
-      .parameter("{structure}", p -> p.tabComplete(args -> TorusPlugin.getInstance().getStructureRegistry().getStructuresIds()))
-      .permission(Permissions.COMMAND_EXPORT_MODEL)
-      .executes(ctx -> {
-          Structure structure = TorusPlugin.getInstance().getStructureRegistry().getStructure((String) ctx.getArgument("structure"));
-          if (structure == null) {
-              ctx.respond("Structure with specified id not found.");
-              return;
-          }
-
-          if (!structure.addon.id.equals("torus")) {
-              ctx.respond("You can not edit the model of this structure");
-              return;
-          }
-
-          ResourceLocation modelLocation = new ResourceLocation(structure.addon.classpathContainer, "configs/torus/models/" + structure.id + ".model.yml");
-          if (!modelLocation.exists()) {
-              ctx.respond("You can not edit the model of this structure");
-              return;
-          }
-
-          TorusPlugin.getInstance().saveResource(modelLocation.relativePath, true);
-          ctx.respond("Model successfully exported.");
-      });
-
     @CommandHandler Command logStructureIds = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("log_structure_ids")
