@@ -174,7 +174,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
         // Check if this cable connects to another cable
         if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Socket.Matter.ENERGY) {
             hasConnected = true;
-            cable.setConnected(direction.getOpposite(), true);
+            cable.getSocket("base").setConnected(direction.getOpposite(), true);
             cable.updateModel();
         }
 

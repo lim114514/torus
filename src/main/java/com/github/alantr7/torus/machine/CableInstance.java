@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -8,8 +9,9 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
-import com.github.alantr7.torus.structure.component.Connectable;
 import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.world.SocketLocation;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,11 +19,11 @@ import java.util.List;
 
 import static com.github.alantr7.torus.machine.EnergyCable.*;
 
-public class CableInstance extends StructureInstance implements Connectable, Conductor {
-
-    protected Data<Integer> connections = dataContainer.persist("connections", Data.Type.INT, 0);
+public class CableInstance extends StructureInstance implements Conductor {
 
     protected Data<Integer> type = dataContainer.persist("type", Data.Type.INT, 0);
+
+    protected Socket socket;
 
     public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Socket.Matter type) {
         super(type == Socket.Matter.ENERGY ? Structures.ENERGY_CABLE : type == Socket.Matter.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
@@ -33,9 +35,28 @@ public class CableInstance extends StructureInstance implements Connectable, Con
     }
 
     @Override
-    protected void setup() {
+    protected void setup() throws SetupException {
+        if (dataContainer.getEntries().containsKey("connections")) {
+            socket = new Socket(getComponent("base"), 0b111111, getType(), Socket.FlowDirection.ALL);
+            socket.structure = this;
+            socket.setConnections(dataContainer.getOrDefault("connections", Data.Type.INT, 0));
+
+            // Register sockets
+            socketsByName.put("base", socket);
+            for (Direction possibleDirection : Direction.values()) {
+                if (socket.isConnectableFrom(possibleDirection)) {
+                    sockets.put(new SocketLocation(getComponent("base").absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
+                }
+            }
+
+            dataContainer.getEntries().remove("connections");
+            save();
+        } else {
+            socket = requireSocket("base");
+        }
+
         for (Direction direction : Direction.values()) {
-            if (isConnected(direction)) {
+            if (socket.isConnected(direction)) {
                 state.set(getStateFromDirection(direction), true, false);
             }
         }
@@ -45,66 +66,14 @@ public class CableInstance extends StructureInstance implements Connectable, Con
     public void tick() {
     }
 
-    public void updateConnections() {
-        int connections = getConnections();
-        updateConnection(Direction.NORTH);
-        updateConnection(Direction.SOUTH);
-        updateConnection(Direction.EAST);
-        updateConnection(Direction.WEST);
-        updateConnection(Direction.UP);
-        updateConnection(Direction.DOWN);
-
-        if (getConnections() != connections) {
-            save();
-        }
-    }
-
-    public void updateConnection(Direction direction) {
-        StructureInstance possibleConnection = location.getRelative(direction).getStructure();
-        boolean hasConnected = false;
-
-        // Check if this cable connects to a connector
-        if (possibleConnection != null) {
-            Socket socket = possibleConnection.getSocket(location, getType());
-            if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
-                hasConnected = true;
-
-                socket.setConnected(direction.getOpposite(), true);
-                possibleConnection.save();
-            }
-        }
-
-        // Check if this cable connects to another cable
-        if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == getType()) {
-            hasConnected = true;
-
-            state.set(getStateFromDirection(direction), true);
-            cable.state.set(getStateFromDirection(direction.getOpposite()), true);
-            cable.setConnected(direction.getOpposite(), true);
-        }
-
-        setConnected(direction, hasConnected);
+    @Override
+    public void onSocketConnect(Socket socket, Socket neighbor, Direction direction) {
+        state.set(getStateFromDirection(direction), true);
     }
 
     @Override
-    public int getAllowedConnections() {
-        return Direction.NORTH.mask() | Direction.SOUTH.mask() | Direction.EAST.mask() | Direction.WEST.mask() | Direction.UP.mask() | Direction.DOWN.mask();
-    }
-
-    @Override
-    public int getConnections() {
-        return connections.get();
-    }
-
-    @Override
-    public void setConnected(Direction direction, boolean connected) {
-        Connectable.super.setConnected(direction, connected);
-        state.set(getStateFromDirection(direction), connected);
-    }
-
-    @Override
-    public void setConnections(int connections) {
-        this.connections.update(connections);
+    public void onSocketDisconnect(Socket socket, Socket neighbor, Direction direction) {
+        state.set(getStateFromDirection(direction), false);
     }
 
     public Socket.Matter getType() {
@@ -115,7 +84,7 @@ public class CableInstance extends StructureInstance implements Connectable, Con
     public Collection<BlockLocation> getConnectedNodes() {
         List<BlockLocation> nodes = new ArrayList<>();
         for (Direction direction : Direction.values()) {
-            if (isConnected(direction))
+            if (socket.isConnected(direction))
                 nodes.add(location.getRelative(direction));
         }
 

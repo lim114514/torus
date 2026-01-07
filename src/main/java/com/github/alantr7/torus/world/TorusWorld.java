@@ -3,13 +3,11 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import com.github.alantr7.torus.machine.CableInstance;
-import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
-import com.github.alantr7.torus.machine.WireConnectorInstance;
 import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Socket;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -187,57 +185,27 @@ public class TorusWorld {
             occupationChunk.isDirty = true;
         }
 
-        // Update all cables if I'm cable
-        if (instance instanceof CableInstance cable) {
-            for (Direction direction : Direction.values()) {
-                if (cable.isConnectableFrom(direction)) {
-                    // TODO: Replace with an interface like "Updatable" and call its updateConnections() instead
-                    if (instance.location.getRelative(direction).getStructure() instanceof CableInstance cable1) {
-                        if (cable.getType() == cable1.getType()) {
-                            cable1.updateConnections();
-                        }
-                    }
-                    else if (instance.location.getRelative(direction).getStructure() instanceof PhysicalConnectorInstance iii) {
-                        if (cable.getType() == Socket.Matter.ITEM) {
-                            iii.updateConnections();
-                        }
-                    }
-                    else if (instance.location.getRelative(direction).getStructure() instanceof WireConnectorInstance wci) {
-                        if (cable.getType() == Socket.Matter.ENERGY) {
-                            wci.updateConnections();
-                        }
-                    }
-                }
+        // Connect to neighboring structures
+        for (Socket socket : instance.getSockets()) {
+            for (Direction direction : socket.getValidConnectionsDirections()) {
+                BlockLocation relativeLoc = socket.getComponent().absoluteLocation.getRelative(direction);
+                StructureInstance neighbor = relativeLoc.getStructure();
+                if (neighbor == null)
+                    continue;
+
+                Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.matter);
+                if (neighborSocket == null)
+                    continue;
+
+                if (!neighborSocket.isConnectableFrom(direction.getOpposite()))
+                    continue;
+
+                socket.setConnected(direction, true);
+                instance.onSocketConnect(socket, neighborSocket, direction);
+
+                neighborSocket.setConnected(direction.getOpposite(), true);
+                neighbor.onSocketConnect(neighborSocket, socket, direction.getOpposite());
             }
-        }
-
-        // Connect to structures next to it if possible
-        else instance.getSockets().forEach((connector) -> {
-            for (Direction direction : Direction.values()) {
-                if (connector.isConnectableFrom(direction)) {
-                    StructureInstance neighbor = connector.getComponent().absoluteLocation.getRelative(direction).getStructure();
-                    if (neighbor == null)
-                        continue;
-
-                    if (neighbor instanceof CableInstance cable) {
-                        cable.updateConnections();
-                        continue;
-                    }
-
-                    Socket neighborSocket;
-                    if ((neighborSocket = neighbor.getSocket(connector.getComponent().absoluteLocation, connector.matter)) != null) {
-                        if (neighborSocket.isConnectableFrom(direction.getOpposite())) {
-                            connector.setConnected(direction, true);
-                            neighborSocket.setConnected(direction.getOpposite(), true);
-                        }
-                    }
-                }
-            }
-        });
-
-        if (instance instanceof PhysicalConnectorInstance iii) {
-            iii.updateConnections();
-            iii.updateModel();
         }
     }
 
@@ -257,43 +225,28 @@ public class TorusWorld {
             }
         }
 
-        // Update all cables if I'm cable
-        if (instance instanceof CableInstance cable) {
-            for (Direction direction : Direction.values()) {
-                if (cable.isConnectableFrom(direction)) {
-                    StructureInstance neighbor = instance.location.getRelative(direction).getStructure();
-                    if (neighbor == null)
-                        continue;
+        // Disconnect from neighboring structures
+        for (Socket socket : instance.getSockets()) {
+            for (Direction direction : socket.getValidConnectionsDirections()) {
+                if (!socket.isConnected(direction))
+                    continue;
 
-                    if (neighbor instanceof CableInstance cable1) {
-                        if (cable.getType() == cable1.getType()) {
-                            cable1.updateConnections();
-                        }
-                    } else if (instance.location.getRelative(direction).getStructure() instanceof PhysicalConnectorInstance iii) {
-                        if (cable.getType() == Socket.Matter.ITEM) {
-                            iii.updateConnections();
-                        }
-                    } else if (cable.isConnected(direction)) {
-                        Socket socket = neighbor.getSocket(instance.location, cable.getType());
-                        if (socket != null) {
-                            socket.setConnected(direction.getOpposite(), false);
-                        }
-                        neighbor.save();
-                    }
-                }
+                BlockLocation relativeLoc = socket.getComponent().absoluteLocation.getRelative(direction);
+                StructureInstance neighbor = relativeLoc.getStructure();
+                if (neighbor == null)
+                    continue;
+
+                Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.matter);
+                if (neighborSocket == null)
+                    continue;
+
+                if (!neighborSocket.isConnected(direction.getOpposite()))
+                    continue;
+
+                neighborSocket.setConnected(direction.getOpposite(), false);
+                neighbor.onSocketDisconnect(neighborSocket, socket, direction.getOpposite());
             }
         }
-
-        // Update all cables around connectors
-        else instance.getSockets().forEach((connector) -> {
-            for (Direction direction : Direction.values()) {
-                if (connector.isConnectableFrom(direction)) {
-                    if (connector.getComponent().absoluteLocation.getRelative(direction).getStructure() instanceof CableInstance cable) {
-                        cable.updateConnections();
-                    }
-                }
-            }
-        });
 
         // Remove models
         instance.handleModelDestroy();

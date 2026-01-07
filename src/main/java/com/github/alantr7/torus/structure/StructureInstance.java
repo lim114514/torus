@@ -190,6 +190,12 @@ public abstract class StructureInstance {
         isModelUpdateScheduled = true;
     }
 
+    public void onSocketConnect(Socket socket, Socket neighbor, Direction direction) {
+    }
+
+    public void onSocketDisconnect(Socket socket, Socket neighbor, Direction direction) {
+    }
+
     public void spawnInspectionTooltip() {
         float[] offset = MathUtils.rotateVectors(structure.hologramOffset, direction.rotH, 0);
         inspectionHologram = location.world.getBukkit().spawn(location.toBukkitCentered().add(offset[0], offset[1], offset[2]), TextDisplay.class);
@@ -247,7 +253,11 @@ public abstract class StructureInstance {
     }
 
     public Collection<Socket> getSockets() {
-        return sockets.values();
+        return socketsByName.values();
+    }
+
+    public Map<SocketLocation, Socket> getSocketsMap() {
+        return sockets;
     }
 
     private void setOccupiedChunks() {

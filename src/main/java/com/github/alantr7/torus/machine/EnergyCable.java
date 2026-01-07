@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.state.State;
 import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -34,16 +35,10 @@ public class EnergyCable extends Structure {
     }
 
     @Override
-    public StructureInstance place(BlockLocation location, Direction direction) {
-        CableInstance instance = (CableInstance) super.place(location, direction);
-        instance.updateConnections();
-
-        return instance;
-    }
-
-    @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
-        StructureComponentDef base = new StructureComponentDef("base", new Vector3f());
+        StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), new StructureSocketDef(
+          Socket.Matter.ENERGY, Socket.FlowDirection.ALL, 0b111111
+        ));
         return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}), Socket.Matter.ENERGY);
     }
 

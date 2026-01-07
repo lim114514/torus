@@ -39,14 +39,6 @@ public class PhysicalConnector extends Structure {
     }
 
     @Override
-    public StructureInstance place(BlockLocation location, Direction direction) {
-        PhysicalConnectorInstance instance = (PhysicalConnectorInstance) super.place(location, direction);
-        instance.updateConnections();
-
-        return instance;
-    }
-
-    @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         StructureBodyDef body = new StructureBodyDef(
           new StructureComponentDef[]{

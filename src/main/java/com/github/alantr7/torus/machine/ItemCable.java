@@ -3,6 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
+import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -29,17 +30,11 @@ public class ItemCable extends Structure {
     }
 
     @Override
-    public StructureInstance place(BlockLocation location, Direction direction) {
-        CableInstance instance = (CableInstance) super.place(location, direction);
-        instance.updateConnections();
-
-        return instance;
-    }
-
-    @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f())
+          new StructureComponentDef("base", new Vector3f(), new StructureSocketDef(
+            Socket.Matter.ITEM, Socket.FlowDirection.ALL, 0b111111
+          ))
         }), Socket.Matter.ITEM);
     }
 

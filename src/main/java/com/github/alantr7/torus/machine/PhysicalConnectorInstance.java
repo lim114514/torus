@@ -67,51 +67,6 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
           .property("Flow", () -> getFlowDirection().name());
     }
 
-    public void updateConnections() {
-        if (TorusWorld.isItemContainer(location.getRelative(direction.getOpposite()))) {
-            socket.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
-        }
-
-        int connections = socket.getConnections();
-        for (Direction direction : Direction.values()) {
-            if (!socket.isConnectableFrom(direction)) {
-                continue;
-            }
-
-            StructureInstance possibleConnection = location.getRelative(direction).getStructure();
-            boolean hasConnected = false;
-
-            // Check if this interface connects to a socket
-            if (possibleConnection != null) {
-                Socket socket = possibleConnection.getSocket(location, Socket.Matter.ITEM);
-                if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
-                    hasConnected = true;
-
-                    socket.setConnected(direction.getOpposite(), true);
-                    possibleConnection.save();
-                }
-            }
-
-            // Check if this interface connects to another cable
-            if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Socket.Matter.ITEM) {
-                hasConnected = true;
-
-                cable.setConnected(direction.getOpposite(), true);
-            }
-
-            state.set(getStateFromDirection(direction.relativeTo(this.direction)), hasConnected);
-            socket.setConnected(direction, hasConnected);
-        }
-
-        if (socket.getConnections() != 0) {
-            state.set(STATE_BACK, true);
-        }
-
-        if (socket.getConnections() != connections) {
-            save();
-        }
-    }
-
     @Override
     public void tick() {
         if (TorusWorld.isItemContainer(location.getRelative(direction.getOpposite()))) {
@@ -125,6 +80,16 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
         socket.updateNetwork();
         socket.consumeItems(inputCriteria, 4, false).forEach(socket.linkedInventory::addItem);
+    }
+
+    @Override
+    public void onSocketConnect(Socket socket, Socket neighbor, Direction direction) {
+        state.set(getStateFromDirection(direction.relativeTo(this.direction)), true);
+    }
+
+    @Override
+    public void onSocketDisconnect(Socket socket, Socket neighbor, Direction direction) {
+        state.set(getStateFromDirection(direction.relativeTo(this.direction)), false);
     }
 
     public ItemReference[] getFilter() {
