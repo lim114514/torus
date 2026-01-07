@@ -54,9 +54,4 @@ public class ModelEnginePartModelTemplate extends PartModelTemplate {
         return new ModelEnginePartModel(this, modeledEntity, model);
     }
 
-    @Override
-    public PartModel recycle(PartModel model, Location location, float rotH, float rotV) {
-        return null;
-    }
-
 }

@@ -5,10 +5,12 @@ import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.animation.Animation;
 import io.papermc.paper.entity.TeleportFlag;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +32,7 @@ public class DisplayEntitiesPartModel extends PartModel {
     }
 
     @Override
-    public void teleport(Location location) {
+    public void setLocation(@NotNull Location location) {
         if (TorusPlugin.usesPaperAPI()) {
             parent.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN, TeleportFlag.EntityState.RETAIN_PASSENGERS);
         } else {
@@ -40,6 +42,13 @@ public class DisplayEntitiesPartModel extends PartModel {
             for (Entity en : passengers) {
                 parent.addPassenger(en);
             }
+        }
+    }
+
+    @Override
+    public void setRotation(float horizontal, float vertical) {
+        for (EntityReference ref : entityReferences) {
+            ref.getEntity().setRotation(horizontal, vertical);
         }
     }
 

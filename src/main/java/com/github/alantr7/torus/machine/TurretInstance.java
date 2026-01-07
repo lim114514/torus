@@ -95,8 +95,11 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     }
 
     public void updateHeadRotation() {
-        double angle = Math.atan2(target.getLocation().getX() - (location.x + .5), target.getLocation().getZ() - (location.z + .5));
-        model.getPartByName("head").template.recycle(model.getPartByName("head"), location.toBukkit().add(.5, 0, .5), 180f - (float) Math.toDegrees(angle), 0f);
+        double angleH = Math.atan2(target.getLocation().getX() - (location.x + .5), target.getLocation().getZ() - (location.z + .5));
+        double angleV = Math.atan2(target.getLocation().getY() - (location.y + .5), target.getLocation().distance(location.toBukkit()));
+
+        // TODO: Fix vertical rotation by adding "origin" property for rotation to DISPLAY_ENTITIES renderers
+        model.getPartByName("head").setRotation(180f - (float) Math.toDegrees(angleH), 0);
     }
 
     @Override

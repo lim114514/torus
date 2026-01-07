@@ -146,14 +146,14 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         byte[] zMoverPosition = new byte[] {(byte) (-position0[0] + 4), 0, 0};
         zMoverPosition = MathUtils.rotateVectors(zMoverPosition, direction);
 
-        model.getPartByName("gantry_x").teleport(location.toBukkit().add(.5, 0f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
-        model.getPartByName("gantry_z").teleport(location.toBukkit().add(.5, 0f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
+        model.getPartByName("gantry_x").setLocation(location.toBukkit().add(.5, 0f, .5).add(xMoverPosition[0], xMoverPosition[1], xMoverPosition[2]));
+        model.getPartByName("gantry_z").setLocation(location.toBukkit().add(.5, 0f, .5).add(zMoverPosition[0], zMoverPosition[1], zMoverPosition[2]));
 
         updateDrillLength();
 
-        feedModel.teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
-        model.getPartByName("drill_bit").teleport(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
-        model.getPartByName("head").teleport(location.toBukkit().add(.5, 0, .5).add(position[0], 0, position[2]));
+        feedModel.setLocation(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
+        model.getPartByName("drill_bit").setLocation(location.toBukkit().add(.5, .125f, .5).add(position[0], position[1], position[2]));
+        model.getPartByName("head").setLocation(location.toBukkit().add(.5, 0, .5).add(position[0], 0, position[2]));
 
         return true;
     }

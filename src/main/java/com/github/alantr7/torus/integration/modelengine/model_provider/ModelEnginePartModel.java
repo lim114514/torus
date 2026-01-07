@@ -6,6 +6,7 @@ import com.ticxo.modelengine.api.model.ModeledEntity;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 
 public class ModelEnginePartModel extends PartModel {
 
@@ -20,9 +21,15 @@ public class ModelEnginePartModel extends PartModel {
     }
 
     @Override
-    public void teleport(Location location) {
+    public void setLocation(@NotNull Location location) {
         Entity entity = (Entity) this.entity.getBase().getOriginal();
         entity.teleport(location);
+    }
+
+    @Override
+    public void setRotation(float horizontal, float vertical) {
+        Entity entity = (Entity) this.entity.getBase().getOriginal();
+        entity.setRotation(horizontal, vertical);
     }
 
     @Override

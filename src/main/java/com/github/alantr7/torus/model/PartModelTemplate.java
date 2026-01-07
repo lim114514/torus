@@ -24,6 +24,4 @@ public abstract class PartModelTemplate {
 
     public abstract PartModel build(Location location, Direction direction);
 
-    public abstract PartModel recycle(PartModel model, Location location, float rotH, float rotV);
-
 }

@@ -4,6 +4,7 @@ import com.github.alantr7.torus.model.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class PartModel {
@@ -20,7 +21,9 @@ public abstract class PartModel {
         this.name = template.name;
     }
 
-    public abstract void teleport(Location location);
+    public abstract void setLocation(@NotNull Location location);
+
+    public abstract void setRotation(float horizontal, float vertical);
 
     public abstract void remove();
 

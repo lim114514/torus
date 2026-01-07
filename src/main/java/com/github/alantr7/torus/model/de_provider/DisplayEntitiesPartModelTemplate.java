@@ -59,62 +59,6 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
         return new DisplayEntitiesPartModel(this, parent, entities.stream().map(EntityReference::new).toList());
     }
 
-    @Override
-    public PartModel recycle(PartModel model0, Location location, float rotH, float rotV) {
-        DisplayEntitiesPartModel model = (DisplayEntitiesPartModel) model0;
-        List<Display> entities = new ArrayList<>();
-        List<ItemDisplay> itemDisplays = new ArrayList<>();
-        List<BlockDisplay> blockDisplays = new ArrayList<>();
-
-        for (EntityReference ref : model.entityReferences) {
-            Display entity = ref.getEntity();
-            if (entity instanceof ItemDisplay itemDisplay) {
-                itemDisplays.add(itemDisplay);
-            }
-            else if (entity instanceof BlockDisplay blockDisplay) {
-                blockDisplays.add(blockDisplay);
-            }
-        }
-
-        byte entityIdx = 0;
-        byte blockDisplayIdx = 0;
-        byte itemDisplayIdx = 0;
-        for (; entityIdx < parts.size(); entityIdx++) {
-            PartModelElementDisplayRenderer part = parts.get(entityIdx);
-            Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
-
-            Display entity;
-            if (part.entityType == ItemDisplay.class) {
-                if (itemDisplayIdx < itemDisplays.size()) {
-                    entity = itemDisplays.get(itemDisplayIdx++);
-                    entity.teleport(location);
-                } else {
-                    entity = location.getWorld().spawn(location, part.entityType);
-                }
-            }
-            else {
-                if (blockDisplayIdx < blockDisplays.size()) {
-                    entity = blockDisplays.get(blockDisplayIdx++);
-                    entity.teleport(location);
-                } else {
-                    entity = location.getWorld().spawn(location, part.entityType);
-                }
-            }
-
-            transformEntity(entity, rotatedOffset, part, rotH, rotV);
-            if (!model.parent.getPassengers().contains(entity)) {
-                model.parent.addPassenger(entity);
-            }
-            entities.add(entity);
-        }
-
-        for (; entityIdx < model.entityReferences.size(); entityIdx++) {
-            model.entityReferences.get(entityIdx).getEntity().remove();
-        }
-
-        return new DisplayEntitiesPartModel(this, model.parent, entities.stream().map(EntityReference::new).toList());
-    }
-
     private void transformEntity(Display entity, Vector3f translation, PartModelElementDisplayRenderer part, float rotH, float rotV) {
         entity.setPersistent(false);
         if (part.entityType == ItemDisplay.class) {
