@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.config.MainConfig;
+import com.github.alantr7.torus.event.EventUtils;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.PartModel;
@@ -199,6 +200,9 @@ public class TorusWorld {
                 if (!neighborSocket.isConnectableFrom(direction.getOpposite()))
                     continue;
 
+                if (!EventUtils.callStructuresConnectEvent(socket, neighborSocket, direction, direction.getOpposite()))
+                    continue;
+
                 socket.setConnected(direction, true);
                 instance.onSocketConnect(socket, neighborSocket, direction);
 
@@ -241,6 +245,8 @@ public class TorusWorld {
 
                 if (!neighborSocket.isConnected(direction.getOpposite()))
                     continue;
+
+                EventUtils.callStructuresDisconnectEvent(socket, neighborSocket, direction, direction.getOpposite());
 
                 neighborSocket.setConnected(direction.getOpposite(), false);
                 neighbor.onSocketDisconnect(neighborSocket, socket, direction.getOpposite());

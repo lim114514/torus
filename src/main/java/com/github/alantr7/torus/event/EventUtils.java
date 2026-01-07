@@ -1,12 +1,10 @@
 package com.github.alantr7.torus.event;
 
-import com.github.alantr7.torus.api.event.PlayerStructureBreakEvent;
-import com.github.alantr7.torus.api.event.PlayerStructureInteractEvent;
-import com.github.alantr7.torus.api.event.PlayerStructurePlaceEvent;
-import com.github.alantr7.torus.api.event.PlayerStructurePrePlaceEvent;
+import com.github.alantr7.torus.api.event.*;
 import com.github.alantr7.torus.player.TorusPlayer;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.bukkit.Bukkit;
@@ -38,6 +36,18 @@ public class EventUtils {
         Bukkit.getPluginManager().callEvent(event);
 
         return !event.isCancelled();
+    }
+
+    public static boolean callStructuresConnectEvent(Socket socket1, Socket socket2, Direction dir1, Direction dir2) {
+        StructuresConnectEvent event = new StructuresConnectEvent(socket1, socket2, dir1, dir2);
+        Bukkit.getPluginManager().callEvent(event);
+
+        return !event.isCancelled();
+    }
+
+    public static void callStructuresDisconnectEvent(Socket socket1, Socket socket2, Direction dir1, Direction dir2) {
+        StructuresDisconnectEvent event = new StructuresDisconnectEvent(socket1, socket2, dir1, dir2);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
 }
