@@ -69,7 +69,6 @@ public class CableInstance extends StructureInstance implements Connectable, Con
             if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
 
-                state.set(getStateFromDirection(direction.getOpposite()), true);
                 socket.setConnected(direction.getOpposite(), true);
                 possibleConnection.save();
             }
