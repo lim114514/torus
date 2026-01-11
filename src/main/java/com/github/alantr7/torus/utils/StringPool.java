@@ -1,4 +1,4 @@
-package com.github.alantr7.torus.math;
+package com.github.alantr7.torus.utils;
 
 import java.util.HashMap;
 import java.util.Map;

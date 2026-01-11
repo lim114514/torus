@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.api.addon;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.utils.MathUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AddonBuilder {

@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.math.ByteArrayBuilder;
+import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;

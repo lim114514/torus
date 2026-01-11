@@ -4,7 +4,7 @@ import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Direction;
-import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Structure;

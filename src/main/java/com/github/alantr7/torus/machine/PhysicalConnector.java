@@ -5,7 +5,7 @@ import com.github.alantr7.torus.structure.state.State;
 import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
-import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;

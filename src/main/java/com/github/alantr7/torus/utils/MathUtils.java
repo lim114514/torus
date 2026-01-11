@@ -1,11 +1,7 @@
-package com.github.alantr7.torus.math;
+package com.github.alantr7.torus.utils;
 
 import com.github.alantr7.torus.world.Direction;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector3i;
 
 public class MathUtils {
 

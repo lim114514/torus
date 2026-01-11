@@ -1,9 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.item.ItemCriteria;
-import com.github.alantr7.torus.math.ByteArrayBuilder;
+import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;

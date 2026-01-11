@@ -1,4 +1,4 @@
-package com.github.alantr7.torus.event;
+package com.github.alantr7.torus.utils;
 
 import com.github.alantr7.torus.api.event.*;
 import com.github.alantr7.torus.player.TorusPlayer;

@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
-import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;

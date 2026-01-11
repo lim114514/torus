@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.world.Fluid;

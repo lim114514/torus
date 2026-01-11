@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.config.MainConfig;
-import com.github.alantr7.torus.event.EventUtils;
+import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.PartModel;

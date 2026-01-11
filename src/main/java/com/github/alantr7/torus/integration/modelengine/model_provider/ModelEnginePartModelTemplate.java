@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.integration.modelengine.model_provider;
 
-import com.github.alantr7.torus.math.MathUtils;
+import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.animation.Animation;

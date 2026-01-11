@@ -2,7 +2,7 @@ package com.github.alantr7.torus.structure.data;
 
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
-import com.github.alantr7.torus.math.StringPool;
+import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
 import lombok.Setter;

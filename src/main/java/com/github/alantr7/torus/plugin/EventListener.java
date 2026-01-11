@@ -1,15 +1,12 @@
 package com.github.alantr7.torus.plugin;
 
-import com.github.alantr7.bukkitplugin.annotations.core.Inject;
-import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.api.event.PlayerStructurePlaceEvent;
 import com.github.alantr7.torus.config.MainConfig;
-import com.github.alantr7.torus.event.EventUtils;
+import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.item.TorusItem;
-import com.github.alantr7.torus.math.StringPool;
+import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.player.TorusPlayer;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.world.BlockLocation;

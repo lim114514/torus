@@ -3,7 +3,7 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.math.StringPool;
+import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import org.joml.Vector2i;
