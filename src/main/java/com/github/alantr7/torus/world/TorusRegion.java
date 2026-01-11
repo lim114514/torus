@@ -39,7 +39,7 @@ public class TorusRegion {
         this.world = world;
         this.x = x;
         this.z = z;
-        this.regionFile = new File(world.regionsDirectory, "r." + x + "." + z + ".dat");
+        this.regionFile = new File(world.torusRegionsDirectory, "r." + x + "." + z + ".dat");
     }
 
     private void createFile() {
@@ -86,7 +86,7 @@ public class TorusRegion {
     public void save() throws Exception {
         boolean hasDirtyChunks = false;
         for (TorusChunk chunk : chunks.values()) {
-            if (chunk.isDirty) {
+            if (chunk.isUnsaved) {
                 hasDirtyChunks = true;
                 break;
             }
@@ -180,7 +180,7 @@ public class TorusRegion {
     }
 
     private void saveChunk(RandomAccessFile raf, TorusChunk chunk) throws Exception {
-        if (!chunk.isDirty)
+        if (!chunk.isUnsaved)
             return;
 
         // Find chunk's section in the file
@@ -241,7 +241,7 @@ public class TorusRegion {
         raf.seek(regionFileOffset);
         raf.write(ByteArrayWriter.toBytes(chunkSize, 2));
 
-        chunk.isDirty = false;
+        chunk.isUnsaved = false;
     }
 
     TorusChunk getOrLoadChunk(int x, int z) {

@@ -25,9 +25,9 @@ public class TorusWorld {
     @Getter
     private final World bukkit;
 
-    public final File directory;
+    public final File torusDirectory;
 
-    public final File regionsDirectory;
+    public final File torusRegionsDirectory;
 
     protected final Map<Vector2i, TorusRegion> regions = new HashMap<>();
 
@@ -36,10 +36,10 @@ public class TorusWorld {
 
     public TorusWorld(World bukkit) {
         this.bukkit = bukkit;
-        this.directory = new File(bukkit.getWorldFolder(), "torus");
-        this.directory.mkdirs();
-        this.regionsDirectory = new File(this.directory, "region");
-        this.regionsDirectory.mkdirs();
+        this.torusDirectory = new File(bukkit.getWorldFolder(), "torus");
+        this.torusDirectory.mkdirs();
+        this.torusRegionsDirectory = new File(this.torusDirectory, "region");
+        this.torusRegionsDirectory.mkdirs();
     }
 
     static final Set<Material> MINECRAFT_BLOCK_CONTAINER_TYPES = Set.of(
@@ -108,7 +108,7 @@ public class TorusWorld {
         TorusChunk torusChunk = region.chunks.remove(new Vector2i(chunk.getX(), chunk.getZ()));
         if (torusChunk != null) {
             torusChunk.structures.values().forEach(StructureInstance::unload);
-            if (torusChunk.isDirty) {
+            if (torusChunk.isUnsaved) {
                 try {
                     region.save();
                 } catch (Exception e) {
@@ -141,7 +141,7 @@ public class TorusWorld {
         return machineChunk.structures.get(machineLocation);
     }
 
-    public void tick() {
+    void tick() {
         regions.values().forEach(region -> {
             region.chunks.values()
               .forEach(chunk -> chunk.structures.values()
@@ -169,10 +169,10 @@ public class TorusWorld {
         ticks++;
     }
 
-    public void placeStructure(StructureInstance instance) {
+    public void placeStructure(@NotNull StructureInstance instance) {
         TorusChunk chunk = getChunkOrLoad(instance.location);
         chunk.structures.put(instance.location, instance);
-        chunk.isDirty = true;
+        chunk.isUnsaved = true;
 
         // Place bounds
         byte[] bounds = instance.getBounds();
@@ -182,7 +182,7 @@ public class TorusWorld {
 
             TorusChunk occupationChunk = getChunkOrLoad(relative);
             occupationChunk.occupations.put(relative, instance.location);
-            occupationChunk.isDirty = true;
+            occupationChunk.isUnsaved = true;
         }
 
         // Connect to neighboring structures
@@ -212,7 +212,7 @@ public class TorusWorld {
         }
     }
 
-    public void removeStructure(StructureInstance instance) {
+    public void removeStructure(@NotNull StructureInstance instance) {
         TorusChunk chunk0 = getChunkOrLoad(instance.location);
         chunk0.structures.remove(instance.location);
 
@@ -224,7 +224,7 @@ public class TorusWorld {
 
             TorusChunk chunk = getChunkOrLoad(relative);
             if (chunk.occupations.remove(relative) != null) {
-                chunk.isDirty = true;
+                chunk.isUnsaved = true;
             }
         }
 

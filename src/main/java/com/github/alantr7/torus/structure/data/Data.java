@@ -29,7 +29,7 @@ public class Data<T> {
     public void update(T value) {
         this.value = value;
         container.isDirty = true;
-        container.structure.location.getChunk().isDirty = true;
+        container.structure.location.getChunk().isUnsaved = true;
     }
 
     public static class Type<T> {

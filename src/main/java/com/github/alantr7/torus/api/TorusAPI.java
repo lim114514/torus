@@ -6,8 +6,12 @@ import com.github.alantr7.torus.api.addon.Lifecycle;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.model.ModelLoader;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.world.TorusWorld;
+import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class TorusAPI {
 
@@ -29,6 +33,15 @@ public class TorusAPI {
 
     public static Structure getStructureById(String namespacedId) {
         return TorusPlugin.getInstance().getStructureRegistry().getStructure(namespacedId);
+    }
+
+    @Nullable
+    public static TorusWorld getWorld(@NotNull World world) {
+        return TorusPlugin.getInstance().getWorldManager().getWorld(world);
+    }
+
+    public static boolean isWorldSupported(@NotNull World world) {
+        return TorusPlugin.getInstance().getWorldManager().isWorldSupported(world);
     }
 
     public static ModelLoader getModelLoader() {

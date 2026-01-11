@@ -17,7 +17,7 @@ public class TorusChunk {
     @Getter
     int size;
 
-    public boolean isDirty;
+    public boolean isUnsaved;
 
     final Map<BlockLocation, StructureInstance> structures = new HashMap<>();
 

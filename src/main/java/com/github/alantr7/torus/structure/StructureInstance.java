@@ -383,7 +383,7 @@ public abstract class StructureInstance {
 
     public void save() {
         isDirty = true;
-        location.getChunk().isDirty = true;
+        location.getChunk().isUnsaved = true;
     }
 
     public void handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
