@@ -11,7 +11,6 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.SocketLocation;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,7 +62,7 @@ public class CableInstance extends StructureInstance implements Conductor {
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.config.MainConfig;
+import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
@@ -107,6 +108,7 @@ public class TorusWorld {
 
         TorusChunk torusChunk = region.chunks.remove(new Vector2i(chunk.getX(), chunk.getZ()));
         if (torusChunk != null) {
+            // TODO: Determine if chunk should unload or become virtual
             torusChunk.structures.values().forEach(StructureInstance::unload);
             if (torusChunk.isUnsaved) {
                 try {
@@ -146,7 +148,7 @@ public class TorusWorld {
             region.chunks.values()
               .forEach(chunk -> chunk.structures.values()
                 .forEach(s -> {
-                if (s.isCorrupted || s.isVirtual())
+                if (s.isCorrupted || s.isUnloaded())
                     return;
 
                 try {

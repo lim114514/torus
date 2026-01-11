@@ -43,7 +43,7 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         energySocket.maintainEnergy(this);
         itemOutSocket.attemptDirectItemExport();
 

@@ -32,6 +32,7 @@ import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
@@ -59,6 +60,9 @@ public abstract class StructureInstance {
     public final Direction direction;
 
     public final DataContainer dataContainer;
+
+    @Getter
+    private Status status = Status.NOT_LOADED;
 
     @Getter
     protected final StructureState state;
@@ -138,11 +142,61 @@ public abstract class StructureInstance {
     public void onModelDestroy() {
     }
 
+    public final void makePhysical() {
+        if (status == Status.PHYSICAL)
+            return;
+
+        // Setup model
+        try {
+            updateModel();
+            onModelSpawn();
+        } catch (Exception exc) {
+            TorusLogger.error(Category.STRUCTURES, "Could not spawn the model for " + structure.id + " at " + location);
+            exc.printStackTrace();
+        }
+
+        // Setup information hologram
+        setupInspectionTooltip();
+
+        status = Status.PHYSICAL;
+        Bukkit.broadcastMessage("Structure marked as physical!");
+    }
+
+    public final void makeVirtual() {
+        // Clean up if it was PHYSICAL
+        if (status == Status.PHYSICAL) {
+            model.remove();
+            onModelDestroy();
+            if (inspectionHologram != null)
+                inspectionHologram.remove();
+        }
+
+        status = Status.VIRTUAL;
+        Bukkit.broadcastMessage("Structure marked as virtual!");
+    }
+
+    private void setupInspectionTooltip() {
+        if (!isCorrupted && !(this instanceof Inspectable)) {
+            return;
+        }
+        if (inspectableData.inspectableBlocks.isEmpty()) {
+            byte[] bounds = getBounds();
+            for (int i = 0; i < bounds.length; i += 3) {
+                inspectableData.inspectableBlocks.add(location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]));
+            }
+        }
+        spawnInspectionTooltip();
+        if (isCorrupted) {
+            inspectionHologram.setText(org.bukkit.ChatColor.RED + "Corrupted Structure\n" + StructureInstance.COLOR_PROPERTY + "Try to place it again");
+        }
+    }
+
     public final void unload() {
         model.remove();
         onModelDestroy();
         if (inspectionHologram != null)
             inspectionHologram.remove();
+        status = Status.NOT_LOADED;
     }
 
     public void updateModel() {
@@ -278,7 +332,7 @@ public abstract class StructureInstance {
      * Structures that are loaded, but chunks that they belong to are not, are marked as virtual.
      * @return true if structure is virtual, false if physical
      */
-    public boolean isVirtual() {
+    public boolean isUnloaded() {
         for (int[] chunkPos : occupiedChunks) {
             if (location.world.getChunkAt(chunkPos[0], chunkPos[1]) != null)
                 return false;
@@ -286,7 +340,7 @@ public abstract class StructureInstance {
         return true;
     }
 
-    public abstract void tick();
+    public abstract void tick(boolean isVirtual);
 
     public void tickModel() {
     }
@@ -315,7 +369,7 @@ public abstract class StructureInstance {
         if (inspectionHologram != null) {
             inspectionHologram.remove();
         }
-        Structure.setupInspectionTooltip(this);
+        setupInspectionTooltip();
     }
 
     public void onRemove() {};

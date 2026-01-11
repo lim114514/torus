@@ -63,7 +63,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         inSocket.maintainEnergy(this);
         outSocket.attemptDirectItemExport();
 

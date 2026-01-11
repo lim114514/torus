@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.world;
 
+import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
 import org.joml.Vector2i;
@@ -18,6 +19,8 @@ public class TorusChunk {
     int size;
 
     public boolean isUnsaved;
+
+    public Status status = Status.PHYSICAL;
 
     final Map<BlockLocation, StructureInstance> structures = new HashMap<>();
 

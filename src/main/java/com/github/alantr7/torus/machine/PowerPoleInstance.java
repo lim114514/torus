@@ -2,7 +2,6 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.LoadContext;
-import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -20,7 +19,7 @@ public class PowerPoleInstance extends StructureInstance {
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
 
     }
 

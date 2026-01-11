@@ -68,7 +68,7 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         if (TorusWorld.isItemContainer(location.getRelative(direction.getOpposite()))) {
             socket.linkedInventory = new BukkitStructureInventory(((BlockInventoryHolder) location.getRelative(direction.getOpposite()).getBlock().getState()).getInventory());
         } else {

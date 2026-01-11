@@ -33,7 +33,7 @@ public class ElectricityMeterInstance extends StructureInstance implements Energ
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         inEnergy.updateNetwork();
     }
 

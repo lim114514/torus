@@ -47,7 +47,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
 
     int energyAtLastTick;
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         socket.maintainEnergy(this);
         if (energyAtLastTick != storedEnergy.get()) {
             updateChargeIndicator();

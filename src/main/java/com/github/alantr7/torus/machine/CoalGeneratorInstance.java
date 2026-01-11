@@ -49,7 +49,7 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         if (remainingBurnTicks == 0) {
             inputSocket.updateNetwork();
             List<ItemStack> fuel = inputSocket.consumeItems(CoalGenerator.INPUT_CRITERIA, 1, true);

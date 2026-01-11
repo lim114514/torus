@@ -30,7 +30,7 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         if (storedEnergy.get() < SolarGenerator.ENERGY_CAPACITY) {
             supplyEnergy((int) (SolarGenerator.ENERGY_PRODUCTION * calculateEfficiency()));
         }

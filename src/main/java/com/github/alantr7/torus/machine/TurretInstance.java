@@ -45,7 +45,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     protected LivingEntity target;
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         inEnergy.maintainEnergy(this);
         if (getStoredEnergy().get() < Turret.ENERGY_CONSUMPTION)
             return;

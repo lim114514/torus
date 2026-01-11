@@ -69,7 +69,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     private int airTicks = 0;
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         energySocket.maintainEnergy(this);
         if (storedEnergy.get() < Pump.ENERGY_CONSUMPTION || amount.get() >= Pump.FLUID_CAPACITY)
             return;

@@ -53,7 +53,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
 
     }
 

@@ -1,8 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
-import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
-import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -34,7 +32,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
 
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         supplyEnergy((int) (efficiency * 75));
     }
 

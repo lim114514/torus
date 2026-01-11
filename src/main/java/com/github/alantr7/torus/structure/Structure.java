@@ -20,7 +20,6 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -157,32 +156,11 @@ public abstract class Structure {
             exc.printStackTrace();
         }
 
-        setupModel(instance);
-        setupInspectionTooltip(instance);
-    }
-
-    private static void setupModel(StructureInstance instance) {
-        try {
-            instance.updateModel();
-            instance.onModelSpawn();
-        } catch (Exception exc) {
-            exc.printStackTrace();
+        if (instance.location.getChunk().status == Status.PHYSICAL) {
+            instance.makePhysical();
         }
-    }
-
-    static void setupInspectionTooltip(StructureInstance instance) {
-        if (!instance.isCorrupted && !(instance instanceof Inspectable)) {
-            return;
-        }
-        if (instance.inspectableData.inspectableBlocks.isEmpty()) {
-            byte[] bounds = instance.getBounds();
-            for (int i = 0; i < bounds.length; i += 3) {
-                instance.inspectableData.inspectableBlocks.add(instance.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]));
-            }
-        }
-        instance.spawnInspectionTooltip();
-        if (instance.isCorrupted) {
-            instance.inspectionHologram.setText(ChatColor.RED + "Corrupted Structure\n" + StructureInstance.COLOR_PROPERTY + "Try to place it again");
+        else if (instance.location.getChunk().status == Status.VIRTUAL) {
+            instance.makeVirtual();
         }
     }
 

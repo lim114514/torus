@@ -15,7 +15,6 @@ import com.github.alantr7.torus.structure.component.Socket;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -62,7 +61,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         powerSocket.maintainEnergy(this);
         itemSocket.attemptDirectItemExport();
 

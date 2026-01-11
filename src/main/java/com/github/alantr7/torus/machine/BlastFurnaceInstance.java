@@ -52,7 +52,7 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         itemOutputSocket.attemptDirectItemExport();
 
         if (recipe != null) {

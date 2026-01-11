@@ -41,7 +41,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     }
 
     @Override
-    public void tick() {
+    public void tick(boolean isVirtual) {
         powerSocket.maintainEnergy(this);
         itemOutSocket.attemptDirectItemExport();
 
