@@ -150,10 +150,7 @@ public class TorusWorld {
                     return;
 
                 try {
-                    s.tick();
-                    if (s.isModelUpdateScheduled()) {
-                        s.updateModel();
-                    }
+                    s.tick(chunk.status == Status.VIRTUAL);
                     for (PartModel part : s.model.parts.values()) {
                         if (part.getAnimation() != null) {
                             part.getAnimation().tick();
