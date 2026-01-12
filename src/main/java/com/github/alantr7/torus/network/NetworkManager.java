@@ -62,6 +62,9 @@ public class NetworkManager {
         if (socket.structure != null && !(socket.structure instanceof Conductor)) {
             networkConnections.add(new Node(socket.structure, socket));
         }
+        else if (socket.structure != null) {
+            network.edges.add(socket.structure);
+        }
 
         // Check if connector is directly connected to another
         for (Direction direction : Direction.values()) {
