@@ -22,6 +22,9 @@ public class NetworkManager {
     }
 
     public void queueLoaded(Socket socket) {
+        if (socket == null) {
+            throw new NullPointerException("Attempted to queue null socket!");
+        }
         queue.add(socket);
     }
 
@@ -80,6 +83,11 @@ public class NetworkManager {
             }
 
             if (neighbor instanceof CableInstance || neighbor instanceof WireConnectorInstance) {
+                network.edges.add(neighbor);
+                Socket neighborSocket = neighbor.getSocket("base");
+                if (neighborSocket != null) {
+                    neighborSocket.network = network;
+                }
                 continue;
             }
 
@@ -126,14 +134,13 @@ public class NetworkManager {
                     continue;
                 }
 
-                Socket neighborSocket = neighbor.getSocket(start, socket.medium);
-
                 // Check if it's a conductor
                 if (neighbor instanceof Conductor) {
                     if (!open.contains(neighborLoc)) {
                         open.add(neighborLoc);
                         network.edges.add(neighbor);
 
+                        Socket neighborSocket = neighbor.getSocket("base");
                         if (neighborSocket != null) {
                             neighborSocket.network = network;
                         }
@@ -141,6 +148,7 @@ public class NetworkManager {
                     continue;
                 }
 
+                Socket neighborSocket = neighbor.getSocket(start, socket.medium);
                 if (neighborSocket != null) {
                     networkConnections.add(new Node(neighbor, neighborSocket));
                     closed.add(neighborLoc);

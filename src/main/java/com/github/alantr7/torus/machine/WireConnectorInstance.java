@@ -60,6 +60,14 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     @Override
     protected void setup() throws SetupException {
         loadConnections();
+
+        // Backwards compatibility
+        if (getSocket("base") == null) {
+            Socket socket = new Socket(getComponent("base"), 0, Socket.Medium.ENERGY, Socket.FlowDirection.ALL);
+            socketsByName.put("base", socket);
+
+            save();
+        }
     }
 
     @Override

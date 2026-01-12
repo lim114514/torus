@@ -86,6 +86,9 @@ public class Socket implements Connectable, Conductor {
     }
 
     public int consumeEnergy(int amount) {
+        if (network.isInvalidated())
+            return 0;
+
         int original = amount;
         for (Node conn : network.nodes) {
             if (conn.socket == this)
@@ -108,6 +111,9 @@ public class Socket implements Connectable, Conductor {
     }
 
     public int maintainEnergy(EnergyContainer container) {
+        if (network.isInvalidated())
+            return 0;
+
         if (container.getStoredEnergy().get() == container.getEnergyCapacity())
             return 0;
 
@@ -120,6 +126,9 @@ public class Socket implements Connectable, Conductor {
     }
 
     public int consumeFluid(Fluid fluid, int amount) {
+        if (network.isInvalidated())
+            return 0;
+
         int original = amount;
         for (Node conn : network.nodes) {
             if (conn.socket == this)
@@ -145,6 +154,9 @@ public class Socket implements Connectable, Conductor {
     }
 
     public List<ItemStack> consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst) {
+        if (network.isInvalidated())
+            return Collections.emptyList();
+
         List<ItemStack> result = new ArrayList<>();
         AtomicInteger amount1 = new AtomicInteger(amount);
 
