@@ -8,6 +8,7 @@ import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.RendererConfigLoader;
 import com.github.alantr7.torus.model.animation.Animation;
 import com.github.alantr7.torus.model.animation.AnimationProvider;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -25,9 +26,9 @@ import java.util.regex.Pattern;
 
 public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
 
-    private static final Pattern ITEM_PATTERN = Pattern.compile("[a-zA-Z0-9_.\\-]+(\\[[a-zA-Z0-9_=,]+])?");
+    private static final Pattern ITEM_PATTERN = Pattern.compile("[a-zA-Z0-9_.\\-]+(\\[[a-zA-Z0-9_=,:\"]+])?");
 
-    private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9]+");
+    private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9_:]+");
 
     public DisplayEntitiesRendererConfigLoader() {
         super("display_entities");
@@ -123,6 +124,8 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
             CustomModelDataComponent customModelDataComponent = itemMeta.getCustomModelDataComponent();
             customModelDataComponent.setStrings(Collections.singletonList(itemAttributes.get("model")));
             itemMeta.setCustomModelDataComponent(customModelDataComponent);
+
+            Bukkit.broadcastMessage("Model: " + itemAttributes.get("model"));
         }
 
         itemStack.setItemMeta(itemMeta);
