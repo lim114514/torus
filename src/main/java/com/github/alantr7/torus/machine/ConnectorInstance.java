@@ -80,11 +80,15 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
     @Override
     public void onSocketConnect(Socket socket, Socket neighbor, Direction direction) {
         state.set(getStateFromDirection(direction.relativeTo(this.direction)), true);
+        state.set(STATE_BACK, true);
     }
 
     @Override
     public void onSocketDisconnect(Socket socket, Socket neighbor, Direction direction) {
         state.set(getStateFromDirection(direction.relativeTo(this.direction)), false);
+        if (socket.getConnections() == 0) {
+            state.set(STATE_BACK, false);
+        }
     }
 
     public ItemReference[] getFilter() {
