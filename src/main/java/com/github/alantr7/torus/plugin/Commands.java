@@ -13,6 +13,9 @@ import com.github.alantr7.torus.api.addon.LifecycleAction;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.model.PartModel;
+import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
+import com.github.alantr7.torus.model.de_provider.EntityReference;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.network.Node;
@@ -22,8 +25,10 @@ import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Keyed;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -203,7 +208,7 @@ public class Commands {
           ctx.respond(ChatColor.GOLD + "Sockets: (" + structure.getSockets().size() + ")");
           for (Socket socket : structure.getSockets()) {
               ctx.respond("  - " + ChatColor.YELLOW + socket.getComponent().absoluteLocation + ":");
-              ctx.respond("    - Matter: " + ChatColor.GRAY + socket.matter);
+              ctx.respond("    - Matter: " + ChatColor.GRAY + socket.medium);
               ctx.respond("    - Flow: " + ChatColor.GRAY + socket.getFlowDirection());
               ctx.respond("    - Connections: " + ChatColor.GRAY + socket.getConnections());
           }
@@ -235,7 +240,7 @@ public class Commands {
           }
 
           for (Socket socket : structure.getSockets()) {
-              ctx.respond(socket.getComponent().name + "  " + socket.getComponent().absoluteLocation + " (" + socket.matter + ")" + ":");
+              ctx.respond(socket.getComponent().name + "  " + socket.getComponent().absoluteLocation + " (" + socket.medium + ")" + ":");
               for (Node connection : socket.network.nodes) {
                   ctx.respond("   - " + connection.structure.structure.name + " (" + connection.socket.getComponent().absoluteLocation + ")");
               }
@@ -245,6 +250,57 @@ public class Commands {
               ctx.respond("Conductor nodes:");
               for (BlockLocation loc : conductor.getConnectedNodes()) {
                 ctx.respond("  - " + (loc.getStructure() != null ? loc.getStructure().structure.name : "Null?"));
+              }
+          }
+      });
+
+    @CommandHandler Command higlightNetwork = CommandBuilder.using("torus")
+      .parameter("debug")
+      .parameter("highlight_networks")
+      .executes(ctx -> {
+          Player player = (Player) ctx.getExecutor();
+          Block block = player.getTargetBlockExact(5);
+          if (block == null) {
+              ctx.respond("Not looking at any structure.");
+              return;
+          }
+
+          TorusWorld world = TorusPlugin.getInstance().getWorldManager().getWorld(player.getWorld());
+          if (world == null) {
+              ctx.respond("Structures aren't allowed in this world.");
+              return;
+          }
+
+          BlockLocation blockLocation = new BlockLocation(block.getLocation());
+          StructureInstance structure = world.getStructure(blockLocation);
+          if (structure == null) {
+              ctx.respond("Not looking at any structure.");
+              return;
+          }
+
+          for (Socket socket : structure.getSockets()) {
+              for (StructureInstance edge : socket.network.edges) {
+                  for (PartModel partModel : edge.model.parts.values()) {
+                      if (!(partModel instanceof DisplayEntitiesPartModel de))
+                          continue;
+
+                      for (EntityReference ref : de.entityReferences) {
+                          Display display = ref.getEntity();
+                          if (display != null) {
+                              display.setGlowing(true);
+                              if (edge instanceof Conductor conductor) {
+                                  switch (conductor.getMedium()) {
+                                      case ENERGY -> display.setGlowColorOverride(Color.LIME);
+                                      case ITEM -> display.setGlowColorOverride(Color.YELLOW);
+                                      case FLUID -> display.setGlowColorOverride(Color.PURPLE);
+                                  }
+                              }
+                              Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
+                                  display.setGlowing(false);
+                              }, 20L * 15);
+                          }
+                      }
+                  }
               }
           }
       });
