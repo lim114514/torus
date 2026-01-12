@@ -51,6 +51,7 @@ public class NetworkManager {
 
     private void buildNetwork(Socket socket) {
         socket.network.invalidate();
+
         NetworkGraph network = new NetworkGraph(world.getTicks(), false);
         socket.network = network;
 
@@ -62,11 +63,11 @@ public class NetworkManager {
         if (socket.structure != null && !(socket.structure instanceof Conductor)) {
             networkConnections.add(new Node(socket.structure, socket));
         }
-        else if (socket.structure != null) {
+        if (socket.structure instanceof Conductor) {
             network.edges.add(socket.structure);
         }
 
-        // Check if connector is directly connected to another
+        // Check if socket is directly connected to another
         for (Direction direction : Direction.values()) {
             if (!socket.isConnected(direction))
                 continue;
@@ -89,14 +90,19 @@ public class NetworkManager {
             }
         }
 
-        if (directionsCount == closedDirectionsCount) {
-            network.nodes = networkConnections;
-            return;
+        if (!(socket.structure instanceof WireConnectorInstance)) {
+            if (directionsCount == closedDirectionsCount) {
+                network.nodes = networkConnections;
+                return;
+            }
         }
 
         List<BlockLocation> open = new LinkedList<>();
         List<BlockLocation> closed = new LinkedList<>();
 
+        if (socket.structure instanceof WireConnectorInstance) {
+            open.add(socket.structure.location);
+        }
         closed.add(socket.getComponent().absoluteLocation);
         for (Direction direction : Direction.values()) {
             if (socket.isConnected(direction)) {
@@ -120,16 +126,21 @@ public class NetworkManager {
                     continue;
                 }
 
+                Socket neighborSocket = neighbor.getSocket(start, socket.medium);
+
                 // Check if it's a conductor
                 if (neighbor instanceof Conductor) {
                     if (!open.contains(neighborLoc)) {
                         open.add(neighborLoc);
                         network.edges.add(neighbor);
+
+                        if (neighborSocket != null) {
+                            neighborSocket.network = network;
+                        }
                     }
                     continue;
                 }
 
-                Socket neighborSocket = neighbor.getSocket(start, socket.medium);
                 if (neighborSocket != null) {
                     networkConnections.add(new Node(neighbor, neighborSocket));
                     closed.add(neighborLoc);

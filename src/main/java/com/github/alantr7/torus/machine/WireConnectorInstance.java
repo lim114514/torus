@@ -130,6 +130,8 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
                 if (event.getPlayer().getGameMode() == GameMode.SURVIVAL || event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
                     event.getPlayer().getInventory().getItemInMainHand().setAmount(event.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
                 }
+
+                location.world.networkManager.queueLoaded(getSocket("base"));
             }
 
             player.pendingWireConnection = null;
@@ -148,36 +150,6 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
         nodes.addAll(getSocket("base").getConnectedNodes());
 
         return nodes;
-    }
-
-    public void updateConnections() {
-        for (Direction direction : Direction.values()) {
-            updateConnection(direction);
-        }
-    }
-
-    public void updateConnection(Direction direction) {
-        StructureInstance possibleConnection = location.getRelative(direction).getStructure();
-        boolean hasConnected = false;
-
-        // Check if this cable connects to a connector
-        if (possibleConnection != null) {
-            Socket socket = possibleConnection.getSocket(location, Socket.Medium.ENERGY);
-            if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
-                hasConnected = true;
-                socket.setConnected(direction.getOpposite(), true);
-                possibleConnection.save();
-            }
-        }
-
-        // Check if this cable connects to another cable
-        if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getMedium() == Socket.Medium.ENERGY) {
-            hasConnected = true;
-            cable.getSocket("base").setConnected(direction.getOpposite(), true);
-            cable.updateModel();
-        }
-
-        getSocket("base").setConnected(direction, hasConnected);
     }
 
     private Slime spawnSlime() {
