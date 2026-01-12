@@ -292,7 +292,7 @@ public class Commands {
                                   switch (conductor.getMedium()) {
                                       case ENERGY -> display.setGlowColorOverride(Color.LIME);
                                       case ITEM -> display.setGlowColorOverride(Color.YELLOW);
-                                      case FLUID -> display.setGlowColorOverride(Color.PURPLE);
+                                      case FLUID -> display.setGlowColorOverride(Color.AQUA);
                                   }
                               }
                               Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
