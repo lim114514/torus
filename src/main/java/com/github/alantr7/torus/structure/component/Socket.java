@@ -1,10 +1,10 @@
 package com.github.alantr7.torus.structure.component;
 
-import com.github.alantr7.torus.machine.WireConnectorInstance;
+import com.github.alantr7.torus.network.NetworkGraph;
+import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.item.ItemCriteria;
-import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
@@ -35,9 +35,7 @@ public class Socket implements Connectable, Conductor {
 
     public int maximumOutput = 100;
 
-    public List<Connection> networkConnections = Collections.emptyList();
-
-    protected int networkUpdateTick = -1;
+    public NetworkGraph network = NetworkGraph.INIT;
 
     public StructureInventory linkedInventory;
 
@@ -86,99 +84,9 @@ public class Socket implements Connectable, Conductor {
         this.matter = matter;
     }
 
-    public void updateNetwork() {
-        // Skip network update if it was already done
-        if (networkUpdateTick == component.absoluteLocation.world.getTicks())
-            return;
-
-        int directionsCount = 0;
-        int closedDirectionsCount = 0;
-        List<Connection> networkConnections = new ArrayList<>();
-
-        if (structure != null) {
-            networkConnections.add(new Connection(structure, this));
-        }
-
-        // Check if connector is directly connected to another
-        for (Direction direction : Direction.values()) {
-            if (!isConnected(direction))
-                continue;
-
-            directionsCount++;
-            StructureInstance neighbor = component.absoluteLocation.getRelative(direction).getStructure();
-            if (neighbor == null) {
-                closedDirectionsCount++;
-                continue;
-            }
-
-            if (neighbor instanceof CableInstance || neighbor instanceof WireConnectorInstance) {
-                continue;
-            }
-
-            Socket neighborSocket = neighbor.getSocket(component.absoluteLocation, matter);
-            if (neighborSocket != null) {
-                networkConnections.add(new Connection(neighbor, neighborSocket));
-                closedDirectionsCount++;
-            }
-        }
-
-        if (directionsCount == closedDirectionsCount) {
-            this.networkConnections = networkConnections;
-            return;
-        }
-
-        List<BlockLocation> open = new LinkedList<>();
-        List<BlockLocation> closed = new LinkedList<>();
-
-        closed.add(component.absoluteLocation);
-        for (Direction direction : Direction.values()) {
-            if (isConnected(direction)) {
-                if (component.absoluteLocation.getRelative(direction).getStructure() instanceof Conductor conductor)
-                    open.add(((StructureInstance) conductor).location);
-            }
-        }
-
-        while (!open.isEmpty()) {
-            BlockLocation start = open.removeFirst();
-            Conductor startCable = (Conductor) start.getStructure();
-            for (BlockLocation neighborLoc : startCable.getConnectedNodes()) {
-                if (closed.contains(neighborLoc)) // Skip if already checked
-                    continue;
-
-                StructureInstance neighbor = neighborLoc.getStructure();
-                if (neighbor == null) {
-                    closed.add(neighborLoc);
-                    continue;
-                }
-
-                // Check if it's a conductor
-                if (neighbor instanceof Conductor) {
-                    if (!open.contains(neighborLoc)) {
-                        open.add(neighborLoc);
-                    }
-                    continue;
-                }
-
-                Socket socket = neighbor.getSocket(start, matter);
-                if (socket != null) {
-                    networkConnections.add(new Connection(neighbor, socket));
-                    closed.add(neighborLoc);
-
-                    socket.networkConnections = networkConnections;
-                    socket.networkUpdateTick = component.absoluteLocation.world.getTicks();
-                }
-            }
-
-            closed.add(start);
-        }
-
-        this.networkConnections = networkConnections;
-        this.networkUpdateTick = component.absoluteLocation.world.getTicks();
-    }
-
     public int consumeEnergy(int amount) {
         int original = amount;
-        for (Connection conn : networkConnections) {
+        for (Node conn : network.nodes) {
             if (conn.socket == this)
                 continue;
 
@@ -202,9 +110,7 @@ public class Socket implements Connectable, Conductor {
         if (container.getStoredEnergy().get() == container.getEnergyCapacity())
             return 0;
 
-        updateNetwork();
-
-        if (networkConnections.isEmpty() || (networkConnections.size() == 1 && networkConnections.getFirst().socket == this))
+        if (network.nodes.isEmpty() || (network.nodes.size() == 1 && network.nodes.iterator().next().socket == this))
             return 0;
 
         return container.supplyEnergy(
@@ -214,7 +120,7 @@ public class Socket implements Connectable, Conductor {
 
     public int consumeFluid(Fluid fluid, int amount) {
         int original = amount;
-        for (Connection conn : networkConnections) {
+        for (Node conn : network.nodes) {
             if (conn.socket == this)
                 continue;
 
@@ -241,7 +147,7 @@ public class Socket implements Connectable, Conductor {
         List<ItemStack> result = new ArrayList<>();
         AtomicInteger amount1 = new AtomicInteger(amount);
 
-        if (networkConnections.size() == 1) {
+        if (network.nodes.size() == 1) {
             for (Direction direction : Direction.values()) {
                 if (isConnectableFrom(direction) && TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction))) {
                     BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
@@ -252,7 +158,7 @@ public class Socket implements Connectable, Conductor {
             }
         }
 
-        for (Connection conn : networkConnections) {
+        for (Node conn : network.nodes) {
             if (conn.socket == this)
                 continue;
 
@@ -334,19 +240,6 @@ public class Socket implements Connectable, Conductor {
                 break;
             }
         }
-    }
-
-    public static class Connection {
-
-        public final StructureInstance structure;
-
-        public final Socket socket;
-
-        public Connection(StructureInstance structure, Socket socket) {
-            this.structure = structure;
-            this.socket = socket;
-        }
-
     }
 
 }

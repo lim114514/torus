@@ -48,7 +48,6 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         itemOutSocket.attemptDirectItemExport();
 
         if (recipe == null) {
-            itemInSocket.updateNetwork();
             List<ItemStack> items = itemInSocket.consumeItems(OreCrusher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
                 this.recipe = TorusPlugin.getInstance().getRecipeRegistry().getCrusherRecipeByIngredient(items.getFirst());

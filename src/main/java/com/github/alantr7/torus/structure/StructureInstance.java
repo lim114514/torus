@@ -159,7 +159,6 @@ public abstract class StructureInstance {
         setupInspectionTooltip();
 
         status = Status.PHYSICAL;
-        Bukkit.broadcastMessage("Structure marked as physical!");
     }
 
     public final void makeVirtual() {
@@ -191,12 +190,21 @@ public abstract class StructureInstance {
         }
     }
 
-    public final void unload() {
+    public final void handleLoad() {
+        for (Socket socket : socketsByName.values()) {
+            location.world.networkManager.queueLoaded(socket);
+        }
+    }
+
+    public final void handleUnload() {
         model.remove();
         onModelDestroy();
         if (inspectionHologram != null)
             inspectionHologram.remove();
         status = Status.NOT_LOADED;
+        for (Socket socket : socketsByName.values()) {
+            location.world.networkManager.queueUnloaded(socket);
+        }
     }
 
     public void updateModel() {
@@ -333,6 +341,9 @@ public abstract class StructureInstance {
      * @return true if structure is virtual, false if physical
      */
     public boolean isUnloaded() {
+        if (status == Status.NOT_LOADED)
+            return true;
+
         for (int[] chunkPos : occupiedChunks) {
             if (location.world.getChunkAt(chunkPos[0], chunkPos[1]) != null)
                 return false;

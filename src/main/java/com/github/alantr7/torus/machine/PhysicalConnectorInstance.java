@@ -78,7 +78,6 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
         if (getFlowDirection() != Socket.FlowDirection.IN && getFlowDirection() != Socket.FlowDirection.ALL)
             return;
 
-        socket.updateNetwork();
         socket.consumeItems(inputCriteria, 4, false).forEach(socket.linkedInventory::addItem);
     }
 

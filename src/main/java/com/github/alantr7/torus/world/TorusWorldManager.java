@@ -74,7 +74,7 @@ public class TorusWorldManager implements Listener {
         world.handleChunkUnload(event.getChunk());
     }
 
-    @InvokePeriodically(interval = 20)
+    @InvokePeriodically(interval = 20L, delay = 10L)
     private void tickLoadedStructures() {
         worlds.values().forEach(TorusWorld::tick);
     }
@@ -112,7 +112,7 @@ public class TorusWorldManager implements Listener {
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_DISABLE)
     private void removeModelsOnDisable() {
         worlds.values().forEach(world ->world.regions.values().forEach(region -> region.chunks.values().forEach(chunk -> {
-            chunk.structures.values().forEach(StructureInstance::unload);
+            chunk.structures.values().forEach(StructureInstance::handleUnload);
         })));
     }
 

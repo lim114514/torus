@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.config.MainConfig;
+import com.github.alantr7.torus.network.NetworkManager;
 import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.log.Category;
@@ -34,6 +35,8 @@ public class TorusWorld {
 
     @Getter
     private int ticks;
+
+    public final NetworkManager networkManager = new NetworkManager(this);
 
     public TorusWorld(World bukkit) {
         this.bukkit = bukkit;
@@ -98,7 +101,10 @@ public class TorusWorld {
     }
 
     protected void handleChunkLoad(Chunk chunk) {
-        getChunkOrLoad(new BlockLocation(this, chunk.getX() << 4, 0, chunk.getZ() << 4));
+        TorusChunk torusChunk = getChunkOrLoad(new BlockLocation(this, chunk.getX() << 4, 0, chunk.getZ() << 4));
+        for (StructureInstance structure : torusChunk.structures.values()) {
+            structure.handleLoad();
+        }
     }
 
     protected void handleChunkUnload(Chunk chunk) {
@@ -109,7 +115,7 @@ public class TorusWorld {
         TorusChunk torusChunk = region.chunks.remove(new Vector2i(chunk.getX(), chunk.getZ()));
         if (torusChunk != null) {
             // TODO: Determine if chunk should unload or become virtual
-            torusChunk.structures.values().forEach(StructureInstance::unload);
+            torusChunk.structures.values().forEach(StructureInstance::handleUnload);
             if (torusChunk.isUnsaved) {
                 try {
                     region.save();
@@ -165,6 +171,7 @@ public class TorusWorld {
                 }
             }));
         });
+        networkManager.tick();
         ticks++;
     }
 
@@ -208,6 +215,8 @@ public class TorusWorld {
                 neighborSocket.setConnected(direction.getOpposite(), true);
                 neighbor.onSocketConnect(neighborSocket, socket, direction.getOpposite());
             }
+
+            networkManager.queueLoaded(socket);
         }
     }
 
@@ -249,11 +258,13 @@ public class TorusWorld {
 
                 neighborSocket.setConnected(direction.getOpposite(), false);
                 neighbor.onSocketDisconnect(neighborSocket, socket, direction.getOpposite());
+
+                networkManager.queueLoaded(neighborSocket);
             }
         }
 
         // Remove models
-        instance.unload();
+        instance.handleUnload();
 
         // Run destroy callbacks
         instance.onRemove();

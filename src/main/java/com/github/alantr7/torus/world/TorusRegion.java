@@ -263,6 +263,9 @@ public class TorusRegion {
             e.printStackTrace();
         }
 
+        for (StructureInstance instance : chunk.structures.values()) {
+            instance.handleLoad();
+        }
         return chunk;
     }
 

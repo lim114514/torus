@@ -46,7 +46,6 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
         itemOutSocket.attemptDirectItemExport();
 
         if (water.get() < OreWasher.FLUID_CAPACITY) {
-            waterInSocket.updateNetwork();
             int consumed = waterInSocket.consumeFluid(Fluid.WATER, OreWasher.FLUID_CAPACITY - water.get());
             supplyFluid(consumed);
         }
@@ -60,8 +59,6 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
             consumeEnergy(OreWasher.ENERGY_CONSUMPTION);
             consumeFluid(OreWasher.FLUID_CONSUMPTION);
         } else {
-            itemInSocket.updateNetwork();
-
             List<ItemStack> items = itemInSocket.consumeItems(OreWasher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
                 recipe = TorusPlugin.getInstance().getRecipeRegistry().getWasherRecipeByIngredient(items.getFirst());

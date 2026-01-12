@@ -62,8 +62,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     @Override
     public void tick(boolean isVirtual) {
-        input.updateNetwork();
-        if (input.networkConnections.isEmpty())
+        if (input.network.nodes.isEmpty())
             return;
 
         if (stored.get() < getFluidCapacity()) {

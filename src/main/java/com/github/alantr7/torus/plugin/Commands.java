@@ -10,13 +10,12 @@ import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.LifecycleAction;
-import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Conductor;
-import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.TorusChunk;
@@ -237,7 +236,7 @@ public class Commands {
 
           for (Socket socket : structure.getSockets()) {
               ctx.respond(socket.getComponent().name + "  " + socket.getComponent().absoluteLocation + " (" + socket.matter + ")" + ":");
-              for (Socket.Connection connection : socket.networkConnections) {
+              for (Node connection : socket.network.nodes) {
                   ctx.respond("   - " + connection.structure.structure.name + " (" + connection.socket.getComponent().absoluteLocation + ")");
               }
           }
