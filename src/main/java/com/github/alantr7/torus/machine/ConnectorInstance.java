@@ -23,9 +23,9 @@ import org.bukkit.inventory.BlockInventoryHolder;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.github.alantr7.torus.machine.PhysicalConnector.*;
+import static com.github.alantr7.torus.machine.Connector.*;
 
-public class PhysicalConnectorInstance extends StructureInstance implements Inspectable {
+public class ConnectorInstance extends StructureInstance implements Inspectable {
 
     protected Data<Integer> flowDirectionData = dataContainer.persist("flow", Data.Type.INT, 0);
 
@@ -35,13 +35,13 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     protected ItemCriteria inputCriteria = null;
 
-    public PhysicalConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Socket.FlowDirection flowDirection) {
+    public ConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Socket.FlowDirection flowDirection) {
         super(Structures.CONNECTOR, location, bodyDef, direction);
         flowDirectionData.update(flowDirection.ordinal());
         save();
     }
 
-    PhysicalConnectorInstance(LoadContext context) {
+    ConnectorInstance(LoadContext context) {
         super(context);
     }
 
@@ -54,10 +54,6 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
             if (socket.isConnected(direction)) {
                 state.set(getStateFromDirection(direction.relativeTo(this.direction)), true, false);
             }
-        }
-
-        if (socket.getConnections() != 0) {
-            state.set(STATE_BACK, true, false);
         }
     }
 

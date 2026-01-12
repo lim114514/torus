@@ -16,7 +16,7 @@ public class Structures {
     public static final FluidPipe FLUID_CABLE = new FluidPipe();
 
     public static final PowerPole POWER_POLE = new PowerPole();
-    public static final PhysicalConnector CONNECTOR = new PhysicalConnector();
+    public static final Connector CONNECTOR = new Connector();
     public static final WireConnector WIRE_CONNECTOR = new WireConnector();
     public static final WireRelay WIRE_RELAY = new WireRelay();
     public static final ElectricityMeter ELECTRICITY_METER = new ElectricityMeter();

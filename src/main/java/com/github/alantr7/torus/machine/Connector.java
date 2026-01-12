@@ -15,7 +15,7 @@ import com.github.alantr7.torus.structure.component.Socket;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-public class PhysicalConnector extends Structure {
+public class Connector extends Structure {
 
     public static final State<Boolean> STATE_FRONT  = new State<>("front",  StateType.BOOLEAN, false);
     public static final State<Boolean> STATE_RIGHT  = new State<>("right",   StateType.BOOLEAN, false);
@@ -24,8 +24,8 @@ public class PhysicalConnector extends Structure {
     public static final State<Boolean> STATE_UP     = new State<>("up",     StateType.BOOLEAN, false);
     public static final State<Boolean> STATE_DOWN   = new State<>("down",   StateType.BOOLEAN, false);
 
-    public PhysicalConnector() {
-        super(TorusPlugin.DEFAULT_ADDON, "connector", "Connector", PhysicalConnectorInstance.class);
+    public Connector() {
+        super(TorusPlugin.DEFAULT_ADDON, "connector", "Connector", ConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         registerState(STATE_FRONT);
@@ -49,7 +49,7 @@ public class PhysicalConnector extends Structure {
           }
         );
 
-        return new PhysicalConnectorInstance(location, body, direction, Socket.FlowDirection.IN);
+        return new ConnectorInstance(location, body, direction, Socket.FlowDirection.IN);
     }
 
     static State<Boolean> getStateFromDirection(Direction direction) {

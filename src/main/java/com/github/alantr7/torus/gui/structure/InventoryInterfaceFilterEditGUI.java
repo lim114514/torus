@@ -5,7 +5,7 @@ import com.github.alantr7.bukkitplugin.gui.CloseInitiator;
 import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemReference;
-import com.github.alantr7.torus.machine.PhysicalConnectorInstance;
+import com.github.alantr7.torus.machine.ConnectorInstance;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class InventoryInterfaceFilterEditGUI extends GUI {
 
-    private final PhysicalConnectorInstance iii;
+    private final ConnectorInstance iii;
 
-    public InventoryInterfaceFilterEditGUI(Player player, PhysicalConnectorInstance iii) {
+    public InventoryInterfaceFilterEditGUI(Player player, ConnectorInstance iii) {
         super(TorusPlugin.getInstance(), player, false);
         this.iii = iii;
 
