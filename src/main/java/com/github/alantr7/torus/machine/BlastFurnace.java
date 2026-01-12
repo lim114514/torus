@@ -38,13 +38,13 @@ public class BlastFurnace extends Structure {
         return new BlastFurnaceInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f(0f, 0f, 0f)),
           new StructureComponentDef("in_item", new Vector3f(0, 4, 1), new StructureSocketDef(
-            Socket.Matter.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
+            Socket.Medium.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
           )),
           new StructureComponentDef("out_item", new Vector3f(1, 0, 0), new StructureSocketDef(
-            Socket.Matter.ITEM, Socket.FlowDirection.OUT, direction.mask()
+            Socket.Medium.ITEM, Socket.FlowDirection.OUT, direction.mask()
           )),
           new StructureComponentDef("out_slug", new Vector3f(-1, 0, 0), new StructureSocketDef(
-            Socket.Matter.ITEM, Socket.FlowDirection.OUT, direction.mask()
+            Socket.Medium.ITEM, Socket.FlowDirection.OUT, direction.mask()
           ))
         }), direction);
     }

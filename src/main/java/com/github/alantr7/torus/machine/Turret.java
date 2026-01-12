@@ -38,10 +38,10 @@ public class Turret extends Structure {
           new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef("head", new Vector3f()),
           new StructureComponentDef("in_item", new Vector3f(), new StructureSocketDef(
-            Socket.Matter.ITEM, Socket.FlowDirection.IN, direction.getOpposite().mask()
+            Socket.Medium.ITEM, Socket.FlowDirection.IN, direction.getOpposite().mask()
           )),
           new StructureComponentDef("in_energy", new Vector3f(), new StructureSocketDef(
-            Socket.Matter.ENERGY, Socket.FlowDirection.IN, Direction.DOWN.mask()
+            Socket.Medium.ENERGY, Socket.FlowDirection.IN, Direction.DOWN.mask()
           ))
         }), direction);
     }

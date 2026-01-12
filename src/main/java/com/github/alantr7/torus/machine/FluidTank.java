@@ -58,10 +58,10 @@ public class FluidTank extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("base", new Vector3f()),
             new StructureComponentDef("in_fluid", new Vector3f(0f, 3f, 0f), new StructureSocketDef(
-              Socket.Matter.FLUID, Socket.FlowDirection.IN, Direction.UP.mask()
+              Socket.Medium.FLUID, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
             new StructureComponentDef("out_fluid", new Vector3f(0f, 0f, -1f), new StructureSocketDef(
-              Socket.Matter.FLUID, Socket.FlowDirection.OUT, direction.mask()
+              Socket.Medium.FLUID, Socket.FlowDirection.OUT, direction.mask()
             )),
             new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f)),
           }

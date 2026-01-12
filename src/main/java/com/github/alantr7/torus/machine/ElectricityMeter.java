@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -26,8 +25,8 @@ public class ElectricityMeter extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new ElectricityMeterInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f()),
-          new StructureComponentDef("in_energy", new Vector3f(), new StructureSocketDef(Socket.Matter.ENERGY, Socket.FlowDirection.IN, Direction.UP.mask())),
-          new StructureComponentDef("out_energy", new Vector3f(), new StructureSocketDef(Socket.Matter.ENERGY, Socket.FlowDirection.OUT, Direction.DOWN.mask())),
+          new StructureComponentDef("in_energy", new Vector3f(), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.IN, Direction.UP.mask())),
+          new StructureComponentDef("out_energy", new Vector3f(), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.OUT, Direction.DOWN.mask())),
         }), direction);
     }
 

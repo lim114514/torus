@@ -162,7 +162,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
 
         // Check if this cable connects to a connector
         if (possibleConnection != null) {
-            Socket socket = possibleConnection.getSocket(location, Socket.Matter.ENERGY);
+            Socket socket = possibleConnection.getSocket(location, Socket.Medium.ENERGY);
             if (socket != null && socket.isConnectableFrom(direction.getOpposite())) {
                 hasConnected = true;
                 socket.setConnected(direction.getOpposite(), true);
@@ -171,7 +171,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
         }
 
         // Check if this cable connects to another cable
-        if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getType() == Socket.Matter.ENERGY) {
+        if (!hasConnected && possibleConnection instanceof CableInstance cable && cable.getMedium() == Socket.Medium.ENERGY) {
             hasConnected = true;
             cable.getSocket("base").setConnected(direction.getOpposite(), true);
             cable.updateModel();
@@ -236,6 +236,11 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
 
     public Type getType() {
         return Type.values()[typeRaw.get()];
+    }
+
+    @Override
+    public Socket.Medium getMedium() {
+        return Socket.Medium.ENERGY;
     }
 
     static class WireConnection {

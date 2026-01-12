@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -25,7 +24,7 @@ public class WireConnector extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         return new WireConnectorInstance(WireConnectorInstance.Type.CONNECTOR, location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f(), new StructureSocketDef(Socket.Matter.ENERGY, Socket.FlowDirection.ALL, direction.getOpposite().mask()))
+          new StructureComponentDef("base", new Vector3f(), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.ALL, direction.getOpposite().mask()))
         }), direction);
     }
 

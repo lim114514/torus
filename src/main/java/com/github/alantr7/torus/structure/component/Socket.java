@@ -51,7 +51,8 @@ public class Socket implements Connectable, Conductor {
     @Getter @Setter
     protected FlowDirection flowDirection;
 
-    public final Matter matter;
+    @Getter
+    public final Medium medium;
 
     @Override
     public Collection<BlockLocation> getConnectedNodes() {
@@ -69,7 +70,7 @@ public class Socket implements Connectable, Conductor {
         ;
     }
 
-    public enum Matter {
+    public enum Medium {
         ITEM, ENERGY, FLUID,
         ;
     }
@@ -77,11 +78,11 @@ public class Socket implements Connectable, Conductor {
     @Getter
     protected StructureComponent component;
 
-    public Socket(StructureComponent component, int allowedConnections, Matter matter, FlowDirection direction) {
+    public Socket(StructureComponent component, int allowedConnections, Medium medium, FlowDirection direction) {
         this.component = component;
         this.allowedConnections = allowedConnections;
         this.flowDirection = direction;
-        this.matter = matter;
+        this.medium = medium;
     }
 
     public int consumeEnergy(int amount) {
@@ -90,7 +91,7 @@ public class Socket implements Connectable, Conductor {
             if (conn.socket == this)
                 continue;
 
-            if (conn.socket.matter != Matter.ENERGY)
+            if (conn.socket.medium != Medium.ENERGY)
                 continue;
 
             if (conn.socket.flowDirection != FlowDirection.OUT && conn.socket.flowDirection != FlowDirection.ALL)
@@ -124,7 +125,7 @@ public class Socket implements Connectable, Conductor {
             if (conn.socket == this)
                 continue;
 
-            if (conn.socket.matter != Matter.FLUID)
+            if (conn.socket.medium != Medium.FLUID)
                 continue;
 
             if (conn.socket.flowDirection != FlowDirection.OUT && conn.socket.flowDirection != FlowDirection.ALL)
@@ -162,7 +163,7 @@ public class Socket implements Connectable, Conductor {
             if (conn.socket == this)
                 continue;
 
-            if (conn.socket.matter != Matter.ITEM)
+            if (conn.socket.medium != Medium.ITEM)
                 continue;
 
             if (conn.socket.flowDirection != FlowDirection.OUT && conn.socket.flowDirection != FlowDirection.ALL)

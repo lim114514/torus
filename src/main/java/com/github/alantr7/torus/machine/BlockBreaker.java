@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -33,10 +32,10 @@ public class BlockBreaker extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("body", new Vector3f(0, 0, 0)),
             new StructureComponentDef("power_connector", new Vector3f(0, 0, 0), new StructureSocketDef(
-              Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
+              Socket.Medium.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
             )),
             new StructureComponentDef("item_connector", new Vector3f(0, 0, 0), new StructureSocketDef(
-              Socket.Matter.ITEM, Socket.FlowDirection.OUT, Direction.DOWN.mask()
+              Socket.Medium.ITEM, Socket.FlowDirection.OUT, Direction.DOWN.mask()
             )) }
         ), direction);
     }

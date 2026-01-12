@@ -43,7 +43,7 @@ public class Connector extends Structure {
         StructureBodyDef body = new StructureBodyDef(
           new StructureComponentDef[]{
             new StructureComponentDef("connector", new Vector3f(), new StructureSocketDef(
-              Socket.Matter.ITEM, Socket.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false)
+              Socket.Medium.ITEM, Socket.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false)
             )),
             new StructureComponentDef("cable", new Vector3f()),
           }

@@ -34,9 +34,9 @@ public class FluidPipe extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), new StructureSocketDef(
-          Socket.Matter.FLUID, Socket.FlowDirection.ALL, 0b111111
+          Socket.Medium.FLUID, Socket.FlowDirection.ALL, 0b111111
         ));
-        return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}), Socket.Matter.FLUID);
+        return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}), Socket.Medium.FLUID);
     }
 
 }

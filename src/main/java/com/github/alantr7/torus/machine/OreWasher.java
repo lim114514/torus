@@ -47,16 +47,16 @@ public class OreWasher extends Structure {
           new StructureComponentDef[] {
             new StructureComponentDef("body", new Vector3f()),
             new StructureComponentDef("item_connector", new Vector3f(0f, 1f, 0f), new StructureSocketDef(
-              Socket.Matter.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
+              Socket.Medium.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
             new StructureComponentDef("out_connector", new Vector3f(0f, 0, 0f), new StructureSocketDef(
-              Socket.Matter.ITEM, Socket.FlowDirection.OUT, direction.mask()
+              Socket.Medium.ITEM, Socket.FlowDirection.OUT, direction.mask()
             )),
             new StructureComponentDef("power_connector", new Vector3f(0f, 0, 1f), new StructureSocketDef(
-              Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
+              Socket.Medium.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
             )),
             new StructureComponentDef("fluid_connector", new Vector3f(0f, 0, 1f), new StructureSocketDef(
-              Socket.Matter.FLUID, Socket.FlowDirection.IN, Direction.UP.mask()
+              Socket.Medium.FLUID, Socket.FlowDirection.IN, Direction.UP.mask()
             ))
           }
         ), direction);

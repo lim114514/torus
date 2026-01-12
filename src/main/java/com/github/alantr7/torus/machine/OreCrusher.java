@@ -54,13 +54,13 @@ public class OreCrusher extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("body", new Vector3f()),
             new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), new StructureSocketDef(
-              Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getLeft().mask()
+              Socket.Medium.ENERGY, Socket.FlowDirection.IN, direction.getLeft().mask()
             )),
             new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), new StructureSocketDef(
-              Socket.Matter.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
+              Socket.Medium.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
             new StructureComponentDef("out_connector", new Vector3f(1, 0, 0), new StructureSocketDef(
-              Socket.Matter.ITEM, Socket.FlowDirection.OUT, direction.getRight().mask()
+              Socket.Medium.ITEM, Socket.FlowDirection.OUT, direction.getRight().mask()
             )),
             new StructureComponentDef("wheel_left", new Vector3f()),
             new StructureComponentDef("wheel_right", new Vector3f())

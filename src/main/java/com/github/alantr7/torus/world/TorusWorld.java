@@ -199,7 +199,7 @@ public class TorusWorld {
                 if (neighbor == null)
                     continue;
 
-                Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.matter);
+                Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.medium);
                 if (neighborSocket == null)
                     continue;
 
@@ -247,7 +247,7 @@ public class TorusWorld {
                 if (neighbor == null)
                     continue;
 
-                Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.matter);
+                Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.medium);
                 if (neighborSocket == null)
                     continue;
 

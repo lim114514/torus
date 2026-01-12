@@ -79,7 +79,7 @@ public class NetworkManager {
                 continue;
             }
 
-            Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.matter);
+            Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.medium);
             if (neighborSocket != null) {
                 networkConnections.add(new Node(neighbor, neighborSocket));
                 closedDirectionsCount++;
@@ -97,8 +97,10 @@ public class NetworkManager {
         closed.add(socket.getComponent().absoluteLocation);
         for (Direction direction : Direction.values()) {
             if (socket.isConnected(direction)) {
-                if (socket.getComponent().absoluteLocation.getRelative(direction).getStructure() instanceof Conductor conductor)
+                if (socket.getComponent().absoluteLocation.getRelative(direction).getStructure() instanceof Conductor conductor) {
                     open.add(((StructureInstance) conductor).location);
+                    network.edges.add((StructureInstance) conductor);
+                }
             }
         }
 
@@ -119,11 +121,12 @@ public class NetworkManager {
                 if (neighbor instanceof Conductor) {
                     if (!open.contains(neighborLoc)) {
                         open.add(neighborLoc);
+                        network.edges.add(neighbor);
                     }
                     continue;
                 }
 
-                Socket neighborSocket = neighbor.getSocket(start, socket.matter);
+                Socket neighborSocket = neighbor.getSocket(start, socket.medium);
                 if (neighborSocket != null) {
                     networkConnections.add(new Node(neighbor, neighborSocket));
                     closed.add(neighborLoc);

@@ -37,9 +37,9 @@ public class EnergyCable extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
         StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), new StructureSocketDef(
-          Socket.Matter.ENERGY, Socket.FlowDirection.ALL, 0b111111
+          Socket.Medium.ENERGY, Socket.FlowDirection.ALL, 0b111111
         ));
-        return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}), Socket.Matter.ENERGY);
+        return new CableInstance(location, new StructureBodyDef(new StructureComponentDef[]{base}), Socket.Medium.ENERGY);
     }
 
     public static State<Boolean> getStateFromDirection(Direction direction) {

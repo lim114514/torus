@@ -46,7 +46,7 @@ public class Windmill extends Structure {
         return new WindmillInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef("out_energy", new Vector3f(), new StructureSocketDef(
-            Socket.Matter.ENERGY, Socket.FlowDirection.OUT, direction.mask()
+            Socket.Medium.ENERGY, Socket.FlowDirection.OUT, direction.mask()
           ))
         }), direction);
     }

@@ -121,13 +121,13 @@ public abstract class StructureInstance {
             components.put(componentDef.name, component);
 
             if (componentDef.socketDef != null) {
-                Socket socket = new Socket(components.get(componentDef.name), componentDef.socketDef.allowedConnections(), componentDef.socketDef.matter(), componentDef.socketDef.direction());
+                Socket socket = new Socket(components.get(componentDef.name), componentDef.socketDef.allowedConnections(), componentDef.socketDef.medium(), componentDef.socketDef.direction());
                 socket.structure = this;
 
                 socketsByName.put(componentDef.name, socket);
                 for (Direction possibleDirection : Direction.values()) {
                     if (socket.isConnectableFrom(possibleDirection)) {
-                        sockets.put(new SocketLocation(component.absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
+                        sockets.put(new SocketLocation(component.absoluteLocation.getRelative(possibleDirection), socket.medium), socket);
                     }
                 }
             }
@@ -301,8 +301,8 @@ public abstract class StructureInstance {
         return components.values();
     }
 
-    public Socket getSocket(BlockLocation location, Socket.Matter matter) {
-        return sockets.get(new SocketLocation(location, matter));
+    public Socket getSocket(BlockLocation location, Socket.Medium medium) {
+        return sockets.get(new SocketLocation(location, medium));
     }
 
     public Socket getSocket(String name) {
@@ -488,7 +488,7 @@ public abstract class StructureInstance {
             // Linked component
             buffer.writeU1(keys.pool(connector.getComponent().name));
 
-            int data = connector.matter.ordinal();
+            int data = connector.medium.ordinal();
             data = (data << 4) | connector.getFlowDirection().ordinal();
 
             buffer.writeU1(connector.getAllowedConnections());
@@ -551,13 +551,13 @@ public abstract class StructureInstance {
             int flowDirection = data & 0x0f;
             int matterOrdinal = (data >> 4) & 0x0f;
 
-            if (matterOrdinal < Socket.Matter.values().length && flowDirection < Socket.FlowDirection.values().length) {
-                Socket socket = new Socket(component, allowedConnections, Socket.Matter.values()[matterOrdinal], Socket.FlowDirection.values()[flowDirection]);
+            if (matterOrdinal < Socket.Medium.values().length && flowDirection < Socket.FlowDirection.values().length) {
+                Socket socket = new Socket(component, allowedConnections, Socket.Medium.values()[matterOrdinal], Socket.FlowDirection.values()[flowDirection]);
                 socket.setConnections(connections);
 
                 for (Direction possibleDirection : Direction.values()) {
                     if (socket.isConnectableFrom(possibleDirection)) {
-                        sockets.put(new SocketLocation(component.absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
+                        sockets.put(new SocketLocation(component.absoluteLocation.getRelative(possibleDirection), socket.medium), socket);
                     }
                 }
             } else {

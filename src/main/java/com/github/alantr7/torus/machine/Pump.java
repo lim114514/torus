@@ -60,10 +60,10 @@ public class Pump extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("base", new Vector3f()),
             new StructureComponentDef("power_connector", new Vector3f(0, 1, 0), new StructureSocketDef(
-              Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
+              Socket.Medium.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
             )),
             new StructureComponentDef("fluid_connector", new Vector3f(0, 1, 0), new StructureSocketDef(
-              Socket.Matter.FLUID, Socket.FlowDirection.OUT, Direction.UP.mask()
+              Socket.Medium.FLUID, Socket.FlowDirection.OUT, Direction.UP.mask()
             ))
           }
         ), direction);

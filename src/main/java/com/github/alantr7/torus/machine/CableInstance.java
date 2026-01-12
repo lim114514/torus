@@ -24,8 +24,8 @@ public class CableInstance extends StructureInstance implements Conductor {
 
     protected Socket socket;
 
-    public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Socket.Matter type) {
-        super(type == Socket.Matter.ENERGY ? Structures.ENERGY_CABLE : type == Socket.Matter.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
+    public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Socket.Medium type) {
+        super(type == Socket.Medium.ENERGY ? Structures.ENERGY_CABLE : type == Socket.Medium.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
         this.type.update(type.ordinal());
     }
 
@@ -36,7 +36,7 @@ public class CableInstance extends StructureInstance implements Conductor {
     @Override
     protected void setup() throws SetupException {
         if (dataContainer.getEntries().containsKey("connections")) {
-            socket = new Socket(getComponent("base"), 0b111111, getType(), Socket.FlowDirection.ALL);
+            socket = new Socket(getComponent("base"), 0b111111, getMedium(), Socket.FlowDirection.ALL);
             socket.structure = this;
             socket.setConnections(dataContainer.getOrDefault("connections", Data.Type.INT, 0));
 
@@ -44,7 +44,7 @@ public class CableInstance extends StructureInstance implements Conductor {
             socketsByName.put("base", socket);
             for (Direction possibleDirection : Direction.values()) {
                 if (socket.isConnectableFrom(possibleDirection)) {
-                    sockets.put(new SocketLocation(getComponent("base").absoluteLocation.getRelative(possibleDirection), socket.matter), socket);
+                    sockets.put(new SocketLocation(getComponent("base").absoluteLocation.getRelative(possibleDirection), socket.medium), socket);
                 }
             }
 
@@ -75,8 +75,9 @@ public class CableInstance extends StructureInstance implements Conductor {
         state.set(getStateFromDirection(direction), false);
     }
 
-    public Socket.Matter getType() {
-        return Socket.Matter.values()[type.get()];
+    @Override
+    public Socket.Medium getMedium() {
+        return Socket.Medium.values()[type.get()];
     }
 
     @Override

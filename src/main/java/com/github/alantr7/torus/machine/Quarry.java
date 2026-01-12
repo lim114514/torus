@@ -98,10 +98,10 @@ public class Quarry extends Structure {
           new StructureComponentDef[]{
             new StructureComponentDef("base", new Vector3f()),
             new StructureComponentDef("in_energy", new Vector3f(0, 0, -6), new StructureSocketDef(
-              Socket.Matter.ENERGY, Socket.FlowDirection.IN, direction.getLeft().mask()
+              Socket.Medium.ENERGY, Socket.FlowDirection.IN, direction.getLeft().mask()
             )),
             new StructureComponentDef("out_item", new Vector3f(0, 0, -6), new StructureSocketDef(
-              Socket.Matter.ITEM, Socket.FlowDirection.OUT, Direction.UP.mask()
+              Socket.Medium.ITEM, Socket.FlowDirection.OUT, Direction.UP.mask()
             )),
             new StructureComponentDef("head", new Vector3f()),
             new StructureComponentDef("feed", new Vector3f()),
