@@ -124,8 +124,6 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
             CustomModelDataComponent customModelDataComponent = itemMeta.getCustomModelDataComponent();
             customModelDataComponent.setStrings(Collections.singletonList(itemAttributes.get("model")));
             itemMeta.setCustomModelDataComponent(customModelDataComponent);
-
-            Bukkit.broadcastMessage("Model: " + itemAttributes.get("model"));
         }
 
         itemStack.setItemMeta(itemMeta);
