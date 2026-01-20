@@ -10,6 +10,7 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -37,7 +38,7 @@ public class SolarGenerator extends Structure {
     }
 
     @Override
-    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
+    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new SolarGeneratorInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f()),
           new StructureComponentDef("out_energy", new Vector3f(), new StructureSocketDef(

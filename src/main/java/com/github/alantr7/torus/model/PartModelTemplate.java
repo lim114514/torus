@@ -3,6 +3,7 @@ package com.github.alantr7.torus.model;
 import com.github.alantr7.torus.model.animation.Animation;
 import com.github.alantr7.torus.model.animation.AnimationProvider;
 import com.github.alantr7.torus.world.Direction;
+import com.github.alantr7.torus.world.Pitch;
 import org.bukkit.Location;
 import org.joml.Vector3f;
 
@@ -22,6 +23,6 @@ public abstract class PartModelTemplate {
         this.animationMap = animationMap;
     }
 
-    public abstract PartModel build(Location location, Direction direction);
+    public abstract PartModel build(Location location, Direction direction, Pitch pitch);
 
 }

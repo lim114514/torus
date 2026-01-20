@@ -185,7 +185,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     @Override
     public void onModelSpawn() {
-        feedModel = ((DisplayEntitiesPartModel) Quarry.MODEL_FEED.toModel(location, direction).parts.get("feed"));
+        feedModel = ((DisplayEntitiesPartModel) Quarry.MODEL_FEED.toModel(location, direction, pitch).parts.get("feed"));
         feedDisplay = (ItemDisplay) feedModel.entityReferences.getFirst().getEntity();
     }
 

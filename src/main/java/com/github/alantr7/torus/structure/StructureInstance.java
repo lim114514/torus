@@ -20,16 +20,12 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
 import com.github.alantr7.torus.structure.inspection.InspectableProperty;
 import com.github.alantr7.torus.structure.state.StructureState;
-import com.github.alantr7.torus.world.BlockLocation;
-import com.github.alantr7.torus.world.SocketLocation;
-import com.github.alantr7.torus.world.Direction;
+import com.github.alantr7.torus.world.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
-import com.github.alantr7.torus.world.TorusChunk;
-import com.github.alantr7.torus.world.TorusRegion;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -58,6 +54,10 @@ public abstract class StructureInstance {
     public final BlockLocation location;
 
     public final Direction direction;
+
+    public final Pitch pitch;
+
+    public final Direction facing;
 
     public final DataContainer dataContainer;
 
@@ -97,6 +97,10 @@ public abstract class StructureInstance {
         this.structure = context.structure();
         this.location = context.location();
         this.direction = context.direction();
+        this.pitch = context.pitch();
+        this.facing = pitch == Pitch.FORWARD
+          ? direction
+          : pitch == Pitch.UP ? Direction.UP : Direction.DOWN;
         this.dataContainer = context.data();
         this.state = new StructureState(this);
         setOccupiedChunks();
@@ -104,9 +108,17 @@ public abstract class StructureInstance {
     }
 
     public StructureInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
+        this(structure, location, bodyDef, direction, Pitch.FORWARD);
+    }
+
+    public StructureInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction, Pitch pitch) {
         this.structure = structure;
         this.location = location;
         this.direction = direction;
+        this.pitch = pitch;
+        this.facing = pitch == Pitch.FORWARD
+          ? direction
+          : pitch == Pitch.UP ? Direction.UP : Direction.DOWN;
         this.dataContainer = new DataContainer();
         this.dataContainer.structure = this;
         this.state = new StructureState(this);
@@ -121,7 +133,46 @@ public abstract class StructureInstance {
             components.put(componentDef.name, component);
 
             if (componentDef.socketDef != null) {
-                Socket socket = new Socket(components.get(componentDef.name), componentDef.socketDef.allowedConnections(), componentDef.socketDef.medium(), componentDef.socketDef.direction());
+                int allowedConnectionsOriginal = componentDef.socketDef.allowedConnections();
+                int allowedConnections;
+
+                if (pitch != Pitch.FORWARD) {
+                    allowedConnections = 0;
+                    for (Direction possibleDirection : Direction.values()) {
+                        if (!MathUtils.hasFlag(allowedConnectionsOriginal, possibleDirection.mask()))
+                            continue;
+
+                        if (possibleDirection != direction && possibleDirection != direction.getOpposite() && possibleDirection != Direction.UP && possibleDirection != Direction.DOWN) {
+                            allowedConnections = MathUtils.setFlag(allowedConnections, possibleDirection.mask(), true);
+                            continue;
+                        }
+
+                        Direction newDirection;
+                        if (possibleDirection == direction) {
+                            newDirection = Direction.UP;
+                        }
+                        else if (possibleDirection == Direction.UP) {
+                            newDirection = direction.getOpposite();
+                        }
+                        else if (possibleDirection == direction.getOpposite()) {
+                            newDirection = Direction.DOWN;
+                        }
+                        else {
+                            newDirection = direction;
+                        }
+
+                        // Looking in X direction. Rotate around Z axis.
+                        if (pitch == Pitch.DOWN) {
+                            newDirection = newDirection.getOpposite();
+                        }
+
+                        allowedConnections = MathUtils.setFlag(allowedConnections, newDirection.mask(), true);
+                    }
+                } else {
+                    allowedConnections = allowedConnectionsOriginal;
+                }
+
+                Socket socket = new Socket(components.get(componentDef.name), allowedConnections, componentDef.socketDef.medium(), componentDef.socketDef.direction());
                 socket.structure = this;
 
                 socketsByName.put(componentDef.name, socket);
@@ -171,7 +222,6 @@ public abstract class StructureInstance {
         }
 
         status = Status.VIRTUAL;
-        Bukkit.broadcastMessage("Structure marked as virtual!");
     }
 
     private void setupInspectionTooltip() {
@@ -214,13 +264,13 @@ public abstract class StructureInstance {
                 if (model != null)
                     model.remove();
 
-                model = ModelTemplate.EMPTY.toModel(location, direction);
+                model = ModelTemplate.EMPTY.toModel(location, direction, pitch);
             }
         } else {
             if (model != null) {
-                model = modelContainer.compositeModel.upgradeModel(this.model, location, direction);
+                model = modelContainer.compositeModel.upgradeModel(this.model, location, direction, pitch);
             } else {
-                model = modelContainer.compositeModel.toModel(location, direction);
+                model = modelContainer.compositeModel.toModel(location, direction, pitch);
             }
 
             // Load default animations if Torus structure
@@ -469,7 +519,7 @@ public abstract class StructureInstance {
         buffer.writeBytes(ByteArrayWriter.toBytes(location.z & 0xf, 1));
 
         // Direction
-        buffer.writeU1(direction.ordinal());
+        buffer.writeU1((pitch.ordinal() << 4) | direction.ordinal());
 
         // Components Length + Connectors Length
         buffer.writeU1((components.size() << 4) | sockets.size());
@@ -516,7 +566,9 @@ public abstract class StructureInstance {
         BlockLocation location = new BlockLocation(chunk.world, (chunk.position.x << 4) | x, y, (chunk.position.y << 4) | z);
 
         // Direction
-        int direction = reader.readU1();
+        int pitchDirection = reader.readU1();
+        int pitch = (pitchDirection >> 4) & 0x0f;
+        int direction = pitchDirection & 0x0f;
 
         // Components Length + Connectors Length
         int counts = reader.readU1();
@@ -579,7 +631,7 @@ public abstract class StructureInstance {
             Constructor<? extends StructureInstance> constructor = instanceClass.getDeclaredConstructor(LoadContext.class);
             constructor.setAccessible(true);
 
-            StructureInstance instance = constructor.newInstance(new LoadContext(structure, location, Direction.values()[direction], dataContainer));
+            StructureInstance instance = constructor.newInstance(new LoadContext(structure, location, Direction.values()[direction], Pitch.values()[pitch], dataContainer));
             dataContainer.structure = instance;
             instance.components.putAll(components);
             instance.sockets.putAll(sockets);

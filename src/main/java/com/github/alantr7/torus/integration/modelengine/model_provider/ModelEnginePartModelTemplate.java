@@ -6,6 +6,7 @@ import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.animation.Animation;
 import com.github.alantr7.torus.model.animation.AnimationProvider;
 import com.github.alantr7.torus.world.Direction;
+import com.github.alantr7.torus.world.Pitch;
 import com.ticxo.modelengine.api.ModelEngineAPI;
 import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint;
 import com.ticxo.modelengine.api.model.ActiveModel;
@@ -26,7 +27,7 @@ public class ModelEnginePartModelTemplate extends PartModelTemplate {
     }
 
     @Override
-    public PartModel build(Location location, Direction direction) {
+    public PartModel build(Location location, Direction direction, Pitch pitch) {
         ModelBlueprint blueprint = ModelEngineAPI.getAPI().getModelRegistry().get(modelId);
         if (blueprint == null)
             return null;

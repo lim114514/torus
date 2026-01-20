@@ -8,6 +8,7 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
+import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -29,7 +30,7 @@ public class PowerPole extends Structure {
     }
 
     @Override
-    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
+    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new PowerPoleInstance(location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f())
         }), direction);

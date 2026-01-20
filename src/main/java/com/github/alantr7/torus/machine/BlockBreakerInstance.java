@@ -12,6 +12,7 @@ import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,8 +33,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     protected int breakingTicks;
 
-    public BlockBreakerInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
-        super(Structures.BLOCK_BREAKER, location, bodyDef, direction);
+    public BlockBreakerInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Pitch pitch) {
+        super(Structures.BLOCK_BREAKER, location, bodyDef, direction, pitch);
     }
 
     BlockBreakerInstance(LoadContext context) {
@@ -68,10 +69,10 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE) || inventory.getItems()[0] != null)
             return;
 
-        if (location.world.getStructure(location.getRelative(direction)) != null)
+        if (location.world.getStructure(location.getRelative(facing)) != null)
             return;
 
-        Location blockLocation = location.getRelative(direction).toBukkit();
+        Location blockLocation = location.getRelative(facing).toBukkit();
         Block block = blockLocation.getBlock();
         if (block.getType().isAir() || block.isLiquid())
             return;

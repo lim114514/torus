@@ -16,6 +16,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
+import com.github.alantr7.torus.world.Pitch;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -35,8 +36,8 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
 
     protected ItemCriteria inputCriteria = null;
 
-    public ConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Socket.FlowDirection flowDirection) {
-        super(Structures.CONNECTOR, location, bodyDef, direction);
+    public ConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Pitch pitch, Socket.FlowDirection flowDirection) {
+        super(Structures.CONNECTOR, location, bodyDef, direction, pitch);
         flowDirectionData.update(flowDirection.ordinal());
         save();
     }
@@ -54,6 +55,10 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
             if (socket.isConnected(direction)) {
                 state.set(getStateFromDirection(direction.relativeTo(this.direction)), true, false);
             }
+        }
+
+        if (socket.getConnections() != 0) {
+            state.set(STATE_BACK, true, false);
         }
     }
 

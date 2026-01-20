@@ -2,7 +2,7 @@ package com.github.alantr7.torus.model;
 
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
-import org.bukkit.Bukkit;
+import com.github.alantr7.torus.world.Pitch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,22 +32,22 @@ public class ModelTemplate {
         parts.put(template.name, template);
     }
 
-    public Model toModel(BlockLocation location, Direction direction) {
+    public Model toModel(BlockLocation location, Direction direction, Pitch pitch) {
         Model model = new Model(this);
         parts.forEach((name, part) -> {
-            model.parts.put(name, part.build(location.toBukkit(), direction));
+            model.parts.put(name, part.build(location.toBukkit(), direction, pitch));
         });
 
         return model;
     }
 
-    public Model upgradeModel(Model previous, BlockLocation location, Direction direction) {
+    public Model upgradeModel(Model previous, BlockLocation location, Direction direction, Pitch pitch) {
         if (previous == null)
-            return toModel(location, direction);
+            return toModel(location, direction, pitch);
 
         if (previous.template == null || previous.template.children.isEmpty()) {
             previous.remove();
-            return toModel(location, direction);
+            return toModel(location, direction, pitch);
         }
 
         ModelTemplate previousTemplate = previous.template;
@@ -68,7 +68,7 @@ public class ModelTemplate {
                 // Generate missing parts
                 else {
                     child.parts.forEach((partName, part) -> {
-                        model.parts.put(stateSet + "." + partName, part.build(location.toBukkit(), direction));
+                        model.parts.put(stateSet + "." + partName, part.build(location.toBukkit(), direction, pitch));
                     });
                 }
             });
@@ -101,7 +101,7 @@ public class ModelTemplate {
                 return model;
             } else {
                 previous.remove();
-                return toModel(location, direction);
+                return toModel(location, direction, pitch);
             }
         }
     }

@@ -9,6 +9,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -32,7 +33,7 @@ public class FluidPipe extends Structure {
     }
 
     @Override
-    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
+    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         StructureComponentDef base = new StructureComponentDef("base", new Vector3f(), new StructureSocketDef(
           Socket.Medium.FLUID, Socket.FlowDirection.ALL, 0b111111
         ));

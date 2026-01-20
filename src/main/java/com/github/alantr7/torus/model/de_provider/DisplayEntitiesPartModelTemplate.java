@@ -5,6 +5,7 @@ import com.github.alantr7.torus.model.*;
 import com.github.alantr7.torus.model.animation.Animation;
 import com.github.alantr7.torus.model.animation.AnimationProvider;
 import com.github.alantr7.torus.world.Direction;
+import com.github.alantr7.torus.world.Pitch;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.BlockDisplay;
@@ -39,7 +40,7 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
     }
 
     @Override
-    public PartModel build(Location location, Direction direction) {
+    public PartModel build(Location location, Direction direction, Pitch pitch) {
         location = location.clone().add(offset.x, offset.y, offset.z);
 
         List<Display> entities = new ArrayList<>();
@@ -50,7 +51,7 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
             Vector3f rotatedOffset = new Vector3f(part.offset[0], part.offset[1], part.offset[2]);
 
             Display entity = location.getWorld().spawn(location, part.entityType);
-            transformEntity(entity, rotatedOffset, part, direction.rotH, direction.rotV);
+            transformEntity(entity, rotatedOffset, part, direction.rotH, pitch.rotV);
 
             parent.addPassenger(entity);
             entities.add(entity);
