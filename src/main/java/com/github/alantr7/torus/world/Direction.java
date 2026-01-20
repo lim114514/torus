@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.world;
 
+import com.github.alantr7.torus.utils.MathUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 
 public enum Direction {
@@ -69,6 +71,21 @@ public enum Direction {
         return north;
     }
 
+    public Direction relativeTo(Direction north, Pitch pitch) {
+        Direction dir = relativeTo(north);
+        if (pitch == Pitch.FORWARD || (this != north && this != north.getOpposite() && this != UP && this != DOWN))
+            return dir;
+
+        float[] vec = { dir.modX != 0 ? dir.modX : dir.modZ, dir.modY };
+        vec = MathUtils.rotateVector(vec, pitch.rotV);
+
+        return fromMods(
+          dir.modX != 0 ? Math.round(vec[0]) : 0,
+          Math.round(vec[1]),
+          dir.modZ != 0 ? Math.round(vec[0]) : 0
+        );
+    }
+
     public static Direction fromBlockFace(BlockFace face) {
         return switch (face) {
             case NORTH -> NORTH;
@@ -79,6 +96,14 @@ public enum Direction {
             case DOWN -> DOWN;
             default -> null;
         };
+    }
+
+    public static Direction fromMods(int modX, int modY, int modZ) {
+        for (Direction dir : Direction.values()) {
+            if (dir.modX == modX && dir.modY == modY && dir.modZ == modZ)
+                return dir;
+        }
+        return NORTH;
     }
 
 }

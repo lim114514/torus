@@ -12,6 +12,7 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -28,6 +29,7 @@ public class PhysicalConnector extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "connector", "Connector", PhysicalConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
+        isOmnidirectional = true;
         registerState(STATE_FRONT);
         registerState(STATE_RIGHT);
         registerState(STATE_BACK);
@@ -39,7 +41,7 @@ public class PhysicalConnector extends Structure {
     }
 
     @Override
-    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction) {
+    protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         StructureBodyDef body = new StructureBodyDef(
           new StructureComponentDef[]{
             new StructureComponentDef("connector", new Vector3f(), new StructureSocketDef(
@@ -49,7 +51,7 @@ public class PhysicalConnector extends Structure {
           }
         );
 
-        return new PhysicalConnectorInstance(location, body, direction, Socket.FlowDirection.IN);
+        return new PhysicalConnectorInstance(location, body, direction, pitch, Socket.FlowDirection.IN);
     }
 
     static State<Boolean> getStateFromDirection(Direction direction) {

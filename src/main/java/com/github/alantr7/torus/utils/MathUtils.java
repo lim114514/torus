@@ -11,7 +11,7 @@ public class MathUtils {
         vector.z = result[1];
     }
 
-    private static float[] rotateVector(float[] pos, float angle) {
+    public static float[] rotateVector(float[] pos, float angle) {
         return switch ((int) angle) {
             case 0, 360     -> new float[] { pos[0], pos[1] };
             case 90, -270   -> new float[] { -pos[1], pos[0] };

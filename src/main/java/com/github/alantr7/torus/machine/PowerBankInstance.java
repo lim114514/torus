@@ -35,7 +35,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
         socket.maximumInput = PowerBank.ENERGY_MAXIMUM_INPUT;
         socket.maximumOutput = PowerBank.ENERGY_MAXIMUM_OUTPUT;
 
-        chargeIndicatorDisplay = ((DisplayEntitiesPartModel) PowerBank.MODEL_CHARGE_INDICATOR.toModel(location, direction)
+        chargeIndicatorDisplay = ((DisplayEntitiesPartModel) PowerBank.MODEL_CHARGE_INDICATOR.toModel(location, direction, pitch)
           .parts.get("charge")).entityReferences.getFirst().getEntity();
     }
 

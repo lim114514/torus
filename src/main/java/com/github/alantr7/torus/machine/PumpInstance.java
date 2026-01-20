@@ -47,7 +47,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
 
     @Override
     public void onModelSpawn() {
-        pipeDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) Pump.MODEL_PIPE.toModel(location, direction).parts.get("pipe")).entityReferences.getFirst().getEntity();
+        pipeDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) Pump.MODEL_PIPE.toModel(location, direction, pitch).parts.get("pipe")).entityReferences.getFirst().getEntity();
         pipeDisplay.setTeleportDuration(20);
         updatePipe();
     }

@@ -16,6 +16,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
+import com.github.alantr7.torus.world.Pitch;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -35,8 +36,8 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     protected ItemCriteria inputCriteria = null;
 
-    public PhysicalConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Socket.FlowDirection flowDirection) {
-        super(Structures.CONNECTOR, location, bodyDef, direction);
+    public PhysicalConnectorInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Pitch pitch, Socket.FlowDirection flowDirection) {
+        super(Structures.CONNECTOR, location, bodyDef, direction, pitch);
         flowDirectionData.update(flowDirection.ordinal());
         save();
     }
@@ -84,12 +85,16 @@ public class PhysicalConnectorInstance extends StructureInstance implements Insp
 
     @Override
     public void onSocketConnect(Socket socket, Socket neighbor, Direction direction) {
-        state.set(getStateFromDirection(direction.relativeTo(this.direction)), true);
+        state.set(getStateFromDirection(direction.relativeTo(this.direction, pitch)), true);
+        state.set(STATE_BACK, true);
     }
 
     @Override
     public void onSocketDisconnect(Socket socket, Socket neighbor, Direction direction) {
-        state.set(getStateFromDirection(direction.relativeTo(this.direction)), false);
+        state.set(getStateFromDirection(direction.relativeTo(this.direction, pitch)), false);
+        if (socket.getConnections() == 0) {
+            state.set(STATE_BACK, false);
+        }
     }
 
     public ItemReference[] getFilter() {

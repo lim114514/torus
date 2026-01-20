@@ -52,7 +52,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     @Override
     public void onModelSpawn() {
-        fluidDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) FluidTank.MODEL_FLUID.toModel(location, direction).parts.get("fluid")).entityReferences.getFirst().getEntity();
+        fluidDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) FluidTank.MODEL_FLUID.toModel(location, direction, pitch).parts.get("fluid")).entityReferences.getFirst().getEntity();
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
+import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -134,10 +135,10 @@ public abstract class Structure {
         return true;
     }
 
-    public StructureInstance place(BlockLocation location, Direction direction) {
+    public StructureInstance place(BlockLocation location, Direction direction, Pitch pitch) {
         byte[] offset = calculateOffset(direction.getOpposite());
         location = location.getRelative(offset[0], offset[1], offset[2]);
-        StructureInstance instance = instantiate(location, direction);
+        StructureInstance instance = instantiate(location, direction, pitch);
         place(instance);
 
         location.world.placeStructure(instance);
@@ -176,7 +177,7 @@ public abstract class Structure {
         return namespacedId;
     }
 
-    protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction);
+    protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch);
 
     protected void loadConfig() {
         // General Settings

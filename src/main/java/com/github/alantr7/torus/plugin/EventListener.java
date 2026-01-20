@@ -12,6 +12,7 @@ import com.github.alantr7.torus.structure.data.DataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.world.Pitch;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -68,15 +69,19 @@ public class EventListener implements Listener {
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
         BlockLocation location = new BlockLocation(block.getLocation());
 
-        Direction direction = torusItem.getStructure().isOmnidirectional ? Direction.fromBlockFace(event.getBlockFace()) : event.getBlockFace().getModY() != 0
+        Direction direction = event.getBlockFace().getModY() != 0
           ? Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite()
           : Direction.fromBlockFace(event.getBlockFace());
+
+        Pitch pitch = !torusItem.getStructure().isOmnidirectional || event.getBlockFace().getModY() == 0
+          ? Pitch.FORWARD
+          : event.getBlockFace().getModY() == 1 ? Pitch.UP : Pitch.DOWN;
 
         if (torusItem.getStructure().isPlaceableAt(location, direction)) {
             if (!EventUtils.callStructurePrePlaceEvent(event.getPlayer(), torusItem.getStructure(), location, direction)) {
                 return;
             }
-            StructureInstance structure = torusItem.getStructure().place(location, direction);
+            StructureInstance structure = torusItem.getStructure().place(location, direction, pitch);
             if (structure != null) {
                 PersistentDataContainer structureData = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(TorusPlugin.getInstance(), "structure_data"), PersistentDataType.TAG_CONTAINER);
                 if (structureData != null) {
