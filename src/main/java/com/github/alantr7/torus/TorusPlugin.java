@@ -18,6 +18,7 @@ import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 
 @JavaPlugin(name = "Torus", version = "0.6.0", apiVersion = "1.21")
@@ -35,6 +36,8 @@ public class TorusPlugin extends BukkitPlugin {
 
     @Getter
     protected ItemRegistry itemRegistry;
+
+    private Metrics metrics;
 
     private static boolean usesPaperAPI;
 
@@ -56,6 +59,8 @@ public class TorusPlugin extends BukkitPlugin {
         itemRegistry = new ItemRegistry();
 
         Bukkit.getScheduler().runTaskLater(this, () -> addonManager.getLifecycle().start(), 1L);
+
+        metrics = new Metrics(this, 28910);
     }
 
     @Override

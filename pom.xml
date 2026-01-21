@@ -65,6 +65,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>net.dmulloy2</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>5.4.0</version>
@@ -118,6 +124,10 @@
                                 <relocation>
                                     <pattern>com.github.alantr7.bukkitplugin</pattern>
                                     <shadedPattern>com.github.alantr7.torus.bpf</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>com.github.alantr7.torus</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
