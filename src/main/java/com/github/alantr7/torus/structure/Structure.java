@@ -213,9 +213,7 @@ public abstract class Structure {
         }
 
         // Model Controller
-        TorusLogger.info(Category.MODELS, "Loading model controller for: " + id);
         loadModelController();
-        TorusLogger.info(Category.MODELS, "Loaded model controller: " + modelController);
     }
 
     private static final Pattern STATE_CONFIG_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9]+");
