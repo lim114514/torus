@@ -27,6 +27,7 @@ import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
@@ -84,6 +85,9 @@ public abstract class StructureInstance {
 
     @Getter
     private boolean isModelUpdateScheduled;
+
+    @Getter @Accessors(fluent = true)
+    private boolean hasActiveAnimations;
 
     public TextDisplay inspectionHologram;
 
@@ -249,12 +253,16 @@ public abstract class StructureInstance {
 
                 model = ModelTemplate.EMPTY.toModel(location, direction, pitch);
             }
+            hasActiveAnimations = false;
         } else {
             if (model != null) {
                 model = modelContainer.compositeModel.upgradeModel(this.model, location, direction, pitch);
             } else {
                 model = modelContainer.compositeModel.toModel(location, direction, pitch);
             }
+
+            // Reset active animations
+            hasActiveAnimations = false;
 
             // Load default animations if Torus structure
             if (structure.addon.id.equals("torus")) {
@@ -269,6 +277,7 @@ public abstract class StructureInstance {
                         AnimationProvider<PartModel, Animation> animationProvider = model.template.parts.get(name).animationMap.get(modelContainer.matches.getFirst().animations);
                         if (animationProvider != null) {
                             part.setAnimation(animationProvider.get(part));
+                            hasActiveAnimations = true;
                         }
                     });
                 }

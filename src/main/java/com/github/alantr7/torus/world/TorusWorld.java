@@ -160,9 +160,11 @@ public class TorusWorld {
 
                 try {
                     s.tick(chunk.status == Status.VIRTUAL);
-                    for (PartModel part : s.model.parts.values()) {
-                        if (part.getAnimation() != null) {
-                            part.getAnimation().tick();
+                    if (s.hasActiveAnimations()) {
+                        for (PartModel part : s.model.parts.values()) {
+                            if (part.getAnimation() != null) {
+                                part.getAnimation().tick();
+                            }
                         }
                     }
                 } catch (Exception e) {
