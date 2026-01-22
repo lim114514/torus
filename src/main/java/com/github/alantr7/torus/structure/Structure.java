@@ -66,6 +66,8 @@ public abstract class Structure {
 
     public boolean isOmnidirectional = false;
 
+    public boolean isTickable = true;
+
     public Set<String> portableData = new HashSet<>();
 
     public float[] hologramOffset = {0f, 0f, 0f};

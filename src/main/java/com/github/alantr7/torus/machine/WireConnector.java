@@ -17,6 +17,7 @@ public class WireConnector extends Structure {
 
     public WireConnector() {
         super(TorusPlugin.DEFAULT_ADDON, "wire_connector", "Wire Connector", WireConnectorInstance.class);
+        isTickable = false;
         isInteractable = true;
         isHeavy = false;
         isOmnidirectional = true;

@@ -53,11 +53,6 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
-    public void tick(boolean isVirtual) {
-
-    }
-
-    @Override
     protected void setup() throws SetupException {
         loadConnections();
 

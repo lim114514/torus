@@ -26,6 +26,7 @@ public class EnergyCable extends Structure {
 
     public EnergyCable() {
         super(TorusPlugin.DEFAULT_ADDON, "energy_cable", "Energy Cable", CableInstance.class);
+        isTickable = false;
         isHeavy = false;
         registerState(STATE_NORTH);
         registerState(STATE_EAST);

@@ -16,6 +16,7 @@ public class PowerPole extends Structure {
 
     public PowerPole() {
         super(TorusPlugin.DEFAULT_ADDON, "power_pole", "Power Pole", PowerPoleInstance.class);
+        isTickable = false;
         isHeavy = false;
     }
 

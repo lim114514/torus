@@ -153,7 +153,7 @@ public class TorusWorld {
     void tick() {
         regions.values().forEach(region -> {
             region.chunks.values()
-              .forEach(chunk -> chunk.structures.values()
+              .forEach(chunk -> chunk.tickableStructures.values()
                 .forEach(s -> {
                 if (s.isCorrupted || s.isUnloaded())
                     return;
@@ -178,7 +178,7 @@ public class TorusWorld {
 
     public void placeStructure(@NotNull StructureInstance instance) {
         TorusChunk chunk = getChunkOrLoad(instance.location);
-        chunk.structures.put(instance.location, instance);
+        chunk._registerStructure(instance);
         chunk.isUnsaved = true;
 
         // Place bounds
@@ -230,7 +230,7 @@ public class TorusWorld {
 
     public void removeStructure(@NotNull StructureInstance instance) {
         TorusChunk chunk0 = getChunkOrLoad(instance.location);
-        chunk0.structures.remove(instance.location);
+        chunk0._unregisterStructure(instance);
 
         // Remove bounds
         byte[] bounds = instance.getBounds();

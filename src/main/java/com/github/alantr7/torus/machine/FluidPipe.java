@@ -23,6 +23,7 @@ public class FluidPipe extends Structure {
 
     public FluidPipe() {
         super(TorusPlugin.DEFAULT_ADDON, "fluid_pipe", "Fluid Pipe", CableInstance.class);
+        isTickable = false;
         isHeavy = false;
         registerState(STATE_NORTH);
         registerState(STATE_EAST);

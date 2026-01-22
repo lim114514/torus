@@ -24,6 +24,8 @@ public class TorusChunk {
 
     final Map<BlockLocation, StructureInstance> structures = new HashMap<>();
 
+    final Map<BlockLocation, StructureInstance> tickableStructures = new HashMap<>();
+
     final Map<BlockLocation, BlockLocation> occupations = new HashMap<>();
 
     public TorusChunk(TorusWorld world, Vector2i position) {
@@ -31,9 +33,19 @@ public class TorusChunk {
         this.position = position;
     }
 
-    protected void _placeStructureWithOccupations(StructureInstance structure) {
+    protected void _registerStructure(StructureInstance structure) {
         structures.put(structure.location, structure);
+        if (structure.structure.isTickable)
+            tickableStructures.put(structure.location, structure);
+    }
 
+    protected void _unregisterStructure(StructureInstance structure) {
+        structures.remove(structure.location);
+        tickableStructures.remove(structure.location);
+    }
+
+    protected void _placeStructureWithOccupations(StructureInstance structure) {
+        _registerStructure(structure);
         byte[] bounds = structure.getBounds();
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = structure.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]);

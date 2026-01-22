@@ -33,10 +33,6 @@ public class ElectricityMeterInstance extends StructureInstance implements Energ
     }
 
     @Override
-    public void tick(boolean isVirtual) {
-    }
-
-    @Override
     protected void setup() throws SetupException {
         inEnergy = requireSocket("in_energy");
         inEnergy.maximumInput = Integer.MAX_VALUE;

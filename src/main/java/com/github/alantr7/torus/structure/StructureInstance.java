@@ -384,10 +384,7 @@ public abstract class StructureInstance {
         return true;
     }
 
-    public abstract void tick(boolean isVirtual);
-
-    public void tickModel() {
-    }
+    public void tick(boolean isVirtual) {}
 
     static final ChatColor COLOR_STRUCTURE_NAME = ChatColor.of("#ff8854");
     static final ChatColor COLOR_PROPERTY = ChatColor.of("#cfcfcf");

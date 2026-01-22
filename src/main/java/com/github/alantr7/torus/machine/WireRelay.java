@@ -17,6 +17,7 @@ public class WireRelay extends Structure {
 
     public WireRelay() {
         super(TorusPlugin.DEFAULT_ADDON, "wire_relay", "Wire Relay", WireConnectorInstance.class);
+        isTickable = false;
         isInteractable = true;
         isHeavy = false;
     }

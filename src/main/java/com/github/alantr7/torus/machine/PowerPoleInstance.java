@@ -19,12 +19,8 @@ public class PowerPoleInstance extends StructureInstance {
     }
 
     @Override
-    public void tick(boolean isVirtual) {
-
-    }
-
-    @Override
     protected void setup() throws SetupException {
 
     }
+
 }
