@@ -28,7 +28,6 @@ import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
@@ -147,26 +146,7 @@ public abstract class StructureInstance {
                             continue;
                         }
 
-                        Direction newDirection;
-                        if (possibleDirection == direction) {
-                            newDirection = Direction.UP;
-                        }
-                        else if (possibleDirection == Direction.UP) {
-                            newDirection = direction.getOpposite();
-                        }
-                        else if (possibleDirection == direction.getOpposite()) {
-                            newDirection = Direction.DOWN;
-                        }
-                        else {
-                            newDirection = direction;
-                        }
-
-                        // Looking in X direction. Rotate around Z axis.
-                        if (pitch == Pitch.DOWN) {
-                            newDirection = newDirection.getOpposite();
-                        }
-
-                        allowedConnections = MathUtils.setFlag(allowedConnections, newDirection.mask(), true);
+                        allowedConnections = MathUtils.setFlag(allowedConnections, pitch.transform(direction, possibleDirection).mask(), true);
                     }
                 } else {
                     allowedConnections = allowedConnectionsOriginal;
