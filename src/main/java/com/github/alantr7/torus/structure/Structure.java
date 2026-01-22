@@ -68,6 +68,8 @@ public abstract class Structure {
 
     public boolean isTickable = true;
 
+    public boolean isVirtualizable = false;
+
     public Set<String> portableData = new HashSet<>();
 
     public float[] hologramOffset = {0f, 0f, 0f};

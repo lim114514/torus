@@ -3,8 +3,10 @@ package com.github.alantr7.torus.addon;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.LifecycleAdapter;
 import com.github.alantr7.torus.api.addon.TorusAddon;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.*;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
+import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.structure.Structures;
 import org.bukkit.Material;
@@ -45,6 +47,13 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.COAL_GENERATOR);
         registry.registerAndInitialize(Structures.SOLAR_GENERATOR);
         registry.registerAndInitialize(Structures.WINDMILL);
+
+        for (String structureId : MainConfig.EXPERIMENTAL_VIRTUALIZATION_STRUCTURES) {
+            Structure structure = registry.getStructure(structureId);
+            if (structure != null) {
+                structure.isVirtualizable = true;
+            }
+        }
     }
 
     @Override

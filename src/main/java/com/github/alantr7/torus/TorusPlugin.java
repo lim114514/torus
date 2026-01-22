@@ -21,6 +21,8 @@ import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 
+import java.io.File;
+
 @JavaPlugin(name = "Torus", version = "0.6.0", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
 @SoftDepends({"ProtocolLib", "ModelEngine"})

@@ -98,13 +98,15 @@ public class TorusWorld {
 
     @NotNull
     TorusChunk getChunkOrLoad(BlockLocation location) {
-        return getRegionOrLoad(location).getOrLoadChunk(location.x >> 4, location.z >> 4);
+        return getRegionOrLoad(location).getOrLoadChunk(location.x >> 4, location.z >> 4, false);
     }
 
     protected void handleChunkLoad(Chunk chunk) {
         TorusChunk torusChunk = getChunkOrLoad(new BlockLocation(this, chunk.getX() << 4, 0, chunk.getZ() << 4));
-        for (StructureInstance structure : torusChunk.structures.values()) {
-            structure.handleLoad();
+        if (!MainConfig.EXPERIMENTAL_VIRTUALIZATION_ENABLED || !MainConfig.EXPERIMENTAL_VIRTUALIZATION_ALLOWED_WORLDS.contains(bukkit.getName())) {
+            for (StructureInstance structure : torusChunk.structures.values()) {
+                structure.handleLoad();
+            }
         }
     }
 
@@ -113,16 +115,23 @@ public class TorusWorld {
         if (region == null)
             return;
 
-        TorusChunk torusChunk = region.chunks.remove(new Vector2i(chunk.getX(), chunk.getZ()));
+        TorusChunk torusChunk = region.chunks.get(new Vector2i(chunk.getX(), chunk.getZ()));
         if (torusChunk != null) {
-            // TODO: Determine if chunk should unload or become virtual
-            torusChunk.structures.values().forEach(StructureInstance::handleUnload);
+            if (allowsVirtualization()) {
+                torusChunk.makeVirtual();
+            } else {
+                torusChunk.structures.values().forEach(StructureInstance::handleUnload);
+            }
             if (torusChunk.isUnsaved) {
                 try {
                     region.save();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            if (!allowsVirtualization()) {
+                region.chunks.remove(torusChunk.position);
             }
 
             if (region.chunks.isEmpty()) {
@@ -280,7 +289,44 @@ public class TorusWorld {
         instance.onRemove();
     }
 
+    public boolean allowsVirtualization() {
+        return MainConfig.EXPERIMENTAL_VIRTUALIZATION_ENABLED && MainConfig.EXPERIMENTAL_VIRTUALIZATION_ALLOWED_WORLDS.contains(bukkit.getName());
+    }
+
     void load() {
+        if (!allowsVirtualization())
+            return;
+
+        TorusLogger.info(Category.WORLD, "Virtualization is enabled for world: " + bukkit.getName() + ". Loading chunks...");
+
+        // Load all regions and chunks
+        File[] regionFiles = torusRegionsDirectory.listFiles();
+        if (regionFiles == null)
+            return;
+
+        for (int i = 0; i < regionFiles.length; i++) {
+            File regionFile = regionFiles[i];
+            String[] components = regionFile.getName().split("\\.");
+            int x = Integer.parseInt(components[1]);
+            int z = Integer.parseInt(components[2]);
+
+            TorusRegion region = new TorusRegion(this, x, z);
+            try {
+                region.load();
+            } catch (Exception e) {
+                e.printStackTrace();
+                TorusLogger.error(Category.WORLD, e.getMessage());
+
+                continue;
+            }
+
+            regions.put(new Vector2i(x, z), region);
+
+            for (Integer[] pos : region.getExistingChunksPositions())
+                region.getOrLoadChunk((x << 5) + pos[0], (z << 5) + pos[1], true);
+
+            TorusLogger.info(Category.WORLD, "Virtualization progress for " + bukkit.getName() + ": " + (i + 1) + "/" + regionFiles.length);
+        }
     }
 
     public void save() {

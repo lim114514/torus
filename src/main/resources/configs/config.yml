@@ -1,5 +1,5 @@
 # Do not edit this value. It is used to auto-update config.
-config_version: 2
+config_version: 3
 
 world_blacklist:
   - world_nether
@@ -10,6 +10,19 @@ customization:
   # Use '/torus export_model <structure_id>' to save a model file, that can be edited, to the destination mentioned above.
   # Keep in mind that you will not receive automatic model updates if this option is enabled. You will still get models for new structures.
   enable_model_editing: false
+
+# THIS FEATURE IS EXPERIMENTAL! Enabling virtualization will load ALL structures in configured worlds on server startup. Only structures
+# that are listed in "allowed_structures" will be ticked while others are just idle.
+EXPERIMENTAL_virtualization:
+  enabled: false
+  allowed_worlds:
+    - world
+  allowed_structures:
+    - "torus:solar_generator"
+    - "torus:coal_generator"
+    - "torus:energy_cable"
+    - "torus:item_conduit"
+    - "torus:fluid_pipe"
 
 logs:
   world_save: true

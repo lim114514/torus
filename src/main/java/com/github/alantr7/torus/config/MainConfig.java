@@ -19,6 +19,21 @@ public class MainConfig {
     @ConfigOption(path = "customization.enable_model_editing")
     public static boolean CUSTOMIZATION_ENABLE_MODEL_EDITING = false;
 
+    @ConfigOption(path = "EXPERIMENTAL_virtualization.enabled")
+    public static boolean EXPERIMENTAL_VIRTUALIZATION_ENABLED = false;
+
+    @ConfigOption(path = "EXPERIMENTAL_virtualization.allowed_worlds")
+    public static List<String> EXPERIMENTAL_VIRTUALIZATION_ALLOWED_WORLDS = new ArrayList<>(Collections.singletonList("world"));
+
+    @ConfigOption(path = "EXPERIMENTAL_virtualization.allowed_structures")
+    public static List<String> EXPERIMENTAL_VIRTUALIZATION_STRUCTURES = new ArrayList<>(List.of(
+      "torus:solar_generator",
+      "torus:coal_generator",
+      "torus:energy_cable",
+      "torus:item_conduit",
+      "torus:fluid_pipe"
+    ));
+
     @ConfigOption(path = "logs.world_save")
     public static boolean LOGS_WORLD_SAVE = true;
 

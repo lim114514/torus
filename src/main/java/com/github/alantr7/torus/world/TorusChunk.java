@@ -3,6 +3,7 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.joml.Vector2i;
 
 import java.util.Collection;
@@ -20,7 +21,7 @@ public class TorusChunk {
 
     public boolean isUnsaved;
 
-    public Status status = Status.PHYSICAL;
+    public Status status;
 
     final Map<BlockLocation, StructureInstance> structures = new HashMap<>();
 
@@ -28,14 +29,15 @@ public class TorusChunk {
 
     final Map<BlockLocation, BlockLocation> occupations = new HashMap<>();
 
-    public TorusChunk(TorusWorld world, Vector2i position) {
+    public TorusChunk(TorusWorld world, Vector2i position, Status status) {
         this.world = world;
         this.position = position;
+        this.status = status;
     }
 
     protected void _registerStructure(StructureInstance structure) {
         structures.put(structure.location, structure);
-        if (structure.structure.isTickable)
+        if (structure.structure.isTickable && (status == Status.PHYSICAL || (status == Status.VIRTUAL && structure.structure.isVirtualizable)))
             tickableStructures.put(structure.location, structure);
     }
 
@@ -51,6 +53,25 @@ public class TorusChunk {
             BlockLocation relative = structure.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]);
             if (contains(relative)) {
                 occupations.put(relative, structure.location);
+            }
+        }
+    }
+
+    protected void makeVirtual() {
+        status = Status.VIRTUAL;
+        for (StructureInstance structure : structures.values()) {
+            if (!(structure.structure.isTickable && structure.structure.isVirtualizable)) {
+                tickableStructures.remove(structure.location);
+            }
+        }
+    }
+
+    protected void makePhysical() {
+        status = Status.PHYSICAL;
+        for (StructureInstance structure : structures.values()) {
+            structure.makePhysical();
+            if (structure.structure.isTickable) {
+                tickableStructures.put(structure.location, structure);
             }
         }
     }

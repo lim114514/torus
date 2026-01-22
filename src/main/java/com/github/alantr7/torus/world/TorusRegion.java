@@ -3,6 +3,7 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -11,9 +12,7 @@ import org.joml.Vector2i;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TorusRegion {
 
@@ -171,6 +170,21 @@ public class TorusRegion {
         }
     }
 
+    public Set<Integer[]> getExistingChunksPositions() {
+        Set<Integer[]> set = new LinkedHashSet<>();
+        for (int i = 0; i < SECTION_LENGTH_CHUNKS_OFFSETS; i += 3) {
+            int offset = ByteArrayReader.toInt(header, 1 + SECTION_LENGTH_KEYS + i, 3);
+            if (offset == 0)
+                continue;
+
+            int x = (i / 3) & 31;
+            int z = (i / 3) >> 5;
+            set.add(new Integer[] { x, z });
+        }
+
+        return set;
+    }
+
     // Finds empty space to save a NEW chunk
     // Go through header and find unsaved chunk. Check if that location is busy.
     private int _allocateChunkData(int chunkIndex) {
@@ -244,12 +258,16 @@ public class TorusRegion {
         chunk.isUnsaved = false;
     }
 
-    TorusChunk getOrLoadChunk(int x, int z) {
-        TorusChunk chunk = chunks.get(new Vector2i(x, z));
-        if (chunk != null)
+    TorusChunk getOrLoadChunk(int absoluteX, int absoluteZ, boolean virtual) {
+        TorusChunk chunk = chunks.get(new Vector2i(absoluteX, absoluteZ));
+        if (chunk != null) {
+            if (chunk.status == Status.VIRTUAL && !virtual) {
+                chunk.makePhysical();
+            }
             return chunk;
+        }
 
-        chunk = new TorusChunk(world, new Vector2i(x, z));
+        chunk = new TorusChunk(world, new Vector2i(absoluteX, absoluteZ), virtual ? Status.VIRTUAL : Status.PHYSICAL);
         chunks.put(chunk.position, chunk);
 
         if (!regionFile.exists())
