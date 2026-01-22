@@ -10,6 +10,7 @@ import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.component.Socket;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -193,6 +194,7 @@ public class TorusWorld {
 
         // Connect to neighboring structures
         for (Socket socket : instance.getSockets()) {
+            byte connectionsUnresolved = 0;
             for (Direction direction : socket.getValidConnectionsDirections()) {
                 BlockLocation relativeLoc = socket.getComponent().absoluteLocation.getRelative(direction);
                 StructureInstance neighbor = relativeLoc.getStructure();
@@ -214,9 +216,15 @@ public class TorusWorld {
 
                 neighborSocket.setConnected(direction.getOpposite(), true);
                 neighbor.onSocketConnect(neighborSocket, socket, direction.getOpposite());
+
+                if (!networkManager.attemptMerge(socket, neighborSocket)) {
+                    connectionsUnresolved++;
+                }
             }
 
-            networkManager.queueLoaded(socket);
+            if (connectionsUnresolved != 0) {
+                networkManager.queueLoaded(socket);
+            }
         }
     }
 

@@ -38,6 +38,26 @@ public class NetworkManager {
         }
     }
 
+    private static boolean attemptDirectMerge(Socket socket1, Socket socket2) {
+        if (socket1.network == NetworkGraph.INIT && socket2.network != NetworkGraph.INIT) {
+            socket1.network = socket2.network;
+            if (socket1.structure instanceof CableInstance || socket1.structure instanceof WireConnectorInstance) {
+                socket1.network.edges.add(socket1.structure);
+            } else {
+                socket1.network.nodes.add(new Node(socket1.structure, socket1));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean attemptMerge(Socket socket1, Socket socket2) {
+        if (attemptDirectMerge(socket1, socket2) || attemptDirectMerge(socket2, socket1))
+            return true;
+
+        return false;
+    }
+
     public void tick() {
         if (queue.isEmpty())
             return;
