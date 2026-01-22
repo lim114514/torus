@@ -121,7 +121,12 @@ public abstract class StructureInstance {
         this.dataContainer = new DataContainer();
         this.dataContainer.structure = this;
         this.state = new StructureState(this);
+        initComponents(bodyDef);
+        setOccupiedChunks();
+        flowMeter = new FlowMeter(location.world);
+    }
 
+    private void initComponents(StructureBodyDef bodyDef) {
         for (StructureComponentDef componentDef : bodyDef.components()) {
             MathUtils.applyRotation(componentDef.offset, direction.rotH);
             StructureComponent component = new StructureComponent(
@@ -163,8 +168,6 @@ public abstract class StructureInstance {
                 }
             }
         }
-        setOccupiedChunks();
-        flowMeter = new FlowMeter(location.world);
     }
 
     public void onModelSpawn() {
