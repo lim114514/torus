@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public class PlayerStructureInteractEvent extends Event implements Cancellable {
 
-    @Getter
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final TorusPlayer player;
@@ -33,6 +32,10 @@ public class PlayerStructureInteractEvent extends Event implements Cancellable {
 
     @Override
     public @NotNull HandlerList getHandlers() {
+        return HANDLER_LIST;
+    }
+
+    public static HandlerList getHandlerList() {
         return HANDLER_LIST;
     }
 

@@ -10,6 +10,7 @@ import com.github.alantr7.torus.addon.TorusAddonManager;
 import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.api.addon.TorusAddon;
+import com.github.alantr7.torus.integration.worldguard.WorldGuardIntEntryPoint;
 import com.github.alantr7.torus.item.ItemRegistry;
 import com.github.alantr7.torus.model.ModelLoader;
 import com.github.alantr7.torus.model.ModelManager;
@@ -20,8 +21,6 @@ import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-
-import java.io.File;
 
 @JavaPlugin(name = "Torus", version = "0.6.0", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
@@ -48,6 +47,14 @@ public class TorusPlugin extends BukkitPlugin {
         addonManager = new TorusAddonManager();
 
         checkPaperAPI();
+    }
+
+    @Override
+    public void onLoad() {
+        // WorldGuard integration
+        if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
+            WorldGuardIntEntryPoint.initialize();
+        }
     }
 
     @Override

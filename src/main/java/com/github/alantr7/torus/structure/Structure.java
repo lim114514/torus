@@ -58,6 +58,7 @@ public abstract class Structure {
     @Getter
     protected byte[] size;
 
+    @Getter
     protected byte[] offset = { 0, 0, 0 };
 
     public boolean isHeavy = true;
@@ -75,10 +76,6 @@ public abstract class Structure {
     public float[] hologramOffset = {0f, 0f, 0f};
 
     public float[] hologramTranslation = {1.4f, 0.8f, 0f};
-
-    @Getter @Setter
-    @Deprecated(forRemoval = true)
-    private ModelTemplate model;
 
     @Getter @Setter
     private ModelController modelController = new ModelController(ModelType.SINGLEPART, Collections.singleton(new ModelCase(
@@ -124,6 +121,10 @@ public abstract class Structure {
     }
 
     protected void createBounds(ByteArrayBuilder builder) {
+    }
+
+    public byte[] getCollisionBlocks() {
+        return bounds;
     }
 
     public boolean isPlaceableAt(BlockLocation location, Direction direction) {
