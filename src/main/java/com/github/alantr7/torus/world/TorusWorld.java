@@ -102,9 +102,6 @@ public class TorusWorld {
     }
 
     protected void handleChunkLoad(Chunk chunk) {
-        if (currentlyTicked != null) {
-            Bukkit.broadcastMessage("Chunk load caused by: " + currentlyTicked);
-        }
         TorusChunk torusChunk = getChunkOrLoad(new BlockLocation(this, chunk.getX() << 4, 0, chunk.getZ() << 4));
         if (!MainConfig.EXPERIMENTAL_VIRTUALIZATION_ENABLED || !MainConfig.EXPERIMENTAL_VIRTUALIZATION_ALLOWED_WORLDS.contains(bukkit.getName())) {
             for (StructureInstance structure : torusChunk.structures.values()) {

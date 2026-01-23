@@ -27,7 +27,7 @@ public class WireConnector extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new WireConnectorInstance(WireConnectorInstance.Type.CONNECTOR, location, new StructureBodyDef(new StructureComponentDef[]{
           new StructureComponentDef("base", new Vector3f(), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.ALL, direction.getOpposite().mask()))
-        }), direction);
+        }), direction, pitch);
     }
 
 }

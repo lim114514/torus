@@ -15,6 +15,7 @@ import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
+import com.github.alantr7.torus.world.Pitch;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -47,8 +48,8 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
         super(context);
     }
 
-    public WireConnectorInstance(Type type, BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
-        super(type == Type.CONNECTOR ? Structures.WIRE_CONNECTOR : Structures.WIRE_RELAY, location, bodyDef, direction);
+    public WireConnectorInstance(Type type, BlockLocation location, StructureBodyDef bodyDef, Direction direction, Pitch pitch) {
+        super(type == Type.CONNECTOR ? Structures.WIRE_CONNECTOR : Structures.WIRE_RELAY, location, bodyDef, direction, pitch);
         this.typeRaw.update((byte) type.ordinal());
     }
 
