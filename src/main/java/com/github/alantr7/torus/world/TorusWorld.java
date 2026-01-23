@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -68,6 +69,11 @@ public class TorusWorld {
 
     TorusRegion getRegionAt(int x, int z) {
         return regions.get(new Vector2i(x, z));
+    }
+
+    @NotNull
+    public Collection<TorusRegion> getRegions() {
+        return regions.values();
     }
 
     @NotNull

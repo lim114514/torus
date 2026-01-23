@@ -17,11 +17,13 @@ import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.EntityReference;
 import com.github.alantr7.torus.structure.Conductor;
+import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.TorusChunk;
+import com.github.alantr7.torus.world.TorusRegion;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,6 +33,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
 
 @Singleton
 public class Commands {
@@ -172,6 +176,37 @@ public class Commands {
           TorusPlugin.getInstance().getStructureRegistry().getStructuresIdsMap().forEach(entry -> {
               ctx.respond(String.format("%2d: %s", entry.getValue(), entry.getKey()));
           });
+      });
+
+    @CommandHandler Command reportStats = CommandBuilder.using("torus")
+      .parameter("debug")
+      .parameter("report_stats")
+      .permission(Permissions.COMMAND_DEBUG)
+      .executes(ctx -> {
+          Collection<TorusWorld> worlds = TorusPlugin.getInstance().getWorldManager().getWorlds();
+          ctx.respond("There are currently " + worlds.size() + " worlds loaded.");
+          for (TorusWorld world : worlds) {
+              int regions = 0, chunks = 0, structures = 0, virtualChunks = 0, virtualStructures = 0;
+              for (TorusRegion region : world.getRegions()) {
+                  regions++;
+                  for (TorusChunk chunk : region.getLoadedChunks()) {
+                      chunks++;
+                      if (chunk.status == Status.VIRTUAL)
+                          virtualChunks++;
+
+                      for (StructureInstance structure : chunk.getStructures()) {
+                          structures++;
+                          if (structure.getStatus() == Status.VIRTUAL)
+                              virtualStructures++;
+                      }
+                  }
+              }
+
+              ctx.respond("- " + world.getBukkit().getName() + ":");
+              ctx.respond("  --- Regions: %d".formatted(regions));
+              ctx.respond("  --- Chunks: %d (%d virtual)".formatted(chunks, virtualChunks));
+              ctx.respond("  --- Structures: %d (%d virtual)".formatted(structures, virtualStructures));
+          }
       });
 
     @CommandHandler Command inspectStructure = CommandBuilder.using("torus")
