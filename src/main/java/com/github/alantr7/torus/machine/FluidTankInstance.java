@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.inspection.InspectableData;
@@ -38,9 +39,10 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     }
 
     @Override
-    protected void setup() {
+    protected void setup() throws SetupException {
         liquidComponent = getComponent("liquid");
-        input = getSocket("in_fluid");
+        input = requireSocket("in_fluid");
+        requireSocket("out_fluid").maximumOutput = 1000;
     }
 
     @Override
@@ -53,6 +55,9 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     @Override
     public void onModelSpawn() {
         fluidDisplay = (ItemDisplay) ((DisplayEntitiesPartModel) FluidTank.MODEL_FLUID.toModel(location, direction, pitch).parts.get("fluid")).entityReferences.getFirst().getEntity();
+        fluidDisplay.setInterpolationDuration(10);
+
+        updateFluidDisplay();
     }
 
     @Override
@@ -81,8 +86,6 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
                 supplyFluid(consumed);
             }
         }
-
-        updateFluidDisplay();
     }
 
     public void updateFluidDisplay() {
@@ -99,7 +102,26 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
         Vector3f scale = transformation.getScale();
         scale.y = height;
 
+        fluidDisplay.setInterpolationDelay(0);
         fluidDisplay.setTransformation(transformation);
+    }
+
+    @Override
+    public int consumeFluid(int amount) {
+        int consumed = FluidContainer.super.consumeFluid(amount);
+        if (consumed != 0)
+            updateFluidDisplay();
+
+        return consumed;
+    }
+
+    @Override
+    public int supplyFluid(int amount) {
+        int supplied = FluidContainer.super.supplyFluid(amount);
+        if (supplied != 0)
+            updateFluidDisplay();
+
+        return supplied;
     }
 
     @Override
