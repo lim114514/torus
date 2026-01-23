@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.integration.worldguard;
 
-import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.RequiresPlugin;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.api.event.PlayerStructureInteractEvent;
@@ -110,7 +109,6 @@ public class WorldGuardIntEntryPoint {
 
             return flag;
         } catch (Exception exception) {
-            exception.printStackTrace();
             return (StateFlag) flagRegistry.get(name);
         }
     }
