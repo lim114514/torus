@@ -87,7 +87,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "screwdriver", new Category[]{Category.TOOLS}, null, Material.STICK, "Screwdriver", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "hammer", new Category[]{Category.TOOLS}, null, Material.STICK, "Hammer", Collections.emptyList()));
 
-        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "faucet", new Category[]{Category.TOOLS}, Structures.FAUCET, Material.STICK, "Faucet", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "faucet", new Category[]{Category.TOOLS}, Structures.FAUCET, Material.TRIPWIRE_HOOK, "Faucet", Collections.emptyList()));
 
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "power_bank", new Category[]{Category.STORAGE}, Structures.POWER_BANK, Material.PAPER, "Power Bank", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "fluid_tank", new Category[]{Category.STORAGE}, Structures.FLUID_TANK, Material.PAPER, "Fluid Tank", Collections.emptyList()));
