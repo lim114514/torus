@@ -3,7 +3,6 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.joml.Vector2i;
 
 import java.util.Collection;
@@ -60,6 +59,7 @@ public class TorusChunk {
     protected void makeVirtual() {
         status = Status.VIRTUAL;
         for (StructureInstance structure : structures.values()) {
+            structure.makeVirtual();
             if (!(structure.structure.isTickable && structure.structure.isVirtualizable)) {
                 tickableStructures.remove(structure.location);
             }
