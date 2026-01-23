@@ -26,6 +26,8 @@ public class Structures {
 
     public static final Turret TURRET = new Turret();
 
+    public static final Faucet FAUCET = new Faucet();
+
     public static final CoalGenerator COAL_GENERATOR = new CoalGenerator();
     public static final SolarGenerator SOLAR_GENERATOR = new SolarGenerator();
     public static final Windmill WINDMILL = new Windmill();
