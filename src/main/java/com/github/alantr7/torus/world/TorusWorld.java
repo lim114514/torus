@@ -91,9 +91,9 @@ public class TorusWorld {
     }
 
     @Nullable
-    public TorusChunk getChunkAt(int x, int z) {
-        TorusRegion region = getRegionAt(x >> 5, z >> 5);
-        return region != null ? region.chunks.get(new Vector2i(x, z)) : null;
+    public TorusChunk getChunkAt(int chunkX, int chunkZ) {
+        TorusRegion region = getRegionAt(chunkX >> 5, chunkZ >> 5);
+        return region != null ? region.chunks.get(new Vector2i(chunkX, chunkZ)) : null;
     }
 
     @NotNull
@@ -102,6 +102,9 @@ public class TorusWorld {
     }
 
     protected void handleChunkLoad(Chunk chunk) {
+        if (currentlyTicked != null) {
+            Bukkit.broadcastMessage("Chunk load caused by: " + currentlyTicked);
+        }
         TorusChunk torusChunk = getChunkOrLoad(new BlockLocation(this, chunk.getX() << 4, 0, chunk.getZ() << 4));
         if (!MainConfig.EXPERIMENTAL_VIRTUALIZATION_ENABLED || !MainConfig.EXPERIMENTAL_VIRTUALIZATION_ALLOWED_WORLDS.contains(bukkit.getName())) {
             for (StructureInstance structure : torusChunk.structures.values()) {
@@ -159,30 +162,33 @@ public class TorusWorld {
         return machineChunk.structures.get(machineLocation);
     }
 
+    public StructureInstance currentlyTicked;
     void tick() {
-        regions.values().forEach(region -> {
-            region.chunks.values()
-              .forEach(chunk -> chunk.tickableStructures.values()
-                .forEach(s -> {
-                if (s.isCorrupted || s.isUnloaded())
-                    return;
+        for (TorusRegion region : regions.values()) {
+            for (TorusChunk chunk : region.chunks.values()) {
+                for (StructureInstance s : chunk.tickableStructures.values()) {
+                    if (s.isCorrupted || s.isUnloaded())
+                        return;
 
-                try {
-                    s.tick(chunk.status == Status.VIRTUAL);
-                    if (s.hasActiveAnimations()) {
-                        for (PartModel part : s.model.parts.values()) {
-                            if (part.getAnimation() != null) {
-                                part.getAnimation().tick();
+                    currentlyTicked = s;
+                    try {
+                        s.tick(chunk.status == Status.VIRTUAL);
+                        if (s.hasActiveAnimations()) {
+                            for (PartModel part : s.model.parts.values()) {
+                                if (part.getAnimation() != null) {
+                                    part.getAnimation().tick();
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        TorusLogger.error(Category.STRUCTURES, "Encountered an error whilst ticking a structure - marked it as corrupted.");
+                        e.printStackTrace();
+                        s.corrupt();
                     }
-                } catch (Exception e) {
-                    TorusLogger.error(Category.STRUCTURES, "Encountered an error whilst ticking a structure - marked it as corrupted.");
-                    e.printStackTrace();
-                    s.corrupt();
+                    currentlyTicked = null;
                 }
-            }));
-        });
+            }
+        }
         networkManager.tick();
         ticks++;
     }

@@ -62,10 +62,12 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
             supplyEnergy(CoalGenerator.ENERGY_PRODUCTION);
             remainingBurnTicks--;
 
-            location.world.getBukkit().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, location.getBlock().getLocation().add(chimneyPosition[0], chimneyPosition[1], chimneyPosition[2]).add(.5, 1, .5), 0, 0, .075f, 0);
-            Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
+            if (!isVirtual) {
                 location.world.getBukkit().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, location.getBlock().getLocation().add(chimneyPosition[0], chimneyPosition[1], chimneyPosition[2]).add(.5, 1, .5), 0, 0, .075f, 0);
-            }, 10L);
+                Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
+                    location.world.getBukkit().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, location.getBlock().getLocation().add(chimneyPosition[0], chimneyPosition[1], chimneyPosition[2]).add(.5, 1, .5), 0, 0, .075f, 0);
+                }, 10L);
+            }
         }
     }
 

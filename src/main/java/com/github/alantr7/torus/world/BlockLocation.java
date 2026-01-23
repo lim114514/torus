@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureInstance;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -54,6 +55,11 @@ public class BlockLocation {
 
     public Block getBlock() {
         return world.getBukkit().getBlockAt(x, y, z);
+    }
+
+    public boolean isLoaded() {
+        TorusChunk chunk = getChunk();
+        return chunk != null && chunk.status == Status.PHYSICAL;
     }
 
     public TorusChunk getChunk() {

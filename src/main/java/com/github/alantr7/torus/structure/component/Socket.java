@@ -2,14 +2,11 @@ package com.github.alantr7.torus.structure.component;
 
 import com.github.alantr7.torus.network.NetworkGraph;
 import com.github.alantr7.torus.network.Node;
-import com.github.alantr7.torus.structure.Conductor;
+import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
-import com.github.alantr7.torus.structure.EnergyContainer;
-import com.github.alantr7.torus.structure.FluidContainer;
-import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.TorusWorld;
 import lombok.Getter;
@@ -162,8 +159,9 @@ public class Socket implements Connectable, Conductor {
 
         if (network.nodes.size() == 1) {
             for (Direction direction : Direction.values()) {
-                if (isConnectableFrom(direction) && TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction))) {
-                    BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
+                BlockLocation blockLocation = component.absoluteLocation.getRelative(direction);
+                if (isConnectableFrom(direction) && blockLocation.isLoaded() && TorusWorld.isItemContainer(blockLocation)) {
+                    BlockInventoryHolder holder = (BlockInventoryHolder) blockLocation.getBlock().getState();
                     consumeItems(criteria, amount1, onlyFirst, holder.getInventory().getContents(), null, result);
 
                     return result;
@@ -231,10 +229,11 @@ public class Socket implements Connectable, Conductor {
 
         for (Direction direction : Direction.values()) {
             if (isConnectableFrom(direction)) {
-                if (!TorusWorld.isItemContainer(component.absoluteLocation.getRelative(direction)))
+                BlockLocation blockLocation = component.absoluteLocation.getRelative(direction);
+                if (!blockLocation.isLoaded() || !TorusWorld.isItemContainer(blockLocation))
                     continue;
 
-                BlockInventoryHolder holder = (BlockInventoryHolder) component.absoluteLocation.getRelative(direction).getBlock().getState();
+                BlockInventoryHolder holder = (BlockInventoryHolder) blockLocation.getBlock().getState();
                 ItemStack[] items = linkedInventory.getItems();
 
                 int[] slots = linkedInventoryAllowedSlots != null ? linkedInventoryAllowedSlots : LINKED_INVENTORY_ALLOWED_SLOTS_FALLBACK_ARRAY;
