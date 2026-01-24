@@ -34,6 +34,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     protected int breakingTicks;
 
+    protected boolean isInventoryFull;
+
     public BlockBreakerInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction, Pitch pitch) {
         super(Structures.BLOCK_BREAKER, location, bodyDef, direction, pitch);
     }
@@ -52,13 +54,10 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 1)
-          .property("RF", InspectableData.TEMPLATE_RF.apply(this));
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
           .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this))
-          ;
+          .line(() -> isInventoryFull ? ChatColor.RED + "Inventory is full!" : null);
     }
 
     @Override
@@ -72,6 +71,9 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         itemSocket.attemptDirectItemExport();
 
         if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE))
+            return;
+
+        if ((isInventoryFull = (inventory.getItems()[0] != null)))
             return;
 
         if (location.world.getStructure(location.getRelative(facing)) != null)
