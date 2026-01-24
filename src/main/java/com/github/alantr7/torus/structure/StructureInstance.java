@@ -243,8 +243,12 @@ public abstract class StructureInstance {
 
     public final void handleUnload() {
         if (status == Status.PHYSICAL) {
-            model.remove();
-            onModelDestroy();
+            try {
+                model.remove();
+                onModelDestroy();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (inspectionHologram != null)
                 inspectionHologram.remove();
         }
