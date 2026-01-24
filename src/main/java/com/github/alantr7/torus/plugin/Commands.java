@@ -212,6 +212,7 @@ public class Commands {
     @CommandHandler Command inspectStructure = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("inspect_structure")
+      .permission(Permissions.COMMAND_DEBUG)
       .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_DEBUG)
       .executes(ctx -> {
           Player player = (Player) ctx.getExecutor();
@@ -250,49 +251,10 @@ public class Commands {
           }
       });
 
-    @CommandHandler Command inspectNetwork = CommandBuilder.using("torus")
-      .parameter("debug")
-      .parameter("inspect_network")
-      .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_DEBUG)
-      .executes(ctx -> {
-          Player player = (Player) ctx.getExecutor();
-          Block block = player.getTargetBlockExact(5);
-          if (block == null) {
-              ctx.respond("Not looking at any structure.");
-              return;
-          }
-
-          TorusWorld world = TorusPlugin.getInstance().getWorldManager().getWorld(player.getWorld());
-          if (world == null) {
-              ctx.respond("Structures aren't allowed in this world.");
-              return;
-          }
-
-          BlockLocation blockLocation = new BlockLocation(block.getLocation());
-          StructureInstance structure = world.getStructure(blockLocation);
-          if (structure == null) {
-              ctx.respond("Not looking at any structure.");
-              return;
-          }
-
-          for (Socket socket : structure.getSockets()) {
-              ctx.respond(socket.getComponent().name + "  " + socket.getComponent().absoluteLocation + " (" + socket.medium + ")" + ":");
-              for (Node connection : socket.network.nodes) {
-                  ctx.respond("   - " + connection.structure.structure.name + " (" + connection.socket.getComponent().absoluteLocation + ")");
-              }
-          }
-
-          if (structure instanceof Conductor conductor) {
-              ctx.respond("Conductor nodes:");
-              for (BlockLocation loc : conductor.getConnectedNodes()) {
-                ctx.respond("  - " + (loc.getStructure() != null ? loc.getStructure().structure.name : "Null?"));
-              }
-          }
-      });
-
-    @CommandHandler Command higlightNetwork = CommandBuilder.using("torus")
+    @CommandHandler Command highlightNetwork = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("highlight_networks")
+      .permission(Permissions.COMMAND_DEBUG)
       .executes(ctx -> {
           Player player = (Player) ctx.getExecutor();
           Block block = player.getTargetBlockExact(5);
@@ -344,6 +306,7 @@ public class Commands {
     @CommandHandler Command inspectChunk = CommandBuilder.using("torus")
       .parameter("debug")
       .parameter("inspect_chunk")
+      .permission(Permissions.COMMAND_DEBUG)
       .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_DEBUG)
       .executes(ctx -> {
           Player player = (Player) ctx.getExecutor();
