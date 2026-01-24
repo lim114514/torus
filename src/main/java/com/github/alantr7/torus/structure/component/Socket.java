@@ -151,13 +151,10 @@ public class Socket implements Connectable, Conductor {
     }
 
     public List<ItemStack> consumeItems(@Nullable ItemCriteria criteria, int amount, boolean onlyFirst) {
-        if (network.isInvalidated())
-            return Collections.emptyList();
-
         List<ItemStack> result = new ArrayList<>();
         AtomicInteger amount1 = new AtomicInteger(amount);
 
-        if (network.nodes.size() == 1) {
+        if (network.isInvalidated() || network.nodes.size() == 1) {
             for (Direction direction : Direction.values()) {
                 BlockLocation blockLocation = component.absoluteLocation.getRelative(direction);
                 if (isConnectableFrom(direction) && blockLocation.isLoaded() && TorusWorld.isItemContainer(blockLocation)) {
@@ -167,6 +164,10 @@ public class Socket implements Connectable, Conductor {
                     return result;
                 }
             }
+        }
+
+        if (network.isInvalidated()) {
+            return Collections.emptyList();
         }
 
         for (Node conn : network.nodes) {
