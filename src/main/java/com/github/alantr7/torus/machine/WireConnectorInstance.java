@@ -61,6 +61,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
         if (getSocket("base") == null) {
             Socket socket = new Socket(getComponent("base"), 0, Socket.Medium.ENERGY, Socket.FlowDirection.ALL);
             socketsByName.put("base", socket);
+            socket.structure = this;
 
             save();
         }

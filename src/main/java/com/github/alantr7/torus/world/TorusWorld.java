@@ -252,6 +252,8 @@ public class TorusWorld {
         TorusChunk chunk0 = getChunkOrLoad(instance.location);
         chunk0._unregisterStructure(instance);
 
+        instance.isRemoved = true;
+
         // Remove bounds
         byte[] bounds = instance.getBounds();
         for (int i = 0; i < bounds.length; i += 3) {

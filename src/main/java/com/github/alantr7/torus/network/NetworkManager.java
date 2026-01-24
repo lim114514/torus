@@ -8,6 +8,7 @@ import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.world.TorusWorld;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 
@@ -75,6 +76,10 @@ public class NetworkManager {
     private void buildNetwork(Socket socket) {
         socket.network.invalidate();
 
+        // Skip network update if structure was removed meanwhile
+        if (socket.structure == null || socket.structure.isRemoved)
+            return;
+
         NetworkGraph network = new NetworkGraph(world.getTicks(), false);
         socket.network = network;
 
@@ -83,7 +88,7 @@ public class NetworkManager {
         int closedDirectionsCount = 0;
         Set<Node> networkConnections = new HashSet<>();
 
-        if (socket.structure != null && !(socket.structure instanceof Conductor)) {
+        if (!(socket.structure instanceof Conductor)) {
             networkConnections.add(new Node(socket.structure, socket));
         }
         if (socket.structure instanceof Conductor) {
@@ -144,6 +149,7 @@ public class NetworkManager {
         while (!open.isEmpty()) {
             BlockLocation start = open.removeFirst();
             Conductor startCable = (Conductor) start.getStructure();
+
             for (BlockLocation neighborLoc : startCable.getConnectedNodes()) {
                 if (closed.contains(neighborLoc)) // Skip if already checked
                     continue;

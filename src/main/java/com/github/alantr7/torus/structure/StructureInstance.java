@@ -29,7 +29,6 @@ import com.github.alantr7.torus.structure.data.DataContainer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
@@ -71,6 +70,8 @@ public abstract class StructureInstance {
     public boolean isCorrupted;
 
     public boolean isDirty = false;
+
+    public boolean isRemoved = false;
 
     protected Map<String, StructureComponent> components = new HashMap<>();
 
