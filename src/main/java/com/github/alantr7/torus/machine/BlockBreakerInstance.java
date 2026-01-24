@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -14,6 +14,7 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -54,6 +55,10 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     public InspectableData setupInspectableData() {
         return new InspectableData((byte) 1)
           .property("RF", InspectableData.TEMPLATE_RF.apply(this));
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 2)
+          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this))
+          ;
     }
 
     @Override
@@ -66,7 +71,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         powerSocket.maintainEnergy(this);
         itemSocket.attemptDirectItemExport();
 
-        if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE) || inventory.getItems()[0] != null)
+        if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE))
             return;
 
         if (location.world.getStructure(location.getRelative(facing)) != null)

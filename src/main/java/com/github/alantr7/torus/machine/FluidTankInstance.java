@@ -3,7 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -46,8 +46,8 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 2)
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 2)
           .property("Fluid", () -> getFluid() == null ? "(None)" : getFluid().name())
           .property("Level", () -> MathUtils.formatNumber(getStoredFluid()) + "/" + MathUtils.formatNumber(getFluidCapacity()) + " mb");
     }

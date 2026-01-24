@@ -12,7 +12,7 @@ import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.ModelType;
 import com.github.alantr7.torus.model.controller.ModelCase;
 import com.github.alantr7.torus.model.controller.ModelController;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.structure.state.State;
 import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -154,11 +154,11 @@ public abstract class Structure {
         try {
             instance.setup();
             if (instance instanceof Inspectable inspectable) {
-                instance.inspectableData = inspectable.setupInspectableData();
+                instance.inspectableDataContainer = inspectable.setupInspectableData();
             }
         } catch (Exception exc) {
             instance.isCorrupted = true;
-            instance.inspectableData = new InspectableData((byte) 0);
+            instance.inspectableDataContainer = new InspectableDataContainer((byte) 0);
             exc.printStackTrace();
         }
 

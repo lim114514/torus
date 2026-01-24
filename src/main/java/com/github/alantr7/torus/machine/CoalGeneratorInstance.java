@@ -2,7 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.MissingDataException;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
@@ -77,9 +77,9 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 1)
-          .property("RF", InspectableData.TEMPLATE_RF.apply(this));
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 1)
+          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this));
     }
 
 }

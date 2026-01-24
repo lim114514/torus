@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -40,9 +40,9 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 1)
-          .property("RF", InspectableData.TEMPLATE_RF.apply(this));
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 1)
+          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this));
     }
 
     int energyAtLastTick;

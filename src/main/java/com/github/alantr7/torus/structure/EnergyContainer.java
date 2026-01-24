@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 
 public interface EnergyContainer extends Inspectable {
 
@@ -36,8 +36,8 @@ public interface EnergyContainer extends Inspectable {
     }
 
     @Override
-    default InspectableData setupInspectableData() {
-        return new InspectableData((byte) 1).property("RF", InspectableData.TEMPLATE_RF.apply(this));
+    default InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 1).property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this));
     }
 
 }

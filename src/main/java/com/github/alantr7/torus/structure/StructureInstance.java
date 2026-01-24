@@ -8,6 +8,7 @@ import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.structure.inspection.InspectableText;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.model.*;
@@ -17,8 +18,7 @@ import com.github.alantr7.torus.model.controller.ModelContainer;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesDefaultAnimations;
 import com.github.alantr7.torus.plugin.Permissions;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
-import com.github.alantr7.torus.structure.inspection.InspectableProperty;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.structure.state.StructureState;
 import com.github.alantr7.torus.world.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -93,7 +93,7 @@ public abstract class StructureInstance {
 
     public TextDisplay inspectionHologram;
 
-    public InspectableData inspectableData;
+    public InspectableDataContainer inspectableDataContainer;
 
     @Getter
     private final FlowMeter flowMeter; // TODO: I hate this so much, but it's a temporary solution until I make traits system
@@ -223,10 +223,10 @@ public abstract class StructureInstance {
         if (!isCorrupted && !(this instanceof Inspectable)) {
             return;
         }
-        if (inspectableData.inspectableBlocks.isEmpty()) {
+        if (inspectableDataContainer.inspectableBlocks.isEmpty()) {
             byte[] bounds = getBounds();
             for (int i = 0; i < bounds.length; i += 3) {
-                inspectableData.inspectableBlocks.add(location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]));
+                inspectableDataContainer.inspectableBlocks.add(location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]));
             }
         }
         spawnInspectionTooltip();
@@ -242,10 +242,12 @@ public abstract class StructureInstance {
     }
 
     public final void handleUnload() {
-        model.remove();
-        onModelDestroy();
-        if (inspectionHologram != null)
-            inspectionHologram.remove();
+        if (status == Status.PHYSICAL) {
+            model.remove();
+            onModelDestroy();
+            if (inspectionHologram != null)
+                inspectionHologram.remove();
+        }
         status = Status.NOT_LOADED;
         for (Socket socket : socketsByName.values()) {
             location.world.networkManager.queueUnloaded(socket);
@@ -411,10 +413,10 @@ public abstract class StructureInstance {
 
         StringBuilder parent = new StringBuilder();
         parent.append(COLOR_STRUCTURE_NAME).append(ChatColor.BOLD).append(structure.name).append("\n");
-        for (InspectableProperty var : inspectableData.properties) {
-            String value = var.valueSupplier.get();
+        for (InspectableText var : inspectableDataContainer.lines) {
+            String value = var.getText();
             if (value != null) {
-                parent.append(COLOR_PROPERTY).append(var.name).append(": ").append(value).append("\n");
+                parent.append(COLOR_PROPERTY).append(value).append("\n");
             }
         }
         inspectionHologram.setText(parent.toString());

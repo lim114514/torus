@@ -6,7 +6,7 @@ import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Inspectable;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -63,8 +63,8 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 1)
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 1)
           .property("Flow", () -> getFlowDirection().name());
     }
 

@@ -9,7 +9,7 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.bukkit.ChatColor;
@@ -42,8 +42,8 @@ public class ElectricityMeterInstance extends StructureInstance implements Energ
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 2)
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 2)
           .property("Transfer", () -> ChatColor.GREEN.toString() + getFlowMeter().getSupplied() + ChatColor.GRAY + " RF/s")
           .property("Total", () -> MathUtils.formatNumber(totalTransferred.get()) + " RF");
     }

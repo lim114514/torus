@@ -2,7 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
@@ -195,9 +195,9 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        InspectableData data = new InspectableData((byte) 1);
-        data.property("RF", InspectableData.TEMPLATE_RF.apply(this));
+    public InspectableDataContainer setupInspectableData() {
+        InspectableDataContainer data = new InspectableDataContainer((byte) 1);
+        data.property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this));
 
         byte[] controllerPosition = MathUtils.rotateVectors(new byte[] { 0, 0, -6 }, direction);
         data.inspectableBlocks.add(location.getRelative(controllerPosition[0], 0, controllerPosition[2]));

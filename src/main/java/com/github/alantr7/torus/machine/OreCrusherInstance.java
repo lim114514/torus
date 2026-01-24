@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.structure.*;
@@ -94,9 +94,9 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 2)
-          .property("RF", InspectableData.TEMPLATE_RF.apply(this))
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 2)
+          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this))
           .property("Recipe", () -> recipe != null ? recipe.key.toString() : "(None)");
     }
 

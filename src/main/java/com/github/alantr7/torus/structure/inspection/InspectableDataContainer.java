@@ -10,20 +10,25 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class InspectableData {
+public class InspectableDataContainer {
 
-    public final InspectableProperty[] properties;
+    public final InspectableText[] lines;
 
     public Set<BlockLocation> inspectableBlocks = new HashSet<>();
 
     private byte nextPosition = 0;
 
-    public InspectableData(byte properties) {
-        this.properties = new InspectableProperty[properties];
+    public InspectableDataContainer(byte lines) {
+        this.lines = new InspectableText[lines];
     }
 
-    public InspectableData property(String name, Supplier<String> valueSupplier) {
-        properties[nextPosition++] = new InspectableProperty(name, valueSupplier);
+    public InspectableDataContainer property(String name, Supplier<String> valueSupplier) {
+        lines[nextPosition++] = new InspectableProperty(name, valueSupplier);
+        return this;
+    }
+
+    public InspectableDataContainer line(Supplier<String> valueSupplier) {
+        lines[nextPosition++] = new InspectableText(valueSupplier);
         return this;
     }
 

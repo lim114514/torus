@@ -3,7 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.gui.structure.BlastFurnaceGUI;
 import com.github.alantr7.torus.item.ItemReference;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.BlastFurnaceRecipe;
 import com.github.alantr7.torus.structure.Inspectable;
@@ -188,8 +188,8 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 1)
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 1)
           .property("Recipe", () -> recipe != null ? recipe.key.toString() : "(None)");
     }
 

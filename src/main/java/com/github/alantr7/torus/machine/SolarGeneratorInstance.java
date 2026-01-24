@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.machine;
 
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -42,9 +42,9 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 2)
-          .property("RF", InspectableData.TEMPLATE_RF.apply(this))
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 2)
+          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this))
           .property("Eff", () -> (int) (calculateEfficiency() * 100) + "%");
     }
 

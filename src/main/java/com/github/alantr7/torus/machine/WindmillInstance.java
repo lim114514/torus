@@ -7,7 +7,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
-import com.github.alantr7.torus.structure.inspection.InspectableData;
+import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
@@ -44,9 +44,9 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
     }
 
     @Override
-    public InspectableData setupInspectableData() {
-        return new InspectableData((byte) 2)
-          .property("RF", InspectableData.TEMPLATE_RF.apply(this))
+    public InspectableDataContainer setupInspectableData() {
+        return new InspectableDataContainer((byte) 2)
+          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this))
           .property("Eff", () -> (int) (efficiency * 100) + "%");
     }
 

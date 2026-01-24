@@ -2,15 +2,22 @@ package com.github.alantr7.torus.structure.inspection;
 
 import java.util.function.Supplier;
 
-public class InspectableProperty {
+public class InspectableProperty extends InspectableText {
 
     public final String name;
 
-    public final Supplier<String> valueSupplier;
-
     public InspectableProperty(String name, Supplier<String> valueSupplier) {
+        super(valueSupplier);
         this.name = name;
-        this.valueSupplier = valueSupplier;
+    }
+
+    @Override
+    public String getText() {
+        String value = valueSupplier.get();
+        if (value != null) {
+            return name + ": " + value;
+        }
+        return null;
     }
 
 }
