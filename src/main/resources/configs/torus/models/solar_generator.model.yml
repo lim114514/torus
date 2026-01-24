@@ -5,7 +5,7 @@ base:
   elements:
     - item_display,gray_concrete_powder,0,0.125,0,0.75,0.25,0.75,0,0,0
     - item_display,light_gray_concrete,0,1.0625,0,0.125,1.625,0.125,0,0,0
-    - item_display,black_concrete,0,1.89,0,2.05,0.0162,2.25,-20,0,0
+    - item_display,light_gray_concrete,0,1.89,0,2.05,0.0162,2.25,-20,0,0
     - item_display,lapis_block[model=torus:solar_panel],0,1.908,0,2,2.2,0.01625,70,0,0
 
 out_energy:
