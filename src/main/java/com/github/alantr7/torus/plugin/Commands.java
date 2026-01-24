@@ -235,7 +235,8 @@ public class Commands {
 
           ctx.respond("\n");
           ctx.respond(ChatColor.GOLD + "Structure ID: " + ChatColor.RESET + structure.structure.namespacedId);
-          ctx.respond(ChatColor.GOLD + "Owner ID: " + structure.getOwnerId());
+          ctx.respond(ChatColor.GOLD + "Owner ID: " + ChatColor.RESET + structure.getOwnerId());
+          ctx.respond(ChatColor.GOLD + "Status: " + ChatColor.RESET + structure.getStatus());
           ctx.respond(ChatColor.GOLD + "State:");
           for (var entry : structure.getState().getEntries()) {
               ctx.respond("  - " + entry.getKey() + ": " + entry.getValue());

@@ -29,6 +29,7 @@ import com.github.alantr7.torus.structure.data.DataContainer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
@@ -184,6 +185,8 @@ public abstract class StructureInstance {
         if (status == Status.PHYSICAL)
             return;
 
+        status = Status.PHYSICAL;
+
         // Setup model
         try {
             updateModel();
@@ -195,20 +198,24 @@ public abstract class StructureInstance {
 
         // Setup information hologram
         setupInspectionTooltip();
-
-        status = Status.PHYSICAL;
     }
 
     public final void makeVirtual() {
+        if (status == Status.VIRTUAL)
+            return;
+
+        Status oldStatus = status;
+        status = Status.VIRTUAL;
+
         // Clean up if it was PHYSICAL
-        if (status == Status.PHYSICAL) {
+        if (oldStatus == Status.PHYSICAL) {
             model.remove();
             onModelDestroy();
             if (inspectionHologram != null)
                 inspectionHologram.remove();
         }
 
-        status = Status.VIRTUAL;
+        model = new Model(ModelTemplate.EMPTY);
     }
 
     private void setupInspectionTooltip() {
