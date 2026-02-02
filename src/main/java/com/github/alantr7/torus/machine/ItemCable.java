@@ -19,8 +19,9 @@ public class ItemCable extends Structure {
 
     public ItemCable() {
         super(TorusPlugin.DEFAULT_ADDON, "item_cable", "Item Cable", CableInstance.class);
-        isTickable = false;
+        isInteractable = true;
         isHeavy = false;
+        isTickable = false;
         registerState(STATE_NORTH);
         registerState(STATE_EAST);
         registerState(STATE_SOUTH);

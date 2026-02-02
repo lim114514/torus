@@ -1,7 +1,9 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Conductor;
+import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -11,10 +13,11 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.SocketLocation;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import static com.github.alantr7.torus.machine.EnergyCable.*;
 
@@ -23,6 +26,20 @@ public class CableInstance extends StructureInstance implements Conductor {
     protected Data<Integer> type = dataContainer.persist("type", Data.Type.INT, 0);
 
     protected Socket socket;
+
+    static final BoundingBox[] interactionBoxes = new BoundingBox[6];
+    static {
+        float width = 0.25f;
+        float shift = 0.5f - width;
+
+        BoundingBox base = new BoundingBox(-width, -width, -width, width, width, width);
+        interactionBoxes[0] = base.clone().shift(0, 0, -shift);
+        interactionBoxes[1] = base.clone().shift(shift, 0, 0);
+        interactionBoxes[2] = base.clone().shift(0, 0, shift);
+        interactionBoxes[3] = base.clone().shift(-shift, 0, 0);
+        interactionBoxes[4] = base.clone().shift(0, shift, 0);
+        interactionBoxes[5] = base.clone().shift(0, -shift, 0);
+    }
 
     public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Socket.Medium type) {
         super(type == Socket.Medium.ENERGY ? Structures.ENERGY_CABLE : type == Socket.Medium.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
@@ -59,6 +76,30 @@ public class CableInstance extends StructureInstance implements Conductor {
                 state.set(getStateFromDirection(direction), true, false);
             }
         }
+    }
+
+    @Override
+    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+        if (!TorusItem.is(event.getPlayer().getInventory().getItemInMainHand(), "torus:screwdriver")) {
+            return false;
+        }
+
+        Vector dr = event.getInteractionPoint().subtract(event.getPlayer().getEyeLocation()).toVector().normalize().multiply(0.07f);
+        Vector r = event.getInteractionPoint().subtract(location.toBukkit()).clone().toVector().add(new Vector(-0.5, -0.5, -0.5));
+
+        // Make it relative
+        for (int i = 0; i < 18; i++) {
+            for (int j = 0; j < interactionBoxes.length; j++) {
+                BoundingBox box = interactionBoxes[j];
+                if (box.contains(r)) {
+                    if (socket.toggleConnection(Direction.values()[j]))
+                        return true;
+                }
+            }
+            r.add(dr);
+        }
+
+        return false;
     }
 
     @Override

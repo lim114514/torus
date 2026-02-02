@@ -3,6 +3,7 @@ package com.github.alantr7.torus.structure.component;
 import com.github.alantr7.torus.network.NetworkGraph;
 import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.*;
+import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -253,6 +254,42 @@ public class Socket implements Connectable, Conductor {
                 break;
             }
         }
+    }
+
+    public boolean toggleConnection(Direction direction) {
+        if (!isConnectableFrom(direction))
+            return false;
+
+        BlockLocation relativeLoc = getComponent().absoluteLocation.getRelative(direction);
+        StructureInstance neighbor = relativeLoc.getStructure();
+        if (neighbor == null)
+            return false;
+
+        Socket neighborSocket = neighbor.getSocket(getComponent().absoluteLocation, medium);
+        if (neighborSocket == null || !neighborSocket.isConnectableFrom(direction.getOpposite()))
+            return false;
+
+        if (isConnected(direction)) {
+            EventUtils.callStructuresDisconnectEvent(this, neighborSocket, direction, direction.getOpposite());
+
+            setConnected(direction, false);
+            structure.onSocketDisconnect(this, neighborSocket, direction);
+
+            neighborSocket.setConnected(direction.getOpposite(), false);
+            neighbor.onSocketDisconnect(neighborSocket, this, direction.getOpposite());
+        } else {
+            if (!EventUtils.callStructuresConnectEvent(this, neighborSocket, direction, direction.getOpposite()))
+                return true;
+
+            setConnected(direction, true);
+            structure.onSocketConnect(this, neighborSocket, direction);
+
+            neighborSocket.setConnected(direction.getOpposite(), true);
+            neighbor.onSocketConnect(neighborSocket, this, direction.getOpposite());
+        }
+
+        structure.location.world.networkManager.queueLoaded(neighborSocket);
+        return true;
     }
 
 }

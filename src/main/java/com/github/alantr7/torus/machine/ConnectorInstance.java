@@ -7,6 +7,7 @@ import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -21,6 +22,8 @@ import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 
 import java.nio.charset.StandardCharsets;
 
@@ -147,16 +150,37 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
     public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
         TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
         if (item != null && item.namespacedId.equals("torus:screwdriver")) {
-            flowDirectionData.update(getFlowDirection() == Socket.FlowDirection.IN ? Socket.FlowDirection.OUT.ordinal() : Socket.FlowDirection.IN.ordinal());
-            socket.setFlowDirection(getFlowDirection());
+            if (event.getPlayer().isSneaking()) {
+                flowDirectionData.update(getFlowDirection() == Socket.FlowDirection.IN ? Socket.FlowDirection.OUT.ordinal() : Socket.FlowDirection.IN.ordinal());
+                socket.setFlowDirection(getFlowDirection());
 
-            event.getPlayer().sendMessage("Flow direction changed to: " + socket.getFlowDirection());
+                event.getPlayer().sendMessage("Flow direction changed to: " + socket.getFlowDirection());
+            } else {
+                Vector dr = event.getInteractionPoint().subtract(event.getPlayer().getEyeLocation()).toVector().normalize().multiply(0.07f);
+                Vector r = event.getInteractionPoint().subtract(location.toBukkit()).clone().toVector().add(new Vector(-0.5, -0.5, -0.5));
+
+                // Make it relative
+                for (int i = 0; i < 18; i++) {
+                    for (int j = 0; j < CableInstance.interactionBoxes.length; j++) {
+                        BoundingBox box = CableInstance.interactionBoxes[j];
+                        if (box.contains(r)) {
+                            if (socket.toggleConnection(Direction.values()[j]))
+                                return true;
+                        }
+                    }
+                    r.add(dr);
+                }
+
+                return false;
+            }
             return true;
         }
 
         new InventoryInterfaceFilterEditGUI(event.getPlayer(), this).open();
         return true;
     }
+
+
 
     public Socket.FlowDirection getFlowDirection() {
         return Socket.FlowDirection.values()[flowDirectionData.get()];
