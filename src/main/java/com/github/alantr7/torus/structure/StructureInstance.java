@@ -504,7 +504,8 @@ public abstract class StructureInstance {
         location.getChunk().isUnsaved = true;
     }
 
-    public void handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+        return false;
     }
 
     public void save(ByteArrayWriter buffer, StringPool keys) {

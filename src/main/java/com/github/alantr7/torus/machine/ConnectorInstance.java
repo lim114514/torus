@@ -144,17 +144,18 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
     }
 
     @Override
-    public void handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
         TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
         if (item != null && item.namespacedId.equals("torus:screwdriver")) {
             flowDirectionData.update(getFlowDirection() == Socket.FlowDirection.IN ? Socket.FlowDirection.OUT.ordinal() : Socket.FlowDirection.IN.ordinal());
             socket.setFlowDirection(getFlowDirection());
 
             event.getPlayer().sendMessage("Flow direction changed to: " + socket.getFlowDirection());
-            return;
+            return true;
         }
 
         new InventoryInterfaceFilterEditGUI(event.getPlayer(), this).open();
+        return true;
     }
 
     public Socket.FlowDirection getFlowDirection() {

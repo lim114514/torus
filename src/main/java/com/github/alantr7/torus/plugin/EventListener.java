@@ -143,10 +143,11 @@ public class EventListener implements Listener {
 
             if (structure.structure.isInteractable && structure.testOwnership(event.getPlayer())) {
                 if (EventUtils.callStructureInteractEvent(event.getPlayer(), structure, clickedBlockLocation)) {
-                    structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()));
+                    if (structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()))) {
+                        player.placementCooldownExpiry = System.currentTimeMillis() + 200;
+                        event.setCancelled(true);
+                    }
                 }
-                player.placementCooldownExpiry = System.currentTimeMillis() + 200;
-                event.setCancelled(true);
             }
         }
     }

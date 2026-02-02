@@ -110,9 +110,9 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
-    public void handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
         if (!TorusItem.is(event.getPlayer().getInventory().getItemInMainHand(), "torus:copper_wire")) {
-            return;
+            return false;
         }
 
         // Establish connection between two connectors
@@ -126,7 +126,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
             } else {
                 if (origin.location.getDistanceTo(location) > 10) {
                     event.getPlayer().sendMessage(ChatColor.RED + "Cable can not stretch that far.");
-                    return;
+                    return true;
                 }
 
                 origin.connectionCandidate.setLeashHolder(null);
@@ -144,6 +144,8 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
             player.pendingWireConnection = this;
             connectionCandidate.setLeashHolder(event.getPlayer());
         }
+
+        return true;
     }
 
     @Override

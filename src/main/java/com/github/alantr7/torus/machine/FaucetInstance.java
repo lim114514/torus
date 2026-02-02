@@ -32,22 +32,24 @@ public class FaucetInstance extends StructureInstance {
     }
 
     @Override
-    public void handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
         ItemStack stack = event.getPlayer().getInventory().getItemInMainHand();
         if (stack.getType() != Material.BUCKET)
-            return;
+            return false;
 
         int consumed = socket.consumeFluid(Fluid.WATER, 1000);
         if (consumed == 1000) {
             fillBucket(event.getPlayer(), stack, Fluid.WATER);
-            return;
+            return true;
         }
 
         consumed = socket.consumeFluid(Fluid.LAVA, 1000);
         if (consumed == 1000) {
             fillBucket(event.getPlayer(), stack, Fluid.LAVA);
-            return;
+            return true;
         }
+
+        return false;
     }
 
     private void fillBucket(Player player, ItemStack bucket, Fluid fluid) {
