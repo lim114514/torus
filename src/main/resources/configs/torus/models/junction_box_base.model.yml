@@ -1,0 +1,8 @@
+model_version: 2
+
+base:
+  renderer: DISPLAY_ENTITIES
+  elements:
+    - item_display,cyan_terracotta,0,0.5,0,0.5,0.5,0.5625,0,0,0
+    - item_display,cyan_terracotta,0,0.5,-0.1875,0.25,0.25,0.5,0,0,0
+    - item_display,light_gray_concrete,0,0.5,-0.46875,0.5,0.6875,0.125,0,0,0

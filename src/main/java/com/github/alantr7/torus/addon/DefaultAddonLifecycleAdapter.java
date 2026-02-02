@@ -37,6 +37,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.CONNECTOR);
         registry.registerAndInitialize(Structures.WIRE_CONNECTOR);
         registry.registerAndInitialize(Structures.WIRE_RELAY);
+        registry.registerAndInitialize(Structures.JUNCTION_BOX);
         registry.registerAndInitialize(Structures.ELECTRICITY_METER);
 
         registry.registerAndInitialize(Structures.POWER_BANK);
@@ -82,6 +83,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "connector", new Category[]{Category.NETWORK}, Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "wire_connector", new Category[]{Category.NETWORK}, Structures.WIRE_CONNECTOR, Material.HEAVY_CORE, "Wire Connector", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "wire_relay", new Category[]{Category.NETWORK}, Structures.WIRE_RELAY, Material.HEAVY_CORE, "Wire Relay", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "junction_box", new Category[]{Category.NETWORK}, Structures.JUNCTION_BOX, Material.OBSERVER, "Junction Box", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "electricity_meter", new Category[]{Category.NETWORK}, Structures.ELECTRICITY_METER, Material.OBSERVER, "Electricity Meter", Collections.emptyList()));
 
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "screwdriver", new Category[]{Category.TOOLS}, null, Material.STICK, "Screwdriver", Collections.emptyList()));

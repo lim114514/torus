@@ -149,6 +149,11 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
+    public boolean isConductive() {
+        return true;
+    }
+
+    @Override
     public Collection<BlockLocation> getConnectedNodes() {
         if (getType() == Type.RELAY)
             return connections.keySet();

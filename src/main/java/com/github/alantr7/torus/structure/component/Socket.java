@@ -256,6 +256,11 @@ public class Socket implements Connectable, Conductor {
         }
     }
 
+    @Override
+    public boolean isConductive() {
+        return false;
+    }
+
     public boolean toggleConnection(Direction direction) {
         if (!isConnectableFrom(direction))
             return false;

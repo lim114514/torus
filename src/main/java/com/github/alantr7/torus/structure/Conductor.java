@@ -11,4 +11,6 @@ public interface Conductor {
 
     Socket.Medium getMedium();
 
+    boolean isConductive();
+
 }

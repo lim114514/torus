@@ -10,6 +10,7 @@ import com.github.alantr7.torus.addon.TorusAddonManager;
 import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.api.addon.TorusAddon;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.integration.worldguard.WorldGuardIntEntryPoint;
 import com.github.alantr7.torus.item.ItemRegistry;
 import com.github.alantr7.torus.model.ModelLoader;
@@ -20,7 +21,12 @@ import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimpleBarChart;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @JavaPlugin(name = "Torus", version = "0.6.0", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
@@ -69,7 +75,8 @@ public class TorusPlugin extends BukkitPlugin {
 
         Bukkit.getScheduler().runTaskLater(this, () -> addonManager.getLifecycle().start(), 1L);
 
-        metrics = new Metrics(this, 28910);
+        metrics = new Metrics(TorusPlugin.getInstance(), 28910);
+        metrics.addCustomChart(new SimplePie("config_virtualization", () -> String.valueOf(MainConfig.EXPERIMENTAL_VIRTUALIZATION_ENABLED)));
     }
 
     @Override

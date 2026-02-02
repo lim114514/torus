@@ -14,7 +14,8 @@
 
 ## Structures
 - ✔ Energy Cable, Fluid Pipe, Item Conduit 
-- ✔ Inventory Interface
+- ✔ Junction Box
+- ✔ Connector
 - ✔ Fluid Tank
 - ✔ Power Bank
 - ✔ Power Pole

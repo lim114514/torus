@@ -42,7 +42,7 @@ public class NetworkManager {
     private static boolean attemptDirectMerge(Socket socket1, Socket socket2) {
         if (socket1.network == NetworkGraph.INIT && socket2.network != NetworkGraph.INIT) {
             socket1.network = socket2.network;
-            if (socket1.structure instanceof CableInstance || socket1.structure instanceof WireConnectorInstance) {
+            if (socket1.structure instanceof Conductor) {
                 socket1.network.edges.add(socket1.structure);
             } else {
                 socket1.network.nodes.add(new Node(socket1.structure, socket1));
@@ -88,10 +88,12 @@ public class NetworkManager {
         int closedDirectionsCount = 0;
         Set<Node> networkConnections = new HashSet<>();
 
-        if (!(socket.structure instanceof Conductor)) {
+        if (!(socket.structure instanceof Conductor conductor)) {
             networkConnections.add(new Node(socket.structure, socket));
-        }
-        if (socket.structure instanceof Conductor) {
+        } else {
+            if (!conductor.isConductive()) {
+                return;
+            }
             network.edges.add(socket.structure);
         }
 
@@ -107,11 +109,13 @@ public class NetworkManager {
                 continue;
             }
 
-            if (neighbor instanceof CableInstance || neighbor instanceof WireConnectorInstance) {
-                network.edges.add(neighbor);
-                Socket neighborSocket = neighbor.getSocket("base");
-                if (neighborSocket != null) {
-                    neighborSocket.network = network;
+            if (neighbor instanceof Conductor conductor) {
+                if (conductor.isConductive()) {
+                    Socket neighborSocket = neighbor.getSocket("base");
+                    if (neighborSocket != null) {
+                        neighborSocket.network = network;
+                    }
+                    network.edges.add(neighbor);
                 }
                 continue;
             }
@@ -138,11 +142,9 @@ public class NetworkManager {
         }
         closed.add(socket.getComponent().absoluteLocation);
         for (Direction direction : Direction.values()) {
-            if (socket.isConnected(direction)) {
-                if (socket.getComponent().absoluteLocation.getRelative(direction).getStructure() instanceof Conductor conductor) {
-                    open.add(((StructureInstance) conductor).location);
-                    network.edges.add((StructureInstance) conductor);
-                }
+            if (socket.isConnected(direction) && socket.getComponent().absoluteLocation.getRelative(direction).getStructure() instanceof Conductor conductor && conductor.isConductive()) {
+                open.add(((StructureInstance) conductor).location);
+                network.edges.add((StructureInstance) conductor);
             }
         }
 
@@ -161,8 +163,8 @@ public class NetworkManager {
                 }
 
                 // Check if it's a conductor
-                if (neighbor instanceof Conductor) {
-                    if (!open.contains(neighborLoc)) {
+                if (neighbor instanceof Conductor conductor) {
+                    if (conductor.isConductive() && !open.contains(neighborLoc)) {
                         open.add(neighborLoc);
                         network.edges.add(neighbor);
 

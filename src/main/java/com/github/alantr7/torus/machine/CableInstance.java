@@ -103,6 +103,11 @@ public class CableInstance extends StructureInstance implements Conductor {
     }
 
     @Override
+    public boolean isConductive() {
+        return true;
+    }
+
+    @Override
     public void onSocketConnect(Socket socket, Socket neighbor, Direction direction) {
         state.set(getStateFromDirection(direction), true);
     }

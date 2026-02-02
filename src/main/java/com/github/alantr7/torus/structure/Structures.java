@@ -19,6 +19,7 @@ public class Structures {
     public static final Connector CONNECTOR = new Connector();
     public static final WireConnector WIRE_CONNECTOR = new WireConnector();
     public static final WireRelay WIRE_RELAY = new WireRelay();
+    public static final JunctionBox JUNCTION_BOX = new JunctionBox();
     public static final ElectricityMeter ELECTRICITY_METER = new ElectricityMeter();
 
     public static final PowerBank POWER_BANK = new PowerBank();
