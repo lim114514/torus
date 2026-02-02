@@ -288,6 +288,7 @@ public class Socket implements Connectable, Conductor {
             neighbor.onSocketConnect(neighborSocket, this, direction.getOpposite());
         }
 
+        structure.location.world.networkManager.queueLoaded(this);
         structure.location.world.networkManager.queueLoaded(neighborSocket);
         return true;
     }
