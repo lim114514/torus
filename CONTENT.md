@@ -21,6 +21,7 @@
 - ✔ Power Pole
 - ✔ Wire Connector, Wire Relay
 - ✔ Electricity Meter
+- ✔ Light Bulb
 
 ## Items
 - ✔ Iron Dust, Copper Dust, Gold Dust
