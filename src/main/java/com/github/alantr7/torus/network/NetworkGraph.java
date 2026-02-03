@@ -9,6 +9,10 @@ import java.util.Set;
 
 public class NetworkGraph {
 
+    static int nextId = 0;
+
+    public final int id = ++nextId;
+
     @Getter
     private boolean isInvalidated;
 

@@ -81,15 +81,15 @@ public class NetworkManager {
             return;
 
         NetworkGraph network = new NetworkGraph(world.getTicks(), false);
+        network.nodes = new HashSet<>();
         socket.network = network;
 
         // Skip network update if it was already done
         int directionsCount = 0;
         int closedDirectionsCount = 0;
-        Set<Node> networkConnections = new HashSet<>();
 
         if (!(socket.structure instanceof Conductor conductor)) {
-            networkConnections.add(new Node(socket.structure, socket));
+            network.nodes.add(new Node(socket.structure, socket));
         } else {
             if (!conductor.isConductive()) {
                 return;
@@ -122,14 +122,15 @@ public class NetworkManager {
 
             Socket neighborSocket = neighbor.getSocket(socket.getComponent().absoluteLocation, socket.medium);
             if (neighborSocket != null) {
-                networkConnections.add(new Node(neighbor, neighborSocket));
+                network.nodes.add(new Node(neighbor, neighborSocket));
+                neighborSocket.network = network;
+
                 closedDirectionsCount++;
             }
         }
 
         if (!(socket.structure instanceof WireConnectorInstance)) {
             if (directionsCount == closedDirectionsCount) {
-                network.nodes = networkConnections;
                 return;
             }
         }
@@ -178,7 +179,7 @@ public class NetworkManager {
 
                 Socket neighborSocket = neighbor.getSocket(start, socket.medium);
                 if (neighborSocket != null) {
-                    networkConnections.add(new Node(neighbor, neighborSocket));
+                    network.nodes.add(new Node(neighbor, neighborSocket));
                     closed.add(neighborLoc);
 
                     neighborSocket.network = network;
@@ -187,8 +188,6 @@ public class NetworkManager {
 
             closed.add(start);
         }
-
-        network.nodes = networkConnections;
     }
 
 }
