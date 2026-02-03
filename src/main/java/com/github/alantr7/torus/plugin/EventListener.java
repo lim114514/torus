@@ -16,15 +16,18 @@ import com.github.alantr7.torus.world.Pitch;
 import com.github.alantr7.torus.world.TorusWorld;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Interaction;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityUnleashEvent;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -200,6 +203,60 @@ public class EventListener implements Listener {
             }
         } else {
             event.getPlayer().sendMessage(ChatColor.RED + "You can not break a structure that you do not own.");
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    void onMachineBreak(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Interaction interaction))
+            return;
+
+        // TODO: Code is duplicate of the one above
+
+        if (!TorusPlugin.getInstance().getWorldManager().isWorldSupported(player.getWorld()))
+            return;
+
+        TorusWorld world = TorusPlugin.getInstance().getWorldManager().getWorld(player.getWorld());
+        BlockLocation loc = new BlockLocation(interaction.getLocation());
+
+        StructureInstance instance = world.getStructure(loc);
+        if (instance == null)
+            return;
+
+        TorusPlayer torusPlayer = TorusPlayer.get(player);
+        if (torusPlayer.interactionCooldownExpiry > System.currentTimeMillis()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        torusPlayer.interactionCooldownExpiry = System.currentTimeMillis() + 200;
+
+        if (instance.structure.isHeavy) {
+            TorusItem item = TorusItem.getByItemStack(player.getInventory().getItemInMainHand());
+            if (item == null || !item.namespacedId.equals("torus:hammer")) {
+                player.sendMessage(ChatColor.RED + "This structure can be broken only with hammer.");
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        if (instance.testOwnership(player)) {
+            if (!EventUtils.callStructureBreakEvent(player, instance)) {
+                return;
+            }
+            if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+                ItemStack drop = instance.toItem(true);
+                if (drop != null) {
+                    world.getBukkit().dropItem(loc.toBukkit().add(.5, 0, .5), drop);
+                }
+            }
+            world.removeStructure(instance);
+            if (instance.structure.isHeavy) {
+                world.getBukkit().playSound(loc.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_USE, 0.2f, 1.2f);
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "You can not break a structure that you do not own.");
             event.setCancelled(true);
         }
     }

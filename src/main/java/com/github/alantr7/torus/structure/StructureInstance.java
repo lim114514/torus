@@ -32,6 +32,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -90,6 +91,9 @@ public abstract class StructureInstance {
 
     @Getter @Accessors(fluent = true)
     private boolean hasActiveAnimations;
+
+    @Nullable
+    public Interaction interactionEntity;
 
     public TextDisplay inspectionHologram;
 
@@ -190,6 +194,14 @@ public abstract class StructureInstance {
 
         // Setup model
         try {
+            if (!structure.hasCollision) {
+                interactionEntity = location.world.getBukkit().spawn(location.toBukkitCentered(), Interaction.class);
+                interactionEntity.setInteractionWidth(1f);
+                interactionEntity.setInteractionHeight(1f);
+                interactionEntity.setResponsive(true);
+                interactionEntity.setPersistent(false);
+            }
+
             updateModel();
             onModelSpawn();
         } catch (Exception exc) {
@@ -210,6 +222,10 @@ public abstract class StructureInstance {
 
         // Clean up if it was PHYSICAL
         if (oldStatus == Status.PHYSICAL) {
+            if (!structure.hasCollision && interactionEntity != null) {
+                interactionEntity.remove();
+            }
+
             model.remove();
             onModelDestroy();
             if (inspectionHologram != null)
@@ -244,6 +260,10 @@ public abstract class StructureInstance {
     public final void handleUnload() {
         if (status == Status.PHYSICAL) {
             try {
+                if (!structure.hasCollision && interactionEntity != null) {
+                    interactionEntity.remove();
+                }
+
                 model.remove();
                 onModelDestroy();
             } catch (Exception e) {

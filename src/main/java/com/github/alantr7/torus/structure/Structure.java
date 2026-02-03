@@ -71,6 +71,8 @@ public abstract class Structure {
 
     public boolean isVirtualizable = false;
 
+    public boolean hasCollision = true;
+
     public Set<String> portableData = new HashSet<>();
 
     public float[] hologramOffset = {0f, 0f, 0f};
@@ -133,7 +135,8 @@ public abstract class Structure {
 
         location = location.getRelative(offset[0], offset[1], offset[2]);
         for (int i = 0; i < bounds.length; i += 3) {
-            if (location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]).getBlock().getType().isSolid()) {
+            BlockLocation relative = location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]);
+            if (relative.getBlock().getType().isSolid() || relative.getStructure() != null) {
                 return false;
             }
         }
