@@ -7,11 +7,10 @@ import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.ConfigType;
-import com.github.alantr7.torus.api.resource.Resource;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import com.github.alantr7.torus.model.ModelTemplate;
+import com.github.alantr7.torus.model.controller.ModelController;
 import com.github.alantr7.torus.updater.UpdateUtils_0_5_3;
 import com.github.alantr7.torus.updater.UpdateUtils_0_6_1;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -144,9 +143,13 @@ public class StructureRegistry {
             if (!controllerLocation.exists()) {
                 throw new Exception("Model controller file does not exist for structure '" + structure + "'!");
             }
-            structure.loadModelController(
+            ModelController modelController = TorusPlugin.getInstance().getModelLoader().loadController(
+              structure,
               YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(controllerLocation.getResource()).stream))
             );
+            if (modelController != null) {
+                structure.setModelController(modelController);
+            }
         } catch (Exception exc) {
             TorusLogger.error(Category.MODELS, "Invalid model controller for structure '" + structure.id + "'");
             exc.printStackTrace();
