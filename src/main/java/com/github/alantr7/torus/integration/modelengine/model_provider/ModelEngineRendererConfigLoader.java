@@ -22,7 +22,7 @@ public class ModelEngineRendererConfigLoader extends RendererConfigLoader {
     }
 
     @Override
-    public @Nullable PartModelTemplate load(ConfigurationSection section, String part, Vector3f offset) {
+    public @Nullable PartModelTemplate load(ConfigurationSection section, String part, Vector3f offset, Map<String, String> variables) {
         String blueprintId = section.getString("blueprint");
         if (blueprintId == null) {
             TorusLogger.error(Category.MODELS, "Blueprint is not set.");

@@ -15,7 +15,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.joml.Vector3f;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Arrays;
@@ -32,20 +31,20 @@ public class ModelLoader {
         renderers.put("display_entities", new DisplayEntitiesRendererConfigLoader());
     }
 
-    public ModelTemplate load(File file) {
-        return load(file, YamlConfiguration.loadConfiguration(file));
+    public ModelTemplate load(File file, Map<String, String> variables) {
+        return load(file, YamlConfiguration.loadConfiguration(file), variables);
     }
 
-    public ModelTemplate load(Resource resource) {
+    public ModelTemplate load(Resource resource, Map<String, String> variables) {
         try (Reader reader = new InputStreamReader(resource.stream)) {
-            return load(resource.file, YamlConfiguration.loadConfiguration(reader));
+            return load(resource.file, YamlConfiguration.loadConfiguration(reader), variables);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public ModelTemplate load(File file, FileConfiguration yaml) {
+    public ModelTemplate load(File file, FileConfiguration yaml, Map<String, String> variables) {
         ModelTemplate template = new ModelTemplate(yaml.getInt("model_version", 1));
         UpdateUtils_0_5_2.updateModelFileFormatFromV1ToV2(file, yaml);
 
@@ -73,7 +72,7 @@ public class ModelLoader {
                 offset = new Vector3f(offsetRaw.get(0), offsetRaw.get(1), offsetRaw.get(2));
             }
 
-            PartModelTemplate partModelTemplate = loader.load(section, partName, offset);
+            PartModelTemplate partModelTemplate = loader.load(section, partName, offset, variables);
             if (partModelTemplate != null) {
                 template.add(partModelTemplate);
             }

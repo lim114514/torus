@@ -21,6 +21,7 @@ import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -247,7 +248,7 @@ public abstract class Structure {
 
         for (String rawStateSet : casesSection.getKeys(false)) {
             ConfigurationSection caseSection = casesSection.getConfigurationSection(rawStateSet);
-            String rawModel = caseSection.getString("model") + ".model";
+            String rawModel = caseSection.getString("model");
             String animations = caseSection.getString("animations");
 
             Map<State<Object>, Object> states = new HashMap<>();
@@ -288,16 +289,25 @@ public abstract class Structure {
                 }
             }
 
-            if (rawModel == null) {
+            if (!caseSection.isSet("model")) {
                 TorusLogger.error(Category.MODELS, "Model path is not set.");
                 continue;
             }
 
+            Map<String, String> variables = new HashMap<>();
+            if (caseSection.isConfigurationSection("variables")) {
+                ConfigurationSection variablesSection = caseSection.getConfigurationSection("variables");
+                for (String varName : variablesSection.getKeys(false)) {
+                    variables.put(varName, variablesSection.getString(varName));
+                }
+            }
+
+
             ModelTemplate template = TorusPlugin.getInstance().getModelManager().getCached(rawModel);
-            if (template == null) {
+            if (template == null || !variables.isEmpty()) {
                 ResourceLocation modelLocation = new ResourceLocation(
-                  addon.externalContainer, "models/" + rawModel,
-                  addon.classpathContainer, "configs/torus/models/" + rawModel
+                  addon.externalContainer, "models/" + rawModel + ".model",
+                  addon.classpathContainer, "configs/torus/models/" + rawModel + ".model"
                 );
 
                 Resource modelResource = modelLocation.getResource();
@@ -306,13 +316,15 @@ public abstract class Structure {
                     continue;
                 }
 
-                template = TorusAPI.getModelLoader().load(modelResource);
+                template = TorusAPI.getModelLoader().load(modelResource, variables);
                 if (template == null) {
                     TorusLogger.error(Category.MODELS, "Could not load model template.");
                     continue;
                 }
 
-                TorusPlugin.getInstance().getModelManager().cache(rawModel, template);
+                if (variables.isEmpty()) {
+                    TorusPlugin.getInstance().getModelManager().cache(rawModel, template);
+                }
             }
 
             if (rawStateSet.equals("fallback")) {

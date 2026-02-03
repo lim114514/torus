@@ -8,7 +8,6 @@ import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.RendererConfigLoader;
 import com.github.alantr7.torus.model.animation.Animation;
 import com.github.alantr7.torus.model.animation.AnimationProvider;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +34,7 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
     }
 
     @Override
-    public @Nullable PartModelTemplate load(ConfigurationSection section, String name, Vector3f offset) {
+    public @Nullable PartModelTemplate load(ConfigurationSection section, String name, Vector3f offset, Map<String, String> variables) {
         Map<String, AnimationProvider<PartModel, Animation>> animationMap;
         ConfigurationSection animationMapSection = section.getConfigurationSection("animation_map");
         if (animationMapSection != null) {
@@ -55,6 +54,16 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
         DisplayEntitiesPartModelTemplate partModelTemplate = new DisplayEntitiesPartModelTemplate(name, offset, section.getInt("teleport_duration", 0), animationMap);
 
         List<String> elements = section.getStringList("elements");
+        if (!variables.isEmpty()) {
+            elements.replaceAll(str -> {
+                for (Map.Entry<String, String> entry : variables.entrySet()) {
+                    str = str.replace("#" + entry.getKey(), entry.getValue());
+                }
+
+                return str;
+            });
+        }
+
         for (String rawElement : elements) {
             Matcher matcher = ITEM_PATTERN.matcher(rawElement);
             String rendererType = nextString(rawElement, matcher);
