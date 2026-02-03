@@ -19,7 +19,6 @@ import com.github.alantr7.torus.model.de_provider.EntityReference;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.TorusChunk;
@@ -34,7 +33,9 @@ import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Singleton
 public class Commands {
@@ -277,7 +278,14 @@ public class Commands {
           }
 
           for (Socket socket : structure.getSockets()) {
-              for (StructureInstance edge : socket.network.edges) {
+              player.sendMessage(socket.medium + ": " + socket.network.id + " (invalidated?: " + socket.network.isInvalidated() + ")");
+              List<StructureInstance> all = new ArrayList<>();
+              all.addAll(socket.network.edges);
+              all.addAll(socket.network.nodes.stream().map(n -> {
+                  player.sendMessage(" * node: " + n.socket.network.id + " (invalidated?: " + n.socket.network.isInvalidated() + ")");
+                  return n.structure;
+              }).toList());
+              for (StructureInstance edge : all) {
                   for (PartModel partModel : edge.model.parts.values()) {
                       if (!(partModel instanceof DisplayEntitiesPartModel de))
                           continue;
