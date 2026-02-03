@@ -1,6 +1,0 @@
-model_version: 2
-
-base:
-  renderer: DISPLAY_ENTITIES
-  elements:
-    - item_display,light_gray_terracotta,0,0.5,0.25,0.2,0.2,0.5,0,0,0

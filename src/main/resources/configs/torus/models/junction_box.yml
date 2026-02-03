@@ -3,12 +3,22 @@ cases:
   fallback:
     model: "junction_box_base"
   state[right=true]:
-    model: "energy_cable_east"
+    model: "generic_cable_east"
+    variables:
+      material: gray_wool
   state[back=true]:
-    model: "energy_cable_south"
+    model: "generic_cable_south"
+    variables:
+      material: gray_wool
   state[left=true]:
-    model: "energy_cable_west"
+    model: "generic_cable_west"
+    variables:
+      material: gray_wool
   state[up=true]:
-    model: "energy_cable_up"
+    model: "generic_cable_up"
+    variables:
+      material: gray_wool
   state[down=true]:
-    model: "energy_cable_down"
+    model: "generic_cable_down"
+    variables:
+      material: gray_wool

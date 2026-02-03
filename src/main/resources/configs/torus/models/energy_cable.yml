@@ -1,16 +1,30 @@
 type: MULTIPART
 cases:
   fallback:
-    model: "energy_cable_not_connected"
+    model: "generic_cable_not_connected"
+    variables:
+      material: gray_wool
   state[north=true]:
-    model: "energy_cable_north"
+    model: "generic_cable_north"
+    variables:
+      material: gray_wool
   state[east=true]:
-    model: "energy_cable_east"
+    model: "generic_cable_east"
+    variables:
+      material: gray_wool
   state[south=true]:
-    model: "energy_cable_south"
+    model: "generic_cable_south"
+    variables:
+      material: gray_wool
   state[west=true]:
-    model: "energy_cable_west"
+    model: "generic_cable_west"
+    variables:
+      material: gray_wool
   state[up=true]:
-    model: "energy_cable_up"
+    model: "generic_cable_up"
+    variables:
+      material: gray_wool
   state[down=true]:
-    model: "energy_cable_down"
+    model: "generic_cable_down"
+    variables:
+      material: gray_wool
