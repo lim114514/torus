@@ -1,12 +1,9 @@
 package com.github.alantr7.torus.structure.socket;
 
 import com.github.alantr7.torus.network.NetworkGraph;
-import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.*;
-import com.github.alantr7.torus.structure.component.Connectable;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.utils.EventUtils;
-import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
@@ -14,7 +11,7 @@ import lombok.Setter;
 
 import java.util.*;
 
-public abstract class Socket implements Connectable {
+public abstract class Socket {
 
     public StructureInstance structure;
 
@@ -52,6 +49,38 @@ public abstract class Socket implements Connectable {
         this.allowedConnections = allowedConnections;
         this.flowDirection = direction;
         this.medium = medium;
+    }
+
+    public boolean isConnectableFrom(Direction direction) {
+        return (allowedConnections & direction.mask()) != 0;
+    }
+
+    public boolean isConnected(Direction direction) {
+        return (connections & direction.mask()) != 0;
+    }
+
+    public Direction[] getValidConnectionsDirections() {
+        Direction[] values = new Direction[Direction.values().length];
+        int count = 0;
+
+        for (Direction dir : Direction.values()) {
+            if (isConnectableFrom(dir)) {
+                values[count++] = dir;
+            }
+        }
+
+        Direction[] stripped = new Direction[count];
+        System.arraycopy(values, 0, stripped, 0, count);
+
+        return stripped;
+    }
+
+    public void setConnected(Direction direction, boolean connected) {
+        if (connected) {
+            setConnections(connections | direction.mask());
+        } else {
+            setConnections(connections & ~direction.mask());
+        }
     }
 
     public Collection<BlockLocation> getNodes() {
