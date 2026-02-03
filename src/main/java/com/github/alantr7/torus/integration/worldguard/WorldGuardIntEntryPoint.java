@@ -49,7 +49,7 @@ public class WorldGuardIntEntryPoint {
         RegionQuery query = container.createQuery();
 
         LocalPlayer player = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer().asBukkit());
-        byte[] collision = MathUtils.rotateVectors(event.getStructure().getCollisionBlocks(), event.getDirection().getOpposite());
+        byte[] collision = MathUtils.rotateVectors(event.getStructure().getCollisionVectors(), event.getDirection().getOpposite());
         byte[] offset = MathUtils.rotateVectors(event.getStructure().getOffset(), event.getDirection().getOpposite());
         for (int i = 0; i < collision.length; i += 3) {
             Location location = BukkitAdapter.adapt(event.getLocation().getRelative(collision[i] + offset[0], collision[i + 1] + offset[1], collision[i + 2] + offset[2]).toBukkit());
@@ -70,7 +70,7 @@ public class WorldGuardIntEntryPoint {
         RegionQuery query = container.createQuery();
 
         LocalPlayer player = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer().asBukkit());
-        byte[] collision = MathUtils.rotateVectors(event.getStructure().getCollisionBlocks(), event.getDirection().getOpposite());
+        byte[] collision = MathUtils.rotateVectors(event.getStructure().getCollisionVectors(), event.getDirection().getOpposite());
         byte[] offset = MathUtils.rotateVectors(event.getStructure().getOffset(), event.getDirection().getOpposite());
         for (int i = 0; i < collision.length; i += 3) {
             Location location = BukkitAdapter.adapt(event.getLocation().getRelative(collision[i] + offset[0], collision[i + 1] + offset[1], collision[i + 2] + offset[2]).toBukkit());
@@ -91,7 +91,7 @@ public class WorldGuardIntEntryPoint {
         LocalPlayer player = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer().asBukkit());
 
         RegionQuery query = container.createQuery();
-        byte[] collision = event.getStructure().getBounds();
+        byte[] collision = event.getStructure().getCollisionVectors();
         for (int i = 0; i < collision.length; i += 3) {
             Location location = BukkitAdapter.adapt(event.getStructure().location.getRelative(collision[i], collision[i + 1], collision[i + 2]).toBukkit());
             if (!query.testState(location, player, FLAG_TORUS_STRUCTURE_BREAK, Flags.INTERACT)) {

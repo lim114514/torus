@@ -53,7 +53,8 @@ public abstract class Structure {
     @Getter
     protected final Map<String, State<?>> allowedStates = new HashMap<>();
 
-    protected byte[] bounds = { 0, 0, 0 };
+    @Getter
+    protected byte[] collisionVectors = { 0, 0, 0 };
 
     @Getter
     protected byte[] size;
@@ -95,24 +96,24 @@ public abstract class Structure {
         ByteArrayBuilder builder = new ByteArrayBuilder();
         createBounds(builder);
 
-        bounds = builder.build();
-        if (bounds.length == 0) {
-            bounds = new byte[] { 0, 0, 0 };
-        } else if (bounds.length % 3 != 0) {
+        collisionVectors = builder.build();
+        if (collisionVectors.length == 0) {
+            collisionVectors = new byte[] { 0, 0, 0 };
+        } else if (collisionVectors.length % 3 != 0) {
             throw new RuntimeException("Invalid structure bounds!");
         }
 
         byte[] min = { 127, 127, 127 };
         byte[] max = { -128, -128, -128 };
 
-        for (int i = 0; i < bounds.length; i+=3) {
-            min[0] = (byte) Math.min(bounds[i], min[0]);
-            min[1] = (byte) Math.min(bounds[i+1], min[1]);
-            min[2] = (byte) Math.min(bounds[i+2], min[2]);
+        for (int i = 0; i < collisionVectors.length; i+=3) {
+            min[0] = (byte) Math.min(collisionVectors[i], min[0]);
+            min[1] = (byte) Math.min(collisionVectors[i+1], min[1]);
+            min[2] = (byte) Math.min(collisionVectors[i+2], min[2]);
 
-            max[0] = (byte) Math.max(bounds[i], max[0]);
-            max[1] = (byte) Math.max(bounds[i+1], max[1]);
-            max[2] = (byte) Math.max(bounds[i+2], max[2]);
+            max[0] = (byte) Math.max(collisionVectors[i], max[0]);
+            max[1] = (byte) Math.max(collisionVectors[i+1], max[1]);
+            max[2] = (byte) Math.max(collisionVectors[i+2], max[2]);
         }
 
         size = new byte[] { (byte) (max[0] - min[0] + 1), (byte) (max[1] - min[1] + 1), (byte) (max[2] - min[2] + 1) };
@@ -125,13 +126,9 @@ public abstract class Structure {
     protected void createBounds(ByteArrayBuilder builder) {
     }
 
-    public byte[] getCollisionBlocks() {
-        return bounds;
-    }
-
     public boolean isPlaceableAt(BlockLocation location, Direction direction) {
         byte[] offset = calculateOffset(direction.getOpposite());
-        byte[] bounds = MathUtils.rotateVectors(this.bounds, direction);
+        byte[] bounds = MathUtils.rotateVectors(this.collisionVectors, direction);
 
         location = location.getRelative(offset[0], offset[1], offset[2]);
         for (int i = 0; i < bounds.length; i += 3) {

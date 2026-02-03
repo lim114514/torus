@@ -83,7 +83,7 @@ public abstract class StructureInstance {
 
     protected Map<String, Socket> socketsByName = new HashMap<>();
 
-    private byte[] bounds;
+    private byte[] collisionVectors;
 
     private int[][] occupiedChunks;
 
@@ -247,7 +247,7 @@ public abstract class StructureInstance {
             return;
         }
         if (inspectableDataContainer.inspectableBlocks.isEmpty()) {
-            byte[] bounds = getBounds();
+            byte[] bounds = getCollisionVectors();
             for (int i = 0; i < bounds.length; i += 3) {
                 inspectableDataContainer.inspectableBlocks.add(location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]));
             }
@@ -361,11 +361,11 @@ public abstract class StructureInstance {
         inspectionHologram.setTransformation(transformation);
     }
 
-    public byte[] getBounds() {
-        if (this.bounds != null)
-            return this.bounds;
+    public byte[] getCollisionVectors() {
+        if (this.collisionVectors != null)
+            return this.collisionVectors;
 
-        return this.bounds = MathUtils.rotateVectors(structure.bounds, direction);
+        return this.collisionVectors = MathUtils.rotateVectors(structure.collisionVectors, direction);
     }
 
     public StructureComponent requireComponent(String name) throws MissingDataException {
@@ -421,7 +421,7 @@ public abstract class StructureInstance {
     }
 
     private void setOccupiedChunks() {
-        byte[] bounds = getBounds();
+        byte[] bounds = getCollisionVectors();
         Set<Vector2i> positions = new HashSet<>();
 
         for (int i = 0; i < bounds.length; i+=3) {

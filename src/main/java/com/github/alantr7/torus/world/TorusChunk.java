@@ -47,7 +47,7 @@ public class TorusChunk {
 
     protected void _placeStructureWithOccupations(StructureInstance structure) {
         _registerStructure(structure);
-        byte[] bounds = structure.getBounds();
+        byte[] bounds = structure.getCollisionVectors();
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = structure.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]);
             if (contains(relative)) {

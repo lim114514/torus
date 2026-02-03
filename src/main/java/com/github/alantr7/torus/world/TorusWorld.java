@@ -201,7 +201,7 @@ public class TorusWorld {
         chunk.isUnsaved = true;
 
         // Place bounds
-        byte[] bounds = instance.getBounds();
+        byte[] bounds = instance.getCollisionVectors();
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i+1], bounds[i+2]);
             if (instance.structure.hasCollision) {
@@ -256,7 +256,7 @@ public class TorusWorld {
         instance.isRemoved = true;
 
         // Remove bounds
-        byte[] bounds = instance.getBounds();
+        byte[] bounds = instance.getCollisionVectors();
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i+1], bounds[i+2]);
             relative.getBlock().setType(Material.AIR);
