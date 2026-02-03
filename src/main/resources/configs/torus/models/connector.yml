@@ -1,0 +1,16 @@
+type: MULTIPART
+cases:
+  fallback:
+    model: "connector_socket"
+  state[front=true]:
+    model: "item_cable_north"
+  state[right=true]:
+    model: "item_cable_east"
+  state[back=true]:
+    model: "item_cable_south"
+  state[left=true]:
+    model: "item_cable_west"
+  state[up=true]:
+    model: "item_cable_up"
+  state[down=true]:
+    model: "item_cable_down"

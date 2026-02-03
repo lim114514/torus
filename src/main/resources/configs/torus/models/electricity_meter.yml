@@ -1,0 +1,4 @@
+type: SINGLEPART
+cases:
+  fallback:
+    model: "electricity_meter"

@@ -1,0 +1,4 @@
+type: SINGLEPART
+cases:
+  fallback:
+    model: "block_breaker"

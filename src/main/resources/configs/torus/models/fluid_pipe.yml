@@ -1,0 +1,16 @@
+type: MULTIPART
+cases:
+  fallback:
+    model: "fluid_pipe_not_connected"
+  state[north=true]:
+    model: "fluid_pipe_north"
+  state[east=true]:
+    model: "fluid_pipe_east"
+  state[south=true]:
+    model: "fluid_pipe_south"
+  state[west=true]:
+    model: "fluid_pipe_west"
+  state[up=true]:
+    model: "fluid_pipe_up"
+  state[down=true]:
+    model: "fluid_pipe_down"

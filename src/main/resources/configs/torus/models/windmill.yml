@@ -1,0 +1,7 @@
+type: SINGLEPART
+cases:
+  fallback:
+    model: "windmill"
+  state[active=true]:
+    model: "windmill"
+    animations: active

@@ -1,0 +1,14 @@
+type: MULTIPART
+cases:
+  fallback:
+    model: "junction_box_base"
+  state[right=true]:
+    model: "energy_cable_east"
+  state[back=true]:
+    model: "energy_cable_south"
+  state[left=true]:
+    model: "energy_cable_west"
+  state[up=true]:
+    model: "energy_cable_up"
+  state[down=true]:
+    model: "energy_cable_down"

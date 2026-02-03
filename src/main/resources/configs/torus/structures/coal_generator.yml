@@ -1,0 +1,20 @@
+config_version: 2
+
+general_settings:
+  enabled: true
+  display_name: "Coal Generator"
+  # When machine is placed on a block, it will be offset by this vector.
+  # This vector is facing the positive Z direction. Rotation will be automatically applied.
+  placement_offset: [0, 0, 0]
+  # If set to true, structure can be broken only with a hammer.
+  heavy: true
+  portable_data: [ "energy" ]
+
+energy_settings:
+  production: 300 # (default: 300)
+  capacity: 18000 # (default: 18000)
+  maximum_output: 500 # (default: 500)
+
+info_hologram:
+  offset: [0, 0, 1] # Location of the TextDisplay relative to the structure
+  translation: [1.2, 0, 0] # Translation applied to TextDisplay

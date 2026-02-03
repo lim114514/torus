@@ -22,6 +22,7 @@ import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -91,7 +92,7 @@ public abstract class Structure {
         this.namespacedId = addon.id + ":" + id;
         this.name = name;
         this.instanceClass = instanceClass;
-        this.configResource = "configs/" + addon.id + "/structures/" + id + ".config.yml";
+        this.configResource = "configs/" + addon.id + "/structures/" + id + ".yml";
 
         ByteArrayBuilder builder = new ByteArrayBuilder();
         createBounds(builder);
@@ -216,9 +217,6 @@ public abstract class Structure {
                 this.hologramTranslation[i] = hologramTranslation.get(i);
             }
         }
-
-        // Model Controller
-        loadModelController();
     }
 
     private static final Pattern STATE_CONFIG_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9]+");
@@ -228,8 +226,7 @@ public abstract class Structure {
     );
 
     @SuppressWarnings({"unchecked", "deprecation"})
-    protected void loadModelController() {
-        ConfigurationSection modelControllerSection = config.getConfigurationSection("model_controller");
+    protected void loadModelController(ConfigurationSection modelControllerSection) {
         if (modelControllerSection == null)
             return;
 
@@ -250,7 +247,7 @@ public abstract class Structure {
 
         for (String rawStateSet : casesSection.getKeys(false)) {
             ConfigurationSection caseSection = casesSection.getConfigurationSection(rawStateSet);
-            String rawModel = caseSection.getString("model");
+            String rawModel = caseSection.getString("model") + ".model";
             String animations = caseSection.getString("animations");
 
             Map<State<Object>, Object> states = new HashMap<>();

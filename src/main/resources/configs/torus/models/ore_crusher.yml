@@ -1,0 +1,7 @@
+type: SINGLEPART
+cases:
+  fallback:
+    model: "ore_crusher"
+  state[working=true]:
+    model: "ore_crusher"
+    animations: "working"

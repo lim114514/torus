@@ -1,0 +1,11 @@
+config_version: 2
+
+general_settings:
+  enabled: true
+  display_name: "Wire Connector"
+  # When machine is placed on a block, it will be offset by this vector.
+  # This vector is facing the positive Z direction. Rotation will be automatically applied.
+  placement_offset: [0, 0, 0]
+  # If set to true, structure can be broken only with a hammer.
+  heavy: false
+  portable_data: []

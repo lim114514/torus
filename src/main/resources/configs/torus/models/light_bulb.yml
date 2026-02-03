@@ -1,0 +1,6 @@
+type: SINGLEPART
+cases:
+  fallback:
+    model: "light_bulb_off"
+  state[powered=true]:
+    model: "light_bulb_on"

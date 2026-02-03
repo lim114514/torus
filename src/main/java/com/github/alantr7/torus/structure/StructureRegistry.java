@@ -8,10 +8,12 @@ import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.api.resource.Resource;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.updater.UpdateUtils_0_5_3;
+import com.github.alantr7.torus.updater.UpdateUtils_0_6_1;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -100,7 +102,11 @@ public class StructureRegistry {
         }
 
         if (structure.addon.allowsExternalConfig(ConfigType.STRUCTURE)) {
-            File configFile = new File(structure.addon.configsDirectory, structure.id + ".config.yml");
+            File configFile = new File(structure.addon.configsDirectory, structure.id + ".yml");
+            File pre_0_6_1_config = new File(structure.addon.configsDirectory, structure.id + ".config.yml");
+            if (pre_0_6_1_config.exists()) {
+                UpdateUtils_0_6_1.updateStructureConfig(pre_0_6_1_config, configFile);
+            }
 
             // Save default config if it exists
             if (!configFile.exists()) {
@@ -123,10 +129,27 @@ public class StructureRegistry {
 
                     structure.loadConfig();
                 } catch (Exception | Error e) {
-                    TorusLogger.error(Category.MODELS, "Invalid configuration for structure '" + structure.id + "'");
+                    TorusLogger.error(Category.STRUCTURES, "Invalid configuration for structure '" + structure.id + "'");
                     e.printStackTrace();
                 }
             }
+        }
+
+        // Load model controller
+        try {
+            ResourceLocation controllerLocation = new ResourceLocation(
+              structure.addon.externalContainer, "models/" + structure.id + ".yml",
+              structure.addon.classpathContainer, "configs/torus/models/" + structure.id + ".yml"
+            );
+            if (!controllerLocation.exists()) {
+                throw new Exception("Model controller file does not exist for structure '" + structure + "'!");
+            }
+            structure.loadModelController(
+              YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(controllerLocation.getResource()).stream))
+            );
+        } catch (Exception exc) {
+            TorusLogger.error(Category.MODELS, "Invalid model controller for structure '" + structure.id + "'");
+            exc.printStackTrace();
         }
 
         loaded.put(structure.namespacedId, structure);
