@@ -1,9 +1,11 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.gui.structure.BlastFurnaceGUI;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.BlastFurnaceRecipe;
 import com.github.alantr7.torus.structure.Inspectable;
@@ -11,7 +13,6 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.bukkit.Bukkit;
@@ -27,9 +28,9 @@ import java.util.List;
 
 public class BlastFurnaceInstance extends StructureInstance implements Inspectable {
 
-    protected Socket inputSocket;
+    protected ItemSocket inputSocket;
 
-    protected Socket itemOutputSocket, slugOutputSocket;
+    protected ItemSocket itemOutputSocket, slugOutputSocket;
 
     public Inventory inventory = Bukkit.createInventory(null, 27, "Blast Furnace");
 
@@ -178,10 +179,10 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
     }
 
     @Override
-    protected void setup() {
-        inputSocket = getSocket("in_item");
-        itemOutputSocket = getSocket("out_item");
-        slugOutputSocket = getSocket("out_slug");
+    protected void setup() throws SetupException {
+        inputSocket = requireSocket("in_item", ItemSocket.class);
+        itemOutputSocket = requireSocket("out_item", ItemSocket.class);
+        slugOutputSocket = requireSocket("out_slug", ItemSocket.class);
 
         itemOutputSocket.linkedInventory = new BukkitStructureInventory(inventory);
         itemOutputSocket.linkedInventoryAllowedSlots = new int[]{16};

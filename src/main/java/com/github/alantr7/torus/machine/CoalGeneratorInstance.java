@@ -3,6 +3,8 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.MissingDataException;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
@@ -10,7 +12,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
@@ -25,8 +27,8 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected Socket inputSocket;
-    protected Socket outputSocket;
+    protected ItemSocket inputSocket;
+    protected EnergySocket outputSocket;
 
     protected int remainingBurnTicks;
     protected float[] chimneyPosition;
@@ -41,8 +43,8 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
 
     @Override
     protected void setup() throws MissingDataException {
-        inputSocket = requireSocket("item_connector");
-        outputSocket = requireSocket("power_connector");
+        inputSocket = requireSocket("item_connector", ItemSocket.class);
+        outputSocket = requireSocket("power_connector", EnergySocket.class);
         outputSocket.maximumOutput = CoalGenerator.ENERGY_MAXIMUM_OUTPUT;
 
         chimneyPosition = MathUtils.rotateVectors(new float[] { 1.125f - .5f, 1.8f, 0.8125f - .5f }, direction.rotH, direction.rotV);

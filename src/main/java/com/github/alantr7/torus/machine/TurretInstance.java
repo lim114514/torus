@@ -2,13 +2,14 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -27,9 +28,9 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 
     protected StructureComponent head;
 
-    protected Socket inEnergy;
+    protected EnergySocket inEnergy;
 
-    protected Socket inItem;
+    protected ItemSocket inItem;
 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
@@ -105,9 +106,9 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     @Override
     protected void setup() throws SetupException {
         head = requireComponent("head");
-        inEnergy = requireSocket("in_energy");
+        inEnergy = (EnergySocket) requireSocket("in_energy");
         inEnergy.maximumInput = Turret.ENERGY_MAXIMUM_INPUT;
-        inItem = requireSocket("in_item");
+        inItem = (ItemSocket) requireSocket("in_item");
     }
 
     @Override

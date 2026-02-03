@@ -9,6 +9,9 @@ import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.structure.inspection.InspectableText;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.FluidSocket;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.model.*;
@@ -23,7 +26,7 @@ import com.github.alantr7.torus.structure.state.StructureState;
 import com.github.alantr7.torus.world.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import lombok.Getter;
@@ -167,7 +170,11 @@ public abstract class StructureInstance {
                     allowedConnections = allowedConnectionsOriginal;
                 }
 
-                Socket socket = new Socket(components.get(componentDef.name), allowedConnections, componentDef.socketDef.medium(), componentDef.socketDef.direction());
+                Socket socket = switch (componentDef.socketDef.medium()) {
+                    case ENERGY -> new EnergySocket(components.get(componentDef.name), allowedConnections,componentDef.socketDef.direction());
+                    case ITEM -> new ItemSocket(components.get(componentDef.name), allowedConnections,componentDef.socketDef.direction());
+                    case FLUID -> new FluidSocket(components.get(componentDef.name), allowedConnections,componentDef.socketDef.direction());
+                };
                 socket.structure = this;
 
                 socketsByName.put(componentDef.name, socket);
@@ -391,6 +398,18 @@ public abstract class StructureInstance {
             throw new MissingDataException("Socket by name '" + name + "' could not be found.");
 
         return socket;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Socket> T requireSocket(String name, Class<T> socketType) throws MissingDataException {
+        Socket socket = socketsByName.get(name);
+        if (socket == null)
+            throw new MissingDataException("Socket by name '" + name + "' could not be found.");
+
+        if (!socketType.isInstance(socket))
+            throw new MissingDataException("Types mismatch for socket '" + name + "'. Expected '" + socketType.getSimpleName() + "' but got '" + socket.getClass().getSimpleName() + "'");
+
+        return (T) socket;
     }
 
     public Collection<Socket> getSockets() {
@@ -628,7 +647,11 @@ public abstract class StructureInstance {
             int matterOrdinal = (data >> 4) & 0x0f;
 
             if (matterOrdinal < Socket.Medium.values().length && flowDirection < Socket.FlowDirection.values().length) {
-                Socket socket = new Socket(component, allowedConnections, Socket.Medium.values()[matterOrdinal], Socket.FlowDirection.values()[flowDirection]);
+                Socket socket = switch (Socket.Medium.values()[matterOrdinal]) {
+                    case ENERGY -> new EnergySocket(component, allowedConnections, Socket.FlowDirection.values()[flowDirection]);
+                    case ITEM -> new ItemSocket(component, allowedConnections, Socket.FlowDirection.values()[flowDirection]);
+                    case FLUID -> new FluidSocket(component, allowedConnections, Socket.FlowDirection.values()[flowDirection]);
+                };
                 socket.setConnections(connections);
 
                 for (Direction possibleDirection : Direction.values()) {

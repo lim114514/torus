@@ -19,7 +19,7 @@ import com.github.alantr7.torus.model.de_provider.EntityReference;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.TorusChunk;
 import com.github.alantr7.torus.world.TorusRegion;

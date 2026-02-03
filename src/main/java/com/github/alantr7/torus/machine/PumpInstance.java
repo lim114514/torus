@@ -1,12 +1,14 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -27,7 +29,7 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected Socket energySocket;
+    protected EnergySocket energySocket;
 
     protected ItemDisplay pipeDisplay;
 
@@ -40,8 +42,8 @@ public class PumpInstance extends StructureInstance implements EnergyContainer, 
     }
 
     @Override
-    protected void setup() {
-        energySocket = getSocket("power_connector");
+    protected void setup() throws SetupException {
+        energySocket = requireSocket("power_connector", EnergySocket.class);
         energySocket.maximumInput = Pump.ENERGY_MAXIMUM_INPUT;
     }
 

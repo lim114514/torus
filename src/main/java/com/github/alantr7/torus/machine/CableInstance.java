@@ -3,7 +3,9 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Conductor;
-import com.github.alantr7.torus.utils.EventUtils;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.FluidSocket;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -11,7 +13,7 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.SocketLocation;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BoundingBox;
@@ -53,7 +55,11 @@ public class CableInstance extends StructureInstance implements Conductor {
     @Override
     protected void setup() throws SetupException {
         if (dataContainer.getEntries().containsKey("connections")) {
-            socket = new Socket(getComponent("base"), 0b111111, getMedium(), Socket.FlowDirection.ALL);
+            socket = switch (getMedium()) {
+                case ENERGY -> new EnergySocket(getComponent("base"), 0b111111, Socket.FlowDirection.ALL);
+                case ITEM -> new ItemSocket(getComponent("base"), 0b111111, Socket.FlowDirection.ALL);
+                case FLUID -> new FluidSocket(getComponent("base"), 0b111111, Socket.FlowDirection.ALL);
+            };
             socket.structure = this;
             socket.setConnections(dataContainer.getOrDefault("connections", Data.Type.INT, 0));
 

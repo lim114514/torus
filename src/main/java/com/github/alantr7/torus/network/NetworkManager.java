@@ -1,14 +1,12 @@
 package com.github.alantr7.torus.network;
 
-import com.github.alantr7.torus.machine.CableInstance;
 import com.github.alantr7.torus.machine.WireConnectorInstance;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.world.TorusWorld;
-import org.bukkit.Bukkit;
 
 import java.util.*;
 

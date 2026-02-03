@@ -1,13 +1,14 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -16,9 +17,9 @@ import org.bukkit.ChatColor;
 
 public class ElectricityMeterInstance extends StructureInstance implements EnergyContainer {
 
-    protected Socket inEnergy;
+    protected EnergySocket inEnergy;
 
-    protected Socket outEnergy;
+    protected EnergySocket outEnergy;
 
     protected Data<Integer> dummyStoredEnergy = new Data<>(dataContainer, Data.Type.INT, 0);
 
@@ -34,10 +35,10 @@ public class ElectricityMeterInstance extends StructureInstance implements Energ
 
     @Override
     protected void setup() throws SetupException {
-        inEnergy = requireSocket("in_energy");
+        inEnergy = requireSocket("in_energy", EnergySocket.class);
         inEnergy.maximumInput = Integer.MAX_VALUE;
 
-        outEnergy = requireSocket("out_energy");
+        outEnergy = requireSocket("out_energy", EnergySocket.class);
         outEnergy.maximumOutput = Integer.MAX_VALUE;
     }
 

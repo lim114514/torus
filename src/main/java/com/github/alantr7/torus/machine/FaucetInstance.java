@@ -5,7 +5,8 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.FluidSocket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.world.Fluid;
@@ -16,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class FaucetInstance extends StructureInstance {
 
-    protected Socket socket;
+    protected FluidSocket socket;
 
     public FaucetInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(structure, location, bodyDef, direction);
@@ -28,7 +29,7 @@ public class FaucetInstance extends StructureInstance {
 
     @Override
     protected void setup() throws SetupException {
-        socket = requireSocket("base");
+        socket = requireSocket("base", FluidSocket.class);
     }
 
     @Override

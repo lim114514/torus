@@ -3,14 +3,12 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.world.Pitch;
-import org.bukkit.Bukkit;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import static com.github.alantr7.torus.machine.Connector.getStateFromDirection;
 
@@ -69,7 +67,7 @@ public class JunctionBoxInstance extends StructureInstance implements Conductor 
 
     @Override
     public Collection<BlockLocation> getConnectedNodes() {
-        return getSocket("base").getConnectedNodes();
+        return getSocket("base").getNodes();
     }
 
     @Override

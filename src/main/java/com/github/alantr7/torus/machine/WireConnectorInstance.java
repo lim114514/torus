@@ -11,7 +11,8 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -59,7 +60,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
 
         // Backwards compatibility
         if (getSocket("base") == null) {
-            Socket socket = new Socket(getComponent("base"), 0, Socket.Medium.ENERGY, Socket.FlowDirection.ALL);
+            Socket socket = new EnergySocket(getComponent("base"), 0, Socket.FlowDirection.ALL);
             socketsByName.put("base", socket);
             socket.structure = this;
 
@@ -159,7 +160,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
             return connections.keySet();
 
         List<BlockLocation> nodes = new ArrayList<>(connections.keySet());
-        nodes.addAll(getSocket("base").getConnectedNodes());
+        nodes.addAll(getSocket("base").getNodes());
 
         return nodes;
     }

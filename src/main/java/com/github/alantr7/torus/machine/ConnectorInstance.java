@@ -1,13 +1,14 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.gui.structure.InventoryInterfaceFilterEditGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
-import com.github.alantr7.torus.utils.EventUtils;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -15,7 +16,7 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.Pitch;
 import com.github.alantr7.torus.world.TorusWorld;
@@ -35,7 +36,7 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
 
     protected Data<byte[]> filterInternal = dataContainer.persist("filter", Data.Type.BYTE_ARRAY, new byte[0]);
 
-    protected Socket socket;
+    protected ItemSocket socket;
 
     protected ItemCriteria inputCriteria = null;
 
@@ -50,8 +51,8 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
     }
 
     @Override
-    protected void setup() {
-        socket = getSocket("connector");
+    protected void setup() throws SetupException {
+        socket = requireSocket("connector", ItemSocket.class);
         updateCriteria(getFilter());
 
         for (Direction direction : Direction.values()) {

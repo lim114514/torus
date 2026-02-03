@@ -1,11 +1,12 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
@@ -17,9 +18,9 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    Socket socket;
+    protected EnergySocket socket;
 
-    Display chargeIndicatorDisplay;
+    protected Display chargeIndicatorDisplay;
 
     public PowerBankInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.POWER_BANK, location, bodyDef, direction);
@@ -30,8 +31,8 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     }
 
     @Override
-    protected void setup() {
-        socket = getSocket("power_connector");
+    protected void setup() throws SetupException {
+        socket = requireSocket("power_connector", EnergySocket.class);
         socket.maximumInput = PowerBank.ENERGY_MAXIMUM_INPUT;
         socket.maximumOutput = PowerBank.ENERGY_MAXIMUM_OUTPUT;
 

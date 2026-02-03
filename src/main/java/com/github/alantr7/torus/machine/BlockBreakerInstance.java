@@ -1,6 +1,9 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -11,7 +14,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
 import org.bukkit.ChatColor;
@@ -26,9 +29,9 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected Socket powerSocket;
+    protected EnergySocket powerSocket;
 
-    protected Socket itemSocket;
+    protected ItemSocket itemSocket;
 
     protected StructureInventory inventory;
 
@@ -45,9 +48,9 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     }
 
     @Override
-    protected void setup() {
-        powerSocket = getSocket("power_connector");
-        itemSocket = getSocket("item_connector");
+    protected void setup() throws SetupException {
+        powerSocket = requireSocket("power_connector", EnergySocket.class);
+        itemSocket = requireSocket("item_connector", ItemSocket.class);
         powerSocket.maximumInput = BlockBreaker.ENERGY_MAXIMUM_INPUT;
         inventory = new CustomStructureInventory(1);
         itemSocket.linkedInventory = inventory;

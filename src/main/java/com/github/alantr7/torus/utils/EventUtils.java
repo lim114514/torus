@@ -4,7 +4,7 @@ import com.github.alantr7.torus.api.event.*;
 import com.github.alantr7.torus.player.TorusPlayer;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.bukkit.Bukkit;

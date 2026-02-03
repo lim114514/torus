@@ -1,12 +1,16 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.FluidSocket;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Fluid;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.WasherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
@@ -24,7 +28,11 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
 
-    protected Socket powerSocket, itemInSocket, waterInSocket, itemOutSocket;
+    protected EnergySocket powerSocket;
+
+    protected ItemSocket itemInSocket, itemOutSocket;
+
+    protected FluidSocket waterInSocket;
 
     protected StructureInventory itemOutBuffer = new CustomStructureInventory(1);
 
@@ -73,12 +81,12 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     }
 
     @Override
-    protected void setup() {
-        powerSocket = getSocket("power_connector");
+    protected void setup() throws SetupException {
+        powerSocket = requireSocket("power_connector", EnergySocket.class);
         powerSocket.maximumInput = OreWasher.ENERGY_MAXIMUM_INPUT;
-        itemInSocket = getSocket("item_connector");
-        waterInSocket = getSocket("fluid_connector");
-        itemOutSocket = getSocket("out_connector");
+        itemInSocket = requireSocket("item_connector", ItemSocket.class);
+        waterInSocket = requireSocket("fluid_connector", FluidSocket.class);
+        itemOutSocket = requireSocket("out_connector", ItemSocket.class);
         itemOutSocket.linkedInventory = itemOutBuffer;
     }
 

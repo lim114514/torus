@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.api.event;
 
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
 import org.bukkit.event.Event;

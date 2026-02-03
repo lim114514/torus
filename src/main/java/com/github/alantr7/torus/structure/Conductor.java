@@ -1,6 +1,6 @@
 package com.github.alantr7.torus.structure;
 
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 
 import java.util.Collection;

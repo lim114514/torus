@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.structure.socket.FluidSocket;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
@@ -9,7 +10,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import org.bukkit.Material;
@@ -22,7 +23,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     protected StructureComponent liquidComponent;
 
-    protected Socket input;
+    protected FluidSocket input;
 
     protected Data<Integer> fluid = dataContainer.persist("fluid", Data.Type.INT, -1);
 
@@ -41,7 +42,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     @Override
     protected void setup() throws SetupException {
         liquidComponent = getComponent("liquid");
-        input = requireSocket("in_fluid");
+        input = requireSocket("in_fluid", FluidSocket.class);
         requireSocket("out_fluid").maximumOutput = 1000;
     }
 

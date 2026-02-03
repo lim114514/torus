@@ -1,8 +1,11 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
@@ -10,7 +13,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
@@ -38,7 +41,9 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     protected StructureInventory outBuffer = new CustomStructureInventory(1);
 
-    protected Socket inSocket, outSocket;
+    protected EnergySocket inSocket;
+
+    protected ItemSocket outSocket;
 
     protected int breakingTicks;
 
@@ -171,15 +176,15 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     }
 
     @Override
-    protected void setup() {
+    protected void setup() throws SetupException {
         head = getComponent("head");
         bit = getComponent("drill_bit");
         gantryX = getComponent("gantry_x");
         gantryZ = getComponent("gantry_z");
 
-        inSocket = getSocket("in_energy");
+        inSocket = requireSocket("in_energy", EnergySocket.class);
         inSocket.maximumInput = Quarry.ENERGY_MAXIMUM_INPUT;
-        outSocket = getSocket("out_item");
+        outSocket = requireSocket("out_item", ItemSocket.class);
         outSocket.linkedInventory = outBuffer;
     }
 

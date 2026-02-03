@@ -1,12 +1,15 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.Socket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
@@ -21,7 +24,8 @@ import static com.github.alantr7.torus.machine.OreCrusher.STATE_WORKING;
 public class OreCrusherInstance extends StructureInstance implements Inspectable, EnergyContainer {
 
     protected StructureComponent leftWheel, rightWheel;
-    protected Socket energySocket, itemInSocket, itemOutSocket;
+    protected EnergySocket energySocket;
+    protected ItemSocket itemInSocket, itemOutSocket;
 
     protected CustomStructureInventory itemOutBuffer = new CustomStructureInventory(1);
 
@@ -75,14 +79,14 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     }
 
     @Override
-    protected void setup() {
+    protected void setup() throws SetupException {
         leftWheel = getComponent("wheel_left");
         rightWheel = getComponent("wheel_right");
 
-        itemInSocket = getSocket("item_connector");
-        itemOutSocket = getSocket("out_connector");
+        itemInSocket = requireSocket("item_connector", ItemSocket.class);
+        itemOutSocket = requireSocket("out_connector", ItemSocket.class);
         itemOutSocket.linkedInventory = itemOutBuffer;
-        energySocket = getSocket("power_connector");
+        energySocket = requireSocket("power_connector", EnergySocket.class);
         energySocket.maximumInput = OreCrusher.ENERGY_MAXIMUM_INPUT;
 
         state.set(STATE_WORKING, false, false);
