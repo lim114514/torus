@@ -7,6 +7,8 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.player.TorusPlayer;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.utils.Timing;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -74,9 +76,14 @@ public class TorusWorldManager implements Listener {
         world.handleChunkUnload(event.getChunk());
     }
 
+    @Getter
+    private final Timing tickDurationTimings = new Timing(5);
+
     @InvokePeriodically(interval = 20L, delay = 10L)
     private void tickLoadedStructures() {
+        long start = System.currentTimeMillis();
         worlds.values().forEach(TorusWorld::tick);
+        tickDurationTimings.add((int) (System.currentTimeMillis() - start));
     }
 
     @InvokePeriodically(interval = 8)

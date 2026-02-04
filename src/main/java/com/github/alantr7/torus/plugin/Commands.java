@@ -208,6 +208,8 @@ public class Commands {
               ctx.respond("  --- Chunks: %d (%d virtual)".formatted(chunks, virtualChunks));
               ctx.respond("  --- Structures: %d (%d virtual)".formatted(structures, virtualStructures));
           }
+          ctx.respond("---");
+          ctx.respond("- Average tick duration: " + TorusPlugin.getInstance().getWorldManager().getTickDurationTimings().getAverage() + "ms");
       });
 
     @CommandHandler Command inspectStructure = CommandBuilder.using("torus")
