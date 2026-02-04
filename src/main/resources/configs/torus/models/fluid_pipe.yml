@@ -1,30 +1,30 @@
 type: MULTIPART
 cases:
   fallback:
-    model: "generic_pipe_not_connected"
+    model: "generic_cable_not_connected"
     variables:
       material: light_blue_terracotta
   state[north=true]:
-    model: "generic_pipe_north"
+    model: "generic_cable_north"
     variables:
       material: light_blue_terracotta
   state[east=true]:
-    model: "generic_pipe_east"
+    model: "generic_cable_east"
     variables:
       material: light_blue_terracotta
   state[south=true]:
-    model: "generic_pipe_south"
+    model: "generic_cable_south"
     variables:
       material: light_blue_terracotta
   state[west=true]:
-    model: "generic_pipe_west"
+    model: "generic_cable_west"
     variables:
       material: light_blue_terracotta
   state[up=true]:
-    model: "generic_pipe_up"
+    model: "generic_cable_up"
     variables:
       material: light_blue_terracotta
   state[down=true]:
-    model: "generic_pipe_down"
+    model: "generic_cable_down"
     variables:
       material: light_blue_terracotta

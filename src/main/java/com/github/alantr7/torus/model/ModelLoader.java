@@ -181,7 +181,7 @@ public class ModelLoader {
 
                 Resource modelResource = modelLocation.getResource();
                 if (modelResource == null) {
-                    TorusLogger.error(Category.MODELS, "Model does not exist at set path.");
+                    TorusLogger.error(Category.MODELS, "Model does not exist at set path for '" + structure.namespacedId + "'");
                     continue;
                 }
 
