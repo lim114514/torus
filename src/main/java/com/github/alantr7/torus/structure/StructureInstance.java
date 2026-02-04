@@ -102,17 +102,7 @@ public abstract class StructureInstance {
     private final FlowMeter flowMeter; // TODO: I hate this so much, but it's a temporary solution until I make traits system
 
     public StructureInstance(LoadContext context) {
-        this.structure = context.structure();
-        this.location = context.location();
-        this.direction = context.direction();
-        this.pitch = context.pitch();
-        this.facing = pitch == Pitch.FORWARD
-          ? direction
-          : pitch == Pitch.UP ? Direction.UP : Direction.DOWN;
-        this.dataContainer = context.data();
-        this.state = new StructureState(this);
-        setOccupiedChunks();
-        flowMeter = new FlowMeter(context.location().world);
+        this(context.structure(), context.location(), context.data(), null, context.direction(), context.pitch());
     }
 
     public StructureInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
@@ -120,6 +110,10 @@ public abstract class StructureInstance {
     }
 
     public StructureInstance(Structure structure, BlockLocation location, StructureBodyDef bodyDef, Direction direction, Pitch pitch) {
+        this(structure, location, new DataContainer(), bodyDef, direction, pitch);
+    }
+
+    protected StructureInstance(Structure structure, BlockLocation location, DataContainer dataContainer, StructureBodyDef bodyDef, Direction direction, Pitch pitch) {
         this.structure = structure;
         this.location = location;
         this.direction = direction;
@@ -127,10 +121,12 @@ public abstract class StructureInstance {
         this.facing = pitch == Pitch.FORWARD
           ? direction
           : pitch == Pitch.UP ? Direction.UP : Direction.DOWN;
-        this.dataContainer = new DataContainer();
+        this.dataContainer = dataContainer;
         this.dataContainer.structure = this;
         this.state = new StructureState(this);
-        initBody(bodyDef);
+        if (bodyDef != null) {
+            initBody(bodyDef);
+        }
         setOccupiedChunks();
         flowMeter = new FlowMeter(location.world);
     }
