@@ -111,7 +111,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
     }
 
     @Override
-    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean onPlayerInteract(PlayerInteractEvent event, BlockLocation location) {
         if (!TorusItem.is(event.getPlayer().getInventory().getItemInMainHand(), "torus:copper_wire")) {
             return false;
         }

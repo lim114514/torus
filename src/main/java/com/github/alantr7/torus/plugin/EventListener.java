@@ -27,7 +27,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityUnleashEvent;
 import org.bukkit.event.inventory.*;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -146,7 +145,7 @@ public class EventListener implements Listener {
 
             if (structure.structure.isInteractable && structure.testOwnership(event.getPlayer())) {
                 if (EventUtils.callStructureInteractEvent(event.getPlayer(), structure, clickedBlockLocation)) {
-                    if (structure.handlePlayerInteraction(event, new BlockLocation(event.getClickedBlock().getLocation()))) {
+                    if (structure.onPlayerInteract(event, new BlockLocation(event.getClickedBlock().getLocation()))) {
                         player.placementCooldownExpiry = System.currentTimeMillis() + 200;
                         event.setCancelled(true);
                     }

@@ -9,9 +9,7 @@ import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.structure.inspection.InspectableText;
-import com.github.alantr7.torus.structure.socket.EnergySocket;
-import com.github.alantr7.torus.structure.socket.FluidSocket;
-import com.github.alantr7.torus.structure.socket.ItemSocket;
+import com.github.alantr7.torus.structure.socket.*;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.model.*;
@@ -26,7 +24,6 @@ import com.github.alantr7.torus.structure.state.StructureState;
 import com.github.alantr7.torus.world.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructureComponentDef;
-import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.component.StructureComponent;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import lombok.Getter;
@@ -170,13 +167,7 @@ public abstract class StructureInstance {
                     allowedConnections = allowedConnectionsOriginal;
                 }
 
-                Socket socket = switch (componentDef.socketDef.medium()) {
-                    case ENERGY -> new EnergySocket(components.get(componentDef.name), allowedConnections,componentDef.socketDef.direction());
-                    case ITEM -> new ItemSocket(components.get(componentDef.name), allowedConnections,componentDef.socketDef.direction());
-                    case FLUID -> new FluidSocket(components.get(componentDef.name), allowedConnections,componentDef.socketDef.direction());
-                };
-                socket.structure = this;
-
+                Socket socket = createSocket(componentDef.socketDef.medium(), components.get(componentDef.name), allowedConnections, componentDef.socketDef.direction());
                 socketsByName.put(componentDef.name, socket);
                 for (Direction possibleDirection : Direction.values()) {
                     if (socket.isConnectableFrom(possibleDirection)) {
@@ -185,6 +176,16 @@ public abstract class StructureInstance {
                 }
             }
         }
+    }
+
+    protected Socket createSocket(Socket.Medium medium, StructureComponent component, int allowedConnections, Socket.FlowDirection direction) {
+        Socket socket = switch (medium) {
+            case ENERGY -> new EnergySocket(component, allowedConnections, direction);
+            case ITEM -> new ItemSocket(component, allowedConnections, direction);
+            case FLUID -> new FluidSocket(component, allowedConnections,direction);
+        };
+        socket.structure = this;
+        return socket;
     }
 
     public void onModelSpawn() {
@@ -543,7 +544,7 @@ public abstract class StructureInstance {
         location.getChunk().isUnsaved = true;
     }
 
-    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean onPlayerInteract(PlayerInteractEvent event, BlockLocation location) {
         return false;
     }
 

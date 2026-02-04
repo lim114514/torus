@@ -148,7 +148,7 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
     }
 
     @Override
-    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean onPlayerInteract(PlayerInteractEvent event, BlockLocation location) {
         TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
         if (item != null && item.namespacedId.equals("torus:screwdriver")) {
             if (event.getPlayer().isSneaking()) {

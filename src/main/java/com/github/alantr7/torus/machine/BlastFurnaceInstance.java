@@ -173,7 +173,7 @@ public class BlastFurnaceInstance extends StructureInstance implements Inspectab
     }
 
     @Override
-    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean onPlayerInteract(PlayerInteractEvent event, BlockLocation location) {
         new BlastFurnaceGUI(this, event.getPlayer()).open();
         return true;
     }

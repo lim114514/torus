@@ -3,9 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.Conductor;
-import com.github.alantr7.torus.structure.socket.EnergySocket;
-import com.github.alantr7.torus.structure.socket.FluidSocket;
-import com.github.alantr7.torus.structure.socket.ItemSocket;
+import com.github.alantr7.torus.structure.socket.*;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -13,7 +11,6 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
-import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.SocketLocation;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BoundingBox;
@@ -85,7 +82,7 @@ public class CableInstance extends StructureInstance implements Conductor {
     }
 
     @Override
-    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean onPlayerInteract(PlayerInteractEvent event, BlockLocation location) {
         if (!TorusItem.is(event.getPlayer().getInventory().getItemInMainHand(), "torus:screwdriver")) {
             return false;
         }

@@ -33,7 +33,7 @@ public class FaucetInstance extends StructureInstance {
     }
 
     @Override
-    public boolean handlePlayerInteraction(PlayerInteractEvent event, BlockLocation location) {
+    public boolean onPlayerInteract(PlayerInteractEvent event, BlockLocation location) {
         ItemStack stack = event.getPlayer().getInventory().getItemInMainHand();
         if (stack.getType() != Material.BUCKET)
             return false;
