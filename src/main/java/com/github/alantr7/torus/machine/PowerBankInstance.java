@@ -4,6 +4,7 @@ import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.structure.socket.TransferPreferences;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -13,6 +14,8 @@ import lombok.Getter;
 import org.bukkit.entity.Display;
 import org.bukkit.util.Transformation;
 
+import java.util.Set;
+
 public class PowerBankInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
@@ -21,6 +24,10 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     protected EnergySocket socket;
 
     protected Display chargeIndicatorDisplay;
+
+    private static final TransferPreferences inputPreferences = new TransferPreferences(
+      Set.of("torus:power_bank"), TransferPreferences.MODE_BLACKLIST
+    );
 
     public PowerBankInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.POWER_BANK, location, bodyDef, direction);
@@ -49,7 +56,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     int energyAtLastTick;
     @Override
     public void tick(boolean isVirtual) {
-        socket.maintainEnergy(this);
+        socket.maintainEnergy(this, inputPreferences);
         if (energyAtLastTick != storedEnergy.get()) {
             updateChargeIndicator();
         }
