@@ -13,8 +13,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.socket.Socket;
-import com.github.alantr7.torus.structure.component.StructureComponent;
+import com.github.alantr7.torus.structure.StructurePart;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
@@ -30,7 +29,7 @@ import org.bukkit.util.Transformation;
 
 public class QuarryInstance extends StructureInstance implements EnergyContainer {
 
-    protected StructureComponent head, bit, gantryX, gantryZ;
+    protected StructurePart head, bit, gantryX, gantryZ;
 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
@@ -177,10 +176,10 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
 
     @Override
     protected void setup() throws SetupException {
-        head = getComponent("head");
-        bit = getComponent("drill_bit");
-        gantryX = getComponent("gantry_x");
-        gantryZ = getComponent("gantry_z");
+        head = getPart("head");
+        bit = getPart("drill_bit");
+        gantryX = getPart("gantry_x");
+        gantryZ = getPart("gantry_z");
 
         inSocket = requireSocket("in_energy", EnergySocket.class);
         inSocket.maximumInput = Quarry.ENERGY_MAXIMUM_INPUT;

@@ -2,7 +2,7 @@ package com.github.alantr7.torus.structure.socket;
 
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.network.Node;
-import com.github.alantr7.torus.structure.component.StructureComponent;
+import com.github.alantr7.torus.structure.StructurePart;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -29,7 +29,7 @@ public class ItemSocket extends Socket {
         }
     }
 
-    public ItemSocket(StructureComponent component, int allowedConnections, FlowDirection direction) {
+    public ItemSocket(StructurePart component, int allowedConnections, FlowDirection direction) {
         super(component, allowedConnections, Medium.ITEM, direction);
     }
 

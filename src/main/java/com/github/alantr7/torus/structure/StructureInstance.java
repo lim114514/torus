@@ -23,8 +23,7 @@ import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.structure.state.StructureState;
 import com.github.alantr7.torus.world.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
-import com.github.alantr7.torus.structure.component.StructureComponent;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.data.DataContainer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -74,7 +73,7 @@ public abstract class StructureInstance {
 
     public boolean isRemoved = false;
 
-    protected Map<String, StructureComponent> components = new HashMap<>();
+    protected Map<String, StructurePart> parts = new HashMap<>();
 
     protected Map<SocketLocation, Socket> sockets = new HashMap<>();
 
@@ -131,60 +130,36 @@ public abstract class StructureInstance {
         this.dataContainer = new DataContainer();
         this.dataContainer.structure = this;
         this.state = new StructureState(this);
-        initComponents(bodyDef);
+        initBody(bodyDef);
         setOccupiedChunks();
         flowMeter = new FlowMeter(location.world);
     }
 
-    private void initComponents(StructureBodyDef bodyDef) {
-        for (StructureComponentDef componentDef : bodyDef.components()) {
-            MathUtils.applyRotation(componentDef.offset, direction.rotH);
-            StructureComponent component = new StructureComponent(
-              this,
-              new BlockLocation(location.world, (int) componentDef.offset.x, (int) componentDef.offset.y, (int) componentDef.offset.z),
-              componentDef.name
-            );
-            components.put(componentDef.name, component);
+    private void initBody(StructureBodyDef bodyDef) {
+        for (StructurePartDef partDef : bodyDef.parts()) {
+            MathUtils.applyRotation(partDef.offset, direction.rotH);
+            StructurePart part = new StructurePart(this, new BlockLocation(location.world, (int) partDef.offset.x, (int) partDef.offset.y, (int) partDef.offset.z), partDef.name);
+            parts.put(partDef.name, part);
 
-            if (componentDef.socketDef != null) {
-                int allowedConnectionsOriginal = componentDef.socketDef.allowedConnections();
-                int allowedConnections;
-
-                if (pitch != Pitch.FORWARD) {
-                    allowedConnections = 0;
-                    for (Direction possibleDirection : Direction.values()) {
-                        if (!MathUtils.hasFlag(allowedConnectionsOriginal, possibleDirection.mask()))
-                            continue;
-
-                        if (possibleDirection != direction && possibleDirection != direction.getOpposite() && possibleDirection != Direction.UP && possibleDirection != Direction.DOWN) {
-                            allowedConnections = MathUtils.setFlag(allowedConnections, possibleDirection.mask(), true);
-                            continue;
-                        }
-
-                        allowedConnections = MathUtils.setFlag(allowedConnections, pitch.transform(direction, possibleDirection).mask(), true);
-                    }
-                } else {
-                    allowedConnections = allowedConnectionsOriginal;
-                }
-
-                Socket socket = createSocket(componentDef.socketDef.medium(), components.get(componentDef.name), allowedConnections, componentDef.socketDef.direction());
-                socketsByName.put(componentDef.name, socket);
-                for (Direction possibleDirection : Direction.values()) {
-                    if (socket.isConnectableFrom(possibleDirection)) {
-                        sockets.put(new SocketLocation(component.absoluteLocation.getRelative(possibleDirection), socket.medium), socket);
-                    }
-                }
+            if (partDef.socketDef != null) {
+                createSocket(partDef.socketDef.medium(), parts.get(partDef.name), pitch.transform(partDef.socketDef, direction), partDef.socketDef.direction());
             }
         }
     }
 
-    protected Socket createSocket(Socket.Medium medium, StructureComponent component, int allowedConnections, Socket.FlowDirection direction) {
+    protected Socket createSocket(Socket.Medium medium, StructurePart part, int allowedConnections, Socket.FlowDirection direction) {
         Socket socket = switch (medium) {
-            case ENERGY -> new EnergySocket(component, allowedConnections, direction);
-            case ITEM -> new ItemSocket(component, allowedConnections, direction);
-            case FLUID -> new FluidSocket(component, allowedConnections,direction);
+            case ENERGY -> new EnergySocket(part, allowedConnections, direction);
+            case ITEM -> new ItemSocket(part, allowedConnections, direction);
+            case FLUID -> new FluidSocket(part, allowedConnections,direction);
         };
         socket.structure = this;
+        for (Direction possibleDirection : Direction.values()) {
+            if (socket.isConnectableFrom(possibleDirection)) {
+                sockets.put(new SocketLocation(part.absoluteLocation.getRelative(possibleDirection), socket.medium), socket);
+            }
+        }
+        socketsByName.put(part.name, socket);
         return socket;
     }
 
@@ -369,20 +344,20 @@ public abstract class StructureInstance {
         return this.collisionVectors = MathUtils.rotateVectors(structure.collisionVectors, direction);
     }
 
-    public StructureComponent requireComponent(String name) throws MissingDataException {
-        StructureComponent component = components.get(name);
-        if (component == null)
+    public StructurePart requirePart(String name) throws MissingDataException {
+        StructurePart part = parts.get(name);
+        if (part == null)
             throw new MissingDataException("Component by name '" + name + "' could not be found.");
 
-        return component;
+        return part;
     }
 
-    public StructureComponent getComponent(String name) {
-        return components.get(name);
+    public StructurePart getPart(String name) {
+        return parts.get(name);
     }
 
-    public Collection<StructureComponent> getComponents() {
-        return components.values();
+    public Collection<StructurePart> getParts() {
+        return parts.values();
     }
 
     public Socket getSocket(BlockLocation location, Socket.Medium medium) {
@@ -566,15 +541,15 @@ public abstract class StructureInstance {
         buffer.writeU1((pitch.ordinal() << 4) | direction.ordinal());
 
         // Components Length + Connectors Length
-        buffer.writeU1((components.size() << 4) | sockets.size());
+        buffer.writeU1((parts.size() << 4) | sockets.size());
         // Components
-        components.forEach((name, component) -> {
+        parts.forEach((name, part) -> {
             // Name
             buffer.writeU1(keys.pool(name));
 
             // Component offset
-            buffer.writeU1(((component.relativeLocation.x + 7) << 4) | (component.relativeLocation.z + 7));
-            buffer.writeU1(component.relativeLocation.y);
+            buffer.writeU1(((part.relativeLocation.x + 7) << 4) | (part.relativeLocation.z + 7));
+            buffer.writeU1(part.relativeLocation.y);
         });
 
         // Connectors
@@ -616,13 +591,13 @@ public abstract class StructureInstance {
 
         // Components Length + Connectors Length
         int counts = reader.readU1();
-        int componentsLength = (counts >> 4) & 0x0f;
+        int partsLength = (counts >> 4) & 0x0f;
         int connectorsLength = counts & 0x0f;
 
-        Map<String, StructureComponent> components = new HashMap<>(componentsLength);
+        Map<String, StructurePart> components = new HashMap<>(partsLength);
         Map<SocketLocation, Socket> sockets = new HashMap<>(connectorsLength);
 
-        for (int i = 0; i < componentsLength; i++) {
+        for (int i = 0; i < partsLength; i++) {
             // Name
             String name = region.strings.at(reader.readU1());
 
@@ -632,14 +607,14 @@ public abstract class StructureInstance {
             int cz = (packedXZ & 0xf) - 7;
             int cy = reader.readU1();
 
-            StructureComponent component = new StructureComponent(name, location.getRelative(cx, cy, cz), new BlockLocation(chunk.world, cx, cy, cz), Direction.values()[direction]);
+            StructurePart component = new StructurePart(name, location.getRelative(cx, cy, cz), new BlockLocation(chunk.world, cx, cy, cz), Direction.values()[direction]);
             components.put(name, component);
         }
 
         for (int i = 0; i < connectorsLength; i++) {
             // Linked component
             String linkedComponent = region.strings.at(reader.readU1());
-            StructureComponent component = components.get(linkedComponent);
+            StructurePart component = components.get(linkedComponent);
 
             int allowedConnections = reader.readU1();
             int connections = reader.readU1();
@@ -681,7 +656,7 @@ public abstract class StructureInstance {
 
             StructureInstance instance = constructor.newInstance(new LoadContext(structure, location, Direction.values()[direction], Pitch.values()[pitch], dataContainer));
             dataContainer.structure = instance;
-            instance.components.putAll(components);
+            instance.parts.putAll(components);
             instance.sockets.putAll(sockets);
             sockets.forEach((l, c) -> {
                 c.structure = instance;

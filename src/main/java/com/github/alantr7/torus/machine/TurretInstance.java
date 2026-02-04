@@ -10,7 +10,7 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.component.StructureComponent;
+import com.github.alantr7.torus.structure.StructurePart;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
@@ -26,7 +26,7 @@ import java.util.Collection;
 
 public class TurretInstance extends StructureInstance implements EnergyContainer {
 
-    protected StructureComponent head;
+    protected StructurePart head;
 
     protected EnergySocket inEnergy;
 
@@ -105,7 +105,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 
     @Override
     protected void setup() throws SetupException {
-        head = requireComponent("head");
+        head = requirePart("head");
         inEnergy = (EnergySocket) requireSocket("in_energy");
         inEnergy.maximumInput = Turret.ENERGY_MAXIMUM_INPUT;
         inItem = (ItemSocket) requireSocket("in_item");

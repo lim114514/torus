@@ -9,7 +9,7 @@ import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.Pitch;
@@ -43,11 +43,11 @@ public class Connector extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         StructureBodyDef body = new StructureBodyDef(
-          new StructureComponentDef[]{
-            new StructureComponentDef("connector", new Vector3f(), new StructureSocketDef(
+          new StructurePartDef[]{
+            new StructurePartDef("connector", new Vector3f(), new StructureSocketDef(
               Socket.Medium.ITEM, Socket.FlowDirection.IN, MathUtils.setFlag(0b111111, direction.getOpposite().mask(), false)
             )),
-            new StructureComponentDef("cable", new Vector3f()),
+            new StructurePartDef("cable", new Vector3f()),
           }
         );
 

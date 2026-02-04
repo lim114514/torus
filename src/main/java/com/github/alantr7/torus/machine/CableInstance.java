@@ -53,9 +53,9 @@ public class CableInstance extends StructureInstance implements Conductor {
     protected void setup() throws SetupException {
         if (dataContainer.getEntries().containsKey("connections")) {
             socket = switch (getMedium()) {
-                case ENERGY -> new EnergySocket(getComponent("base"), 0b111111, Socket.FlowDirection.ALL);
-                case ITEM -> new ItemSocket(getComponent("base"), 0b111111, Socket.FlowDirection.ALL);
-                case FLUID -> new FluidSocket(getComponent("base"), 0b111111, Socket.FlowDirection.ALL);
+                case ENERGY -> new EnergySocket(getPart("base"), 0b111111, Socket.FlowDirection.ALL);
+                case ITEM -> new ItemSocket(getPart("base"), 0b111111, Socket.FlowDirection.ALL);
+                case FLUID -> new FluidSocket(getPart("base"), 0b111111, Socket.FlowDirection.ALL);
             };
             socket.structure = this;
             socket.setConnections(dataContainer.getOrDefault("connections", Data.Type.INT, 0));
@@ -64,7 +64,7 @@ public class CableInstance extends StructureInstance implements Conductor {
             socketsByName.put("base", socket);
             for (Direction possibleDirection : Direction.values()) {
                 if (socket.isConnectableFrom(possibleDirection)) {
-                    sockets.put(new SocketLocation(getComponent("base").absoluteLocation.getRelative(possibleDirection), socket.medium), socket);
+                    sockets.put(new SocketLocation(getPart("base").absoluteLocation.getRelative(possibleDirection), socket.medium), socket);
                 }
             }
 

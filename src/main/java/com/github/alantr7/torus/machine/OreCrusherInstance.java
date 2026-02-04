@@ -9,8 +9,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.CrusherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.socket.Socket;
-import com.github.alantr7.torus.structure.component.StructureComponent;
+import com.github.alantr7.torus.structure.StructurePart;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -23,7 +22,7 @@ import static com.github.alantr7.torus.machine.OreCrusher.STATE_WORKING;
 
 public class OreCrusherInstance extends StructureInstance implements Inspectable, EnergyContainer {
 
-    protected StructureComponent leftWheel, rightWheel;
+    protected StructurePart leftWheel, rightWheel;
     protected EnergySocket energySocket;
     protected ItemSocket itemInSocket, itemOutSocket;
 
@@ -80,8 +79,8 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
 
     @Override
     protected void setup() throws SetupException {
-        leftWheel = getComponent("wheel_left");
-        rightWheel = getComponent("wheel_right");
+        leftWheel = getPart("wheel_left");
+        rightWheel = getPart("wheel_right");
 
         itemInSocket = requireSocket("item_connector", ItemSocket.class);
         itemOutSocket = requireSocket("out_connector", ItemSocket.class);

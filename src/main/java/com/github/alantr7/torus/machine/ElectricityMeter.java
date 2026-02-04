@@ -4,7 +4,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -25,10 +25,10 @@ public class ElectricityMeter extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
-        return new ElectricityMeterInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f()),
-          new StructureComponentDef("in_energy", new Vector3f(), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.IN, Direction.UP.mask())),
-          new StructureComponentDef("out_energy", new Vector3f(), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.OUT, Direction.DOWN.mask())),
+        return new ElectricityMeterInstance(location, new StructureBodyDef(new StructurePartDef[]{
+          new StructurePartDef("base", new Vector3f()),
+          new StructurePartDef("in_energy", new Vector3f(), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.IN, Direction.UP.mask())),
+          new StructurePartDef("out_energy", new Vector3f(), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.OUT, Direction.DOWN.mask())),
         }), direction);
     }
 

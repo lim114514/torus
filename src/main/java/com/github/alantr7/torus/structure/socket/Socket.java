@@ -2,7 +2,7 @@ package com.github.alantr7.torus.structure.socket;
 
 import com.github.alantr7.torus.network.NetworkGraph;
 import com.github.alantr7.torus.structure.*;
-import com.github.alantr7.torus.structure.component.StructureComponent;
+import com.github.alantr7.torus.structure.StructurePart;
 import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -42,9 +42,9 @@ public abstract class Socket {
     }
 
     @Getter
-    protected StructureComponent component;
+    protected StructurePart component;
 
-    public Socket(StructureComponent component, int allowedConnections, Medium medium, FlowDirection direction) {
+    public Socket(StructurePart component, int allowedConnections, Medium medium, FlowDirection direction) {
         this.component = component;
         this.allowedConnections = allowedConnections;
         this.flowDirection = direction;

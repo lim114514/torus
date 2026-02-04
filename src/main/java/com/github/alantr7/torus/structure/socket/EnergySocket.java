@@ -2,12 +2,11 @@ package com.github.alantr7.torus.structure.socket;
 
 import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.EnergyContainer;
-import com.github.alantr7.torus.structure.component.StructureComponent;
-import org.bukkit.Bukkit;
+import com.github.alantr7.torus.structure.StructurePart;
 
 public class EnergySocket extends Socket {
 
-    public EnergySocket(StructureComponent component, int allowedConnections, FlowDirection direction) {
+    public EnergySocket(StructurePart component, int allowedConnections, FlowDirection direction) {
         super(component, allowedConnections, Medium.ENERGY, direction);
     }
 

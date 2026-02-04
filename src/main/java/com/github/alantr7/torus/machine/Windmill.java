@@ -5,7 +5,7 @@ import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.state.State;
@@ -44,9 +44,9 @@ public class Windmill extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
-        return new WindmillInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f()),
-          new StructureComponentDef("out_energy", new Vector3f(), new StructureSocketDef(
+        return new WindmillInstance(location, new StructureBodyDef(new StructurePartDef[]{
+          new StructurePartDef("base", new Vector3f()),
+          new StructurePartDef("out_energy", new Vector3f(), new StructureSocketDef(
             Socket.Medium.ENERGY, Socket.FlowDirection.OUT, direction.mask()
           ))
         }), direction);

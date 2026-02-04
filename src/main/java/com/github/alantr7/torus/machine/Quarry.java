@@ -9,7 +9,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -96,19 +96,19 @@ public class Quarry extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new QuarryInstance(this, location, new StructureBodyDef(
-          new StructureComponentDef[]{
-            new StructureComponentDef("base", new Vector3f()),
-            new StructureComponentDef("in_energy", new Vector3f(0, 0, -6), new StructureSocketDef(
+          new StructurePartDef[]{
+            new StructurePartDef("base", new Vector3f()),
+            new StructurePartDef("in_energy", new Vector3f(0, 0, -6), new StructureSocketDef(
               Socket.Medium.ENERGY, Socket.FlowDirection.IN, direction.getLeft().mask()
             )),
-            new StructureComponentDef("out_item", new Vector3f(0, 0, -6), new StructureSocketDef(
+            new StructurePartDef("out_item", new Vector3f(0, 0, -6), new StructureSocketDef(
               Socket.Medium.ITEM, Socket.FlowDirection.OUT, Direction.UP.mask()
             )),
-            new StructureComponentDef("head", new Vector3f()),
-            new StructureComponentDef("feed", new Vector3f()),
-            new StructureComponentDef("drill_bit", new Vector3f()),
-            new StructureComponentDef("gantry_x", new Vector3f()),
-            new StructureComponentDef("gantry_z", new Vector3f()),
+            new StructurePartDef("head", new Vector3f()),
+            new StructurePartDef("feed", new Vector3f()),
+            new StructurePartDef("drill_bit", new Vector3f()),
+            new StructurePartDef("gantry_x", new Vector3f()),
+            new StructurePartDef("gantry_z", new Vector3f()),
           }
         ), direction);
     }

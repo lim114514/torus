@@ -10,8 +10,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.socket.Socket;
-import com.github.alantr7.torus.structure.component.StructureComponent;
+import com.github.alantr7.torus.structure.StructurePart;
 import com.github.alantr7.torus.structure.data.Data;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
@@ -21,7 +20,7 @@ import org.joml.Vector3f;
 
 public class FluidTankInstance extends StructureInstance implements FluidContainer, Inspectable {
 
-    protected StructureComponent liquidComponent;
+    protected StructurePart liquidComponent;
 
     protected FluidSocket input;
 
@@ -41,7 +40,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     @Override
     protected void setup() throws SetupException {
-        liquidComponent = getComponent("liquid");
+        liquidComponent = getPart("liquid");
         input = requireSocket("in_fluid", FluidSocket.class);
         requireSocket("out_fluid").maximumOutput = 1000;
     }

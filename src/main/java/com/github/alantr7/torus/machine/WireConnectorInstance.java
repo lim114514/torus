@@ -60,10 +60,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
 
         // Backwards compatibility
         if (getSocket("base") == null) {
-            Socket socket = new EnergySocket(getComponent("base"), 0, Socket.FlowDirection.ALL);
-            socketsByName.put("base", socket);
-            socket.structure = this;
-
+            createSocket(Socket.Medium.ENERGY, getPart("base"), 0, Socket.FlowDirection.ALL);
             save();
         }
     }

@@ -7,7 +7,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -45,18 +45,18 @@ public class OreWasher extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new OreWasherInstance(location, new StructureBodyDef(
-          new StructureComponentDef[] {
-            new StructureComponentDef("body", new Vector3f()),
-            new StructureComponentDef("item_connector", new Vector3f(0f, 1f, 0f), new StructureSocketDef(
+          new StructurePartDef[] {
+            new StructurePartDef("body", new Vector3f()),
+            new StructurePartDef("item_connector", new Vector3f(0f, 1f, 0f), new StructureSocketDef(
               Socket.Medium.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
-            new StructureComponentDef("out_connector", new Vector3f(0f, 0, 0f), new StructureSocketDef(
+            new StructurePartDef("out_connector", new Vector3f(0f, 0, 0f), new StructureSocketDef(
               Socket.Medium.ITEM, Socket.FlowDirection.OUT, direction.mask()
             )),
-            new StructureComponentDef("power_connector", new Vector3f(0f, 0, 1f), new StructureSocketDef(
+            new StructurePartDef("power_connector", new Vector3f(0f, 0, 1f), new StructureSocketDef(
               Socket.Medium.ENERGY, Socket.FlowDirection.IN, direction.getOpposite().mask()
             )),
-            new StructureComponentDef("fluid_connector", new Vector3f(0f, 0, 1f), new StructureSocketDef(
+            new StructurePartDef("fluid_connector", new Vector3f(0f, 0, 1f), new StructureSocketDef(
               Socket.Medium.FLUID, Socket.FlowDirection.IN, Direction.UP.mask()
             ))
           }

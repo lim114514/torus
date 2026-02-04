@@ -10,7 +10,7 @@ import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.Pitch;
@@ -56,15 +56,15 @@ public class FluidTank extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new FluidTankInstance(location, new StructureBodyDef(
-          new StructureComponentDef[]{
-            new StructureComponentDef("base", new Vector3f()),
-            new StructureComponentDef("in_fluid", new Vector3f(0f, 3f, 0f), new StructureSocketDef(
+          new StructurePartDef[]{
+            new StructurePartDef("base", new Vector3f()),
+            new StructurePartDef("in_fluid", new Vector3f(0f, 3f, 0f), new StructureSocketDef(
               Socket.Medium.FLUID, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
-            new StructureComponentDef("out_fluid", new Vector3f(0f, 0f, -1f), new StructureSocketDef(
+            new StructurePartDef("out_fluid", new Vector3f(0f, 0f, -1f), new StructureSocketDef(
               Socket.Medium.FLUID, Socket.FlowDirection.OUT, direction.mask()
             )),
-            new StructureComponentDef("liquid", new Vector3f(0f, 0f, -1f)),
+            new StructurePartDef("liquid", new Vector3f(0f, 0f, -1f)),
           }
         ), direction);
     }

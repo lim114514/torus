@@ -9,7 +9,7 @@ import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -52,19 +52,19 @@ public class OreCrusher extends Structure {
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new OreCrusherInstance(location, new StructureBodyDef(
-          new StructureComponentDef[]{
-            new StructureComponentDef("body", new Vector3f()),
-            new StructureComponentDef("power_connector", new Vector3f(-2, 1, 0), new StructureSocketDef(
+          new StructurePartDef[]{
+            new StructurePartDef("body", new Vector3f()),
+            new StructurePartDef("power_connector", new Vector3f(-2, 1, 0), new StructureSocketDef(
               Socket.Medium.ENERGY, Socket.FlowDirection.IN, direction.getLeft().mask()
             )),
-            new StructureComponentDef("item_connector", new Vector3f(0, 2, 0), new StructureSocketDef(
+            new StructurePartDef("item_connector", new Vector3f(0, 2, 0), new StructureSocketDef(
               Socket.Medium.ITEM, Socket.FlowDirection.IN, Direction.UP.mask()
             )),
-            new StructureComponentDef("out_connector", new Vector3f(1, 0, 0), new StructureSocketDef(
+            new StructurePartDef("out_connector", new Vector3f(1, 0, 0), new StructureSocketDef(
               Socket.Medium.ITEM, Socket.FlowDirection.OUT, direction.getRight().mask()
             )),
-            new StructureComponentDef("wheel_left", new Vector3f()),
-            new StructureComponentDef("wheel_right", new Vector3f())
+            new StructurePartDef("wheel_left", new Vector3f()),
+            new StructurePartDef("wheel_right", new Vector3f())
           }
         ), direction);
     }

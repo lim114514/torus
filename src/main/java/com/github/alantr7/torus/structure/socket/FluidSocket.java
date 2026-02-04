@@ -2,12 +2,12 @@ package com.github.alantr7.torus.structure.socket;
 
 import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.FluidContainer;
-import com.github.alantr7.torus.structure.component.StructureComponent;
+import com.github.alantr7.torus.structure.StructurePart;
 import com.github.alantr7.torus.world.Fluid;
 
 public class FluidSocket extends Socket {
 
-    public FluidSocket(StructureComponent component, int allowedConnections, FlowDirection direction) {
+    public FluidSocket(StructurePart component, int allowedConnections, FlowDirection direction) {
         super(component, allowedConnections, Medium.FLUID, direction);
     }
 

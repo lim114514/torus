@@ -7,7 +7,7 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.builder.StructureComponentDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -48,12 +48,12 @@ public class CoalGenerator extends Structure {
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
-        return new CoalGeneratorInstance(location, new StructureBodyDef(new StructureComponentDef[]{
-          new StructureComponentDef("base", new Vector3f()),
-          new StructureComponentDef(
+        return new CoalGeneratorInstance(location, new StructureBodyDef(new StructurePartDef[]{
+          new StructurePartDef("base", new Vector3f()),
+          new StructurePartDef(
             "item_connector", new Vector3f(0, 0, 2), new StructureSocketDef(Socket.Medium.ITEM, Socket.FlowDirection.IN, direction.getOpposite().mask())
           ),
-          new StructureComponentDef(
+          new StructurePartDef(
             "power_connector", new Vector3f(0, 0, 0), new StructureSocketDef(Socket.Medium.ENERGY, Socket.FlowDirection.OUT, direction.mask())
           )
         }), direction);
