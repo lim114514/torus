@@ -1,5 +1,7 @@
 package com.github.alantr7.torus.model.de_provider;
 
+import com.github.alantr7.bukkitplugin.versions.Version;
+import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.HeadData;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
@@ -29,8 +31,15 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
 
     private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("[a-z]+=[a-zA-Z0-9_:]+");
 
+    private static final Map<String, String> materialMappings = new HashMap<>();
+
     public DisplayEntitiesRendererConfigLoader() {
         super("display_entities");
+        TorusPlugin.getInstance().getLogger().info("Recognized server version: " + Version.getServerVersion());
+
+        if (!Version.getServerVersion().isOlderThan(Version.from("1.21.9"))) {
+            materialMappings.put("CHAIN", "IRON_CHAIN");
+        }
     }
 
     @Override
@@ -96,7 +105,8 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
         Map<String, String> itemAttributes = new HashMap<>();
         int attributesPosition = rawMaterial.indexOf("[");
         if (attributesPosition != -1) {
-            material = Material.valueOf(rawMaterial.substring(0, attributesPosition).toUpperCase());
+            String materialName = rawMaterial.substring(0, attributesPosition).toUpperCase();
+            material = Material.matchMaterial(materialMappings.getOrDefault(materialName, materialName));
 
             Matcher attributeMatcher = ATTRIBUTE_PATTERN.matcher(rawMaterial.substring(attributesPosition + 1, rawMaterial.length() - 1));
             while (attributeMatcher.find()) {
@@ -106,7 +116,8 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
                 itemAttributes.put(attributeNameValue.substring(0, attributeValueSeparatorPosition), attributeNameValue.substring(attributeValueSeparatorPosition + 1));
             }
         } else {
-            material = Material.valueOf(rawMaterial.toUpperCase());
+            String materialName = rawMaterial.toUpperCase();
+            material = Material.valueOf(materialMappings.getOrDefault(materialName, materialName));
         }
 
         float[] offsetScaleRotation = {
