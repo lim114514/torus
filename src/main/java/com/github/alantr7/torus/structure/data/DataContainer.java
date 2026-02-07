@@ -106,7 +106,7 @@ public class DataContainer {
                 }
                 // FLOAT
                 case 2 -> {
-                    type = Data.Type.INT;
+                    type = Data.Type.FLOAT;
                     value = Float.intBitsToFloat(ByteArrayReader.toInt(buffer.readBytes(4)));
                 }
                 // STRING

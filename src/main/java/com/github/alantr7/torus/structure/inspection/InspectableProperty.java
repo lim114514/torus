@@ -1,10 +1,14 @@
 package com.github.alantr7.torus.structure.inspection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.function.Supplier;
 
 public class InspectableProperty extends InspectableText {
 
-    public final String name;
+    @Getter @Setter
+    private String name;
 
     public InspectableProperty(String name, Supplier<String> valueSupplier) {
         super(valueSupplier);
