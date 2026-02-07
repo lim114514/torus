@@ -25,6 +25,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.BLAST_FURNACE);
         registry.registerAndInitialize(Structures.BLOCK_BREAKER);
         registry.registerAndInitialize(Structures.PUMP);
+        registry.registerAndInitialize(Structures.PRESSURE_VENT);
         registry.registerAndInitialize(Structures.ORE_CRUSHER);
         registry.registerAndInitialize(Structures.ORE_WASHER);
         registry.registerAndInitialize(Structures.QUARRY);
@@ -71,6 +72,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "turret", new Category[]{Category.MACHINES}, Structures.TURRET, Material.PAPER, "Turret", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "blast_furnace", new Category[]{Category.MACHINES}, Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "block_breaker", new Category[]{Category.MACHINES}, Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "pressure_vent", new Category[]{Category.TOOLS}, Structures.PRESSURE_VENT, Material.PAPER, "Pressure Relief Vent", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "pump", new Category[]{Category.MACHINES}, Structures.PUMP, Material.PAPER, "Pump", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "ore_crusher", new Category[]{Category.MACHINES}, Structures.ORE_CRUSHER, Material.PAPER, "Ore Crusher", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "ore_washer", new Category[]{Category.MACHINES}, Structures.ORE_WASHER, Material.PAPER, "Ore Washer", Collections.emptyList()));

@@ -36,9 +36,13 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     protected Data<Float> temperature = dataContainer.persist("temperature", Data.Type.FLOAT, 0f);
 
+    protected Data<Byte> isVenting = dataContainer.persist("is_venting", Data.Type.BYTE, (byte) 0);
+
     protected ItemDisplay fluidDisplay;
 
     protected boolean hasExploded;
+
+    private static final float GAS_FACTOR = 100f;
 
     FluidTankInstance(LoadContext context) {
         super(context);
@@ -106,12 +110,15 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
         if (this.getFluid() == Fluid.WATER) {
             float k = calculateHeat();
+
+            // increase the temperature
             if (k > 0.0F) {
                 this.temperature.update(Math.min(100.0F, temperature.get() + k * (100.0F - temperature.get())));
             } else {
                 this.temperature.update(Math.max(0.0F, temperature.get() - 1.0F));
             }
 
+            // boil water
             if (temperature.get() > 85.0F) {
                 for (int i = 0; i < 5; i++) {
                     for(int j = 0; j < 6; ++j) {
@@ -123,15 +130,40 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
                     spawnSteamParticle();
                 }
 
-                int evaporated = (int) (100.0F * (1.0F - (float)Math.random() * (100.0F - temperature.get()) / 100.0F));
-                steam.update(this.steam.get() + consumeFluid(evaporated));
+                int evaporated = (int) (5f * (1.0F - (float)Math.random() * (100.0F - temperature.get()) / 100.0F));
+                steam.update(this.steam.get() + (int) (consumeFluid(evaporated) * GAS_FACTOR));
             }
 
-            int condensed = supplyFluid(this.steam.get() >= 25 ? 25 : this.steam.get());
-            this.steam.update(steam.get() - condensed);
-            if (calculatePressure() > 1.5F) {
+            // condensation
+            int condensed = supplyFluid((int) ((this.steam.get() >= 25 ? 25 : this.steam.get()) / GAS_FACTOR));
+            this.steam.update(steam.get() - (int) (condensed * GAS_FACTOR));
+
+            // explode if pressure is too high
+            float pressure = calculatePressure();
+            if (pressure > 1.5F && Math.random() < 0.15f * pressure) {
                 hasExploded = true;
                 remove();
+            }
+
+            // use pressure vents
+            else if (pressure >= 1.4f || isVenting.get() == (byte) 1) {
+                if (pressure >= 1.4f) isVenting.update((byte) 1);
+                if (location.getRelative(0, 3, 0).getStructure() instanceof PressureVentInstance vent) {
+                    int ventedSteam = (int) Math.max(25, pressure * steam.get() / 20);
+                    steam.update(steam.get() - ventedSteam);
+
+                    if (ventedSteam != 0) {
+                        for (int i = 0; i < 3; i++) {
+                            vent.location.world.getBukkit().spawnParticle(
+                                    Particle.CAMPFIRE_SIGNAL_SMOKE,
+                                    vent.location.toBukkitCentered().add(0, 0.85f, 0),
+                                    0,
+                                    0, 0.2, 0
+                            );
+                        }
+                    }
+                }
+                if (pressure <= 1.2f) isVenting.update((byte) 0);
             }
         }
 
@@ -214,18 +246,18 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     }
 
     private float calculatePressure() {
-        return (float)(this.steam.get() + this.stored.get()) / (float)this.getFluidCapacity();
+        return ((float) steam.get() / getFluidCapacity()) / (1f - (float) stored.get() / getFluidCapacity());
     }
 
     private void spawnBoilingParticles(int delay) {
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
-            float height = (float)(Integer)this.stored.get() / (float)this.getFluidCapacity() * 3.0F;
+            float height = (float) this.stored.get() / (float)this.getFluidCapacity() * 2.8f;
             this.location.world.getBukkit().spawnParticle(Particle.BUBBLE_POP, this.location.toBukkitCentered().add(-0.875D + Math.random() * 1.75D, (double)(height + 0.2F), -0.875D + Math.random() * 1.75D), 0);
         }, delay);
     }
 
     private void spawnSteamParticle() {
-        float height = 1.68F;
+        float height = (float) this.stored.get() / (float) this.getFluidCapacity() * 2.8f;
         this.location.world.getBukkit().spawnParticle(Particle.WHITE_SMOKE, this.location.toBukkitCentered().add(-0.875D + Math.random() * 1.75D, (double)(height + 0.2F), -0.875D + Math.random() * 1.75D), 0);
         this.location.world.getBukkit().spawnParticle(Particle.WHITE_SMOKE, this.location.toBukkitCentered().add(-0.875D + Math.random() * 1.75D, (double)(height + 0.2F), -0.875D + Math.random() * 1.75D), 0);
         this.location.world.getBukkit().spawnParticle(Particle.WHITE_SMOKE, this.location.toBukkitCentered().add(-0.875D + Math.random() * 1.75D, (double)(height + 0.2F), -0.875D + Math.random() * 1.75D), 0);
