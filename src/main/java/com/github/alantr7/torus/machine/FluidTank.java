@@ -50,7 +50,6 @@ public class FluidTank extends Structure {
                 }
             }
         }
-        builder.add(0, 3, 0);
     }
 
     @Override
