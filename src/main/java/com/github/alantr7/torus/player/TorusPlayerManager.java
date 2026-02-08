@@ -49,9 +49,4 @@ public class TorusPlayerManager implements Listener {
             players.put(player.getUniqueId(), new TorusPlayer(player.getUniqueId(), player.getName()));
     }
 
-    @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
-    void registerEvents(@Inject TorusPlugin plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
-
 }

@@ -123,10 +123,4 @@ public class TorusWorldManager implements Listener {
         })));
     }
 
-
-    @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
-    private void registerEvents() {
-        Bukkit.getPluginManager().registerEvents(this, TorusPlugin.getInstance());
-    }
-
 }
