@@ -31,4 +31,7 @@ public class Permissions {
     @Permission(allowed = Permission.Allowed.OP, description = "Permission for breaking structures belonging to other players")
     public static final String STRUCTURE_BREAK_OTHERS = "torus.structure.break.others";
 
+    @Permission(allowed = Permission.Allowed.OP, description = "Permission for getting update availability message")
+    public static final String UPDATE_AVAILABLE_NOTIFICATION = "torus.update.message";
+
 }

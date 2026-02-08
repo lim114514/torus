@@ -1,9 +1,11 @@
 package com.github.alantr7.torus.player;
 
-import com.github.alantr7.bukkitplugin.annotations.core.Inject;
 import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.plugin.Permissions;
+import com.github.alantr7.torus.updater.UpdateChecker;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +25,8 @@ public class TorusPlayerManager implements Listener {
 
     private final Map<UUID, TorusPlayer> players = new HashMap<>();
 
+    private static final ChatColor COLOR_UPDATE_MESSAGE = ChatColor.of("#cfcfcf");
+
     @NotNull
     public TorusPlayer asTorusPlayer(Player player) {
         return players.get(player.getUniqueId());
@@ -36,6 +40,9 @@ public class TorusPlayerManager implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     void onPlayerJoin(PlayerJoinEvent event) {
         players.put(event.getPlayer().getUniqueId(), new TorusPlayer(event.getPlayer().getUniqueId(), event.getPlayer().getName()));
+        if (event.getPlayer().hasPermission(Permissions.UPDATE_AVAILABLE_NOTIFICATION) && TorusPlugin.getInstance().getVersion().isOlderThan(UpdateChecker.getLatestVersion())) {
+            event.getPlayer().sendMessage(COLOR_UPDATE_MESSAGE + "[Torus] There is an update available.");
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

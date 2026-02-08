@@ -27,3 +27,6 @@ EXPERIMENTAL_virtualization:
 logs:
   world_save: true
   recipe_load: true
+
+# If enabled, the plugin will check for the latest version and notify admins if there is an update available.
+allow_update_checks: true

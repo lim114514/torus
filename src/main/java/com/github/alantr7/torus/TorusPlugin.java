@@ -21,14 +21,10 @@ import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimpleBarChart;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@JavaPlugin(name = "Torus", version = "0.6.1", apiVersion = "1.21")
+@JavaPlugin(name = "Torus", version = "0.6.0", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
 @SoftDepends({"ProtocolLib", "ModelEngine", "WorldGuard"})
 public class TorusPlugin extends BukkitPlugin {
