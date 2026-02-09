@@ -86,7 +86,7 @@ public class TorusItem {
     }
 
     public ItemStack toItemStack() {
-        return baseItem;
+        return baseItem.clone();
     }
 
     public void setBaseItem(ItemStack itemStack, String name, List<String> lore) {

@@ -42,7 +42,7 @@ public class ItemBrowserCategoryGUI extends GUI {
     protected void fill(Inventory inventory) {
         int slot = 0;
         for (TorusItem item : category.items) {
-            ItemStack stack = item.toItemStack().clone();
+            ItemStack stack = item.toItemStack();
             if (getPlayer().hasPermission(Permissions.BROWSE_GUI_GET_ITEM)) {
                 ItemMeta meta = stack.getItemMeta();
                 List<String> lore = new LinkedList<>();
@@ -54,7 +54,7 @@ public class ItemBrowserCategoryGUI extends GUI {
                 meta.setLore(lore);
 
                 registerInteractionCallback(slot, ClickType.LEFT, () -> {
-                    getPlayer().getInventory().addItem(item.toItemStack().clone());
+                    getPlayer().getInventory().addItem(item.toItemStack());
                 });
 
                 registerInteractionCallback(slot, ClickType.RIGHT, () -> {
