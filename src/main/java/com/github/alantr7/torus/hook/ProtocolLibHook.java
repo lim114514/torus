@@ -10,6 +10,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Inject;
 import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.RequiresPlugin;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
+import com.github.alantr7.bukkitplugin.versions.Version;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -25,8 +26,13 @@ public class ProtocolLibHook {
     @Inject
     TorusWorldManager worldManager;
 
+    private static final Version V1_21_4 = Version.from("1.21.4");
+
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     void registerListener() {
+        if (TorusPlugin.getInstance().getVersion().isOlderThan(V1_21_4))
+            return;
+
         registerItemPickupFromBlockPacketListener();
     }
 

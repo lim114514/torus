@@ -3,6 +3,7 @@ package com.github.alantr7.torus.item;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.utils.ItemUtils;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
@@ -103,11 +104,9 @@ public class TorusItem {
         }
         lore0.addAll(lore);
         meta.setLore(lore0);
-
-        CustomModelDataComponent component = meta.getCustomModelDataComponent();
-        component.setStrings(Collections.singletonList(namespacedId));
-        meta.setCustomModelDataComponent(component);
         baseItem.setItemMeta(meta);
+
+        ItemUtils.applyCustomModelData(baseItem, namespacedId);
     }
 
     public static TorusItem getById(String id) {

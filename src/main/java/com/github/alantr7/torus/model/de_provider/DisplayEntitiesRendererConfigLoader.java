@@ -10,6 +10,7 @@ import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.RendererConfigLoader;
 import com.github.alantr7.torus.model.animation.Animation;
 import com.github.alantr7.torus.model.animation.AnimationProvider;
+import com.github.alantr7.torus.utils.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -138,15 +139,11 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
           ? HeadData.create("http://textures.minecraft.net/texture/" + itemAttributes.get("texture"))
           : new ItemStack(material);
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
 
         if (itemAttributes.containsKey("model")) {
-            CustomModelDataComponent customModelDataComponent = itemMeta.getCustomModelDataComponent();
-            customModelDataComponent.setStrings(Collections.singletonList(itemAttributes.get("model")));
-            itemMeta.setCustomModelDataComponent(customModelDataComponent);
+            ItemUtils.applyCustomModelData(itemStack, itemAttributes.get("model"));
         }
 
-        itemStack.setItemMeta(itemMeta);
         return new PartModelElementItemDisplayRenderer(itemStack, offsetScaleRotation);
     }
 
