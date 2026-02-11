@@ -88,7 +88,7 @@ public abstract class Structure {
         this.namespacedId = addon.id + ":" + id;
         this.properties.put("general_settings.name", new Property<>("general_settings.name", PropertyType.STRING, name));
         this.instanceClass = instanceClass;
-        this.configResource = new ResourceLocation(addon.classpathContainer, "structures/" + id + ".yml");
+        this.configResource = new ResourceLocation(addon.externalContainer, "structures/" + id + ".yml");
         this.configGenerator = StandardConfigGenerator.INSTANCE;
 
         ByteArrayBuilder builder = new ByteArrayBuilder();
