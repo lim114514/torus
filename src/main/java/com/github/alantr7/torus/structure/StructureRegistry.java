@@ -108,28 +108,7 @@ public class StructureRegistry {
                 UpdateUtils_0_6_1.updateStructureConfig(pre_0_6_1_config, configFile);
             }
 
-            if (structure.configResource != null) {
-                // Generate default config if it does not exists
-                if (structure.configResource.container.type == 1 && structure.configGenerator != null) {
-                    try {
-                        structure.configGenerator.generate(structure).save(structure.configResource.getResource().file);
-                    } catch (Exception e) {
-                        TorusLogger.error(Category.STRUCTURES, "Could not generate configuration file for structure '" + structure.id + "'.");
-                        e.printStackTrace();
-                    }
-                }
-
-                // Load default config if it exists
-                if (structure.configResource.exists()) {
-                    try {
-                        FileConfiguration config = YamlConfiguration.loadConfiguration(new InputStreamReader(structure.configResource.getResource().stream));
-                        structure.loadPropertyValues(new PropertyLoader(config));
-                    } catch (Exception | Error e) {
-                        TorusLogger.error(Category.STRUCTURES, "Invalid configuration for structure '" + structure.id + "'.");
-                        e.printStackTrace();
-                    }
-                }
-            }
+            structure.reloadConfig();
         }
 
         // Load model controller
@@ -171,6 +150,10 @@ public class StructureRegistry {
 
     public Set<Map.Entry<String, Integer>> getStructuresIdsMap() {
         return structuresIds.entrySet();
+    }
+
+    public Collection<Structure> getStructures() {
+        return loaded.values();
     }
 
 }

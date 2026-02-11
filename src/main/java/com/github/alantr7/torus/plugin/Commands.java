@@ -18,6 +18,7 @@ import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.EntityReference;
 import com.github.alantr7.torus.structure.Conductor;
 import com.github.alantr7.torus.structure.Status;
+import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -123,12 +124,14 @@ public class Commands {
       .parameter("reload")
       .permission(Permissions.COMMAND_RELOAD)
       .executes(ctx -> {
+          for (Structure structure : TorusPlugin.getInstance().getStructureRegistry().getStructures()) {
+              structure.reloadConfig();
+          }
           TorusPlugin.getInstance().getItemRegistry().clear();
           TorusPlugin.getInstance().getRecipeRegistry().clear();
           TorusAPI.getAddonLifecycle().run(LifecycleAction.LOAD_ITEMS);
           TorusAPI.getAddonLifecycle().run(LifecycleAction.LOAD_RECIPES);
-
-          ctx.respond("Items and recipes reloaded.");
+          ctx.respond("Structure configs, items configs and recipes reloaded.");
       });
 
     @CommandHandler Command exportPreset = CommandBuilder.using("torus")

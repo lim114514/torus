@@ -2,6 +2,8 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.structure.config.StandardConfigGenerator;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyLoader;
@@ -19,8 +21,11 @@ import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.InputStreamReader;
 import java.util.*;
 
 public abstract class Structure {
@@ -138,6 +143,33 @@ public abstract class Structure {
     public void loadPropertyValues(PropertyLoader loader) {
         for (Property<?> prop : properties.values()) {
             loader.load(prop);
+        }
+    }
+
+    public void reloadConfig() {
+        if (configResource != null) {
+            // Generate default config if it does not exists
+            if (configResource.container.type == 1 && configGenerator != null) {
+                try {
+                    if (!configResource.getResource().file.exists()) {
+                        configGenerator.generate(this).save(configResource.getResource().file);
+                    }
+                } catch (Exception e) {
+                    TorusLogger.error(Category.STRUCTURES, "Could not generate configuration file for structure '" + id + "'.");
+                    e.printStackTrace();
+                }
+            }
+
+            // Load default config if it exists
+            if (configResource.exists()) {
+                try {
+                    FileConfiguration config = YamlConfiguration.loadConfiguration(new InputStreamReader(configResource.getResource().stream));
+                    loadPropertyValues(new PropertyLoader(config));
+                } catch (Exception | Error e) {
+                    TorusLogger.error(Category.STRUCTURES, "Invalid configuration for structure '" + id + "'.");
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
