@@ -1,7 +1,6 @@
 package com.github.alantr7.torus.utils;
 
 import com.github.alantr7.bukkitplugin.versions.Version;
-import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +17,7 @@ public class ItemUtils {
             return;
 
         ItemMeta meta = item.getItemMeta();
-        if (TorusPlugin.getInstance().getVersion().isOlderThan(V1_21_4)) {
+        if (Version.getServerVersion().isOlderThan(V1_21_4)) {
             try {
                 meta.setCustomModelData(Integer.parseInt(cmd));
             } catch (Exception e) {

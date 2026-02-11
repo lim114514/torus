@@ -2,8 +2,7 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
-import com.github.alantr7.torus.log.Category;
-import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.structure.config.StandardConfigGenerator;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyLoader;
 import com.github.alantr7.torus.structure.property.PropertyType;
@@ -40,6 +39,7 @@ public abstract class Structure {
 
     public ResourceLocation configResource;
 
+    public StandardConfigGenerator configGenerator;
 
     private final Map<String, Property<?>> properties = new HashMap<>();
 
@@ -124,7 +124,7 @@ public abstract class Structure {
     @SuppressWarnings("unchecked")
     public <T> T getProperty(String name, PropertyType<T> type) {
         Property<Object> value = (Property<Object>) properties.get(name);
-        return value != null && value.type == type ? (T) value : null;
+        return value != null && value.type == type ? (T) value.value : null;
     }
 
     public Collection<Property<?>> getProperties() {

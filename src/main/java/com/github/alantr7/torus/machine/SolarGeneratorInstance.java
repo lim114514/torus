@@ -40,7 +40,7 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
 
     @Override
     public int getEnergyCapacity() {
-        return structure.getProperty("energy_settings.energy_capacity", PropertyType.INT);
+        return structure.getProperty("energy_settings.capacity", PropertyType.INT);
     }
 
     @Override
