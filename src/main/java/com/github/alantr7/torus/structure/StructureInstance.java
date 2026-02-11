@@ -427,7 +427,7 @@ public abstract class StructureInstance {
             return;
 
         StringBuilder parent = new StringBuilder();
-        parent.append(COLOR_STRUCTURE_NAME).append(ChatColor.BOLD).append(structure.name).append("\n");
+        parent.append(COLOR_STRUCTURE_NAME).append(ChatColor.BOLD).append(structure.getName()).append("\n");
         for (InspectableText var : inspectableDataContainer.lines) {
             String value = var.getText();
             if (value != null) {

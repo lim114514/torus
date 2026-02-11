@@ -3,6 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
@@ -64,14 +65,14 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
                 processedTicks = 0;
                 state.set(STATE_WORKING, false);
             } else {
-                if (!hasSufficientEnergy(OreCrusher.ENERGY_CONSUMPTION)) {
+                if (!hasSufficientEnergy(structure.getProperty("energy_settings.consumption", PropertyType.INT))) {
                     return;
                 }
 
                 processedTicks++;
                 wheelsAngle += (120) / 180f * (float) Math.PI;
                 state.set(STATE_WORKING, true);
-                consumeEnergy(OreCrusher.ENERGY_CONSUMPTION);
+                consumeEnergy(structure.getProperty("energy_settings.consumption", PropertyType.INT));
             }
         }
 
@@ -86,14 +87,14 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
         itemOutSocket = requireSocket("out_connector", ItemSocket.class);
         itemOutSocket.linkedInventory = itemOutBuffer;
         energySocket = requireSocket("power_connector", EnergySocket.class);
-        energySocket.maximumInput = OreCrusher.ENERGY_MAXIMUM_INPUT;
+        energySocket.maximumInput = structure.getProperty("energy_settings.maximum_input", PropertyType.INT);
 
         state.set(STATE_WORKING, false, false);
     }
 
     @Override
     public int getEnergyCapacity() {
-        return OreCrusher.ENERGY_CONSUMPTION;
+        return structure.getProperty("energy_settings.capacity", PropertyType.INT);
     }
 
     @Override

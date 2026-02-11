@@ -1,6 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -15,17 +17,14 @@ import org.joml.Vector3f;
 
 public class BlockBreaker extends Structure {
 
-    public static int ENERGY_CAPACITY = 50;
-
-    public static int ENERGY_MAXIMUM_INPUT = 100;
-
-    public static int ENERGY_CONSUMPTION_ON_MINE = 25;
-
     public BlockBreaker() {
         super(TorusPlugin.DEFAULT_ADDON, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
         isHeavy = false;
         isOmnidirectional = true;
         portableData.add("energy");
+        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 50));
+        registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 100));
+        registerProperty(new Property<>("energy_settings.consumption_on_mine", PropertyType.INT, 25));
     }
 
     @Override
@@ -40,13 +39,6 @@ public class BlockBreaker extends Structure {
               Socket.Medium.ITEM, Socket.FlowDirection.OUT, Direction.DOWN.mask()
             )) }
         ), direction, pitch);
-    }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
-        ENERGY_CONSUMPTION_ON_MINE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MINE);
     }
 
 }

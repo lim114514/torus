@@ -2,6 +2,8 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -19,20 +21,15 @@ public class OreWasher extends Structure {
 
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
-    public static int ENERGY_CAPACITY = 10_000;
-
-    public static int ENERGY_CONSUMPTION = 300;
-
-    public static int ENERGY_MAXIMUM_INPUT = 500;
-
-    public static int FLUID_CAPACITY = 1_000;
-
-    public static int FLUID_CONSUMPTION = 100;
-
     public OreWasher() {
         super(TorusPlugin.DEFAULT_ADDON, "ore_washer", "Ore Washer", OreWasherInstance.class);
         portableData.add("energy");
         portableData.add("fluid");
+        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));
+        registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 300));
+        registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 500));
+        registerProperty(new Property<>("fluid_settings.capacity", PropertyType.INT, 1000));
+        registerProperty(new Property<>("fluid_settings.consumption", PropertyType.INT, 100));
     }
 
     @Override
@@ -61,16 +58,6 @@ public class OreWasher extends Structure {
             ))
           }
         ), direction);
-    }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
-        ENERGY_CONSUMPTION = config.getInt("energy_settings.consumption", ENERGY_CONSUMPTION);
-        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
-        FLUID_CAPACITY = config.getInt("fluid_settings.capacity", FLUID_CAPACITY);
-        FLUID_CONSUMPTION = config.getInt("fluid_settings.consumption", FLUID_CONSUMPTION);
     }
 
 }

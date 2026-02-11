@@ -2,6 +2,8 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.state.State;
 import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.Direction;
@@ -21,12 +23,6 @@ public class OreCrusher extends Structure {
 
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
-    public static int ENERGY_CAPACITY = 15_000;
-
-    public static int ENERGY_CONSUMPTION = 300;
-
-    public static int ENERGY_MAXIMUM_INPUT = 500;
-
     public static final State<Boolean> STATE_WORKING = new State<>("working", StateType.BOOLEAN, false);
 
     public OreCrusher() {
@@ -34,6 +30,9 @@ public class OreCrusher extends Structure {
         offset = new byte[]{ 0, 0, -1 };
         portableData.add("energy");
         registerState(STATE_WORKING);
+        registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 300));
+        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));
+        registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 500));
     }
 
     @Override
@@ -67,13 +66,6 @@ public class OreCrusher extends Structure {
             new StructurePartDef("wheel_right", new Vector3f())
           }
         ), direction);
-    }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
-        ENERGY_CONSUMPTION = config.getInt("energy_settings.consumption", ENERGY_CONSUMPTION);
     }
 
 }

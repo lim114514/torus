@@ -3,6 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.TransferPreferences;
 import com.github.alantr7.torus.world.Direction;
@@ -40,8 +41,8 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     @Override
     protected void setup() throws SetupException {
         socket = requireSocket("power_connector", EnergySocket.class);
-        socket.maximumInput = PowerBank.ENERGY_MAXIMUM_INPUT;
-        socket.maximumOutput = PowerBank.ENERGY_MAXIMUM_OUTPUT;
+        socket.maximumInput = structure.getProperty("energy_settings.maximum_input", PropertyType.INT);
+        socket.maximumOutput = structure.getProperty("energy_settings.maximum_output", PropertyType.INT);
 
         chargeIndicatorDisplay = ((DisplayEntitiesPartModel) PowerBank.MODEL_CHARGE_INDICATOR.toModel(location, direction, pitch)
           .parts.get("charge")).entityReferences.getFirst().getEntity();
@@ -71,11 +72,11 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
 
     @Override
     public int getEnergyCapacity() {
-        return PowerBank.ENERGY_CAPACITY;
+        return structure.getProperty("energy_settings.capacity", PropertyType.INT);
     }
 
     private void updateChargeIndicator() {
-        float ratio = (float) storedEnergy.get() / PowerBank.ENERGY_CAPACITY;
+        float ratio = (float) storedEnergy.get() / getEnergyCapacity();
         float height = 1.125f * ratio;
         Transformation transformation = chargeIndicatorDisplay.getTransformation();
         transformation.getScale().y = height;

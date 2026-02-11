@@ -3,6 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.MissingDataException;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
@@ -45,7 +46,7 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     protected void setup() throws MissingDataException {
         inputSocket = requireSocket("item_connector", ItemSocket.class);
         outputSocket = requireSocket("power_connector", EnergySocket.class);
-        outputSocket.maximumOutput = CoalGenerator.ENERGY_MAXIMUM_OUTPUT;
+        outputSocket.maximumOutput = structure.getProperty("energy_settings.maximum_output", PropertyType.INT);
 
         chimneyPosition = MathUtils.rotateVectors(new float[] { 1.125f - .5f, 1.8f, 0.8125f - .5f }, direction.rotH, direction.rotV);
     }
@@ -60,8 +61,8 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
             remainingBurnTicks = 30;
         }
 
-        if (storedEnergy.get() < CoalGenerator.ENERGY_CAPACITY) {
-            supplyEnergy(CoalGenerator.ENERGY_PRODUCTION);
+        if (storedEnergy.get() < getEnergyCapacity()) {
+            supplyEnergy(structure.getProperty("energy_settings.production", PropertyType.INT));
             remainingBurnTicks--;
 
             if (!isVirtual) {
@@ -75,7 +76,7 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
 
     @Override
     public int getEnergyCapacity() {
-        return CoalGenerator.ENERGY_CAPACITY;
+        return structure.getProperty("energy_settings.capacity", PropertyType.INT);
     }
 
     @Override

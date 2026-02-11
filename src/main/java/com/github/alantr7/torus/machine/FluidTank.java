@@ -4,6 +4,8 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -19,8 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class FluidTank extends Structure {
-
-    public static int FLUID_CAPACITY = 96000;
 
     static ModelTemplate MODEL_FLUID = new ModelTemplate(1);
     static {
@@ -39,6 +39,7 @@ public class FluidTank extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "fluid_tank", "Fluid Tank", FluidTankInstance.class);
         portableData.add("fluid");
         portableData.add("stored");
+        registerProperty(new Property<>("fluid_settings.capacity", PropertyType.INT, 96_000));
     }
 
     @Override
@@ -66,12 +67,6 @@ public class FluidTank extends Structure {
             new StructurePartDef("liquid", new Vector3f(0f, 0f, -1f)),
           }
         ), direction);
-    }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        FLUID_CAPACITY = config.getInt("fluid_settings.capacity", FLUID_CAPACITY);
     }
 
 }

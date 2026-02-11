@@ -1,6 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -16,15 +18,12 @@ import org.joml.Vector3f;
 
 public class SolarGenerator extends Structure {
 
-    public static int ENERGY_PRODUCTION = 50;
-
-    public static int ENERGY_CAPACITY = 2000;
-
-    public static int ENERGY_MAXIMUM_OUTPUT = 100;
-
     public SolarGenerator() {
         super(TorusPlugin.DEFAULT_ADDON, "solar_generator", "Solar Generator", SolarGeneratorInstance.class);
         portableData.add("energy");
+        registerProperty(new Property<>("energy_settings.production", PropertyType.INT, 50));
+        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));
+        registerProperty(new Property<>("energy_settings.maximum_output", PropertyType.INT, 100));
     }
 
     @Override
@@ -45,14 +44,6 @@ public class SolarGenerator extends Structure {
             Socket.Medium.ENERGY, Socket.FlowDirection.OUT, direction.getOpposite().mask()
           ))
         }), direction);
-    }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        ENERGY_PRODUCTION = config.getInt("energy_settings.production", ENERGY_PRODUCTION);
-        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_PRODUCTION);
-        ENERGY_MAXIMUM_OUTPUT = config.getInt("energy_settings.maximum_output", ENERGY_PRODUCTION);
     }
 
 }

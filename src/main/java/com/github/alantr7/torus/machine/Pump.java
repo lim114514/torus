@@ -4,6 +4,8 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -19,16 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class Pump extends Structure {
-
-    public static int ENERGY_CAPACITY = 500;
-
-    public static int ENERGY_CONSUMPTION = 50;
-
-    public static int ENERGY_MAXIMUM_INPUT = 25;
-
-    public static int FLUID_CAPACITY = 1_000;
-
-    public static int MAXIMUM_PIPE_LENGTH = 32;
 
     static ModelTemplate MODEL_PIPE = new ModelTemplate(1);
     static {
@@ -47,6 +39,11 @@ public class Pump extends Structure {
         portableData.add("energy");
         portableData.add("fluid");
         portableData.add("amount");
+        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 500));
+        registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 50));
+        registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 25));
+        registerProperty(new Property<>("fluid_settings.capacity", PropertyType.INT, 1000));
+        registerProperty(new Property<>("special_settings.maximum_pipe_length", PropertyType.INT, 32));
     }
 
     @Override
@@ -69,15 +66,4 @@ public class Pump extends Structure {
           }
         ), direction);
     }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
-        ENERGY_CONSUMPTION = config.getInt("energy_settings.consumption", ENERGY_CONSUMPTION);
-        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
-        FLUID_CAPACITY = config.getInt("fluid_settings.capacity", FLUID_CAPACITY);
-        MAXIMUM_PIPE_LENGTH = config.getInt("special_settings.maximum_pipe_length");
-    }
-
 }

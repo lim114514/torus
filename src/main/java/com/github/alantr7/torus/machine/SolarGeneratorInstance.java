@@ -1,6 +1,8 @@
 package com.github.alantr7.torus.machine;
 
+import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -25,20 +27,20 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
     }
 
     @Override
-    protected void setup() {
-        getSocket("out_energy").maximumOutput = SolarGenerator.ENERGY_MAXIMUM_OUTPUT;
+    protected void setup() throws SetupException {
+        requireSocket("out_energy").maximumOutput = structure.getProperty("energy_settings.maximum_output", PropertyType.INT);
     }
 
     @Override
     public void tick(boolean isVirtual) {
-        if (storedEnergy.get() < SolarGenerator.ENERGY_CAPACITY) {
-            supplyEnergy((int) (SolarGenerator.ENERGY_PRODUCTION * calculateEfficiency()));
+        if (storedEnergy.get() < getEnergyCapacity()) {
+            supplyEnergy((int) (structure.getProperty("energy_settings.production", PropertyType.INT) * calculateEfficiency()));
         }
     }
 
     @Override
     public int getEnergyCapacity() {
-        return SolarGenerator.ENERGY_CAPACITY;
+        return structure.getProperty("energy_settings.energy_capacity", PropertyType.INT);
     }
 
     @Override

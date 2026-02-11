@@ -11,8 +11,9 @@ import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.controller.ModelController;
-import com.github.alantr7.torus.updater.UpdateUtils_0_5_3;
+import com.github.alantr7.torus.structure.property.PropertyLoader;
 import com.github.alantr7.torus.updater.UpdateUtils_0_6_1;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -107,29 +108,26 @@ public class StructureRegistry {
                 UpdateUtils_0_6_1.updateStructureConfig(pre_0_6_1_config, configFile);
             }
 
-            // Save default config if it exists
-            if (!configFile.exists()) {
-                try {
-                    InputStream is = TorusPlugin.getInstance().getResource(structure.configResource);
-                    if (is != null) {
-                        is.close();
-                        TorusPlugin.getInstance().saveResource(structure.configResource, false);
+            if (structure.configResource != null) {
+                // Generate default config if it does not exists
+                if (structure.configResource.container.type == 1 && structure.configGenerator != null) {
+                    try {
+                        structure.configGenerator.generate(structure).save(structure.configResource.getResource().file);
+                    } catch (Exception e) {
+                        TorusLogger.error(Category.STRUCTURES, "Could not generate configuration file for structure '" + structure.id + "'.");
+                        e.printStackTrace();
                     }
-                } catch (Exception | Error e) {
-                    TorusLogger.error(Category.GENERAL, "Could not save the default config for '" + structure.id + "'");
-                    e.printStackTrace();
                 }
-            }
 
-            if (configFile.exists()) {
-                try {
-                    structure.config = YamlConfiguration.loadConfiguration(configFile);
-                    UpdateUtils_0_5_3.updateStructureConfigFromV1ToV2(structure.configResource, configFile, structure.config);
-
-                    structure.loadConfig();
-                } catch (Exception | Error e) {
-                    TorusLogger.error(Category.STRUCTURES, "Invalid configuration for structure '" + structure.id + "'");
-                    e.printStackTrace();
+                // Load default config if it exists
+                if (structure.configResource.exists()) {
+                    try {
+                        FileConfiguration config = YamlConfiguration.loadConfiguration(new InputStreamReader(structure.configResource.getResource().stream));
+                        structure.loadPropertyValues(new PropertyLoader(config));
+                    } catch (Exception | Error e) {
+                        TorusLogger.error(Category.STRUCTURES, "Invalid configuration for structure '" + structure.id + "'.");
+                        e.printStackTrace();
+                    }
                 }
             }
         }

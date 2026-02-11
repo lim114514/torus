@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
@@ -48,7 +49,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     @Override
     public void tick(boolean isVirtual) {
         inEnergy.maintainEnergy(this);
-        if (getStoredEnergy().get() < Turret.ENERGY_CONSUMPTION)
+        if (getStoredEnergy().get() < structure.getProperty("energy_settings.consumption", PropertyType.INT))
             return;
 
         Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), 5, 1.5, 5, e -> (e instanceof Monster || e instanceof Slime) && !e.getScoreboardTags().contains("torus_entity"));
@@ -59,7 +60,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
         if (target == null || target.isDead() || target.getHealth() == 0)
             return;
 
-        consumeEnergy(Turret.ENERGY_CONSUMPTION);
+        consumeEnergy(structure.getProperty("energy_settings.consumption", PropertyType.INT));
 
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
             location.world.getBukkit().playSound(location.toBukkit().add(.5, 0, .5), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.2f);
@@ -107,13 +108,13 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     protected void setup() throws SetupException {
         head = requirePart("head");
         inEnergy = (EnergySocket) requireSocket("in_energy");
-        inEnergy.maximumInput = Turret.ENERGY_MAXIMUM_INPUT;
+        inEnergy.maximumInput = structure.getProperty("energy_settings.maximum_input", PropertyType.INT);
         inItem = (ItemSocket) requireSocket("in_item");
     }
 
     @Override
     public int getEnergyCapacity() {
-        return Turret.ENERGY_CAPACITY;
+        return structure.getProperty("energy_settings.capacity", PropertyType.INT);
     }
 
 }

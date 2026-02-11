@@ -1,12 +1,12 @@
 package com.github.alantr7.torus.structure;
 
-import com.github.alantr7.torus.TorusPlugin;
-import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.TorusAddon;
-import com.github.alantr7.torus.api.resource.Resource;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyLoader;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.ModelType;
@@ -14,23 +14,15 @@ import com.github.alantr7.torus.model.controller.ModelCase;
 import com.github.alantr7.torus.model.controller.ModelController;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.structure.state.State;
-import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class Structure {
 
@@ -40,17 +32,16 @@ public abstract class Structure {
 
     public final String id;
 
-    public String name;
-
     public boolean isEnabled;
 
     public int numericId = -1;
 
-    public String configResource;
-
-    public YamlConfiguration config;
-
     protected final Class<? extends StructureInstance> instanceClass;
+
+    public ResourceLocation configResource;
+
+
+    private final Map<String, Property<?>> properties = new HashMap<>();
 
     @Getter
     protected final Map<String, State<?>> allowedStates = new HashMap<>();
@@ -87,13 +78,18 @@ public abstract class Structure {
       Collections.emptyMap(), ModelTemplate.EMPTY, null
     )));
 
+    public Structure(TorusAddon addon, String id, Class<? extends StructureInstance> instanceClass) {
+        this(addon, id, "Untitled Structure", instanceClass);
+    }
+
     public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.addon = addon;
         this.id = id;
         this.namespacedId = addon.id + ":" + id;
-        this.name = name;
+        this.properties.put("general_settings.name", new Property<>("general_settings.name", PropertyType.STRING, name));
         this.instanceClass = instanceClass;
-        this.configResource = "configs/" + addon.id + "/structures/" + id + ".yml";
+        this.configResource = new ResourceLocation(addon.classpathContainer, "structures/" + id + ".yml");
+        this.configGenerator = StandardConfigGenerator.INSTANCE;
 
         ByteArrayBuilder builder = new ByteArrayBuilder();
         createBounds(builder);
@@ -119,6 +115,30 @@ public abstract class Structure {
         }
 
         size = new byte[] { (byte) (max[0] - min[0] + 1), (byte) (max[1] - min[1] + 1), (byte) (max[2] - min[2] + 1) };
+    }
+
+    public String getName() {
+        return getProperty("general_settings.name", PropertyType.STRING);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getProperty(String name, PropertyType<T> type) {
+        Property<Object> value = (Property<Object>) properties.get(name);
+        return value != null && value.type == type ? (T) value : null;
+    }
+
+    public Collection<Property<?>> getProperties() {
+        return properties.values();
+    }
+
+    public void registerProperty(Property<?> property) {
+        properties.put(property.name, property);
+    }
+
+    public void loadPropertyValues(PropertyLoader loader) {
+        for (Property<?> prop : properties.values()) {
+            loader.load(prop);
+        }
     }
 
     protected void registerState(State<?> state) {
@@ -186,37 +206,37 @@ public abstract class Structure {
 
     protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch);
 
-    protected void loadConfig() {
-        // General Settings
-        name = config.getString("general_settings.display_name", this.name);
-        isEnabled = config.getBoolean("general_settings.enabled", true);
-        isHeavy = config.getBoolean("general_settings.heavy", this.isHeavy);
-
-        List<Byte> placementOffset = config.getByteList("general_settings.placement_offset");
-        if (placementOffset.size() == 3) {
-            for (int i = 0; i < 3; i++) {
-                this.offset[i] = placementOffset.get(i);
-            }
-        }
-
-        List<String> portableData = config.getStringList("general_settings.portable_data");
-        if (!portableData.isEmpty()) {
-            this.portableData = new HashSet<>(portableData);
-        }
-
-        // Info Hologram Settings
-        List<Byte> hologramOffset = config.getByteList("info_hologram.offset");
-        if (hologramOffset.size() == 3) {
-            for (int i = 0; i < 3; i++) {
-                this.hologramOffset[i] = hologramOffset.get(i);
-            }
-        }
-
-        List<Float> hologramTranslation = config.getFloatList("info_hologram.translation");
-        if (hologramTranslation.size() == 3) {
-            for (int i = 0; i < 3; i++) {
-                this.hologramTranslation[i] = hologramTranslation.get(i);
-            }
-        }
-    }
+//    protected void loadConfig() {
+//        // General Settings
+//        name = config.getString("general_settings.display_name", this.name);
+//        isEnabled = config.getBoolean("general_settings.enabled", true);
+//        isHeavy = config.getBoolean("general_settings.heavy", this.isHeavy);
+//
+//        List<Byte> placementOffset = config.getByteList("general_settings.placement_offset");
+//        if (placementOffset.size() == 3) {
+//            for (int i = 0; i < 3; i++) {
+//                this.offset[i] = placementOffset.get(i);
+//            }
+//        }
+//
+//        List<String> portableData = config.getStringList("general_settings.portable_data");
+//        if (!portableData.isEmpty()) {
+//            this.portableData = new HashSet<>(portableData);
+//        }
+//
+//        // Info Hologram Settings
+//        List<Byte> hologramOffset = config.getByteList("info_hologram.offset");
+//        if (hologramOffset.size() == 3) {
+//            for (int i = 0; i < 3; i++) {
+//                this.hologramOffset[i] = hologramOffset.get(i);
+//            }
+//        }
+//
+//        List<Float> hologramTranslation = config.getFloatList("info_hologram.translation");
+//        if (hologramTranslation.size() == 3) {
+//            for (int i = 0; i < 3; i++) {
+//                this.hologramTranslation[i] = hologramTranslation.get(i);
+//            }
+//        }
+//    }
 }

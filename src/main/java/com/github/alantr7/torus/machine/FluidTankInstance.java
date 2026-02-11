@@ -3,6 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.inspection.InspectableProperty;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.FluidSocket;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
@@ -209,7 +210,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     @Override
     public int getFluidCapacity() {
-        return FluidTank.FLUID_CAPACITY;
+        return structure.getProperty("fluid_settings.capacity", PropertyType.INT);
     }
 
     @Override

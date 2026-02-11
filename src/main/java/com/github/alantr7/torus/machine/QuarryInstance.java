@@ -4,6 +4,7 @@ import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
@@ -74,7 +75,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         if (drillPosition != null) {
             Block ore = drillPosition.getRelative(0, -1, 0).getBlock();
             if (!ore.getType().isAir() && !ore.isLiquid() && !Quarry.BLOCK_BLACKLIST.contains(ore.getType())) {
-                if (storedEnergy.get() < Quarry.ENERGY_CONSUMPTION_ON_MINE)
+                if (storedEnergy.get() < structure.getProperty("energy_settings.consumption_on_mine", PropertyType.INT))
                     return;
 
                 if (breakingTicks == 4) {
@@ -98,12 +99,12 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
                 }
 
                 breakingTicks++;
-                consumeEnergy(Quarry.ENERGY_CONSUMPTION_ON_MINE);
+                consumeEnergy(structure.getProperty("energy_settings.consumption_on_mine", PropertyType.INT));
                 return;
             }
         }
 
-        if (hasSufficientEnergy(Quarry.ENERGY_CONSUMPTION_ON_MOVE)) {
+        if (hasSufficientEnergy(structure.getProperty("energy_settings.consumption_on_move", PropertyType.INT))) {
             advance();
         }
     }
@@ -115,7 +116,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
             return;
         }
 
-        consumeEnergy(Quarry.ENERGY_CONSUMPTION_ON_MOVE);
+        consumeEnergy(structure.getProperty("energy_settings.consumption_on_move", PropertyType.INT));
 
         byte dir = level.get() % 2 == 0 ? 1 : (byte) (-1);
         horizontalPosition.update((byte) (horizontalPosition.get() + dir));
@@ -129,7 +130,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
             horizontalPosition.update((byte) 0);
         }
 
-        level.update((byte) Math.min(level.get(), Quarry.MAXIMUM_DEPTH));
+        level.update((byte) Math.min(level.get(), structure.getProperty("special_settings.maximum_depth", PropertyType.INT)));
         horizontalPosition.update((byte) (horizontalPosition.get() % 81));
     }
 
@@ -182,7 +183,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
         gantryZ = getPart("gantry_z");
 
         inSocket = requireSocket("in_energy", EnergySocket.class);
-        inSocket.maximumInput = Quarry.ENERGY_MAXIMUM_INPUT;
+        inSocket.maximumInput = structure.getProperty("energy_settings.maximum_input", PropertyType.INT);
         outSocket = requireSocket("out_item", ItemSocket.class);
         outSocket.linkedInventory = outBuffer;
     }

@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -51,7 +52,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     protected void setup() throws SetupException {
         powerSocket = requireSocket("power_connector", EnergySocket.class);
         itemSocket = requireSocket("item_connector", ItemSocket.class);
-        powerSocket.maximumInput = BlockBreaker.ENERGY_MAXIMUM_INPUT;
+        powerSocket.maximumInput = structure.getProperty("energy_settings.maximum_input", PropertyType.INT);
         inventory = new CustomStructureInventory(1);
         itemSocket.linkedInventory = inventory;
     }
@@ -65,7 +66,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
 
     @Override
     public int getEnergyCapacity() {
-        return BlockBreaker.ENERGY_CAPACITY;
+        return structure.getProperty("energy_settings.capacity", PropertyType.INT);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         powerSocket.maintainEnergy(this);
         itemSocket.attemptDirectItemExport();
 
-        if (!hasSufficientEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE))
+        if (!hasSufficientEnergy(structure.getProperty("energy_settings.consumption_on_mine", PropertyType.INT)))
             return;
 
         if ((isInventoryFull = (inventory.getItems()[0] != null)))
@@ -107,7 +108,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
         for (Player player : location.world.getBukkit().getPlayersSeeingChunk(location.x >> 4, location.z >> 4)) {
             player.sendBlockDamage(blockLocation, blockDamage);
         }
-        consumeEnergy(BlockBreaker.ENERGY_CONSUMPTION_ON_MINE);
+        consumeEnergy(structure.getProperty("energy_settings.consumption_on_mine", PropertyType.INT));
     }
 
 }

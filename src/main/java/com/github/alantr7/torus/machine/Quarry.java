@@ -1,6 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
@@ -29,14 +31,6 @@ public class Quarry extends Structure {
         BLOCK_BLACKLIST.add(Material.BEDROCK);
     }
 
-    public static int ENERGY_CONSUMPTION_ON_MOVE = 50;
-
-    public static int ENERGY_CONSUMPTION_ON_MINE = 150;
-
-    public static int ENERGY_MAXIMUM_INPUT = 350;
-
-    public static int MAXIMUM_DEPTH = 64;
-
     static ModelTemplate MODEL_FEED = new ModelTemplate(1);
     static {
         DisplayEntitiesPartModelTemplate part = new DisplayEntitiesPartModelTemplate(
@@ -55,6 +49,11 @@ public class Quarry extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "quarry", "Quarry", QuarryInstance.class);
         portableData.add("energy");
         offset = new byte[] {0, 0, -6};
+        registerProperty(new Property<>("energy_settings.consumption_on_mine", PropertyType.INT, 150));
+        registerProperty(new Property<>("energy_settings.consumption_on_move", PropertyType.INT, 50));
+        registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 350));
+        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 3000));
+        registerProperty(new Property<>("special_settings.maximum_depth", PropertyType.INT, 64));
     }
 
     @Override
@@ -111,15 +110,6 @@ public class Quarry extends Structure {
             new StructurePartDef("gantry_z", new Vector3f()),
           }
         ), direction);
-    }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        ENERGY_CONSUMPTION_ON_MINE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MINE);
-        ENERGY_CONSUMPTION_ON_MOVE = config.getInt("energy_settings.consumption_on_mine", ENERGY_CONSUMPTION_ON_MOVE);
-        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
-        MAXIMUM_DEPTH = config.getInt("special_settings.maximum_depth", MAXIMUM_DEPTH);
     }
 
 }

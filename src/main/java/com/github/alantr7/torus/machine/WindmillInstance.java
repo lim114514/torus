@@ -8,6 +8,7 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
@@ -38,7 +39,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
 
     @Override
     protected void setup() throws SetupException {
-        getSocket("out_energy").maximumOutput = Windmill.ENERGY_MAXIMUM_OUTPUT;
+        getSocket("out_energy").maximumOutput = structure.getProperty("energy_settings.maximum_output", PropertyType.INT);
         efficiency = (float) Math.pow(Math.E, -8f/(location.y / 8f + 8f)) * 1.15505059f;
         state.set(STATE_ACTIVE, efficiency != 0, false);
     }
@@ -52,7 +53,7 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
 
     @Override
     public int getEnergyCapacity() {
-        return Windmill.ENERGY_CAPACITY;
+        return structure.getProperty("energy_settings.capacity", PropertyType.INT);
     }
 
 }

@@ -4,6 +4,8 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
@@ -19,12 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class PowerBank extends Structure {
-
-    public static int ENERGY_CAPACITY = 20_000;
-
-    public static int ENERGY_MAXIMUM_INPUT = 500;
-
-    public static int ENERGY_MAXIMUM_OUTPUT = 500;
 
     static final ModelTemplate MODEL_CHARGE_INDICATOR = new ModelTemplate(1);
     static {
@@ -42,6 +38,9 @@ public class PowerBank extends Structure {
     public PowerBank() {
         super(TorusPlugin.DEFAULT_ADDON, "power_bank", "Power Bank", PowerBankInstance.class);
         portableData.add("energy");
+        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 20_000));
+        registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 500));
+        registerProperty(new Property<>("energy_settings.maximum_output", PropertyType.INT, 500));
     }
 
     @Override
@@ -60,14 +59,6 @@ public class PowerBank extends Structure {
           )),
           new StructurePartDef("charge", new Vector3f())
         }), direction);
-    }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
-        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
-        ENERGY_MAXIMUM_OUTPUT = config.getInt("energy_settings.maximum_output", ENERGY_MAXIMUM_OUTPUT);
     }
 
 }

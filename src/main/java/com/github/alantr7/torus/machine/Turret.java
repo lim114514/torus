@@ -1,6 +1,8 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.property.Property;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -16,15 +18,12 @@ import org.joml.Vector3f;
 
 public class Turret extends Structure {
 
-    public static int ENERGY_CAPACITY = 5_000;
-
-    public static int ENERGY_CONSUMPTION = 250;
-
-    public static int ENERGY_MAXIMUM_INPUT = 100;
-
     public Turret() {
         super(TorusPlugin.DEFAULT_ADDON, "turret", "Laser Turret", TurretInstance.class);
         portableData.add("energy");
+        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 3_000));
+        registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 250));
+        registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 100));
     }
 
     @Override
@@ -45,14 +44,6 @@ public class Turret extends Structure {
             Socket.Medium.ENERGY, Socket.FlowDirection.IN, Direction.DOWN.mask()
           ))
         }), direction);
-    }
-
-    @Override
-    protected void loadConfig() {
-        super.loadConfig();
-        ENERGY_CAPACITY = config.getInt("energy_settings.capacity", ENERGY_CAPACITY);
-        ENERGY_CONSUMPTION = config.getInt("energy_settings.consumption", ENERGY_CONSUMPTION);
-        ENERGY_MAXIMUM_INPUT = config.getInt("energy_settings.maximum_input", ENERGY_MAXIMUM_INPUT);
     }
 
 }

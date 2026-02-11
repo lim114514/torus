@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.FluidSocket;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
@@ -53,19 +54,19 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
         powerSocket.maintainEnergy(this);
         itemOutSocket.attemptDirectItemExport();
 
-        if (water.get() < OreWasher.FLUID_CAPACITY) {
-            int consumed = waterInSocket.consumeFluid(Fluid.WATER, OreWasher.FLUID_CAPACITY - water.get());
+        if (water.get() < getFluidCapacity()) {
+            int consumed = waterInSocket.consumeFluid(Fluid.WATER, structure.getProperty("fluid_settings.capacity", PropertyType.INT) - water.get());
             supplyFluid(consumed);
         }
 
         if (recipe != null) {
-            if (!hasSufficientEnergy(OreWasher.ENERGY_CONSUMPTION) || water.get() < OreWasher.FLUID_CONSUMPTION) {
+            if (!hasSufficientEnergy(structure.getProperty("energy_settings.consumption", PropertyType.INT)) || water.get() < structure.getProperty("fluid_settings.consumption", PropertyType.INT)) {
                 return;
             }
 
             processedTicks++;
-            consumeEnergy(OreWasher.ENERGY_CONSUMPTION);
-            consumeFluid(OreWasher.FLUID_CONSUMPTION);
+            consumeEnergy(structure.getProperty("energy_settings.consumption", PropertyType.INT));
+            consumeFluid(structure.getProperty("fluid_settings.consumption", PropertyType.INT));
         } else {
             List<ItemStack> items = itemInSocket.consumeItems(OreWasher.INPUT_CRITERIA, 1, true);
             if (!items.isEmpty()) {
@@ -83,7 +84,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
     @Override
     protected void setup() throws SetupException {
         powerSocket = requireSocket("power_connector", EnergySocket.class);
-        powerSocket.maximumInput = OreWasher.ENERGY_MAXIMUM_INPUT;
+        powerSocket.maximumInput = structure.getProperty("energy_settings.maximum_input", PropertyType.INT);
         itemInSocket = requireSocket("item_connector", ItemSocket.class);
         waterInSocket = requireSocket("fluid_connector", FluidSocket.class);
         itemOutSocket = requireSocket("out_connector", ItemSocket.class);
@@ -92,7 +93,7 @@ public class OreWasherInstance extends StructureInstance implements EnergyContai
 
     @Override
     public int getEnergyCapacity() {
-        return OreWasher.ENERGY_CAPACITY;
+        return structure.getProperty("energy_settings.capacity", PropertyType.INT);
     }
 
     @Override
