@@ -21,6 +21,7 @@ public class Turret extends Structure {
     public Turret() {
         super(TorusPlugin.DEFAULT_ADDON, "turret", "Laser Turret", TurretInstance.class);
         portableData.add("energy");
+        hologramOffset = new float[] { 0, 1f, 0 };
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 3_000));
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 250));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 100));

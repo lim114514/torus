@@ -28,6 +28,7 @@ public class OreCrusher extends Structure {
     public OreCrusher() {
         super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
+        hologramOffset = new float[] { 0, 1f, 0 };
         portableData.add("energy");
         registerState(STATE_WORKING);
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 300));

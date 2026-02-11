@@ -49,6 +49,7 @@ public class Quarry extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "quarry", "Quarry", QuarryInstance.class);
         portableData.add("energy");
         offset = new byte[] {0, 0, -6};
+        hologramOffset = new float[] { 0, 0, -6f };
         registerProperty(new Property<>("energy_settings.consumption_on_mine", PropertyType.INT, 150));
         registerProperty(new Property<>("energy_settings.consumption_on_move", PropertyType.INT, 50));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 350));

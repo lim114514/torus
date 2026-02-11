@@ -30,6 +30,7 @@ public class CoalGenerator extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "coal_generator", "Coal Generator", CoalGeneratorInstance.class);
         portableData.add("energy");
         hologramOffset = new float[] { 0f, 0f, 1f };
+        hologramTranslation = new float[] { 1.2f, 0, 0 };
         registerProperty(new Property<>("energy_settings.production", PropertyType.INT, 300));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 18_000));
         registerProperty(new Property<>("energy_settings.maximum_output", PropertyType.INT, 500));

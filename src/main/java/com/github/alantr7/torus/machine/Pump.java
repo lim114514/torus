@@ -39,6 +39,7 @@ public class Pump extends Structure {
         portableData.add("energy");
         portableData.add("fluid");
         portableData.add("amount");
+        hologramOffset = new float[] { 0, 1f, 0 };
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 500));
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 50));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 25));

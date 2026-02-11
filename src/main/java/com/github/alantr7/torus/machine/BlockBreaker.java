@@ -22,6 +22,8 @@ public class BlockBreaker extends Structure {
         isHeavy = false;
         isOmnidirectional = true;
         portableData.add("energy");
+        hologramOffset = new float[] { 0, 0, 0 };
+        hologramTranslation = new float[] { 1.5f, 0, 0 };
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 50));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 100));
         registerProperty(new Property<>("energy_settings.consumption_on_mine", PropertyType.INT, 25));

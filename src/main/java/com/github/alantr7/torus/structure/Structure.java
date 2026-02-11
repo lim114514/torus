@@ -71,7 +71,7 @@ public abstract class Structure {
 
     public float[] hologramOffset = {0f, 0f, 0f};
 
-    public float[] hologramTranslation = {1.4f, 0.8f, 0f};
+    public float[] hologramTranslation = {1.2f, 0f, 0f};
 
     @Getter @Setter
     private ModelController modelController = new ModelController(ModelType.SINGLEPART, Collections.singleton(new ModelCase(

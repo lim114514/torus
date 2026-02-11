@@ -19,6 +19,8 @@ public class BlastFurnace extends Structure {
     public BlastFurnace() {
         super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", "Blast Furnace", BlastFurnaceInstance.class);
         isInteractable = true;
+        hologramOffset = new float[] { 0, 0, 0 };
+        hologramTranslation = new float[] { 1.2f, 0, 0 };
     }
 
     @Override

@@ -27,6 +27,7 @@ public class Windmill extends Structure {
     public Windmill() {
         super(TorusPlugin.DEFAULT_ADDON, "windmill", "Windmill", WindmillInstance.class);
         portableData.add("energy");
+        hologramOffset = new float[] { 0, 1f, 0 };
         registerState(STATE_ACTIVE);
         registerProperty(new Property<>("energy_settings.production", PropertyType.INT, 3000));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 75));
