@@ -33,10 +33,14 @@ public class ResourceLocation {
     @Nullable
     public Resource getResource() {
         Resource primary = container.resourceGetFunction.apply(relativePath);
-        if (primary != null)
+        if (primary != null && primary.exists())
             return primary;
 
-        return fallbackContainer != null && fallbackRelativePath != null ? fallbackContainer.resourceGetFunction.apply(fallbackRelativePath) : null;
+        Resource secondary = fallbackContainer != null && fallbackRelativePath != null ? fallbackContainer.resourceGetFunction.apply(fallbackRelativePath) : null;
+        if (secondary != null && secondary.exists())
+            return secondary;
+
+        return primary;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.api.resource;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -11,12 +10,19 @@ public class Resource {
     @Nullable
     public final File file;
 
-    @NotNull
+    @Nullable
     public final InputStream stream;
 
-    public Resource(@Nullable File file, @NotNull InputStream stream) {
+    public Resource(@Nullable File file, @Nullable InputStream stream) {
         this.file = file;
         this.stream = stream;
+    }
+
+    public boolean exists() {
+        if (file != null)
+            return file.exists();
+
+        return stream != null;
     }
 
 }

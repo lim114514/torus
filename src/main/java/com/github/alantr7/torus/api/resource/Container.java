@@ -52,7 +52,7 @@ public class Container {
                     e.printStackTrace();
                 }
             }
-            return null;
+            return new Resource(file, null);
         });
     }
 
