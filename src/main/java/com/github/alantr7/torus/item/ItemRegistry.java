@@ -28,6 +28,9 @@ public class ItemRegistry {
 
     public void clear() {
         registry.clear();
+        for (Category category : categories.values()) {
+            category.items.clear();
+        }
     }
 
     public void registerItem(TorusItem item) {
