@@ -31,6 +31,10 @@ public class StructureRegistry {
 
     private final Map<String, Integer> structuresIds = new HashMap<>();
 
+    private final Map<String, String> changedIds = Map.of(
+      "torus:item_cable", "torus:item_conduit"
+    );
+
     private final Set<Structure> saveQuery = new LinkedHashSet<>();
 
     @Invoke(Invoke.Schedule.BEFORE_PLUGIN_ENABLE)
@@ -49,7 +53,7 @@ public class StructureRegistry {
                 int numericId = ByteArrayReader.toInt(reader.readBytes(2));
                 String id = reader.readString();
 
-                structuresIds.put(id, numericId);
+                structuresIds.put(changedIds.getOrDefault(id, id), numericId);
                 if (numericId >= nextStructureId) {
                     nextStructureId = numericId + 1;
                 }

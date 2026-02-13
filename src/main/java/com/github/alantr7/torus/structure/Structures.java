@@ -13,7 +13,7 @@ public class Structures {
     public static final Quarry QUARRY = new Quarry();
 
     public static final EnergyCable ENERGY_CABLE = new EnergyCable();
-    public static final ItemCable ITEM_CABLE = new ItemCable();
+    public static final ItemConduit ITEM_CABLE = new ItemConduit();
     public static final FluidPipe FLUID_CABLE = new FluidPipe();
 
     public static final PowerPole POWER_POLE = new PowerPole();

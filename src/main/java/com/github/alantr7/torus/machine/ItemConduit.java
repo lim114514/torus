@@ -15,10 +15,10 @@ import org.joml.Vector3f;
 
 import static com.github.alantr7.torus.machine.EnergyCable.*;
 
-public class ItemCable extends Structure {
+public class ItemConduit extends Structure {
 
-    public ItemCable() {
-        super(TorusPlugin.DEFAULT_ADDON, "item_cable", "Item Cable", CableInstance.class);
+    public ItemConduit() {
+        super(TorusPlugin.DEFAULT_ADDON, "item_conduit", "Item Conduit", CableInstance.class);
         isInteractable = true;
         isHeavy = false;
         isTickable = false;
