@@ -113,7 +113,9 @@ public class TorusItem {
             if (!lore.isEmpty())
                 lore0.add("");
         }
-        lore0.addAll(lore);
+        for (String line : lore) {
+            lore0.add(ChatColor.WHITE + ChatColor.translateAlternateColorCodes('&', line));
+        }
         meta.setLore(lore0);
         baseItem.setItemMeta(meta);
 
