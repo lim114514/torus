@@ -46,6 +46,11 @@ public class ItemReference {
         return !providerId.equals("minecraft");
     }
 
+    @Override
+    public String toString() {
+        return getNamespacedId();
+    }
+
     public static ItemReference parse(String item) {
         int pos = item.indexOf(":");
         return pos == -1 ? new ItemReference("minecraft", item) : new ItemReference(item.substring(0, pos), item.substring(pos + 1));

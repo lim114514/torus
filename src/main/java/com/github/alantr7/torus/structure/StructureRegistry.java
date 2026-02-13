@@ -132,6 +132,7 @@ public class StructureRegistry {
             exc.printStackTrace();
         }
 
+        structure.addon.registerContent(structure);
         loaded.put(structure.namespacedId, structure);
         loadedByNumericIds.put(structure.numericId, structure);
     }

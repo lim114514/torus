@@ -12,7 +12,11 @@ import com.github.alantr7.torus.api.addon.ConfigType;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.integration.worldguard.WorldGuardIntEntryPoint;
+import com.github.alantr7.torus.item.Category;
+import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.ItemRegistry;
+import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.ModelLoader;
 import com.github.alantr7.torus.model.ModelManager;
 import com.github.alantr7.torus.player.TorusPlayerManager;
@@ -23,6 +27,13 @@ import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.io.File;
+import java.util.List;
 
 @JavaPlugin(name = "Torus", version = "0.7.0", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
@@ -69,7 +80,10 @@ public class TorusPlugin extends BukkitPlugin {
         TorusAPI.getAddonLifecycle().subscribe(DEFAULT_ADDON, new DefaultAddonLifecycleAdapter(DEFAULT_ADDON));
         itemRegistry = new ItemRegistry();
 
-        Bukkit.getScheduler().runTaskLater(this, () -> addonManager.getLifecycle().start(), 1L);
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            addonManager.getLifecycle().start();
+            savePresets();
+        }, 1L);
 
         metrics = new Metrics(TorusPlugin.getInstance(), 28910);
         metrics.addCustomChart(new SimplePie("config_virtualization", () -> String.valueOf(MainConfig.EXPERIMENTAL_VIRTUALIZATION_ENABLED)));
@@ -77,6 +91,42 @@ public class TorusPlugin extends BukkitPlugin {
 
     @Override
     protected void onPluginDisable() {
+    }
+
+    public void savePresets() {
+        File torusDirectory = DEFAULT_ADDON.rootDirectory;
+        torusDirectory.mkdirs();
+
+        File itemsDirectory = new File(torusDirectory, "items");
+        if (!itemsDirectory.exists()) {
+            itemsDirectory.mkdir();
+            for (Category category : getItemRegistry().getCategories()) {
+                if (!category.namespacedId.startsWith("torus:"))
+                    continue;
+
+                YamlConfiguration config = new YamlConfiguration();
+                for (TorusItem item : category.items) {
+                    if (item.addon != DEFAULT_ADDON)
+                        continue;
+
+                    ItemStack baseItem = item.getBaseItem();
+                    config.set(item.id + ".base", ItemReference.create(baseItem).toString());
+                    config.set(item.id + ".name", item.name);
+                    config.set(item.id + ".lore", baseItem.getItemMeta().getLore());
+                    config.set(item.id + ".categories", List.of(category.namespacedId));
+                    if (baseItem.getType() == Material.PLAYER_HEAD) {
+                        config.set(item.id + ".head_texture_url", ((SkullMeta) baseItem.getItemMeta()).getPlayerProfile().getTextures().getSkin().toExternalForm());
+                    }
+                }
+
+                try {
+                    config.save(new File(itemsDirectory, category.id + ".yml"));
+                } catch (Exception e) {
+                    TorusLogger.error(com.github.alantr7.torus.log.Category.GENERAL, "Could not save items config file: '" + category.name + ".yml'");
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public StructureRegistry getStructureRegistry() {

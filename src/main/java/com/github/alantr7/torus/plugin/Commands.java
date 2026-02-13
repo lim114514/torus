@@ -156,18 +156,6 @@ public class Commands {
               return;
           }
 
-          if (preset.equalsIgnoreCase("default/items_configs")) {
-              TorusPlugin.getInstance().saveResource("configs/torus/items/generators.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/items/machines.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/items/network.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/items/resources.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/items/storage.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/items/tools.yml", true);
-
-              ctx.respond("Items configs preset saved. Use /torus reload to apply changes.");
-              return;
-          }
-
           ctx.respond("Invalid preset specified.");
       });
 

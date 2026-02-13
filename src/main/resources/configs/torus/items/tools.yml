@@ -1,9 +1,0 @@
-screwdriver:
-  base: "minecraft:stick"
-  name: "Screwdriver"
-  categories: [ "torus:tools" ]
-
-hammer:
-  base: "minecraft:stick"
-  name: "Hammer"
-  categories: [ "torus:tools" ]

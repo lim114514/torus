@@ -38,6 +38,7 @@ public class ItemRegistry {
         for (Category category : item.categories) {
             category.items.add(item);
         }
+        item.addon.registerContent(item);
     }
 
     public TorusItem getItemById(String id) {

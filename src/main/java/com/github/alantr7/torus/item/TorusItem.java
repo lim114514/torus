@@ -23,6 +23,8 @@ public class TorusItem {
 
     public final String namespacedId;
 
+    public final String id;
+
     @Getter
     protected Category[] categories;
 
@@ -47,6 +49,7 @@ public class TorusItem {
     public TorusItem(TorusAddon addon, String id, Category[] categories, Structure structure, ItemStack stack, String name, List<String> lore) {
         this.addon = addon;
         this.namespacedId = addon.id + ":" + id;
+        this.id = id;
         this.name = name;
         this.structure = structure;
         this.categories = categories;
@@ -87,6 +90,14 @@ public class TorusItem {
 
     public ItemStack toItemStack() {
         return baseItem.clone();
+    }
+
+    public ItemStack getBaseItem() {
+        ItemStack itemStack = baseItem.clone();
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.getPersistentDataContainer().remove(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"));
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 
     public void setBaseItem(ItemStack itemStack, String name, List<String> lore) {
