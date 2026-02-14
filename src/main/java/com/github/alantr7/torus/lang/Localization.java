@@ -4,8 +4,13 @@ import com.github.alantr7.bukkitplugin.annotations.core.Inject;
 import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.api.resource.Container;
+import com.github.alantr7.torus.api.resource.Resource;
+import com.github.alantr7.torus.api.resource.ResourceLocation;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,6 +39,22 @@ public class Localization {
         keys.addAll(fallback.dictionary.keySet());
 
         setLocale(fallback);
+
+        // attempt to load a locale
+        if (MainConfig.LOCALE != null) {
+            ResourceLocation localeLocation = new ResourceLocation(
+              Container.directory(TorusPlugin.getInstance().getDataFolder()), "locales/" + MainConfig.LOCALE + ".properties",
+              Container.classpath(TorusPlugin.getInstance()), "locales/" + MainConfig.LOCALE + ".properties"
+            );
+            Resource resource = localeLocation.getResource();
+            if (resource != null && resource.stream != null) {
+                Locale locale = loadLocale(resource.stream);
+                if (locale != null) {
+                    this.locale = locale;
+                    TorusLogger.info(Category.GENERAL, "Loaded locale '" + MainConfig.LOCALE + "'.");
+                }
+            }
+        }
     }
 
     @Nullable
@@ -45,9 +66,13 @@ public class Localization {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             Locale locale = new Locale();
             for (String line; (line = br.readLine()) != null;) {
+                if (line.isBlank())
+                    continue;
+
                 int separator = line.indexOf('=');
                 if (separator == -1) {
-                    throw new Exception("Invalid line '" + line + "'");
+                    TorusLogger.error(Category.GENERAL, "Invalid line while parsing locale: '" + line + "'");
+                    continue;
                 }
 
                 String key = line.substring(0, separator);

@@ -42,9 +42,9 @@ public class Container {
         });
     }
 
-    public static Container addonConfigs(TorusAddon addon) {
-        return new Container(1, addon.rootDirectory.getPath(), path -> {
-            File file = new File(addon.rootDirectory, path);
+    public static Container directory(File directory) {
+        return new Container(1, directory.getPath(), path -> {
+            File file = new File(directory, path);
             if (file.exists()) {
                 try {
                     return new Resource(file, new FileInputStream(file));
@@ -54,6 +54,10 @@ public class Container {
             }
             return new Resource(file, null);
         });
+    }
+
+    public static Container addonConfigs(TorusAddon addon) {
+        return directory(addon.rootDirectory);
     }
 
 }

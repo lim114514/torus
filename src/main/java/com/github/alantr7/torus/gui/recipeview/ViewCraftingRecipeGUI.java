@@ -14,6 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class ViewCraftingRecipeGUI extends GUI {
 
     private final ShapedRecipe recipe;
@@ -27,7 +29,7 @@ public class ViewCraftingRecipeGUI extends GUI {
 
     @Override
     protected void init() {
-        createInventory("Recipe Viewer", 45);
+        createInventory(translate("gui.recipe_view.title"), 45);
         setInteractionEnabled(false);
     }
 

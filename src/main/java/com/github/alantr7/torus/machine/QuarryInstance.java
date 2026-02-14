@@ -28,6 +28,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class QuarryInstance extends StructureInstance implements EnergyContainer {
 
     protected StructurePart head, bit, gantryX, gantryZ;
@@ -202,7 +204,7 @@ public class QuarryInstance extends StructureInstance implements EnergyContainer
     @Override
     public InspectableDataContainer setupInspectableData() {
         InspectableDataContainer data = new InspectableDataContainer((byte) 1);
-        data.property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this));
+        data.property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this));
 
         byte[] controllerPosition = MathUtils.rotateVectors(new byte[] { 0, 0, -6 }, direction);
         data.inspectableBlocks.add(location.getRelative(controllerPosition[0], 0, controllerPosition[2]));

@@ -40,6 +40,9 @@ public class MainConfig {
     @ConfigOption(path = "logs.recipe_load")
     public static boolean LOGS_RECIPE_LOAD = true;
 
+    @ConfigOption(path = "locale")
+    public static String LOCALE = "en";
+
     @ConfigOption(path = "allow_update_checks")
     public static boolean ALLOW_UPDATE_CHECKS = true;
 

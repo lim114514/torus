@@ -36,6 +36,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 @Singleton
 public class EventListener implements Listener {
 
@@ -61,7 +63,7 @@ public class EventListener implements Listener {
         player.placementCooldownExpiry = player.interactionCooldownExpiry = System.currentTimeMillis() + 200;
 
         if (MainConfig.WORLD_BLACKLIST.contains(event.getClickedBlock().getWorld().getName())) {
-            event.getPlayer().sendMessage(ChatColor.RED + "Structures were disabled in this world by server owners.");
+            event.getPlayer().sendMessage(translate("interaction.place.world_disabled"));
             event.setCancelled(true);
             return;
         }
@@ -112,7 +114,7 @@ public class EventListener implements Listener {
                 EventUtils.callStructurePlaceEvent(event.getPlayer(), structure);
             }
         } else {
-            event.getPlayer().sendMessage(ChatColor.RED + "Not enough space to place the structure here.");
+            event.getPlayer().sendMessage(translate("interaction.place.no_space"));
         }
         event.setCancelled(true);
     }
@@ -181,7 +183,7 @@ public class EventListener implements Listener {
         if (instance.structure.isHeavy) {
             TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
             if (item == null || !item.namespacedId.equals("torus:hammer")) {
-                event.getPlayer().sendMessage(ChatColor.RED + "This structure can be broken only with hammer.");
+                event.getPlayer().sendMessage(translate("interaction.break.no_hammer"));
                 event.setCancelled(true);
                 return;
             }
@@ -202,7 +204,7 @@ public class EventListener implements Listener {
                 world.getBukkit().playSound(loc.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_USE, 0.2f, 1.2f);
             }
         } else {
-            event.getPlayer().sendMessage(ChatColor.RED + "You can not break a structure that you do not own.");
+            event.getPlayer().sendMessage(translate("interaction.break.no_access"));
             event.setCancelled(true);
         }
     }
@@ -235,7 +237,7 @@ public class EventListener implements Listener {
         if (instance.structure.isHeavy) {
             TorusItem item = TorusItem.getByItemStack(player.getInventory().getItemInMainHand());
             if (item == null || !item.namespacedId.equals("torus:hammer")) {
-                player.sendMessage(ChatColor.RED + "This structure can be broken only with hammer.");
+                player.sendMessage(translate("interaction.break.no_hammer"));
                 event.setCancelled(true);
                 return;
             }
@@ -256,7 +258,7 @@ public class EventListener implements Listener {
                 world.getBukkit().playSound(loc.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_USE, 0.2f, 1.2f);
             }
         } else {
-            player.sendMessage(ChatColor.RED + "You can not break a structure that you do not own.");
+            player.sendMessage(translate("interaction.break.no_access"));
             event.setCancelled(true);
         }
     }

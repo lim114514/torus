@@ -2,7 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.exception.SetupException;
-import com.github.alantr7.torus.gui.structure.InventoryInterfaceFilterEditGUI;
+import com.github.alantr7.torus.gui.structure.ConnectorFilterEditGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
@@ -28,6 +28,7 @@ import org.bukkit.util.Vector;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.Connector.*;
 
 public class ConnectorInstance extends StructureInstance implements Inspectable {
@@ -69,7 +70,7 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 1)
-          .property("Flow", () -> getFlowDirection().name());
+          .property(translate("inspection.flow"), () -> translate("inspection.flow." + getFlowDirection().name().toLowerCase()));
     }
 
     @Override
@@ -155,7 +156,7 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
                 flowDirectionData.update(getFlowDirection() == Socket.FlowDirection.IN ? Socket.FlowDirection.OUT.ordinal() : Socket.FlowDirection.IN.ordinal());
                 socket.setFlowDirection(getFlowDirection());
 
-                event.getPlayer().sendMessage("Flow direction changed to: " + socket.getFlowDirection());
+                event.getPlayer().sendMessage( translate("interaction.flow_change.success").replace("{flow}", socket.getFlowDirection().name()));
             } else {
                 Vector dr = event.getInteractionPoint().subtract(event.getPlayer().getEyeLocation()).toVector().normalize().multiply(0.07f);
                 Vector r = event.getInteractionPoint().subtract(location.toBukkit()).clone().toVector().add(new Vector(-0.5, -0.5, -0.5));
@@ -177,7 +178,7 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
             return true;
         }
 
-        new InventoryInterfaceFilterEditGUI(event.getPlayer(), this).open();
+        new ConnectorFilterEditGUI(event.getPlayer(), this).open();
         return true;
     }
 

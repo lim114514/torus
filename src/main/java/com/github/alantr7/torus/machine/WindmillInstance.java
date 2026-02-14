@@ -13,6 +13,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.Windmill.STATE_ACTIVE;
 
 public class WindmillInstance extends StructureInstance implements EnergyContainer {
@@ -47,8 +48,8 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
-          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this))
-          .property("Eff", () -> (int) (efficiency * 100) + "%");
+          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this))
+          .property(translate("inspection.windmill.efficiency"), () -> (int) (efficiency * 100) + "%");
     }
 
     @Override

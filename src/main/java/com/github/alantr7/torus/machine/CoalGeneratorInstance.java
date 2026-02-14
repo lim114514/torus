@@ -23,6 +23,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class CoalGeneratorInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
@@ -82,7 +84,7 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 1)
-          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this));
+          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this));
     }
 
 }

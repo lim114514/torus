@@ -15,11 +15,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class InventoryInterfaceFilterEditGUI extends GUI {
+import static com.github.alantr7.torus.lang.Localization.translate;
+
+public class ConnectorFilterEditGUI extends GUI {
 
     private final ConnectorInstance iii;
 
-    public InventoryInterfaceFilterEditGUI(Player player, ConnectorInstance iii) {
+    public ConnectorFilterEditGUI(Player player, ConnectorInstance iii) {
         super(TorusPlugin.getInstance(), player, false);
         this.iii = iii;
 
@@ -28,7 +30,7 @@ public class InventoryInterfaceFilterEditGUI extends GUI {
 
     @Override
     protected void init() {
-        createInventory("Inventory Interface | Filter", 9);
+        createInventory(translate("gui.connector_filter.title"), 9);
         setInteractionEnabled(false);
     }
 
@@ -43,7 +45,7 @@ public class InventoryInterfaceFilterEditGUI extends GUI {
         for (; idx < 9; idx++) {
             ItemStack emptySlot = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
             ItemMeta meta = emptySlot.getItemMeta();
-            meta.setDisplayName(ChatColor.GRAY + "Empty Slot #" + (idx + 1));
+            meta.setDisplayName(translate("gui.connector_filter.empty_slot.name").replace("{slot}", String.valueOf((idx + 1))));
             emptySlot.setItemMeta(meta);
             setItem(idx, emptySlot);
         }

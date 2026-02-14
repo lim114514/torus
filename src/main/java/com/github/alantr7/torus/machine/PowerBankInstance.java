@@ -17,6 +17,8 @@ import org.bukkit.util.Transformation;
 
 import java.util.Set;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class PowerBankInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
@@ -51,7 +53,7 @@ public class PowerBankInstance extends StructureInstance implements EnergyContai
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 1)
-          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this));
+          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this));
     }
 
     int energyAtLastTick;

@@ -1,6 +1,13 @@
 # Do not edit this value. It is used to auto-update config.
 config_version: 3
 
+# Sets a language pack to be used. You can check language packs available by default here:
+# https://github.com/alantr7/torus/tree/master/src/main/resources/locales
+#
+# You can also create your own or edit an existing language pack quite easily. Read more about it on the wiki:
+# https://alantr7.github.io/torus-docs/
+locale: 'en'
+
 world_blacklist:
   - world_nether
   - world_the_end

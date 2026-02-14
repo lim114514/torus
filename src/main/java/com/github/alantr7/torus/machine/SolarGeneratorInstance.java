@@ -13,6 +13,8 @@ import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.data.Data;
 import lombok.Getter;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class SolarGeneratorInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
@@ -46,8 +48,8 @@ public class SolarGeneratorInstance extends StructureInstance implements EnergyC
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
-          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this))
-          .property("Eff", () -> (int) (calculateEfficiency() * 100) + "%");
+          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this))
+          .property(translate("inspection.solar_generator.efficiency"), () -> (int) (calculateEfficiency() * 100) + "%");
     }
 
     static float pi_10th = (float) Math.PI / 10f;

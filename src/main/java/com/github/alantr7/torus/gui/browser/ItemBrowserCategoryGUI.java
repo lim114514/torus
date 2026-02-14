@@ -19,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class ItemBrowserCategoryGUI extends GUI {
 
     private final Category category;
@@ -32,7 +34,7 @@ public class ItemBrowserCategoryGUI extends GUI {
 
     @Override
     protected void init() {
-        createInventory("Item Browser / " + category.name, 54);
+        createInventory(translate("gui.browse.category.title").replace("{category}", category.name), 54);
         setInteractionEnabled(false);
 
         registerEventCallback(Action.CLOSE, () -> new ItemBrowserMainGUI(getPlayer()).open());
@@ -46,9 +48,9 @@ public class ItemBrowserCategoryGUI extends GUI {
             if (getPlayer().hasPermission(Permissions.BROWSE_GUI_GET_ITEM)) {
                 ItemMeta meta = stack.getItemMeta();
                 List<String> lore = new LinkedList<>();
-                lore.add(ChatColor.GRAY + "+ Left click to obtain");
+                lore.add(translate("gui.browse.category.item.click_obtain"));
                 if (item.hasRecipes()) {
-                    lore.add(ChatColor.GRAY + "+ Right click to view recipes");
+                    lore.add(translate("gui.browse.category.item.click_view_recipes"));
                 }
 
                 meta.setLore(lore);
@@ -62,7 +64,7 @@ public class ItemBrowserCategoryGUI extends GUI {
                     GUI viewer = TorusPlugin.getInstance().getRecipeRegistry().createRecipeViewer(getPlayer(), recipe);
 
                     if (viewer == null) {
-                        getPlayer().sendMessage(ChatColor.RED + "This recipe can not be previewed.");
+                        getPlayer().sendMessage(translate("gui.browse.category.item.no_recipe_preview"));
                         return;
                     }
 

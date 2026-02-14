@@ -13,6 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class ItemBrowserMainGUI extends GUI {
 
     public ItemBrowserMainGUI(Player player) {
@@ -21,7 +23,7 @@ public class ItemBrowserMainGUI extends GUI {
 
     @Override
     protected void init() {
-        createInventory("Item Browser", 54);
+        createInventory(translate("gui.browse.main.title"), 54);
         setInteractionEnabled(false);
     }
 

@@ -25,6 +25,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class BlockBreakerInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
@@ -60,8 +62,8 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
-          .property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this))
-          .line(() -> isInventoryFull ? ChatColor.RED + "Inventory is full!" : null);
+          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this))
+          .line(() -> isInventoryFull ? translate("inspection.block_breaker.inventory_full") : null);
     }
 
     @Override
