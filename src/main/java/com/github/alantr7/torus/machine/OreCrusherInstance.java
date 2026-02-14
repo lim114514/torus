@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.OreCrusher.STATE_WORKING;
 
@@ -101,8 +102,8 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
-          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this))
-          .property(translate("inspection.ore_crusher.recipe"), () -> recipe != null ? recipe.key.toString() : translate("inspection.ore_crusher.recipe.none"));
+          .property(translatable("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this))
+          .property(translatable("inspection.ore_crusher.recipe"), () -> recipe != null ? recipe.key.toString() : translate("inspection.ore_crusher.recipe.none"));
     }
 
 }

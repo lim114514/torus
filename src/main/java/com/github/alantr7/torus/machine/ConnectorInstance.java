@@ -28,6 +28,7 @@ import org.bukkit.util.Vector;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.Connector.*;
 
@@ -70,7 +71,7 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 1)
-          .property(translate("inspection.flow"), () -> translate("inspection.flow." + getFlowDirection().name().toLowerCase()));
+          .property(translatable("inspection.flow"), () -> translate("inspection.flow." + getFlowDirection().name().toLowerCase()));
     }
 
     @Override

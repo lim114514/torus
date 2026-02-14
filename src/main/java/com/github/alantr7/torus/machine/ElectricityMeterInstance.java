@@ -8,13 +8,13 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.bukkit.ChatColor;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.lang.Localization.translate;
 
 public class ElectricityMeterInstance extends StructureInstance implements EnergyContainer {
@@ -47,8 +47,8 @@ public class ElectricityMeterInstance extends StructureInstance implements Energ
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
-          .property(translate("inspection.electricity_meter.transfer_rate"), () -> ChatColor.GREEN.toString() + getFlowMeter().getSupplied() + ChatColor.GRAY + " " + translate("inspection.energy_unit") + "/s")
-          .property(translate("inspection.electricity_meter.total_transferred"), () -> MathUtils.formatNumber(totalTransferred.get()) + " " + translate("inspection.energy_unit"));
+          .property(translatable("inspection.electricity_meter.transfer_rate"), () -> ChatColor.GREEN.toString() + getFlowMeter().getSupplied() + ChatColor.GRAY + " " + translate("inspection.energy_unit") + "/s")
+          .property(translatable("inspection.electricity_meter.total_transferred"), () -> MathUtils.formatNumber(totalTransferred.get()) + " " + translate("inspection.energy_unit"));
     }
 
     @Override

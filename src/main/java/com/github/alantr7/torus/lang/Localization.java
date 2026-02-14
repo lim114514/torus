@@ -41,6 +41,10 @@ public class Localization {
         setLocale(fallback);
 
         // attempt to load a locale
+        reload();
+    }
+
+    public void reload() {
         if (MainConfig.LOCALE != null) {
             ResourceLocation localeLocation = new ResourceLocation(
               Container.directory(TorusPlugin.getInstance().getDataFolder()), "locales/" + MainConfig.LOCALE + ".properties",
@@ -104,6 +108,11 @@ public class Localization {
     @NotNull
     public static String translate(String key) {
         return instance.locale.dictionary.getOrDefault(key, key);
+    }
+
+    @NotNull
+    public static Translatable translatable(String key) {
+        return () -> translate(key);
     }
 
 }

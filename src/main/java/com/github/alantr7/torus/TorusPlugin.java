@@ -16,6 +16,7 @@ import com.github.alantr7.torus.item.Category;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.ItemRegistry;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.lang.Localization;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.ModelLoader;
 import com.github.alantr7.torus.model.ModelManager;
@@ -151,6 +152,10 @@ public class TorusPlugin extends BukkitPlugin {
 
     public ModelManager getModelManager() {
         return getSingleton(ModelManager.class);
+    }
+
+    public Localization getLocalization() {
+        return getSingleton(Localization.class);
     }
 
     public static boolean usesPaperAPI() {

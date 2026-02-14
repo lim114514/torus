@@ -15,16 +15,15 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
 import com.github.alantr7.torus.structure.Structures;
-import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.Pitch;
 import lombok.Getter;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.lang.Localization.translate;
 
 public class BlockBreakerInstance extends StructureInstance implements EnergyContainer {
@@ -62,7 +61,7 @@ public class BlockBreakerInstance extends StructureInstance implements EnergyCon
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
-          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this))
+          .property(translatable("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this))
           .line(() -> isInventoryFull ? translate("inspection.block_breaker.inventory_full") : null);
     }
 

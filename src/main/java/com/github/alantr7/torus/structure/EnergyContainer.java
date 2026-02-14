@@ -3,6 +3,8 @@ package com.github.alantr7.torus.structure;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public interface EnergyContainer extends Inspectable {
 
     FlowMeter getFlowMeter();
@@ -37,7 +39,7 @@ public interface EnergyContainer extends Inspectable {
 
     @Override
     default InspectableDataContainer setupInspectableData() {
-        return new InspectableDataContainer((byte) 1).property("RF", InspectableDataContainer.TEMPLATE_RF.apply(this));
+        return new InspectableDataContainer((byte) 1).property(translatable("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this));
     }
 
 }

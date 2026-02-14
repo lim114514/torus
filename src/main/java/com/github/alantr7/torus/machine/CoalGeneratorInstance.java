@@ -13,7 +13,6 @@ import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
@@ -23,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-import static com.github.alantr7.torus.lang.Localization.translate;
+import static com.github.alantr7.torus.lang.Localization.translatable;
 
 public class CoalGeneratorInstance extends StructureInstance implements EnergyContainer {
 
@@ -84,7 +83,7 @@ public class CoalGeneratorInstance extends StructureInstance implements EnergyCo
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 1)
-          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this));
+          .property(translatable("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this));
     }
 
 }

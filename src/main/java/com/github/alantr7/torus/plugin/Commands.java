@@ -131,7 +131,8 @@ public class Commands {
           TorusPlugin.getInstance().getRecipeRegistry().clear();
           TorusAPI.getAddonLifecycle().run(LifecycleAction.LOAD_ITEMS);
           TorusAPI.getAddonLifecycle().run(LifecycleAction.LOAD_RECIPES);
-          ctx.respond("Structure configs, items configs and recipes reloaded.");
+          TorusPlugin.getInstance().getLocalization().reload();
+          ctx.respond("Structure configs, items configs, recipes and locale reloaded.");
       });
 
     @CommandHandler Command exportPreset = CommandBuilder.using("torus")

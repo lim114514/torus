@@ -1,5 +1,6 @@
 package com.github.alantr7.torus.structure.inspection;
 
+import com.github.alantr7.torus.lang.Translatable;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -23,7 +24,12 @@ public class InspectableDataContainer {
     }
 
     public InspectableDataContainer property(String name, Supplier<String> valueSupplier) {
-        lines[nextPosition++] = new InspectableProperty(name, valueSupplier);
+        lines[nextPosition++] = new InspectableProperty(name, null, valueSupplier);
+        return this;
+    }
+
+    public InspectableDataContainer property(Translatable translatable, Supplier<String> valueSupplier) {
+        lines[nextPosition++] = new InspectableProperty(null, translatable, valueSupplier);
         return this;
     }
 
