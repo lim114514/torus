@@ -26,7 +26,7 @@ public class RecipeLoader {
             return;
 
         for (File file : files) {
-            if (!file.getName().endsWith(".recipes.yml")) {
+            if (!file.getName().endsWith(".yml")) {
                 TorusLogger.error(Category.RECIPES, "Config type for file not recognized: " + file.getName());
                 continue;
             }

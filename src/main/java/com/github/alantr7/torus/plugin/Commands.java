@@ -145,17 +145,6 @@ public class Commands {
               return;
           }
 
-          if (preset.equalsIgnoreCase("default/recipes")) {
-              TorusPlugin.getInstance().saveResource("configs/torus/recipes/blasting.recipes.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/recipes/crafting.recipes.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/recipes/crusher.recipes.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/recipes/smelting.recipes.yml", true);
-              TorusPlugin.getInstance().saveResource("configs/torus/recipes/washer.recipes.yml", true);
-
-              ctx.respond("Recipes preset saved. Use /torus reload to apply changes.");
-              return;
-          }
-
           ctx.respond("Invalid preset specified.");
       });
 

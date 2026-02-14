@@ -5,6 +5,7 @@ import com.github.alantr7.torus.api.addon.LifecycleAdapter;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.item.*;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureRegistry;
@@ -12,6 +13,9 @@ import com.github.alantr7.torus.structure.Structures;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Collections;
 
 public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
@@ -122,6 +126,24 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
 
     @Override
     public void registerRecipes(TorusRecipeManager registry) {
+        // Save default recipes on the first run
+        if (!addon.recipesDirectory.exists()) {
+            addon.recipesDirectory.mkdirs();
+            String[] fileNames = { "blasting", "crafting", "crusher", "smelting", "washer" };
+            for (String fileName : fileNames) {
+                File targetFile = new File(addon.recipesDirectory, fileName + ".yml");
+                InputStream resource = addon.plugin.getResource("configs/torus/recipes/" + fileName + ".yml");
+                if (resource != null) {
+                    try (resource) {
+                        Files.copy(resource, targetFile.toPath());
+                    } catch (Exception ex) {
+                        TorusLogger.error(com.github.alantr7.torus.log.Category.RECIPES, "Could not save recipes file '" + fileName + "'.");
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+
         super.registerRecipes(registry);
     }
 
