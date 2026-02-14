@@ -15,10 +15,12 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class BlockBreaker extends Structure {
 
     public BlockBreaker() {
-        super(TorusPlugin.DEFAULT_ADDON, "block_breaker", "Block Breaker", BlockBreakerInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "block_breaker", translatable("structure.block_breaker.name"), BlockBreakerInstance.class);
         isHeavy = false;
         isOmnidirectional = true;
         portableData.add("energy");

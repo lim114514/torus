@@ -112,7 +112,7 @@ public class Localization {
 
     @NotNull
     public static Translatable translatable(String key) {
-        return () -> translate(key);
+        return new Translatable(key);
     }
 
 }

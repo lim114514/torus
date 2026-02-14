@@ -20,6 +20,8 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class FluidTank extends Structure {
 
     static ModelTemplate MODEL_FLUID = new ModelTemplate(1);
@@ -36,7 +38,7 @@ public class FluidTank extends Structure {
     }
 
     public FluidTank() {
-        super(TorusPlugin.DEFAULT_ADDON, "fluid_tank", "Fluid Tank", FluidTankInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "fluid_tank", translatable("structure.fluid_tank.name"), FluidTankInstance.class);
         portableData.add("fluid");
         portableData.add("stored");
         hologramOffset = new float[] { 0, 1f, 0 };

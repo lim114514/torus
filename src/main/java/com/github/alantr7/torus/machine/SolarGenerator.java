@@ -16,10 +16,12 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class SolarGenerator extends Structure {
 
     public SolarGenerator() {
-        super(TorusPlugin.DEFAULT_ADDON, "solar_generator", "Solar Generator", SolarGeneratorInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "solar_generator", translatable("structure.solar_generator.name"), SolarGeneratorInstance.class);
         portableData.add("energy");
         hologramOffset = new float[] { 0, 1, 0 };
         hologramTranslation = new float[] { 1.2f, 0, 0 };

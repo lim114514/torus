@@ -12,10 +12,12 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class PowerPole extends Structure {
 
     public PowerPole() {
-        super(TorusPlugin.DEFAULT_ADDON, "power_pole", "Power Pole", PowerPoleInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "power_pole", translatable("structure.power_pole.name"), PowerPoleInstance.class);
         isTickable = false;
         isHeavy = false;
     }

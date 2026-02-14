@@ -14,10 +14,12 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class BlastFurnace extends Structure {
 
     public BlastFurnace() {
-        super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", "Blast Furnace", BlastFurnaceInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", translatable("structure.blast_furnace.name"), BlastFurnaceInstance.class);
         isInteractable = true;
         hologramOffset = new float[] { 0, 0, 0 };
         hologramTranslation = new float[] { 1.2f, 0, 0 };

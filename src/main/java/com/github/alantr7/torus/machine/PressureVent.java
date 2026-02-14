@@ -12,10 +12,12 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class PressureVent extends Structure {
 
     public PressureVent() {
-        super(TorusPlugin.DEFAULT_ADDON, "pressure_vent", "Pressure Relief Vent", PressureVentInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "pressure_vent", translatable("structure.pressure_vent.name"), PressureVentInstance.class);
     }
 
     @Override

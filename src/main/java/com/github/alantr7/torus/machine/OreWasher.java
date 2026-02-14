@@ -17,12 +17,14 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class OreWasher extends Structure {
 
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
     public OreWasher() {
-        super(TorusPlugin.DEFAULT_ADDON, "ore_washer", "Ore Washer", OreWasherInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "ore_washer", translatable("structure.ore_washer.name"), OreWasherInstance.class);
         portableData.add("energy");
         portableData.add("fluid");
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));

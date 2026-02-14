@@ -16,10 +16,12 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class Turret extends Structure {
 
     public Turret() {
-        super(TorusPlugin.DEFAULT_ADDON, "turret", "Laser Turret", TurretInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "turret", translatable("structure.turret.name"), TurretInstance.class);
         portableData.add("energy");
         hologramOffset = new float[] { 0, 1f, 0 };
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 3_000));

@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class Quarry extends Structure {
 
     public static final Set<Material> BLOCK_BLACKLIST = new HashSet<>();
@@ -46,7 +48,7 @@ public class Quarry extends Structure {
     }
 
     public Quarry() {
-        super(TorusPlugin.DEFAULT_ADDON, "quarry", "Quarry", QuarryInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "quarry", translatable("structure.quarry.name"), QuarryInstance.class);
         portableData.add("energy");
         offset = new byte[] {0, 0, -6};
         hologramOffset = new float[] { 0, 0, -6f };

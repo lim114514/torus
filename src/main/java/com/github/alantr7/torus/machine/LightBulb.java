@@ -15,12 +15,14 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class LightBulb extends Structure {
 
     public static final State<Boolean> STATE_POWERED = new State<>("powered", StateType.BOOLEAN, false);
 
     public LightBulb() {
-        super(TorusPlugin.DEFAULT_ADDON, "light_bulb", "Light Bulb", LightBulbInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "light_bulb", translatable("structure.light_bulb.name"), LightBulbInstance.class);
         hasCollision = false;
         isHeavy = false;
         isOmnidirectional = true;

@@ -1,8 +1,17 @@
 package com.github.alantr7.torus.lang;
 
-@FunctionalInterface
-public interface Translatable {
+import static com.github.alantr7.torus.lang.Localization.translate;
 
-    String get();
+public class Translatable {
+
+    public final String key;
+
+    public Translatable(String key) {
+        this.key = key;
+    }
+
+    public final String get() {
+        return translate(key);
+    }
 
 }

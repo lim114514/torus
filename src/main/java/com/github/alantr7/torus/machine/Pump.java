@@ -20,6 +20,8 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class Pump extends Structure {
 
     static ModelTemplate MODEL_PIPE = new ModelTemplate(1);
@@ -35,7 +37,7 @@ public class Pump extends Structure {
     }
 
     public Pump() {
-        super(TorusPlugin.DEFAULT_ADDON, "pump", "Pump", PumpInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "pump", translatable("structure.pump.name"), PumpInstance.class);
         portableData.add("energy");
         portableData.add("fluid");
         portableData.add("amount");

@@ -15,6 +15,8 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class EnergyCable extends Structure {
 
     public static final State<Boolean> STATE_NORTH  = new State<>("north",  StateType.BOOLEAN, false);
@@ -25,7 +27,7 @@ public class EnergyCable extends Structure {
     public static final State<Boolean> STATE_DOWN   = new State<>("down",   StateType.BOOLEAN, false);
 
     public EnergyCable() {
-        super(TorusPlugin.DEFAULT_ADDON, "energy_cable", "Energy Cable", CableInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "energy_cable", translatable("structure.energy_cable.name"), CableInstance.class);
         isInteractable = true;
         isHeavy = false;
         isTickable = false;

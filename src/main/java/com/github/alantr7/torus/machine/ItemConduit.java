@@ -13,12 +13,13 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.machine.EnergyCable.*;
 
 public class ItemConduit extends Structure {
 
     public ItemConduit() {
-        super(TorusPlugin.DEFAULT_ADDON, "item_conduit", "Item Conduit", CableInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "item_conduit", translatable("structure.item_conduit.name"), CableInstance.class);
         isInteractable = true;
         isHeavy = false;
         isTickable = false;

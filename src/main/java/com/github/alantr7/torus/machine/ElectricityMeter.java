@@ -13,10 +13,12 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class ElectricityMeter extends Structure {
 
     public ElectricityMeter() {
-        super(TorusPlugin.DEFAULT_ADDON, "electricity_meter", "Electricity Meter", ElectricityMeterInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "electricity_meter", translatable("structure.electricity_meter.name"), ElectricityMeterInstance.class);
         isTickable = false;
         isHeavy = false;
         portableData.add("total");

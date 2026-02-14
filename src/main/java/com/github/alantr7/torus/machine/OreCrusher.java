@@ -19,6 +19,8 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class OreCrusher extends Structure {
 
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
@@ -26,7 +28,7 @@ public class OreCrusher extends Structure {
     public static final State<Boolean> STATE_WORKING = new State<>("working", StateType.BOOLEAN, false);
 
     public OreCrusher() {
-        super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", translatable("structure.ore_crusher.name"), OreCrusherInstance.class);
         offset = new byte[]{ 0, 0, -1 };
         hologramOffset = new float[] { 0, 1f, 0 };
         portableData.add("energy");

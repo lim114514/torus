@@ -13,10 +13,12 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class Faucet extends Structure {
 
     public Faucet() {
-        super(TorusPlugin.DEFAULT_ADDON, "faucet", "Faucet", FaucetInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "faucet", translatable("structure.faucet.name"), FaucetInstance.class);
         isTickable = false;
         isInteractable = true;
         isHeavy = false;

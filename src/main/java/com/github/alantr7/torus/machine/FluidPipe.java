@@ -13,6 +13,7 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.machine.EnergyCable.*;
 import static com.github.alantr7.torus.machine.EnergyCable.STATE_DOWN;
 import static com.github.alantr7.torus.machine.EnergyCable.STATE_SOUTH;
@@ -22,7 +23,7 @@ import static com.github.alantr7.torus.machine.EnergyCable.STATE_WEST;
 public class FluidPipe extends Structure {
 
     public FluidPipe() {
-        super(TorusPlugin.DEFAULT_ADDON, "fluid_pipe", "Fluid Pipe", CableInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "fluid_pipe", translatable("structure.fluid_pipe.name"), CableInstance.class);
         isInteractable = true;
         isHeavy = false;
         isTickable = false;

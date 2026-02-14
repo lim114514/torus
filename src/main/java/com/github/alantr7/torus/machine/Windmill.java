@@ -18,6 +18,8 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class Windmill extends Structure {
 
     public static final float MAXIMUM_SPEED = 1.85f * (float) Math.PI / 3f;
@@ -25,7 +27,7 @@ public class Windmill extends Structure {
     public static final State<Boolean> STATE_ACTIVE = new State<>("active", StateType.BOOLEAN, false);
 
     public Windmill() {
-        super(TorusPlugin.DEFAULT_ADDON, "windmill", "Windmill", WindmillInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "windmill", translatable("structure.windmill.name"), WindmillInstance.class);
         portableData.add("energy");
         hologramOffset = new float[] { 0, 1f, 0 };
         registerState(STATE_ACTIVE);

@@ -2,6 +2,7 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
+import com.github.alantr7.torus.lang.Translatable;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.structure.config.StandardConfigGenerator;
@@ -27,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStreamReader;
 import java.util.*;
+
+import static com.github.alantr7.torus.lang.Localization.translate;
 
 public abstract class Structure {
 
@@ -87,6 +90,10 @@ public abstract class Structure {
         this(addon, id, "Untitled Structure", instanceClass);
     }
 
+    public Structure(TorusAddon addon, String id, Translatable name, Class<? extends StructureInstance> instanceClass) {
+        this(addon, id, "@" + name.key, instanceClass);
+    }
+
     public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.addon = addon;
         this.id = id;
@@ -123,7 +130,8 @@ public abstract class Structure {
     }
 
     public String getName() {
-        return getProperty("general_settings.name", PropertyType.STRING);
+        String name = getProperty("general_settings.name", PropertyType.STRING);
+        return name.charAt(0) == '@' ? translate(name.substring(1)) : name;
     }
 
     @SuppressWarnings("unchecked")

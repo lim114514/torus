@@ -18,6 +18,8 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class CoalGenerator extends Structure {
 
     public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();
@@ -27,7 +29,7 @@ public class CoalGenerator extends Structure {
     }
 
     public CoalGenerator() {
-        super(TorusPlugin.DEFAULT_ADDON, "coal_generator", "Coal Generator", CoalGeneratorInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "coal_generator", translatable("structure.coal_generator.name"), CoalGeneratorInstance.class);
         portableData.add("energy");
         hologramOffset = new float[] { 0f, 0f, 1f };
         hologramTranslation = new float[] { 1.2f, 0, 0 };

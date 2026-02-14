@@ -20,6 +20,8 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class PowerBank extends Structure {
 
     static final ModelTemplate MODEL_CHARGE_INDICATOR = new ModelTemplate(1);
@@ -36,7 +38,7 @@ public class PowerBank extends Structure {
     }
 
     public PowerBank() {
-        super(TorusPlugin.DEFAULT_ADDON, "power_bank", "Power Bank", PowerBankInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "power_bank", translatable("structure.power_bank.name"), PowerBankInstance.class);
         portableData.add("energy");
         hologramOffset = new float[] { 0, 1f, 0 };
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 20_000));

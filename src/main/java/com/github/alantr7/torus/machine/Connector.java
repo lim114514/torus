@@ -16,6 +16,8 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class Connector extends Structure {
 
     public static final State<Boolean> STATE_FRONT  = new State<>("front",  StateType.BOOLEAN, false);
@@ -26,7 +28,7 @@ public class Connector extends Structure {
     public static final State<Boolean> STATE_DOWN   = new State<>("down",   StateType.BOOLEAN, false);
 
     public Connector() {
-        super(TorusPlugin.DEFAULT_ADDON, "connector", "Connector", ConnectorInstance.class);
+        super(TorusPlugin.DEFAULT_ADDON, "connector", translatable("structure.connector.name"), ConnectorInstance.class);
         isInteractable = true;
         isHeavy = false;
         isOmnidirectional = true;
