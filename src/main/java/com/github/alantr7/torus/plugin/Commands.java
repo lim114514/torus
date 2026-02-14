@@ -136,7 +136,7 @@ public class Commands {
 
     @CommandHandler Command exportPreset = CommandBuilder.using("torus")
       .parameter("export_preset")
-      .parameter("{preset}", p -> p.tabComplete("default/recipes", "default/items_configs"))
+      .parameter("{preset}", p -> p.tabComplete())
       .permission(Permissions.COMMAND_USE_PRESET)
       .executes(ctx -> {
           String preset = (String) ctx.getArgument("preset");
@@ -146,17 +146,6 @@ public class Commands {
           }
 
           ctx.respond("Invalid preset specified.");
-      });
-
-    @CommandHandler Command logStructureIds = CommandBuilder.using("torus")
-      .parameter("debug")
-      .parameter("log_structure_ids")
-      .permission(Permissions.COMMAND_DEBUG)
-      .executes(ctx -> {
-          ctx.respond("Editing? : " + MainConfig.CUSTOMIZATION_ENABLE_MODEL_EDITING);
-          TorusPlugin.getInstance().getStructureRegistry().getStructuresIdsMap().forEach(entry -> {
-              ctx.respond(String.format("%2d: %s", entry.getValue(), entry.getKey()));
-          });
       });
 
     @CommandHandler Command reportStats = CommandBuilder.using("torus")
