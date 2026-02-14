@@ -1,0 +1,84 @@
+package com.github.alantr7.torus.lang;
+
+import com.github.alantr7.bukkitplugin.annotations.core.Inject;
+import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
+import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
+import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
+import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
+
+@Singleton
+public class Localization {
+
+    private Locale fallback;
+
+    private Locale locale;
+
+    private final Set<String> keys = new LinkedHashSet<>();
+
+    @Inject
+    static Localization instance;
+
+    @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
+    void init() {
+        // load all keys from bundled english file
+        fallback = Objects.requireNonNull(loadLocale(TorusPlugin.getInstance().getResource("locales/en.properties"), null));
+        keys.addAll(fallback.dictionary.keySet());
+
+        setLocale(fallback);
+    }
+
+    @Nullable
+    public Locale loadLocale(InputStream is) {
+        return loadLocale(is, fallback);
+    }
+
+    private Locale loadLocale(InputStream is, Locale fallback) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            Locale locale = new Locale();
+            for (String line; (line = br.readLine()) != null;) {
+                int separator = line.indexOf('=');
+                if (separator == -1) {
+                    throw new Exception("Invalid line '" + line + "'");
+                }
+
+                String key = line.substring(0, separator);
+
+                // todo: multiple lines
+                String value = ChatColor.translateAlternateColorCodes('&', line.substring(separator + 1));
+                locale.dictionary.put(key, value);
+            }
+
+            // add missing lines by using the fallback locale
+            if (fallback != null) {
+                fallback.dictionary.forEach((key, value) -> {
+                    if (!locale.dictionary.containsKey(key))
+                        locale.dictionary.put(key, value);
+                });
+            }
+
+            return locale;
+        } catch (Exception ex) {
+            TorusLogger.error(Category.GENERAL, "Could not load locale: " + ex.getMessage());
+        }
+        return null;
+    }
+
+    public void setLocale(@NotNull Locale locale) {
+        this.locale = locale;
+    }
+
+    @NotNull
+    public static String translate(String key) {
+        return instance.locale.dictionary.getOrDefault(key, key);
+    }
+
+}
