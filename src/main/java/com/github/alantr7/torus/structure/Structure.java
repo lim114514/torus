@@ -297,8 +297,4 @@ public abstract class Structure {
 
     protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch);
 
-//    protected void loadConfig() {
-//        // General Settings
-//        isEnabled = config.getBoolean("general_settings.enabled", true);
-//    }
 }

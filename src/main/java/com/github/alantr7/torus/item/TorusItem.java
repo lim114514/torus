@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class TorusItem {
 
     public final TorusAddon addon;
@@ -112,7 +114,11 @@ public class TorusItem {
         List<String> lore0 = meta.hasLore() ? meta.getLore() : new LinkedList<>();
         if (structure != null) {
             byte[] size = structure.getSize();
-            lore0.add(ChatColor.BLUE + String.format("Structure [%dx%dx%d]", size[0], size[1], size[2]));
+            lore0.add(translate("gui.structure_item.size")
+              .replace("{x}", String.valueOf(size[0]))
+              .replace("{y}", String.valueOf(size[1]))
+              .replace("{z}", String.valueOf(size[2]))
+            );
             if (!lore.isEmpty())
                 lore0.add("");
         }
