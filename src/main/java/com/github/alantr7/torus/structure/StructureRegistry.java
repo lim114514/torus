@@ -11,9 +11,7 @@ import com.github.alantr7.torus.api.resource.ResourceLocation;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.model.controller.ModelController;
-import com.github.alantr7.torus.structure.property.PropertyLoader;
 import com.github.alantr7.torus.updater.UpdateUtils_0_6_1;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -104,6 +102,8 @@ public class StructureRegistry {
             structuresIds.put(structure.namespacedId, structure.numericId);
             saveQuery.add(structure);
         }
+
+        structure.initDefaultProperties();
 
         if (structure.addon.allowsExternalConfig(ConfigType.STRUCTURE)) {
             File configFile = new File(structure.addon.configsDirectory, structure.id + ".yml");

@@ -41,10 +41,9 @@ public class FluidTank extends Structure {
     public FluidTank() {
         super(TorusPlugin.DEFAULT_ADDON, "fluid_tank", translatable("structure.fluid_tank.name"), FluidTankInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
-        portableData.add("fluid");
-        portableData.add("stored");
-        hologramOffset = new float[] { 0, 1f, 0 };
-        hologramTranslation = new float[] { 2f, 0, 1f };
+        setPortableData("fluid", "stored");
+        setHologramOffset(new Vector3f(0, 1f, 0));
+        setHologramTranslation(new Vector3f(2f, 0, 1f));
         registerProperty(new Property<>("fluid_settings.capacity", PropertyType.INT, 96_000));
     }
 

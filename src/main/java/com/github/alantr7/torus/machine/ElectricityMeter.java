@@ -21,8 +21,8 @@ public class ElectricityMeter extends Structure {
     public ElectricityMeter() {
         super(TorusPlugin.DEFAULT_ADDON, "electricity_meter", translatable("structure.electricity_meter.name"), ElectricityMeterInstance.class);
         setFlags(StructureFlag.COLLIDABLE);
-        portableData.add("total");
-        hologramTranslation = new float[] { 1.4f, 0.1f, 0f };
+        setPortableData("total");
+        setHologramTranslation(new Vector3f(1.4f, 0.1f, 0f));
     }
 
     @Override

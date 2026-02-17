@@ -19,6 +19,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
 
@@ -31,9 +32,9 @@ public class OreCrusher extends Structure {
     public OreCrusher() {
         super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", translatable("structure.ore_crusher.name"), OreCrusherInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.HEAVY | StructureFlag.TICKABLE);
-        offset = new byte[]{ 0, 0, -1 };
-        hologramOffset = new float[] { 0, 1f, 0 };
-        portableData.add("energy");
+        setOffset(new Vector3i(0, 0, -1));
+        setHologramOffset(new Vector3f(0, 1f, 0));
+        setPortableData("energy");
         registerState(STATE_WORKING);
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 300));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));

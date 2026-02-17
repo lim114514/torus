@@ -37,8 +37,7 @@ public class Connector extends Structure {
         registerState(STATE_LEFT);
         registerState(STATE_UP);
         registerState(STATE_DOWN);
-        portableData.add("flow");
-        portableData.add("filter");
+        setPortableData("flow", "filter");
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.github.alantr7.torus.world.Pitch;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -51,9 +52,9 @@ public class Quarry extends Structure {
     public Quarry() {
         super(TorusPlugin.DEFAULT_ADDON, "quarry", translatable("structure.quarry.name"), QuarryInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
-        portableData.add("energy");
-        offset = new byte[] {0, 0, -6};
-        hologramOffset = new float[] { 0, 0, -6f };
+        setPortableData("energy");
+        setOffset(new Vector3i(0, 0, -6));
+        setHologramOffset(new Vector3f(0, 0, -6f));
         registerProperty(new Property<>("energy_settings.consumption_on_mine", PropertyType.INT, 150));
         registerProperty(new Property<>("energy_settings.consumption_on_move", PropertyType.INT, 50));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 350));

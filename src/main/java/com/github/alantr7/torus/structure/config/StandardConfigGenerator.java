@@ -1,5 +1,8 @@
 package com.github.alantr7.torus.structure.config;
 
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
@@ -35,19 +38,15 @@ public class StandardConfigGenerator {
         YamlConfiguration config = new YamlConfiguration();
         config.set("config_version", 2);
         config.set("general_settings.enabled", structure.isEnabled);
-        config.set("general_settings.placement_offset", List.of(structure.getOffset()[0], structure.getOffset()[1], structure.getOffset()[2]));
-        config.set("general_settings.heavy", structure.hasFlag(StructureFlag.HEAVY));
-        config.set("general_settings.portable_data", structure.portableData.stream().toList());
 
         for (Property<?> property : structure.getProperties()) {
             PropertyMapper mapper = mappers.get(property.type);
             if (mapper != null) {
                 mapper.map(config, property.name, property.value);
+            } else {
+                TorusLogger.error(Category.STRUCTURES, "There is no property mapper for type: " + property.type.name);
             }
         }
-
-        config.set("info_hologram.offset", List.of(structure.hologramOffset[0], structure.hologramOffset[1], structure.hologramOffset[2]));
-        config.set("info_hologram.translation", List.of(structure.hologramTranslation[0], structure.hologramTranslation[1], structure.hologramTranslation[2]));
 
         comments.forEach(config::setComments);
         return config;

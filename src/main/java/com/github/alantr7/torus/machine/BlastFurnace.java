@@ -22,8 +22,7 @@ public class BlastFurnace extends Structure {
     public BlastFurnace() {
         super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", translatable("structure.blast_furnace.name"), BlastFurnaceInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.INTERACTABLE | StructureFlag.HEAVY | StructureFlag.TICKABLE);
-        hologramOffset = new float[] { 0, 0, 0 };
-        hologramTranslation = new float[] { 1.2f, 0, 0 };
+        setHologramTranslation(new Vector3f(1.2f, 0, 0));
     }
 
     @Override

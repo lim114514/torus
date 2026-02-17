@@ -16,6 +16,10 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static com.github.alantr7.torus.lang.Localization.translatable;
 
 public class BlockBreaker extends Structure {
@@ -23,9 +27,8 @@ public class BlockBreaker extends Structure {
     public BlockBreaker() {
         super(TorusPlugin.DEFAULT_ADDON, "block_breaker", translatable("structure.block_breaker.name"), BlockBreakerInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.OMNIDIRECTIONAL | StructureFlag.TICKABLE);
-        portableData.add("energy");
-        hologramOffset = new float[] { 0, 0, 0 };
-        hologramTranslation = new float[] { 1.5f, 0, 0 };
+        setPortableData("energy");
+        setHologramTranslation(new Vector3f(1.5f, 0, 0));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 50));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 100));
         registerProperty(new Property<>("energy_settings.consumption_on_mine", PropertyType.INT, 25));

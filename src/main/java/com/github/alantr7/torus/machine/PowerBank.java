@@ -41,8 +41,8 @@ public class PowerBank extends Structure {
     public PowerBank() {
         super(TorusPlugin.DEFAULT_ADDON, "power_bank", translatable("structure.power_bank.name"), PowerBankInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.HEAVY | StructureFlag.TICKABLE);
-        portableData.add("energy");
-        hologramOffset = new float[] { 0, 1f, 0 };
+        setPortableData("energy");
+        setHologramOffset(new Vector3f(0, 1f, 0));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 20_000));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 500));
         registerProperty(new Property<>("energy_settings.maximum_output", PropertyType.INT, 500));

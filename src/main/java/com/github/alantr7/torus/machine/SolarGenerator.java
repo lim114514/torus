@@ -24,9 +24,9 @@ public class SolarGenerator extends Structure {
     public SolarGenerator() {
         super(TorusPlugin.DEFAULT_ADDON, "solar_generator", translatable("structure.solar_generator.name"), SolarGeneratorInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
-        portableData.add("energy");
-        hologramOffset = new float[] { 0, 1, 0 };
-        hologramTranslation = new float[] { 1.2f, 0, 0 };
+        setPortableData("energy");
+        setHologramOffset(new Vector3f(0, 1, 0));
+        setHologramTranslation(new Vector3f(1.2f, 0, 0));
         registerProperty(new Property<>("energy_settings.production", PropertyType.INT, 50));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));
         registerProperty(new Property<>("energy_settings.maximum_output", PropertyType.INT, 100));

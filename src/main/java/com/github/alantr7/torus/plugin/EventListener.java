@@ -101,7 +101,7 @@ public class EventListener implements Listener {
                     ByteArrayReader dataContainerReader = new ByteArrayReader(
                       structureData.get(new NamespacedKey(TorusPlugin.getInstance(), "data_container"), PersistentDataType.BYTE_ARRAY)
                     );
-                    DataContainer.overwrite(structure.dataContainer, DataContainer.fromBytes(dataContainerReader, strings), structure.structure.portableData);
+                    DataContainer.overwrite(structure.dataContainer, DataContainer.fromBytes(dataContainerReader, strings), structure.structure.getPortableData());
                 }
 
                 structure.setOwnerId(event.getPlayer().getUniqueId());

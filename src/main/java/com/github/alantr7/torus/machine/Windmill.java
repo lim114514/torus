@@ -30,8 +30,8 @@ public class Windmill extends Structure {
     public Windmill() {
         super(TorusPlugin.DEFAULT_ADDON, "windmill", translatable("structure.windmill.name"), WindmillInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
-        portableData.add("energy");
-        hologramOffset = new float[] { 0, 1f, 0 };
+        setPortableData("energy");
+        setHologramOffset(new Vector3f(0, 1f, 0));
         registerState(STATE_ACTIVE);
         registerProperty(new Property<>("energy_settings.production", PropertyType.INT, 3000));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 75));

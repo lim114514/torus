@@ -27,8 +27,7 @@ public class OreWasher extends Structure {
     public OreWasher() {
         super(TorusPlugin.DEFAULT_ADDON, "ore_washer", translatable("structure.ore_washer.name"), OreWasherInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
-        portableData.add("energy");
-        portableData.add("fluid");
+        setPortableData("energy", "fluid");
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 300));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 500));
