@@ -14,6 +14,7 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
+import com.github.alantr7.torus.utils.Compatibility;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.world.Pitch;
@@ -170,11 +171,11 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
             slime.setPersistent(false);
             slime.setInvulnerable(true);
             slime.setRemoveWhenFarAway(false);
-            slime.getAttribute(Attribute.SCALE).setBaseValue(0.01d); // scales down the entity to prevent initial flicker
+            slime.getAttribute(Compatibility.getScaleAttribute()).setBaseValue(0.01d); // scales down the entity to prevent initial flicker
             slime.addScoreboardTag("torus_entity");
             slime.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "connector_position"), PersistentDataType.LIST.integers(), List.of(location.x, location.y, location.z));
         });
-        Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> slime1.getAttribute(Attribute.SCALE).setBaseValue(1d), 20L);
+        Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> slime1.getAttribute(Compatibility.getScaleAttribute()).setBaseValue(1d), 20L);
         return slime1;
     }
 

@@ -3,6 +3,9 @@ package com.github.alantr7.torus.utils;
 import com.github.alantr7.bukkitplugin.versions.Version;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
@@ -11,6 +14,7 @@ import java.util.Collections;
 
 public class Compatibility {
 
+    public static final Version V1_21_2 = Version.from("1.21.2");
     public static final Version V1_21_4 = Version.from("1.21.4");
 
     public static void applyCustomModelData(ItemStack item, String cmd) {
@@ -33,6 +37,10 @@ public class Compatibility {
         item.setItemMeta(meta);
     }
 
-
+    public static Attribute getScaleAttribute() {
+        return Version.getServerVersion().isOlderThan(V1_21_2)
+          ? Registry.ATTRIBUTE.getOrThrow(NamespacedKey.minecraft("generic.scale"))
+          : Registry.ATTRIBUTE.getOrThrow(NamespacedKey.minecraft("scale"));
+    }
 
 }
