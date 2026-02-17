@@ -63,17 +63,7 @@ public abstract class Structure {
     @Getter
     protected byte[] offset = { 0, 0, 0 };
 
-    public boolean isHeavy = true;
-
-    public boolean isInteractable = false;
-
-    public boolean isOmnidirectional = false;
-
-    public boolean isTickable = true;
-
-    public boolean isVirtualizable = false;
-
-    public boolean hasCollision = true;
+    private int flags = StructureFlag.HEAVY | StructureFlag.TICKABLE | StructureFlag.COLLIDABLE;
 
     public Set<String> portableData = new HashSet<>();
 
@@ -132,6 +122,14 @@ public abstract class Structure {
     public String getName() {
         String name = getProperty("general_settings.name", PropertyType.STRING);
         return name.charAt(0) == '@' ? translate(name.substring(1)) : name;
+    }
+
+    public boolean hasFlag(int flags) {
+        return MathUtils.hasFlag(this.flags, flags);
+    }
+
+    public void setFlags(int flags) {
+        this.flags = MathUtils.setFlag(this.flags, flags, true);
     }
 
     @SuppressWarnings("unchecked")

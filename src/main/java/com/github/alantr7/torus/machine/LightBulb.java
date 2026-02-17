@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -23,9 +24,7 @@ public class LightBulb extends Structure {
 
     public LightBulb() {
         super(TorusPlugin.DEFAULT_ADDON, "light_bulb", translatable("structure.light_bulb.name"), LightBulbInstance.class);
-        hasCollision = false;
-        isHeavy = false;
-        isOmnidirectional = true;
+        setFlags(StructureFlag.OMNIDIRECTIONAL | StructureFlag.TICKABLE);
         registerState(STATE_POWERED);
     }
 

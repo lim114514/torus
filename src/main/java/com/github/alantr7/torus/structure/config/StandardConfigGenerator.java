@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.structure.config;
 
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import org.bukkit.configuration.MemorySection;
@@ -35,7 +36,7 @@ public class StandardConfigGenerator {
         config.set("config_version", 2);
         config.set("general_settings.enabled", structure.isEnabled);
         config.set("general_settings.placement_offset", List.of(structure.getOffset()[0], structure.getOffset()[1], structure.getOffset()[2]));
-        config.set("general_settings.heavy", structure.isHeavy);
+        config.set("general_settings.heavy", structure.hasFlag(StructureFlag.HEAVY));
         config.set("general_settings.portable_data", structure.portableData.stream().toList());
 
         for (Property<?> property : structure.getProperties()) {

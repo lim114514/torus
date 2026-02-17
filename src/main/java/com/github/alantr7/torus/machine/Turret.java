@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -22,6 +23,7 @@ public class Turret extends Structure {
 
     public Turret() {
         super(TorusPlugin.DEFAULT_ADDON, "turret", translatable("structure.turret.name"), TurretInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
         portableData.add("energy");
         hologramOffset = new float[] { 0, 1f, 0 };
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 3_000));

@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.state.State;
 import com.github.alantr7.torus.structure.state.StateType;
@@ -28,9 +29,7 @@ public class EnergyCable extends Structure {
 
     public EnergyCable() {
         super(TorusPlugin.DEFAULT_ADDON, "energy_cable", translatable("structure.energy_cable.name"), CableInstance.class);
-        isInteractable = true;
-        isHeavy = false;
-        isTickable = false;
+        setFlags(StructureFlag.INTERACTABLE | StructureFlag.COLLIDABLE);
         registerState(STATE_NORTH);
         registerState(STATE_EAST);
         registerState(STATE_SOUTH);

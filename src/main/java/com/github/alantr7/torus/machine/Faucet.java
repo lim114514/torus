@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -19,9 +20,7 @@ public class Faucet extends Structure {
 
     public Faucet() {
         super(TorusPlugin.DEFAULT_ADDON, "faucet", translatable("structure.faucet.name"), FaucetInstance.class);
-        isTickable = false;
-        isInteractable = true;
-        isHeavy = false;
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.INTERACTABLE);
     }
 
     @Override

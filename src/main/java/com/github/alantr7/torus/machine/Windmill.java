@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -28,6 +29,7 @@ public class Windmill extends Structure {
 
     public Windmill() {
         super(TorusPlugin.DEFAULT_ADDON, "windmill", translatable("structure.windmill.name"), WindmillInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
         portableData.add("energy");
         hologramOffset = new float[] { 0, 1f, 0 };
         registerState(STATE_ACTIVE);

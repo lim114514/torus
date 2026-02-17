@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.state.State;
 import com.github.alantr7.torus.structure.state.StateType;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -29,9 +30,7 @@ public class Connector extends Structure {
 
     public Connector() {
         super(TorusPlugin.DEFAULT_ADDON, "connector", translatable("structure.connector.name"), ConnectorInstance.class);
-        isInteractable = true;
-        isHeavy = false;
-        isOmnidirectional = true;
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.OMNIDIRECTIONAL | StructureFlag.INTERACTABLE | StructureFlag.TICKABLE);
         registerState(STATE_FRONT);
         registerState(STATE_RIGHT);
         registerState(STATE_BACK);

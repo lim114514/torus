@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -49,6 +50,7 @@ public class Quarry extends Structure {
 
     public Quarry() {
         super(TorusPlugin.DEFAULT_ADDON, "quarry", translatable("structure.quarry.name"), QuarryInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
         portableData.add("energy");
         offset = new byte[] {0, 0, -6};
         hologramOffset = new float[] { 0, 0, -6f };

@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -28,7 +29,7 @@ public class JunctionBox extends Structure {
 
     public JunctionBox() {
         super(TorusPlugin.DEFAULT_ADDON, "junction_box", translatable("structure.junction_box.name"), JunctionBoxInstance.class);
-        isHeavy = false;
+        setFlags(StructureFlag.COLLIDABLE);
         registerState(STATE_RIGHT);
         registerState(STATE_BACK);
         registerState(STATE_LEFT);

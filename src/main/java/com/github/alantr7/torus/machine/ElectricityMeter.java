@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -19,8 +20,7 @@ public class ElectricityMeter extends Structure {
 
     public ElectricityMeter() {
         super(TorusPlugin.DEFAULT_ADDON, "electricity_meter", translatable("structure.electricity_meter.name"), ElectricityMeterInstance.class);
-        isTickable = false;
-        isHeavy = false;
+        setFlags(StructureFlag.COLLIDABLE);
         portableData.add("total");
         hologramTranslation = new float[] { 1.4f, 0.1f, 0f };
     }

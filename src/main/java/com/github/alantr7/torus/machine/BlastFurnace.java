@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -20,7 +21,7 @@ public class BlastFurnace extends Structure {
 
     public BlastFurnace() {
         super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", translatable("structure.blast_furnace.name"), BlastFurnaceInstance.class);
-        isInteractable = true;
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.INTERACTABLE | StructureFlag.HEAVY | StructureFlag.TICKABLE);
         hologramOffset = new float[] { 0, 0, 0 };
         hologramTranslation = new float[] { 1.2f, 0, 0 };
     }

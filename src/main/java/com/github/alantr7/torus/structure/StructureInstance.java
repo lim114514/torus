@@ -173,7 +173,7 @@ public abstract class StructureInstance {
 
         // Setup model
         try {
-            if (!structure.hasCollision) {
+            if (!structure.hasFlag(StructureFlag.COLLIDABLE)) {
                 interactionEntity = location.world.getBukkit().spawn(location.toBukkitCentered(), Interaction.class);
                 interactionEntity.setInteractionWidth(1f);
                 interactionEntity.setInteractionHeight(1f);
@@ -201,7 +201,7 @@ public abstract class StructureInstance {
 
         // Clean up if it was PHYSICAL
         if (oldStatus == Status.PHYSICAL) {
-            if (!structure.hasCollision && interactionEntity != null) {
+            if (!structure.hasFlag(StructureFlag.COLLIDABLE) && interactionEntity != null) {
                 interactionEntity.remove();
             }
 
@@ -239,7 +239,7 @@ public abstract class StructureInstance {
     public final void handleUnload() {
         if (status == Status.PHYSICAL) {
             try {
-                if (!structure.hasCollision && interactionEntity != null) {
+                if (!structure.hasFlag(StructureFlag.COLLIDABLE) && interactionEntity != null) {
                     interactionEntity.remove();
                 }
 

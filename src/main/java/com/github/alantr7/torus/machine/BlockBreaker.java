@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -21,8 +22,7 @@ public class BlockBreaker extends Structure {
 
     public BlockBreaker() {
         super(TorusPlugin.DEFAULT_ADDON, "block_breaker", translatable("structure.block_breaker.name"), BlockBreakerInstance.class);
-        isHeavy = false;
-        isOmnidirectional = true;
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.OMNIDIRECTIONAL | StructureFlag.TICKABLE);
         portableData.add("energy");
         hologramOffset = new float[] { 0, 0, 0 };
         hologramTranslation = new float[] { 1.5f, 0, 0 };

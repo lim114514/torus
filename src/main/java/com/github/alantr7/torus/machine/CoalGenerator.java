@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -30,6 +31,7 @@ public class CoalGenerator extends Structure {
 
     public CoalGenerator() {
         super(TorusPlugin.DEFAULT_ADDON, "coal_generator", translatable("structure.coal_generator.name"), CoalGeneratorInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE);
         portableData.add("energy");
         hologramOffset = new float[] { 0f, 0f, 1f };
         hologramTranslation = new float[] { 1.2f, 0, 0 };

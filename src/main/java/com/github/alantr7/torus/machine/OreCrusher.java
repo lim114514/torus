@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.state.State;
@@ -29,6 +30,7 @@ public class OreCrusher extends Structure {
 
     public OreCrusher() {
         super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", translatable("structure.ore_crusher.name"), OreCrusherInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.HEAVY | StructureFlag.TICKABLE);
         offset = new byte[]{ 0, 0, -1 };
         hologramOffset = new float[] { 0, 1f, 0 };
         portableData.add("energy");

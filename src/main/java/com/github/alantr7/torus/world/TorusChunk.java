@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.world;
 
 import com.github.alantr7.torus.structure.Status;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
 import org.joml.Vector2i;
@@ -36,7 +37,7 @@ public class TorusChunk {
 
     protected void _registerStructure(StructureInstance structure) {
         structures.put(structure.location, structure);
-        if (structure.structure.isTickable && (status == Status.PHYSICAL || (status == Status.VIRTUAL && structure.structure.isVirtualizable)))
+        if (structure.structure.hasFlag(StructureFlag.TICKABLE) && (status == Status.PHYSICAL || (status == Status.VIRTUAL && structure.structure.hasFlag(StructureFlag.VIRTUALIZABLE))))
             tickableStructures.put(structure.location, structure);
     }
 
@@ -60,7 +61,7 @@ public class TorusChunk {
         status = Status.VIRTUAL;
         for (StructureInstance structure : structures.values()) {
             structure.makeVirtual();
-            if (!(structure.structure.isTickable && structure.structure.isVirtualizable)) {
+            if (!(structure.structure.hasFlag(StructureFlag.TICKABLE | StructureFlag.VIRTUALIZABLE))) {
                 tickableStructures.remove(structure.location);
             }
         }
@@ -70,7 +71,7 @@ public class TorusChunk {
         status = Status.PHYSICAL;
         for (StructureInstance structure : structures.values()) {
             structure.makePhysical();
-            if (structure.structure.isTickable) {
+            if (structure.structure.hasFlag(StructureFlag.TICKABLE)) {
                 tickableStructures.put(structure.location, structure);
             }
         }

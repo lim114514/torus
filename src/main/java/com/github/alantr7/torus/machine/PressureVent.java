@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
@@ -18,6 +19,7 @@ public class PressureVent extends Structure {
 
     public PressureVent() {
         super(TorusPlugin.DEFAULT_ADDON, "pressure_vent", translatable("structure.pressure_vent.name"), PressureVentInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.HEAVY);
     }
 
     @Override

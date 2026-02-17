@@ -3,6 +3,7 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.network.NetworkManager;
 import com.github.alantr7.torus.structure.Status;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
@@ -204,7 +205,7 @@ public class TorusWorld {
         byte[] bounds = instance.getCollisionVectors();
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = instance.location.getRelative(bounds[i], bounds[i+1], bounds[i+2]);
-            if (instance.structure.hasCollision) {
+            if (instance.structure.hasFlag(StructureFlag.COLLIDABLE)) {
                 relative.getBlock().setType(Material.BARRIER);
             }
 

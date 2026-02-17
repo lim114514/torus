@@ -4,6 +4,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -39,6 +40,7 @@ public class FluidTank extends Structure {
 
     public FluidTank() {
         super(TorusPlugin.DEFAULT_ADDON, "fluid_tank", translatable("structure.fluid_tank.name"), FluidTankInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
         portableData.add("fluid");
         portableData.add("stored");
         hologramOffset = new float[] { 0, 1f, 0 };

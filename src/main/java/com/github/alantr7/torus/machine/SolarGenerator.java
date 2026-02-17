@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -22,6 +23,7 @@ public class SolarGenerator extends Structure {
 
     public SolarGenerator() {
         super(TorusPlugin.DEFAULT_ADDON, "solar_generator", translatable("structure.solar_generator.name"), SolarGeneratorInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
         portableData.add("energy");
         hologramOffset = new float[] { 0, 1, 0 };
         hologramTranslation = new float[] { 1.2f, 0, 0 };

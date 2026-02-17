@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -18,8 +19,7 @@ public class PowerPole extends Structure {
 
     public PowerPole() {
         super(TorusPlugin.DEFAULT_ADDON, "power_pole", translatable("structure.power_pole.name"), PowerPoleInstance.class);
-        isTickable = false;
-        isHeavy = false;
+        setFlags(StructureFlag.COLLIDABLE);
     }
 
     @Override
