@@ -18,7 +18,7 @@ public class PropertyLoader {
     static {
         loaders.put(PropertyType.BOOLEAN, MemorySection::getBoolean);
         loaders.put(PropertyType.INT, MemorySection::getInt);
-        loaders.put(PropertyType.FLOAT, MemorySection::getDouble);
+        loaders.put(PropertyType.FLOAT, (section, key) -> (float) section.getDouble(key));
         loaders.put(PropertyType.STRING, MemorySection::getString);
         loaders.put(PropertyType.STRING_LIST, MemorySection::getStringList);
         loaders.put(PropertyType.VECTOR3I, (section, key) -> {
@@ -44,8 +44,10 @@ public class PropertyLoader {
             return;
         }
 
-        Object value = loaderFunction.apply(config, property.name);
-        property.value = (T) value;
+        if (config.isSet(property.name)) {
+            Object value = loaderFunction.apply(config, property.name);
+            property.value = (T) value;
+        }
     }
 
 }
