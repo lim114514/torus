@@ -66,7 +66,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
         if (getStoredEnergy().get() < structure.getProperty("energy_settings.consumption", PropertyType.INT))
             return;
 
-        Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), 5, 1.5, 5, targetFilter);
+        Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), structure.getProperty("special_settings.target_range_horizontal", PropertyType.FLOAT), structure.getProperty("special_settings.target_range_vertical", PropertyType.FLOAT), structure.getProperty("special_settings.target_range_horizontal", PropertyType.FLOAT), targetFilter);
         if (entities.isEmpty())
             return;
 

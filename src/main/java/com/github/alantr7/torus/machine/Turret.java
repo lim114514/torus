@@ -29,6 +29,8 @@ public class Turret extends Structure {
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 3_000));
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 250));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 100));
+        registerProperty(new Property<>("special_settings.target_range_horizontal", PropertyType.FLOAT, 9f));
+        registerProperty(new Property<>("special_settings.target_range_vertical", PropertyType.FLOAT, 1.5f));
     }
 
     @Override
