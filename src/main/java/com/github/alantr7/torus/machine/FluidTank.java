@@ -43,7 +43,7 @@ public class FluidTank extends Structure {
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
         setPortableData("fluid", "stored");
         setHologramOffset(new Vector3f(0, 1f, 0));
-        setHologramTranslation(new Vector3f(2f, 0, 1f));
+        setHologramTranslation(new Vector3f(1f, 0, 1f));
         registerProperty(new Property<>("fluid_settings.capacity", PropertyType.INT, 96_000));
     }
 

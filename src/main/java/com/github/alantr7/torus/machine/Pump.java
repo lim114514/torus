@@ -41,7 +41,7 @@ public class Pump extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "pump", translatable("structure.pump.name"), PumpInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
         setPortableData("energy", "fluid", "amount");
-        setHologramOffset(new Vector3f(0, 1f, 0));
+        setHologramOffset(new Vector3f(0, 0.6f, 0));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 500));
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 50));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 25));

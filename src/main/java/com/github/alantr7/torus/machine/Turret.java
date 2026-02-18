@@ -25,7 +25,7 @@ public class Turret extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "turret", translatable("structure.turret.name"), TurretInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY | StructureFlag.INTERACTABLE);
         setPortableData("energy");
-        setHologramOffset(new Vector3f(0, 1f, 0));
+        setHologramOffset(new Vector3f(0, 0.6f, 0));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 3_000));
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 250));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 100));

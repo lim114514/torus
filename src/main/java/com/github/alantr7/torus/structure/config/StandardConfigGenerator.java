@@ -26,7 +26,12 @@ public class StandardConfigGenerator {
     private static final Map<PropertyType<?>, PropertyMapper<?>> mappers = new HashMap<>();
     static {
         map(PropertyType.INT, MemorySection::set);
+        map(PropertyType.BOOLEAN, MemorySection::set);
+        map(PropertyType.FLOAT, MemorySection::set);
         map(PropertyType.STRING, MemorySection::set);
+        map(PropertyType.STRING_LIST, MemorySection::set);
+        map(PropertyType.VECTOR3I, (section, key, val) -> section.set(key, List.of(val.x, val.y, val.z)));
+        map(PropertyType.VECTOR3F, (section, key, val) -> section.set(key, List.of(val.x, val.y, val.z)));
     }
 
     private static <T> void map(PropertyType<T> type, PropertyMapper<T> mapper) {

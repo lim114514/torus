@@ -43,6 +43,7 @@ import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.joml.Vector3f;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -320,16 +321,21 @@ public abstract class StructureInstance {
         float[] offset = MathUtils.rotateVectors(structure.getHologramOffset(), direction.rotH, 0);
         inspectionHologram = location.world.getBukkit().spawn(location.toBukkitCentered().add(offset[0], offset[1], offset[2]), TextDisplay.class);
         inspectionHologram.setBillboard(Display.Billboard.CENTER);
-        inspectionHologram.setPersistent(false);
-        inspectionHologram.setSeeThrough(true);
         inspectionHologram.setBackgroundColor(Color.fromARGB(0, 0, 0, 0));
+        inspectionHologram.setPersistent(false);
+        inspectionHologram.setSeeThrough(false);
+        inspectionHologram.setLineWidth(256);
         inspectionHologram.setAlignment(TextDisplay.TextAlignment.LEFT);
         inspectionHologram.setVisibleByDefault(false);
         inspectionHologram.setShadowed(true);
 
         Transformation transformation = inspectionHologram.getTransformation();
-        transformation.getScale().set(0.7f, 0.7f, 0.7f);
-        transformation.getTranslation().set(structure.getHologramTranslation());
+        transformation.getScale().set(0.4f, 0.4f, 0.4f);
+        Vector3f hologramTranslation = new Vector3f(structure.getHologramTranslation());
+        hologramTranslation.z += 1.25f;
+        hologramTranslation.y += .3f;
+        hologramTranslation.x -= .75f;
+        transformation.getTranslation().set(hologramTranslation);
         inspectionHologram.setTransformation(transformation);
     }
 
