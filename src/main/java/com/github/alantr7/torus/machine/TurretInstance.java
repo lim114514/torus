@@ -2,9 +2,11 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.gui.structure.TurretGUI;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
+import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
@@ -20,10 +22,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 
 import java.util.Collection;
+import java.util.function.Predicate;
 
 public class TurretInstance extends StructureInstance implements EnergyContainer {
 
@@ -35,6 +39,16 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
+
+    public static final byte TARGET_PLAYERS     = 0b0001;
+
+    public static final byte TARGET_MONSTERS    = 0b0010;
+
+    public static final byte TARGET_ANIMALS     = 0b0100;
+
+    protected Data<Byte> targets = dataContainer.persist("targets", Data.Type.BYTE, TARGET_MONSTERS);
+
+    private Predicate<Entity> targetFilter;
 
     TurretInstance(LoadContext context) {
         super(context);
@@ -52,7 +66,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
         if (getStoredEnergy().get() < structure.getProperty("energy_settings.consumption", PropertyType.INT))
             return;
 
-        Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), 5, 1.5, 5, e -> (e instanceof Monster || e instanceof Slime) && !e.getScoreboardTags().contains("torus_entity"));
+        Collection<Entity> entities = location.world.getBukkit().getNearbyEntities(location.toBukkit().add(.5, 0, .5), 5, 1.5, 5, targetFilter);
         if (entities.isEmpty())
             return;
 
@@ -105,11 +119,51 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
     }
 
     @Override
+    public boolean onPlayerInteract(PlayerInteractEvent event, BlockLocation location) {
+        Player player = event.getPlayer();
+        if (!testOwnership(player))
+            return true;
+
+        new TurretGUI(player, this).open();
+        return true;
+    }
+
+    public byte getTargets() {
+        return targets.get();
+    }
+
+    public void setTargets(byte flags) {
+        targets.update(flags);
+        updateFilter();
+        save();
+    }
+
+    private void updateFilter() {
+        byte flags = targets.get();
+        targetFilter = entity -> {
+            if (entity.getScoreboardTags().contains("torus_entity"))
+                return false;
+
+            if (entity instanceof Monster || entity instanceof Slime)
+                return MathUtils.hasFlag(flags, TARGET_MONSTERS);
+
+            if (entity instanceof Animals)
+                return MathUtils.hasFlag(flags, TARGET_ANIMALS);
+
+            if (entity instanceof Player)
+                return MathUtils.hasFlag(flags, TARGET_PLAYERS) && !entity.getUniqueId().equals(getOwnerId());
+
+            return false;
+        };
+    }
+
+    @Override
     protected void setup() throws SetupException {
         head = requirePart("head");
         inEnergy = (EnergySocket) requireSocket("in_energy");
         inEnergy.maximumInput = structure.getProperty("energy_settings.maximum_input", PropertyType.INT);
         inItem = (ItemSocket) requireSocket("in_item");
+        updateFilter();
     }
 
     @Override
