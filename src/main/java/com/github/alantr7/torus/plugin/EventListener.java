@@ -71,6 +71,8 @@ public class EventListener implements Listener {
         if (!event.getPlayer().isSneaking() && TorusWorld.isItemContainer(new BlockLocation(event.getClickedBlock().getLocation())))
             return;
 
+        event.setCancelled(true);
+
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
         BlockLocation location = new BlockLocation(block.getLocation());
 
@@ -116,7 +118,6 @@ public class EventListener implements Listener {
         } else {
             event.getPlayer().sendMessage(translate("interaction.place.no_space"));
         }
-        event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
