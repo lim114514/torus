@@ -323,8 +323,6 @@ public abstract class StructureInstance {
         inspectionHologram.setBillboard(Display.Billboard.CENTER);
         inspectionHologram.setBackgroundColor(Color.fromARGB(0, 0, 0, 0));
         inspectionHologram.setPersistent(false);
-        inspectionHologram.setSeeThrough(false);
-        inspectionHologram.setLineWidth(256);
         inspectionHologram.setAlignment(TextDisplay.TextAlignment.LEFT);
         inspectionHologram.setVisibleByDefault(false);
         inspectionHologram.setShadowed(true);
