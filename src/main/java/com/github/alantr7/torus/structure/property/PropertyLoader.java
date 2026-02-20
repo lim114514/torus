@@ -2,7 +2,7 @@ package com.github.alantr7.torus.structure.property;
 
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
@@ -14,13 +14,13 @@ import java.util.function.BiFunction;
 
 public class PropertyLoader {
 
-    private static final Map<PropertyType<?>, BiFunction<FileConfiguration, String, Object>> loaders = new HashMap<>();
+    private static final Map<PropertyType<?>, BiFunction<ConfigurationSection, String, Object>> loaders = new HashMap<>();
     static {
-        loaders.put(PropertyType.BOOLEAN, MemorySection::getBoolean);
-        loaders.put(PropertyType.INT, MemorySection::getInt);
+        loaders.put(PropertyType.BOOLEAN, ConfigurationSection::getBoolean);
+        loaders.put(PropertyType.INT, ConfigurationSection::getInt);
         loaders.put(PropertyType.FLOAT, (section, key) -> (float) section.getDouble(key));
-        loaders.put(PropertyType.STRING, MemorySection::getString);
-        loaders.put(PropertyType.STRING_LIST, MemorySection::getStringList);
+        loaders.put(PropertyType.STRING, ConfigurationSection::getString);
+        loaders.put(PropertyType.STRING_LIST, ConfigurationSection::getStringList);
         loaders.put(PropertyType.VECTOR3I, (section, key) -> {
             List<Integer> list = section.getIntegerList(key);
             return list.size() != 3 ? new Vector3i() : new Vector3i(list.get(0), list.get(1), list.get(2));
@@ -48,6 +48,17 @@ public class PropertyLoader {
             Object value = loaderFunction.apply(config, property.name);
             property.value = (T) value;
         }
+    }
+
+    public static <T> T load(ConfigurationSection section, String key, PropertyType<T> type, T defaultValue) {
+        var loaderFunction = loaders.get(type);
+        if (loaderFunction == null)
+            return defaultValue;
+
+        if (section.isSet(key))
+            return (T) loaderFunction.apply(section, key);
+
+        return defaultValue;
     }
 
 }
