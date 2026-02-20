@@ -247,7 +247,8 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
     }
 
     private float calculatePressure() {
-        return ((float) steam.get() / getFluidCapacity()) / (1f - (float) stored.get() / getFluidCapacity());
+        float liquidRatio = Math.max(0.001f, (1f - (float) stored.get() / getFluidCapacity()));
+        return ((float) steam.get() / getFluidCapacity()) / liquidRatio;
     }
 
     private void spawnBoilingParticles(int delay) {
