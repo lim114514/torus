@@ -12,6 +12,13 @@ world_blacklist:
   - world_nether
   - world_the_end
 
+# Prevents integration between Torus and supported plugins. For example, if you have WorldGuard installed but don't want
+# Torus to check place and break permissions for players in claimed regions, you can add it to the list like:
+# integration_blacklist:
+#   - WorldGuard
+# Names are case sensitive!
+integration_blacklist: []
+
 customization:
   # Enabling this will load models from '/plugins/Torus/configs/torus/structures' after server restart.
   # Use '/torus export_model <structure_id>' to save a model file, that can be edited, to the destination mentioned above.

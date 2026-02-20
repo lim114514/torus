@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -13,14 +14,15 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class ElectricityMeter extends Structure {
 
     public ElectricityMeter() {
-        super(TorusPlugin.DEFAULT_ADDON, "electricity_meter", "Electricity Meter", ElectricityMeterInstance.class);
-        isTickable = false;
-        isHeavy = false;
-        portableData.add("total");
-        hologramTranslation = new float[] { 1.4f, 0.1f, 0f };
+        super(TorusPlugin.DEFAULT_ADDON, "electricity_meter", translatable("structure.electricity_meter.name"), ElectricityMeterInstance.class);
+        setFlags(StructureFlag.COLLIDABLE);
+        setPortableData("total");
+        setHologramTranslation(new Vector3f(1.4f, 0.1f, 0f));
     }
 
     @Override

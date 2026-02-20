@@ -4,6 +4,7 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.model.ModelTemplate;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModelTemplate;
 import com.github.alantr7.torus.model.de_provider.PartModelElementItemDisplayRenderer;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.Direction;
@@ -19,6 +20,8 @@ import com.github.alantr7.torus.world.Pitch;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+
+import static com.github.alantr7.torus.lang.Localization.translatable;
 
 public class PowerBank extends Structure {
 
@@ -36,9 +39,10 @@ public class PowerBank extends Structure {
     }
 
     public PowerBank() {
-        super(TorusPlugin.DEFAULT_ADDON, "power_bank", "Power Bank", PowerBankInstance.class);
-        portableData.add("energy");
-        hologramOffset = new float[] { 0, 1f, 0 };
+        super(TorusPlugin.DEFAULT_ADDON, "power_bank", translatable("structure.power_bank.name"), PowerBankInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.HEAVY | StructureFlag.TICKABLE);
+        setPortableData("energy");
+        setHologramOffset(new Vector3f(0, 1f, 0));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 20_000));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 500));
         registerProperty(new Property<>("energy_settings.maximum_output", PropertyType.INT, 500));

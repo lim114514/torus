@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -19,10 +20,13 @@ import com.github.alantr7.torus.world.Pitch;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.github.alantr7.torus.lang.Localization.translatable;
 
 public class Quarry extends Structure {
 
@@ -46,10 +50,11 @@ public class Quarry extends Structure {
     }
 
     public Quarry() {
-        super(TorusPlugin.DEFAULT_ADDON, "quarry", "Quarry", QuarryInstance.class);
-        portableData.add("energy");
-        offset = new byte[] {0, 0, -6};
-        hologramOffset = new float[] { 0, 0, -6f };
+        super(TorusPlugin.DEFAULT_ADDON, "quarry", translatable("structure.quarry.name"), QuarryInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
+        setPortableData("energy");
+        setOffset(new Vector3i(0, 0, -6));
+        setHologramOffset(new Vector3f(0, 0, -6f));
         registerProperty(new Property<>("energy_settings.consumption_on_mine", PropertyType.INT, 150));
         registerProperty(new Property<>("energy_settings.consumption_on_move", PropertyType.INT, 50));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 350));

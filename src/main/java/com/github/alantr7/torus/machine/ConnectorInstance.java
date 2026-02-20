@@ -157,7 +157,7 @@ public class ConnectorInstance extends StructureInstance implements Inspectable 
                 flowDirectionData.update(getFlowDirection() == Socket.FlowDirection.IN ? Socket.FlowDirection.OUT.ordinal() : Socket.FlowDirection.IN.ordinal());
                 socket.setFlowDirection(getFlowDirection());
 
-                event.getPlayer().sendMessage( translate("interaction.flow_change.success").replace("{flow}", socket.getFlowDirection().name()));
+                event.getPlayer().sendMessage( translate("interaction.flow_change.success").replace("{flow}", translate("inspection.flow." + socket.getFlowDirection().name().toLowerCase())));
             } else {
                 Vector dr = event.getInteractionPoint().subtract(event.getPlayer().getEyeLocation()).toVector().normalize().multiply(0.07f);
                 Vector r = event.getInteractionPoint().subtract(location.toBukkit()).clone().toVector().add(new Vector(-0.5, -0.5, -0.5));

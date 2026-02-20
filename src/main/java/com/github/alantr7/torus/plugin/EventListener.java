@@ -1,10 +1,10 @@
 package com.github.alantr7.torus.plugin;
 
-import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.config.MainConfig;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.utils.EventUtils;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.utils.StringPool;
@@ -71,6 +71,8 @@ public class EventListener implements Listener {
         if (!event.getPlayer().isSneaking() && TorusWorld.isItemContainer(new BlockLocation(event.getClickedBlock().getLocation())))
             return;
 
+        event.setCancelled(true);
+
         Block block = event.getClickedBlock().getRelative(event.getBlockFace());
         BlockLocation location = new BlockLocation(block.getLocation());
 
@@ -78,7 +80,7 @@ public class EventListener implements Listener {
           ? Direction.fromBlockFace(event.getPlayer().getFacing()).getOpposite()
           : Direction.fromBlockFace(event.getBlockFace());
 
-        Pitch pitch = !torusItem.getStructure().isOmnidirectional || event.getBlockFace().getModY() == 0
+        Pitch pitch = !torusItem.getStructure().hasFlag(StructureFlag.OMNIDIRECTIONAL) || event.getBlockFace().getModY() == 0
           ? Pitch.FORWARD
           : event.getBlockFace().getModY() == 1 ? Pitch.UP : Pitch.DOWN;
 
@@ -101,11 +103,11 @@ public class EventListener implements Listener {
                     ByteArrayReader dataContainerReader = new ByteArrayReader(
                       structureData.get(new NamespacedKey(TorusPlugin.getInstance(), "data_container"), PersistentDataType.BYTE_ARRAY)
                     );
-                    DataContainer.overwrite(structure.dataContainer, DataContainer.fromBytes(dataContainerReader, strings), structure.structure.portableData);
+                    DataContainer.overwrite(structure.dataContainer, DataContainer.fromBytes(dataContainerReader, strings), structure.structure.getPortableData());
                 }
 
                 structure.setOwnerId(event.getPlayer().getUniqueId());
-                if (structure.structure.isHeavy) {
+                if (structure.structure.hasFlag(StructureFlag.HEAVY)) {
                     structure.location.world.getBukkit().playSound(location.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_PLACE, 0.2f, 1f);
                 }
                 if (event.getPlayer().getGameMode() == GameMode.SURVIVAL || event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
@@ -116,7 +118,6 @@ public class EventListener implements Listener {
         } else {
             event.getPlayer().sendMessage(translate("interaction.place.no_space"));
         }
-        event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -146,7 +147,7 @@ public class EventListener implements Listener {
                     return;
             }
 
-            if (structure.structure.isInteractable && structure.testOwnership(event.getPlayer())) {
+            if (structure.structure.hasFlag(StructureFlag.INTERACTABLE) && structure.testOwnership(event.getPlayer())) {
                 if (EventUtils.callStructureInteractEvent(event.getPlayer(), structure, clickedBlockLocation)) {
                     if (structure.onPlayerInteract(event, new BlockLocation(event.getClickedBlock().getLocation()))) {
                         player.placementCooldownExpiry = System.currentTimeMillis() + 200;
@@ -180,7 +181,7 @@ public class EventListener implements Listener {
 
         player.interactionCooldownExpiry = System.currentTimeMillis() + 200;
 
-        if (instance.structure.isHeavy) {
+        if (instance.structure.hasFlag(StructureFlag.HEAVY)) {
             TorusItem item = TorusItem.getByItemStack(event.getPlayer().getInventory().getItemInMainHand());
             if (item == null || !item.namespacedId.equals("torus:hammer")) {
                 event.getPlayer().sendMessage(translate("interaction.break.no_hammer"));
@@ -200,7 +201,7 @@ public class EventListener implements Listener {
                 }
             }
             world.removeStructure(instance);
-            if (instance.structure.isHeavy) {
+            if (instance.structure.hasFlag(StructureFlag.HEAVY)) {
                 world.getBukkit().playSound(loc.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_USE, 0.2f, 1.2f);
             }
         } else {
@@ -234,7 +235,7 @@ public class EventListener implements Listener {
 
         torusPlayer.interactionCooldownExpiry = System.currentTimeMillis() + 200;
 
-        if (instance.structure.isHeavy) {
+        if (instance.structure.hasFlag(StructureFlag.HEAVY)) {
             TorusItem item = TorusItem.getByItemStack(player.getInventory().getItemInMainHand());
             if (item == null || !item.namespacedId.equals("torus:hammer")) {
                 player.sendMessage(translate("interaction.break.no_hammer"));
@@ -254,7 +255,7 @@ public class EventListener implements Listener {
                 }
             }
             world.removeStructure(instance);
-            if (instance.structure.isHeavy) {
+            if (instance.structure.hasFlag(StructureFlag.HEAVY)) {
                 world.getBukkit().playSound(loc.toBukkit().add(.5, 0, .5), Sound.BLOCK_ANVIL_USE, 0.2f, 1.2f);
             }
         } else {

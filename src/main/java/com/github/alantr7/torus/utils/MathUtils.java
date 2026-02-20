@@ -2,6 +2,7 @@ package com.github.alantr7.torus.utils;
 
 import com.github.alantr7.torus.world.Direction;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 public class MathUtils {
 
@@ -50,6 +51,10 @@ public class MathUtils {
         return bounds;
     }
 
+    public static byte[] rotateVectors(Vector3i parentBounds, Direction direction) {
+        return rotateVectors(new byte[] { (byte) parentBounds.x, (byte) parentBounds.y, (byte) parentBounds.z }, direction);
+    }
+
     public static float[] rotateVectors(float[] parentBounds, float rotH, float rotV) {
         float[] bounds = new float[parentBounds.length];
 
@@ -63,6 +68,10 @@ public class MathUtils {
         }
 
         return bounds;
+    }
+
+    public static float[] rotateVectors(Vector3f parentBounds, float rotH, float rotV) {
+        return rotateVectors(new float[] { parentBounds.x, parentBounds.y, parentBounds.z }, rotH, rotV);
     }
 
     public static String formatNumber(int number) {

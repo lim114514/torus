@@ -43,6 +43,7 @@ import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.joml.Vector3f;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -173,7 +174,7 @@ public abstract class StructureInstance {
 
         // Setup model
         try {
-            if (!structure.hasCollision) {
+            if (!structure.hasFlag(StructureFlag.COLLIDABLE)) {
                 interactionEntity = location.world.getBukkit().spawn(location.toBukkitCentered(), Interaction.class);
                 interactionEntity.setInteractionWidth(1f);
                 interactionEntity.setInteractionHeight(1f);
@@ -201,7 +202,7 @@ public abstract class StructureInstance {
 
         // Clean up if it was PHYSICAL
         if (oldStatus == Status.PHYSICAL) {
-            if (!structure.hasCollision && interactionEntity != null) {
+            if (!structure.hasFlag(StructureFlag.COLLIDABLE) && interactionEntity != null) {
                 interactionEntity.remove();
             }
 
@@ -239,7 +240,7 @@ public abstract class StructureInstance {
     public final void handleUnload() {
         if (status == Status.PHYSICAL) {
             try {
-                if (!structure.hasCollision && interactionEntity != null) {
+                if (!structure.hasFlag(StructureFlag.COLLIDABLE) && interactionEntity != null) {
                     interactionEntity.remove();
                 }
 
@@ -317,19 +318,22 @@ public abstract class StructureInstance {
     }
 
     public void spawnInspectionTooltip() {
-        float[] offset = MathUtils.rotateVectors(structure.hologramOffset, direction.rotH, 0);
+        float[] offset = MathUtils.rotateVectors(structure.getHologramOffset(), direction.rotH, 0);
         inspectionHologram = location.world.getBukkit().spawn(location.toBukkitCentered().add(offset[0], offset[1], offset[2]), TextDisplay.class);
         inspectionHologram.setBillboard(Display.Billboard.CENTER);
-        inspectionHologram.setPersistent(false);
-        inspectionHologram.setSeeThrough(true);
         inspectionHologram.setBackgroundColor(Color.fromARGB(0, 0, 0, 0));
+        inspectionHologram.setPersistent(false);
         inspectionHologram.setAlignment(TextDisplay.TextAlignment.LEFT);
         inspectionHologram.setVisibleByDefault(false);
         inspectionHologram.setShadowed(true);
 
         Transformation transformation = inspectionHologram.getTransformation();
-        transformation.getScale().set(0.7f, 0.7f, 0.7f);
-        transformation.getTranslation().set(structure.hologramTranslation);
+        transformation.getScale().set(0.4f, 0.4f, 0.4f);
+        Vector3f hologramTranslation = new Vector3f(structure.getHologramTranslation());
+        hologramTranslation.z += 1.25f;
+        hologramTranslation.y += .3f;
+        hologramTranslation.x -= .75f;
+        transformation.getTranslation().set(hologramTranslation);
         inspectionHologram.setTransformation(transformation);
     }
 
@@ -422,7 +426,7 @@ public abstract class StructureInstance {
 
     static final ChatColor COLOR_STRUCTURE_NAME = ChatColor.of("#ff8854");
     static final ChatColor COLOR_PROPERTY = ChatColor.of("#cfcfcf");
-    public void updateInspectionHologram() {
+    public final void updateInspectionHologram() {
         if (isCorrupted)
             return;
 
@@ -469,18 +473,18 @@ public abstract class StructureInstance {
             return null;
 
         ItemStack item = torusItem.toItemStack().clone();
-        if (!includeData || structure.portableData.isEmpty())
+        if (!includeData || structure.getPortableData().isEmpty())
             return item;
 
         ItemMeta meta = item.getItemMeta();
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
-        if (!structure.portableData.isEmpty()) {
+        if (!structure.getPortableData().isEmpty()) {
             List<String> lore = meta.getLore();
             lore.add("");
             lore.add(ChatColor.GRAY + "Data:");
             dataContainer.getEntries().forEach((key, data) -> {
-                if (!structure.portableData.contains(key)) // TODO: Iterate through whitelist instead
+                if (!structure.getPortableData().contains(key)) // TODO: Iterate through whitelist instead
                     return;
 
                 lore.add(ChatColor.GRAY + " " + key + ": " + ChatColor.WHITE + (data.get().getClass().isArray() ? "array" : data.get()));

@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -16,6 +17,8 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class JunctionBox extends Structure {
 
     public static final State<Boolean> STATE_RIGHT  = new State<>("right",  StateType.BOOLEAN, false);
@@ -25,8 +28,8 @@ public class JunctionBox extends Structure {
     public static final State<Boolean> STATE_DOWN   = new State<>("down",   StateType.BOOLEAN, false);
 
     public JunctionBox() {
-        super(TorusPlugin.DEFAULT_ADDON, "junction_box", "Junction Box", JunctionBoxInstance.class);
-        isHeavy = false;
+        super(TorusPlugin.DEFAULT_ADDON, "junction_box", translatable("structure.junction_box.name"), JunctionBoxInstance.class);
+        setFlags(StructureFlag.COLLIDABLE);
         registerState(STATE_RIGHT);
         registerState(STATE_BACK);
         registerState(STATE_LEFT);

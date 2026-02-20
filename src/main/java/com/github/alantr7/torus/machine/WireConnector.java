@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -13,14 +14,13 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class WireConnector extends Structure {
 
     public WireConnector() {
-        super(TorusPlugin.DEFAULT_ADDON, "wire_connector", "Wire Connector", WireConnectorInstance.class);
-        isTickable = false;
-        isInteractable = true;
-        isHeavy = false;
-        isOmnidirectional = true;
+        super(TorusPlugin.DEFAULT_ADDON, "wire_connector", translatable("structure.wire_connector.name"), WireConnectorInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.OMNIDIRECTIONAL | StructureFlag.INTERACTABLE);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.github.alantr7.torus.item.*;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.structure.Structures;
 import org.bukkit.Material;
@@ -60,7 +61,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         for (String structureId : MainConfig.EXPERIMENTAL_VIRTUALIZATION_STRUCTURES) {
             Structure structure = registry.getStructure(structureId);
             if (structure != null) {
-                structure.isVirtualizable = true;
+                structure.setFlags(StructureFlag.VIRTUALIZABLE);
             }
         }
     }

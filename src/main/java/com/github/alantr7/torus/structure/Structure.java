@@ -2,6 +2,7 @@ package com.github.alantr7.torus.structure;
 
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.api.resource.ResourceLocation;
+import com.github.alantr7.torus.lang.Translatable;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.structure.config.StandardConfigGenerator;
@@ -24,9 +25,13 @@ import lombok.Setter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import java.io.InputStreamReader;
 import java.util.*;
+
+import static com.github.alantr7.torus.lang.Localization.translate;
 
 public abstract class Structure {
 
@@ -40,6 +45,7 @@ public abstract class Structure {
 
     public int numericId = -1;
 
+    @Getter
     protected final Class<? extends StructureInstance> instanceClass;
 
     public ResourceLocation configResource;
@@ -58,25 +64,7 @@ public abstract class Structure {
     protected byte[] size;
 
     @Getter
-    protected byte[] offset = { 0, 0, 0 };
-
-    public boolean isHeavy = true;
-
-    public boolean isInteractable = false;
-
-    public boolean isOmnidirectional = false;
-
-    public boolean isTickable = true;
-
-    public boolean isVirtualizable = false;
-
-    public boolean hasCollision = true;
-
-    public Set<String> portableData = new HashSet<>();
-
-    public float[] hologramOffset = {0f, 0f, 0f};
-
-    public float[] hologramTranslation = {1.2f, 0f, 0f};
+    private int flags = 0;
 
     @Getter @Setter
     private ModelController modelController = new ModelController(ModelType.SINGLEPART, Collections.singleton(new ModelCase(
@@ -87,11 +75,21 @@ public abstract class Structure {
         this(addon, id, "Untitled Structure", instanceClass);
     }
 
+    public Structure(TorusAddon addon, String id, Translatable name, Class<? extends StructureInstance> instanceClass) {
+        this(addon, id, "@" + name.key, instanceClass);
+    }
+
     public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.addon = addon;
         this.id = id;
         this.namespacedId = addon.id + ":" + id;
-        this.properties.put("general_settings.name", new Property<>("general_settings.name", PropertyType.STRING, name));
+        registerProperty(new Property<>("general_settings.name", PropertyType.STRING, name));
+        registerProperty(new Property<>("general_settings.placement_offset", PropertyType.VECTOR3I, new Vector3i()));
+        registerProperty(new Property<>("general_settings.portable_data", PropertyType.STRING_LIST, new ArrayList<>()));
+        if (Inspectable.class.isAssignableFrom(instanceClass)) {
+            registerProperty(new Property<>("info_hologram.offset", PropertyType.VECTOR3F, new Vector3f(0f, 0f, 0f)));
+            registerProperty(new Property<>("info_hologram.translation", PropertyType.VECTOR3F, new Vector3f(1.2f, 0f, 0f)));
+        }
         this.instanceClass = instanceClass;
         this.configResource = new ResourceLocation(addon.externalContainer, "structures/" + id + ".yml");
         this.configGenerator = StandardConfigGenerator.INSTANCE;
@@ -123,13 +121,70 @@ public abstract class Structure {
     }
 
     public String getName() {
-        return getProperty("general_settings.name", PropertyType.STRING);
+        String name = getProperty("general_settings.name", PropertyType.STRING);
+        return name.charAt(0) == '@' ? translate(name.substring(1)) : name;
+    }
+
+    public List<String> getPortableData() {
+        return getProperty("general_settings.portable_data", PropertyType.STRING_LIST);
+    }
+
+    public void setPortableData(List<String> keys) {
+        setProperty("general_settings.portable_data", PropertyType.STRING_LIST, keys);
+    }
+
+    public void setPortableData(String... keys) {
+        setPortableData(Arrays.asList(keys));
+    }
+
+    public void setOffset(@NotNull Vector3i offset) {
+        setProperty("general_settings.placement_offset", PropertyType.VECTOR3I, offset);
+    }
+
+    public Vector3i getOffset() {
+        return getProperty("general_settings.placement_offset", PropertyType.VECTOR3I);
+    }
+
+    public Vector3f getHologramOffset() {
+        return getProperty("info_hologram.offset", PropertyType.VECTOR3F);
+    }
+
+    public void setHologramOffset(@NotNull Vector3f offset) {
+        setProperty("info_hologram.offset", PropertyType.VECTOR3F, offset);
+    }
+
+    public Vector3f getHologramTranslation() {
+        return getProperty("info_hologram.translation", PropertyType.VECTOR3F);
+    }
+
+    public void setHologramTranslation(@NotNull Vector3f offset) {
+        setProperty("info_hologram.translation", PropertyType.VECTOR3F, offset);
+    }
+
+    public boolean hasFlag(int flags) {
+        return MathUtils.hasFlag(this.flags, flags);
+    }
+
+    public void setFlags(int flags) {
+        this.flags = MathUtils.setFlag(this.flags, flags, true);
+    }
+
+    public void toggleFlag(int flag, boolean toggle) {
+        flags = MathUtils.setFlag(flags, flag, toggle);
     }
 
     @SuppressWarnings("unchecked")
     public <T> T getProperty(String name, PropertyType<T> type) {
         Property<Object> value = (Property<Object>) properties.get(name);
         return value != null && value.type == type ? (T) value.value : null;
+    }
+
+    public <T> void setProperty(String name, PropertyType<T> type, T value) {
+        Property<Object> property = (Property<Object>) properties.get(name);
+        if (property == null || property.type != type)
+            return;
+
+        property.value = value;
     }
 
     public Collection<Property<?>> getProperties() {
@@ -144,6 +199,10 @@ public abstract class Structure {
         for (Property<?> prop : properties.values()) {
             loader.load(prop);
         }
+    }
+
+    final void initDefaultProperties() {
+        registerProperty(new Property<>("general_settings.heavy", PropertyType.BOOLEAN, hasFlag(StructureFlag.HEAVY)));
     }
 
     public void reloadConfig() {
@@ -170,6 +229,8 @@ public abstract class Structure {
                     e.printStackTrace();
                 }
             }
+
+            toggleFlag(StructureFlag.HEAVY, getProperty("general_settings.heavy", PropertyType.BOOLEAN));
         }
     }
 
@@ -225,10 +286,8 @@ public abstract class Structure {
     }
 
     private byte[] calculateOffset(Direction direction) {
-        if (offset == null)
-            return new byte[] { 0, 0, 0 };
-
-        return MathUtils.rotateVectors(this.offset, direction);
+        Vector3i offset = getOffset();
+        return MathUtils.rotateVectors(new byte[] { (byte) offset.x, (byte) offset.y, (byte) offset.z }, direction);
     }
 
     @Override
@@ -238,37 +297,4 @@ public abstract class Structure {
 
     protected abstract StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch);
 
-//    protected void loadConfig() {
-//        // General Settings
-//        name = config.getString("general_settings.display_name", this.name);
-//        isEnabled = config.getBoolean("general_settings.enabled", true);
-//        isHeavy = config.getBoolean("general_settings.heavy", this.isHeavy);
-//
-//        List<Byte> placementOffset = config.getByteList("general_settings.placement_offset");
-//        if (placementOffset.size() == 3) {
-//            for (int i = 0; i < 3; i++) {
-//                this.offset[i] = placementOffset.get(i);
-//            }
-//        }
-//
-//        List<String> portableData = config.getStringList("general_settings.portable_data");
-//        if (!portableData.isEmpty()) {
-//            this.portableData = new HashSet<>(portableData);
-//        }
-//
-//        // Info Hologram Settings
-//        List<Byte> hologramOffset = config.getByteList("info_hologram.offset");
-//        if (hologramOffset.size() == 3) {
-//            for (int i = 0; i < 3; i++) {
-//                this.hologramOffset[i] = hologramOffset.get(i);
-//            }
-//        }
-//
-//        List<Float> hologramTranslation = config.getFloatList("info_hologram.translation");
-//        if (hologramTranslation.size() == 3) {
-//            for (int i = 0; i < 3; i++) {
-//                this.hologramTranslation[i] = hologramTranslation.get(i);
-//            }
-//        }
-//    }
 }

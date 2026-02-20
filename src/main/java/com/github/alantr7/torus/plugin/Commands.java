@@ -75,10 +75,12 @@ public class Commands {
           }
 
           ItemStack stack = item.toItemStack().clone();
-          stack.setAmount((int) ctx.getArgument("amount"));
+          int amount = (int) ctx.getArgument("amount");
+          stack.setAmount(amount);
 
-          ((Player) ctx.getExecutor()).getInventory().addItem(stack);
-          ctx.respond(ChatColor.YELLOW + "You received 1 x " + ChatColor.GOLD + item.name);
+          target.getInventory().addItem(stack);
+          ctx.respond(ChatColor.YELLOW + "Gave " + amount + " x " + ChatColor.GOLD + item.name);
+          target.sendMessage(ChatColor.YELLOW + "You received " + amount + " x " + ChatColor.GOLD + item.name);
       });
 
     @CommandHandler Command browse = CommandBuilder.using("torus")

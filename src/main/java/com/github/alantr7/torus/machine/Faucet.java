@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -13,13 +14,13 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class Faucet extends Structure {
 
     public Faucet() {
-        super(TorusPlugin.DEFAULT_ADDON, "faucet", "Faucet", FaucetInstance.class);
-        isTickable = false;
-        isInteractable = true;
-        isHeavy = false;
+        super(TorusPlugin.DEFAULT_ADDON, "faucet", translatable("structure.faucet.name"), FaucetInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.INTERACTABLE);
     }
 
     @Override

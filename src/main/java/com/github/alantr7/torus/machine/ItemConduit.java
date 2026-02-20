@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -13,15 +14,14 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.machine.EnergyCable.*;
 
 public class ItemConduit extends Structure {
 
     public ItemConduit() {
-        super(TorusPlugin.DEFAULT_ADDON, "item_conduit", "Item Conduit", CableInstance.class);
-        isInteractable = true;
-        isHeavy = false;
-        isTickable = false;
+        super(TorusPlugin.DEFAULT_ADDON, "item_conduit", translatable("structure.item_conduit.name"), CableInstance.class);
+        setFlags(StructureFlag.INTERACTABLE | StructureFlag.COLLIDABLE);
         registerState(STATE_NORTH);
         registerState(STATE_EAST);
         registerState(STATE_SOUTH);

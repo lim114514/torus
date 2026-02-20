@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -16,15 +17,20 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class Turret extends Structure {
 
     public Turret() {
-        super(TorusPlugin.DEFAULT_ADDON, "turret", "Laser Turret", TurretInstance.class);
-        portableData.add("energy");
-        hologramOffset = new float[] { 0, 1f, 0 };
+        super(TorusPlugin.DEFAULT_ADDON, "turret", translatable("structure.turret.name"), TurretInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY | StructureFlag.INTERACTABLE);
+        setPortableData("energy");
+        setHologramOffset(new Vector3f(0, 0.6f, 0));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 3_000));
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 250));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 100));
+        registerProperty(new Property<>("special_settings.target_range_horizontal", PropertyType.FLOAT, 9f));
+        registerProperty(new Property<>("special_settings.target_range_vertical", PropertyType.FLOAT, 1.5f));
     }
 
     @Override

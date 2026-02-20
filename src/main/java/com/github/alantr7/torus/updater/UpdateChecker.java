@@ -4,6 +4,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.InvokePeriodically;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bukkitplugin.versions.Version;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 
@@ -18,6 +19,9 @@ public class UpdateChecker {
 
     @InvokePeriodically(delay = 10L, interval = 20 * 60 * 12, limit = 1, sync = false)
     void checkForUpdates() {
+        if (!MainConfig.ALLOW_UPDATE_CHECKS)
+            return;
+
         try (InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=129842").openStream()) {
             String versionString = new String(is.readAllBytes(), StandardCharsets.UTF_8);
             latestVersion = Version.from(versionString);

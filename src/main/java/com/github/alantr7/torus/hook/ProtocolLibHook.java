@@ -29,7 +29,7 @@ public class ProtocolLibHook {
 
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     void registerListener() {
-        if (TorusPlugin.getInstance().getVersion().isOlderThan(Compatibility.V1_21_4))
+        if (Version.getServerVersion().isOlderThan(Compatibility.V1_21_4))
             return;
 
         registerItemPickupFromBlockPacketListener();

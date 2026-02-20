@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -12,12 +13,13 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class PowerPole extends Structure {
 
     public PowerPole() {
-        super(TorusPlugin.DEFAULT_ADDON, "power_pole", "Power Pole", PowerPoleInstance.class);
-        isTickable = false;
-        isHeavy = false;
+        super(TorusPlugin.DEFAULT_ADDON, "power_pole", translatable("structure.power_pole.name"), PowerPoleInstance.class);
+        setFlags(StructureFlag.COLLIDABLE);
     }
 
     @Override

@@ -7,10 +7,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class DataContainer {
 
@@ -140,7 +137,7 @@ public class DataContainer {
         return container;
     }
 
-    public static void overwrite(DataContainer original, DataContainer data, Set<String> whitelist) {
+    public static void overwrite(DataContainer original, DataContainer data, List<String> whitelist) {
         for (String key : whitelist) {
             Data<Object> newValue = data.entries.get(key);
             Data<Object> oldValue = original.entries.get(key);

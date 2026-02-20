@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -18,6 +19,8 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class CoalGenerator extends Structure {
 
     public static final ItemCriteria INPUT_CRITERIA = new ItemCriteria();
@@ -27,10 +30,11 @@ public class CoalGenerator extends Structure {
     }
 
     public CoalGenerator() {
-        super(TorusPlugin.DEFAULT_ADDON, "coal_generator", "Coal Generator", CoalGeneratorInstance.class);
-        portableData.add("energy");
-        hologramOffset = new float[] { 0f, 0f, 1f };
-        hologramTranslation = new float[] { 1.2f, 0, 0 };
+        super(TorusPlugin.DEFAULT_ADDON, "coal_generator", translatable("structure.coal_generator.name"), CoalGeneratorInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE);
+        setPortableData("energy");
+        setHologramOffset(new Vector3f(0f, 0f, 1f));
+        setHologramTranslation(new Vector3f(1.2f, 0, 0));
         registerProperty(new Property<>("energy_settings.production", PropertyType.INT, 300));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 18_000));
         registerProperty(new Property<>("energy_settings.maximum_output", PropertyType.INT, 500));

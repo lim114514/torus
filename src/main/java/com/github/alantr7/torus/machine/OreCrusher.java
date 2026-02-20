@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.state.State;
@@ -18,6 +19,9 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
+
+import static com.github.alantr7.torus.lang.Localization.translatable;
 
 public class OreCrusher extends Structure {
 
@@ -26,10 +30,11 @@ public class OreCrusher extends Structure {
     public static final State<Boolean> STATE_WORKING = new State<>("working", StateType.BOOLEAN, false);
 
     public OreCrusher() {
-        super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", "Ore Crusher", OreCrusherInstance.class);
-        offset = new byte[]{ 0, 0, -1 };
-        hologramOffset = new float[] { 0, 1f, 0 };
-        portableData.add("energy");
+        super(TorusPlugin.DEFAULT_ADDON, "ore_crusher", translatable("structure.ore_crusher.name"), OreCrusherInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.HEAVY | StructureFlag.TICKABLE);
+        setOffset(new Vector3i(0, 0, -1));
+        setHologramOffset(new Vector3f(0, 1f, 0));
+        setPortableData("energy");
         registerState(STATE_WORKING);
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 300));
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));

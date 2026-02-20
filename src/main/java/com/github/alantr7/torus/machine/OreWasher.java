@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.ItemCriteria;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
@@ -17,14 +18,16 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class OreWasher extends Structure {
 
     public static ItemCriteria INPUT_CRITERIA = new ItemCriteria();
 
     public OreWasher() {
-        super(TorusPlugin.DEFAULT_ADDON, "ore_washer", "Ore Washer", OreWasherInstance.class);
-        portableData.add("energy");
-        portableData.add("fluid");
+        super(TorusPlugin.DEFAULT_ADDON, "ore_washer", translatable("structure.ore_washer.name"), OreWasherInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
+        setPortableData("energy", "fluid");
         registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 2000));
         registerProperty(new Property<>("energy_settings.consumption", PropertyType.INT, 300));
         registerProperty(new Property<>("energy_settings.maximum_input", PropertyType.INT, 500));

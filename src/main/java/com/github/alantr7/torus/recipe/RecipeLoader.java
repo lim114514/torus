@@ -77,8 +77,8 @@ public class RecipeLoader {
         Map<Character, ItemStack> ingredients = new HashMap<>();
 
         int size = rawShape.getFirst().length();
-        if (size != 2 && size != 3) {
-            TorusLogger.error(Category.RECIPES,  "Recipe shape must be 2x2 or 3x3.");
+        if (size != 1 && size != 2 && size != 3) {
+            TorusLogger.error(Category.RECIPES,  "Recipe shape must be 1x1, 2x2 or 3x3.");
             return;
         }
 

@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.structure.Structure;
@@ -14,13 +15,14 @@ import com.github.alantr7.torus.world.Pitch;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import static com.github.alantr7.torus.lang.Localization.translatable;
+
 public class BlastFurnace extends Structure {
 
     public BlastFurnace() {
-        super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", "Blast Furnace", BlastFurnaceInstance.class);
-        isInteractable = true;
-        hologramOffset = new float[] { 0, 0, 0 };
-        hologramTranslation = new float[] { 1.2f, 0, 0 };
+        super(TorusPlugin.DEFAULT_ADDON, "blast_furnace", translatable("structure.blast_furnace.name"), BlastFurnaceInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.INTERACTABLE | StructureFlag.HEAVY | StructureFlag.TICKABLE);
+        setHologramTranslation(new Vector3f(1.2f, 0, 0));
     }
 
     @Override
