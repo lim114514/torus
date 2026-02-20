@@ -4,6 +4,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.RequiresPlugin;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.api.event.PlayerStructureInteractEvent;
 import com.github.alantr7.torus.api.event.PlayerStructurePrePlaceEvent;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.utils.MathUtils;
@@ -32,6 +33,9 @@ public class WorldGuardIntEntryPoint {
     static StateFlag FLAG_TORUS_STRUCTURE_INTERACT;
 
     public static void initialize() {
+        if (MainConfig.INTEGRATION_BLACKLIST.contains("WorldGuard"))
+            return;
+
         FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
         FLAG_TORUS_STRUCTURE_PLACE      = registerOrGetExisting(flagRegistry, "torus-structure-place");
         FLAG_TORUS_STRUCTURE_BREAK      = registerOrGetExisting(flagRegistry, "torus-structure-break");
@@ -42,7 +46,8 @@ public class WorldGuardIntEntryPoint {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     void preventPlacingStructuresInRegionsWithDeniedFlag(PlayerStructurePrePlaceEvent event) {
-        if (event.getPlayer().asBukkit().hasPermission("worldguard.region.bypass." + event.getLocation().world.getBukkit().getName()))
+        if (event.getPlayer().asBukkit().hasPermission("worldguard.region.bypass." + event.getLocation().world.getBukkit().getName())
+        || MainConfig.INTEGRATION_BLACKLIST.contains("WorldGuard"))
             return;
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -63,7 +68,8 @@ public class WorldGuardIntEntryPoint {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     void preventBreakingStructuresInRegionsWithDeniedFlag(PlayerStructurePrePlaceEvent event) {
-        if (event.getPlayer().asBukkit().hasPermission("worldguard.region.bypass." + event.getLocation().world.getBukkit().getName()))
+        if (event.getPlayer().asBukkit().hasPermission("worldguard.region.bypass." + event.getLocation().world.getBukkit().getName())
+        || MainConfig.INTEGRATION_BLACKLIST.contains("WorldGuard"))
             return;
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -84,7 +90,8 @@ public class WorldGuardIntEntryPoint {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     void preventInteractionWithStructuresInRegionsWithDeniedFlag(PlayerStructureInteractEvent event) {
-        if (event.getPlayer().asBukkit().hasPermission("worldguard.region.bypass." + event.getStructure().location.world.getBukkit().getName()))
+        if (event.getPlayer().asBukkit().hasPermission("worldguard.region.bypass." + event.getStructure().location.world.getBukkit().getName())
+        || MainConfig.INTEGRATION_BLACKLIST.contains("WorldGuard"))
             return;
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();

@@ -6,6 +6,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.event.PlayerStructureBreakEvent;
 import com.github.alantr7.torus.api.event.PlayerStructurePrePlaceEvent;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.utils.MathUtils;
 import me.angeschossen.lands.api.LandsIntegration;
 import me.angeschossen.lands.api.flags.type.Flags;
@@ -30,6 +31,9 @@ public class LandsIntEntryPoint {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     void preventPlacingStructuresWhereNoPermission(PlayerStructurePrePlaceEvent event) {
+        if (MainConfig.INTEGRATION_BLACKLIST.contains("Lands"))
+            return;
+
         Player player = event.getPlayer().asBukkit();
         LandPlayer landPlayer = landsApi.getLandPlayer(player.getUniqueId());
         LandWorld world = landsApi.getWorld(event.getLocation().world.getBukkit());
@@ -50,6 +54,9 @@ public class LandsIntEntryPoint {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     void preventBreakingStructuresWhereNoPermission(PlayerStructureBreakEvent event) {
+        if (MainConfig.INTEGRATION_BLACKLIST.contains("Lands"))
+            return;
+
         Player player = event.getPlayer().asBukkit();
         LandPlayer landPlayer = landsApi.getLandPlayer(player.getUniqueId());
         LandWorld world = landsApi.getWorld(event.getStructure().location.world.getBukkit());

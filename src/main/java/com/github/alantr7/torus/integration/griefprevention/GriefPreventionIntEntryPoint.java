@@ -4,6 +4,7 @@ import com.github.alantr7.bukkitplugin.annotations.core.RequiresPlugin;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.torus.api.event.PlayerStructureBreakEvent;
 import com.github.alantr7.torus.api.event.PlayerStructurePrePlaceEvent;
+import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.utils.MathUtils;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.ChatColor;
@@ -18,6 +19,9 @@ public class GriefPreventionIntEntryPoint {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     void preventPlacingStructuresWhereNoPermission(PlayerStructurePrePlaceEvent event) {
+        if (MainConfig.INTEGRATION_BLACKLIST.contains("GriefPrevention"))
+            return;
+
         Player player = event.getPlayer().asBukkit();
         byte[] collision = MathUtils.rotateVectors(event.getStructure().getCollisionVectors(), event.getDirection().getOpposite());
         byte[] offset = MathUtils.rotateVectors(event.getStructure().getOffset(), event.getDirection().getOpposite());
@@ -33,6 +37,9 @@ public class GriefPreventionIntEntryPoint {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     void preventBreakingStructuresWhereNoPermission(PlayerStructureBreakEvent event) {
+        if (MainConfig.INTEGRATION_BLACKLIST.contains("GriefPrevention"))
+            return;
+
         Player player = event.getPlayer().asBukkit();
         byte[] collision = event.getStructure().getCollisionVectors();
         for (int i = 0; i < collision.length; i += 3) {

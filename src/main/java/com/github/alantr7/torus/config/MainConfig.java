@@ -16,8 +16,8 @@ public class MainConfig {
     @ConfigOption(path = "world_blacklist")
     public static List<String> WORLD_BLACKLIST = new ArrayList<>(Collections.singletonList("world_nether"));
 
-    @ConfigOption(path = "customization.enable_model_editing")
-    public static boolean CUSTOMIZATION_ENABLE_MODEL_EDITING = false;
+    @ConfigOption(path = "integration_blacklist")
+    public static List<String> INTEGRATION_BLACKLIST = new ArrayList<>();
 
     @ConfigOption(path = "EXPERIMENTAL_virtualization.enabled")
     public static boolean EXPERIMENTAL_VIRTUALIZATION_ENABLED = false;
