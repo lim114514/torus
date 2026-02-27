@@ -29,7 +29,7 @@ public class JunctionBox extends Structure {
 
     public JunctionBox() {
         super(TorusPlugin.DEFAULT_ADDON, "junction_box", translatable("structure.junction_box.name"), JunctionBoxInstance.class);
-        setFlags(StructureFlag.COLLIDABLE);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE);
         registerState(STATE_RIGHT);
         registerState(STATE_BACK);
         registerState(STATE_LEFT);
